@@ -231,7 +231,7 @@ Stroustrup: "On the difficult and controversial question of what the CLI binding
 
 [Платформа](https://docs.microsoft.com/en-us/dotnet/core/) для разработки:
 - Кроcсплатформенная
-- Все CLI комманды могут быть реализованы через командную строку Command Line Tools
+- Все CLI комманды могут быть реализованы через командную строку command-line interface (CLI) tools
 - OpenSource: MIT + Apache2.0
 
 CLR -> [CoreCLR](https://github.com/dotnet/coreclr), включает новый JIT компилятор [RyuJIT](https://github.com/dotnet/coreclr/blob/master/Documentation/botr/ryujit-overview.md), GC, etc
@@ -249,11 +249,11 @@ MS не стремится сделать вес фреймворка меньш
 
 <div style="page-break-after: always;"></div>
 
-#### Command Line Tools
+#### Command-line interface tools
 
 [Портировали](https://docs.microsoft.com/en-us/dotnet/core/tools/cli-msbuild-architecture) MSBuild на .NET Core и добавили в него новые методы.
 
-[CLI commands](https://docs.microsoft.com/en-us/dotnet/core/tools/?tabs=netcore2x)
+Базовые [CLI команды](https://docs.microsoft.com/en-us/dotnet/core/tools/?tabs=netcore2x)
 - new
 - restore
 - run
