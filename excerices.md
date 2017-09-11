@@ -34,9 +34,9 @@ Collections, Enumerables.
 
 Structs, operator overloading, extension methods, unit-testing.
 
-## 5. Here's my value so call me Maybe
+## 5. Here's my `T` value so call me `Maybe<T>`
 
-## 6. HasFlag benchmark
+## 6. Enum.HasFlag benchmark
 
 ## 7. The beginning of Broken Telephone
 
@@ -46,6 +46,6 @@ Structs, operator overloading, extension methods, unit-testing.
 
 ## 10. Reflection
 
-## 11. It's time for serious business
+## 11. Web api
 
 Final mega-exercise.
