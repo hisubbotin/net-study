@@ -1,6 +1,6 @@
 # Курс .NET
 
-- 1 [NET]
+- 1 [NET](Net)
   - CLR 
   - .Net Framework
   - .Net Core
@@ -135,7 +135,7 @@
 
 ### .NET Framework
 
-![DotNet.svg](pics\DotNet.svg.png)
+![DotNet.svg](pics/DotNet.svg.png)
 
 Код собирается в промежуточный байт-код CIL ([Common Intermediate Language](en.wikipedia.org/wiki/Common_Intermediate_Language)) который именуется сборкой (assembly)
 
@@ -169,7 +169,7 @@ MS не стремится сделать вес фреймворка меньше, а хочет, чтобы не было лишних зав
 
 Microsoft управляет тремя .NET фреймворками: .NET Framework, .NET Core, Xamarin
 
-Standard позволяет использовать код на всех трех. 
+Standard позволяет использовать код на всех трех и переносить между ними. 
 
 Не полностью покрывает код Framework.
 
