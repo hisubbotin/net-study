@@ -1,11 +1,13 @@
 # Курс .NET
 
 - 1 [.NET](#net)
-  - .NET Framework
-    - CLR 
-  - .NET Core
-  - .NET Standard
-  - Nuget
+  - [IDE](#ide)
+  - [.NET Framework](#net-framework)
+    - [CLR](#clr)
+  - [.NET Core](#net-core)
+  - [.NET Standard](#net-standard)
+  - [.NET Native](#net-native)
+  - [Nuget](#nuget)
 - 2 Типы данных, значимые типы
   - Ссылочные / значимые типы
   - System.Object
@@ -81,7 +83,7 @@
 - [.NET Documentation](https://docs.microsoft.com/en-us/dotnet/)
 - Jeffrey Richter, CLR Via C# (4th edition)
 - Jon Skeet, C# in Depth
-- Andrew Troelsen, C# 6.0 and the .NET 4.6 Framework (Самый низкий порог вхождения в изучение C#)
+- Andrew Troelsen, C# 6.0 and the .NET 4.6 Framework (Саый низкий порог вхождения в изучение C#)
 - Сергей Тепляков, [Набор доступных статей про принципам проектирования](http://sergeyteplyakov.blogspot.ru/2013/10/articles.html), книга "Паттерны проектирования на платформе .NET"
 
 ### Использование и применение
@@ -136,6 +138,10 @@
 - [JetBrains Rider](https://www.jetbrains.com/rider/)
 - MonoDevelop, SharpDevelop, etc
 
+[Установка студии](https://docs.microsoft.com/en-us/visualstudio/install/install-visual-studio) отличается красивым выбором Workloads:
+![Workloads 1](pics/vs-workloads-1.png)
+![Workloads 2](pics/vs-workloads-2.png)
+
 ### .NET Framework
 
 ![DotNet.svg](pics/DotNet.svg.png)
@@ -150,11 +156,15 @@ Microsoft заложила возможность мультиплатформенности - стандарт CLI ([Common Lan
 
 [CLR](https://docs.microsoft.com/en-us/dotnet/standard/clr) - исполняющая среда для CIL. JIT компилятор - часть CLR.
 
-.Net совместимые языки: C#, F#, C++/CLI, VB.Net
+.Net совместимые языки: C#, F#, C++/CLI (legacy name "Managed C++"), VB.Net
+
+Managed Code - код, который может запускаться только из-под CLR/Mono/etc
+
+Stroustrup: "On the difficult and controversial question of what the CLI binding/extensions to C++ is to be called, I prefer C++/CLI as a shorthand for "The CLI extensions to ISO C++". Keeping C++ as part of the name reminds people what is the base language and will help keep C++ a proper subset of C++ with the C++/CLI extensions."
 
 ### .Net Core
 
-CLR -> [CoreCLR](https://github.com/dotnet/coreclr), включает [RyuJIT](https://github.com/dotnet/coreclr/blob/master/Documentation/botr/ryujit-overview.md), GC
+CLR -> [CoreCLR](https://github.com/dotnet/coreclr), включает новый JIT компилятор [RyuJIT](https://github.com/dotnet/coreclr/blob/master/Documentation/botr/ryujit-overview.md), GC, etc
 
 FCL -> .NET Core Libraries ([CoreFx](https://github.com/dotnet/corefx)): System.Collections, System.IO, System.Xml, etc
 
@@ -181,18 +191,18 @@ Standard позволяет использовать код на всех трех и переносить между ними.
 - .NET Framework 4.6.1
 - .NET Core 2.0
 - Mono 5.4
-- Xamarin.iOS 10.14
-- Xamarin.Mac 3.8
-- Xamarin.Android 7.5
+- Xamarin.iOS 10.14, Xamarin.Mac 3.8, Xamarin.Android 7.5
 - Upcoming version of UWP (expected to ship later this year)
 
 ### .NET Native
 
-[Технология](https://docs.microsoft.com/en-us/dotnet/framework/net-native/) компиляции в нативный код ahead-of-time. Раньше для этого использовался [ngen](https://docs.microsoft.com/en-us/dotnet/framework/tools/ngen-exe-native-image-generator), но у них есть существенные [отличия](https://docs.microsoft.com/en-us/dotnet/framework/net-native/net-native-and-compilation) (не использует JIT вообще, вместо него обрезанный, отрефакторенный clr)
+[Технология](https://docs.microsoft.com/en-us/dotnet/framework/net-native/) компиляции в нативный код ahead-of-time. Раньше для этого использовался [ngen](https://docs.microsoft.com/en-us/dotnet/framework/tools/ngen-exe-native-image-generator), но у них есть существенные [отличия](https://docs.microsoft.com/en-us/dotnet/framework/net-native/net-native-and-compilation) (не использует JIT вообще, вместо него обрезанный, отрефакторенный clr).
+
+Ускоряет первый запуск программы.
 
 Проблемы с рефлекшеном: все машинные коды должны быть сгенерированы заранее, эвристика компилятора не может угадать все возможные сценарии метапрограммирования.
 
-Не позволяет выполнить отражение в закрытые методы/поля FCL.
+Не работает в .net core 2.0.
 
 ### Nuget
 
