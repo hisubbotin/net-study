@@ -1,4 +1,4 @@
-# Excercises
+# Exercises
 
 ## Цель заданий
 
@@ -36,13 +36,23 @@ Structs, operator overloading, extension methods, unit-testing.
 
 ## 5. Here's my `T` value so call me `Maybe<T>`
 
+Generics, extension methods.
+
 ## 6. Enum.HasFlag benchmark
+
+Enums, flag enums, boxing overhead.
 
 ## 7. The beginning of Broken Telephone
 
+String modifiers, unicode categories.
+
 ## 8. String building benchmark
 
+String.Join, string.+=, StringBuilder.
+
 ## 9. Broken Telephone. Dark knight
+
+Complex task using #5, #7 excercises
 
 ## 10. Reflection
 
