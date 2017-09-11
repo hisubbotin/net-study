@@ -249,6 +249,26 @@ MS не стремится сделать вес фреймворка меньш
 
 <div style="page-break-after: always;"></div>
 
+#### Command Line Tools
+
+[Портировали](https://docs.microsoft.com/en-us/dotnet/core/tools/cli-msbuild-architecture) MSBuild на .NET Core и добавили в него новые методы.
+
+[CLI commands](https://docs.microsoft.com/en-us/dotnet/core/tools/?tabs=netcore2x)
+- new
+- restore
+- run
+- build
+- publish
+- test
+- pack
+
+Примеры вызова через командную строку:
+- `dotnet restore`
+- `dotnet <command> --help`
+- `dotnet publish -o pub -c Release`
+
+<div style="page-break-after: always;"></div>
+
 ### .NET Standard
 
 Microsoft управляет несколькими .NET фреймворками: .NET Framework, .NET Core, Xamarin, etc. При этом ядро фреймворков начало расходиться и нужно было реализовать возможность писать портируемый код между платформами. 
