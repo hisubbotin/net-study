@@ -28,7 +28,7 @@ Tags: datetime, datetime.kind, utc, timezone, timespan, datetimeoffset, time for
 
 ## 3. Go home, Fibonacci, you're drunk
 
-Collections, Enumerables.
+Collections, Enumerables, lambdas.
 
 ## 4. 2-dimensional vector
 
@@ -52,9 +52,11 @@ String.Join, string.+=, StringBuilder.
 
 ## 9. Broken Telephone. Dark knight
 
-Complex task using #5, #7 excercises
+Complex task using #3, #5, #7 exercises, file/archive I/O, async, high-order functions
 
 ## 10. Reflection
+
+Reflection, attributes.
 
 ## 11. Web api
 
