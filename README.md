@@ -251,7 +251,7 @@ MS не стремится сделать вес фреймворка меньш
 
 #### Command-line interface tools
 
-[Портировали](https://docs.microsoft.com/en-us/dotnet/core/tools/cli-msbuild-architecture) MSBuild на .NET Core и добавили в него новые методы.
+Портировали MSBuild на .NET Core и добавили в него новые методы.
 
 Базовые [CLI команды](https://docs.microsoft.com/en-us/dotnet/core/tools/?tabs=netcore2x)
 - new
