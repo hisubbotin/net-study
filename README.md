@@ -1,6 +1,6 @@
 # Курс .NET
 
-- 1 [NET](/Net)
+- 1 [NET](#Net)
   - .NET Framework
   - CLR 
   - .NET Core
