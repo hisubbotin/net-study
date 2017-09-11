@@ -1,5 +1,9 @@
 ﻿# Курс .NET
 
+- Система выставления [оценок](course-2017-1/readme.md)
+
+---
+
 - 1 [.NET](course/1-net.md#net)
   - [.NET Framework](course/1-net.md#net-framework)
     - [CLR](course/1-net.md#clr)
