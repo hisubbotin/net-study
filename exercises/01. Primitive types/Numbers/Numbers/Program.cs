@@ -5,9 +5,9 @@ using System.Runtime.CompilerServices;
 
 namespace Numbers
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             Console.WriteLine("Hello World!");
         }
