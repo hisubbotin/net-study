@@ -243,7 +243,7 @@ Microsoft управляет несколькими .NET фреймворкам�
 
 Visual Studio Code
 
-![Visual Studio Code](pics/VisualStudioCode.png)
+![Visual Studio Code](pics/visualstudiocode.png)
 
 
 <div style="page-break-after: always;"></div>
@@ -251,7 +251,7 @@ Visual Studio Code
 
 LINQPad 5
 
-![LINQPad](pics/LINQPad.png)
+![LINQPad](pics/linqpad.png)
 
 <div style="page-break-after: always;"></div>
 
