@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
-namespace Exercises
+[assembly: InternalsVisibleTo("Numbers.Tests")]
+
+namespace Numbers
 {
     class Program
     {
