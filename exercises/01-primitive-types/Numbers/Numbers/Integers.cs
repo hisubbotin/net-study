@@ -82,5 +82,15 @@ namespace Numbers
             // если сделал остальные, то с этим уже тоже должно быть понятно.
             throw new NotImplementedException();
         }
+
+        internal static int Parse(string s)
+        {
+            return int.Parse(s);
+        }
+
+        internal static string ToString(int x)
+        {
+            return x.ToString("## 'items'");
+        }
     }
 }
