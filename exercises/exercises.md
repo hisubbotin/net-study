@@ -24,6 +24,9 @@ Tags: primitive types, operations, checked/unchecked arithmetics, number formatt
 - чтением чисел из строки и форматированием их обратно в строку,
 - работой с консолью.
 
+Инструкция лежит в [01-primitive-types/01-primitive-types.md](01-primitive-types/01-primitive-types.md).
+
+
 ### 1.1 The numbers strikes back
 
 Открываете солюшен `Numbers/Numbers.sln`, в проекте Numbers находите файл Program.cs и дальше следуете комментариям в нем.
@@ -60,7 +63,10 @@ Structs, operator overloading, extension methods, unit-testing.
 
 Generics, extension methods.
 
-## 6. Enum.HasFlag benchmark
+## 6. The primitive types strikes back
+
+- Culture info with primitive types,
+- Enum.HasFlag benchmark
 
 Enums, flag enums, boxing overhead.
 
