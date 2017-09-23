@@ -74,7 +74,7 @@ if (a != null)
 | System.Int64 / UInt64 | long / ulong     | 8 byte                  | 9,223,372,036,854,775,807             |
 | System.Single         | float            | 4 byte                  | ~3.40 e38             |
 | System.Double         | double           | 8 byte                  | ~1.7977 e308             |
-| System.Decimal        | decimal          | 16 byte                 | Decimal number < 7.9 x 10e28             |
+| System.Decimal        | decimal          | 16 byte                 | Decimal number < 10 e28             |
 | System.Char           | char             | 2 byte                  | Single unicode char             |
 | System.String         | string           |            |Sequence of char             |
 | System.Object         | object           | 4 / 8 (x86/x64, в стеке)| Base Type             |
@@ -107,15 +107,35 @@ int b = a++;
 Console.WriteLine($"{a} - {b}"); // b=2; a=3
 ```
 
-#### Логические операции
+#### Логические операторы
 
 Поразрядные операции над двоичной формой числа.
 
-- `&` И
-- `|` ИЛИ
-- `^` исключающее ИЛИ / XOR
-- `~` инверсия
-- `x<<y` / `x>>y` логический сдвиг, сдвигает число x на y разрядов
+`&` И
+`|` ИЛИ
+`^` исключающее ИЛИ / XOR
+`~` инверсия
+`x<y` / `x>>y` логический сдвиг, сдвигает число x на y разрядов
+
+Логические операторы:
+
+`||` / `&&` - оптимизированные операции ИЛИ / И для bool
+`!` - логическое отрицание
+`==` равенство `if (a == b)`
+`!=` неравенство
+`??` [null-coalescing](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-conditional-operator) `int x = param1 ?? localDefault;`
+`?:` ternary operator `int result = Check() ? 1 : 0;`, [example](https://stackoverflow.com/questions/3312786/benefits-of-using-the-conditional-ternary-operator)
+`?.` [null-conditional operator](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-conditional-operators) - проверяет на null до доступа к полю/свойству/индексу обьекта
+
+``` C#
+int? length = customers?.Length; // null if customers is null
+Customer first = customers?[0];  // null if customers is null
+int? count = customers?[0]?.Orders?.Count();  // null if customers, the first customer, or Orders is null
+```
+
+Операции с присваиванием
+ `+=`, `-=`, `^=`, ...
+ `x += y` эквивалент `x = x + y`
 
 ### Локальная инициализация
 
@@ -140,10 +160,9 @@ var x = 1;
 var y = null; // Нельзя
 ```
 
-[Microsoft C# coding convensions] var usage:(https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions)
+[Microsoft C# coding convensions](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions) var usage:
 
 ``` C#
-
 // Используйте неявную типизацию для локальных переменных, когда тип элементарно понимается из правого выражения или не важен
 var x = new MyClass();
 var i = 3;
@@ -156,11 +175,36 @@ var ticketLifeTime = getTicketLifeTime(licenses);
 var newCounters = mergeResult
     .Where(x => x.LicenseId == license.Id)
     .ToDictionary(x => x.Name, y => y.Value);
+
+// Используйте в циклах
+foreach (var element in myList)
+{
+    // ...
+}
 ```
 
 ### Namespaces
 
 ### Переполнение
+
+По-умолчанию проверка переполнения выключена. Код выполняется быстрее.
+
+Операторы `checked`/`unchecked`
+
+``` C#
+byte b = checked((Byte) (100 + 200));  // OverflowException
+byte b = (Byte)checked(100 + 200);   // b содержит 44
+
+checked
+{
+    // Начало проверяемого блока
+    Byte b = 100;
+    b = (Byte) (b + 200);
+}
+```
+
+Decimal не примитивный тип. Это структура, которая обрабатывается медленее. 
+checked / unchecked для него не работают. Кидает `OverflowException`.
 
 ### Referenced VS Value types
 
