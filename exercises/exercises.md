@@ -26,7 +26,6 @@ Tags: primitive types, operations, checked/unchecked arithmetics, number formatt
 
 Инструкция лежит в [01-primitive-types/01-primitive-types.md](01-primitive-types/01-primitive-types.md).
 
-
 ### 1.1 The numbers strikes back
 
 Открываете солюшен `Numbers/Numbers.sln`, в проекте Numbers находите файл Program.cs и дальше следуете комментариям в нем.
