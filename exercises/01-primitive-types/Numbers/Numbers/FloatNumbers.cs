@@ -1,4 +1,8 @@
-﻿using System;
+﻿/*
+    Здесь все то же самое.
+*/
+
+using System;
 
 namespace Numbers
 {

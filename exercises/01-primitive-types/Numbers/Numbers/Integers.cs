@@ -126,5 +126,9 @@ namespace Numbers
             */
             throw new NotImplementedException();
         }
+
+        /*
+            Закончил? Переходи в FloatNumbers.cs
+        */
     }
 }
