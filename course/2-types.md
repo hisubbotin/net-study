@@ -29,11 +29,9 @@ object a = i;
 
 А так же расширяющие безопасные приведения базовых типов:
 
-``` C#
-byte > short > int > long > decimal
-int > double
-short > float > double
-```
+> byte > short > int > long > decimal
+> int > double
+> short > float > double
 
 Для приведения к производному типу или в небезопасных  нужно явное приведение:
 
@@ -137,35 +135,65 @@ int b = a++;
 Console.WriteLine($"{a} - {b}"); // b=2; a=3
 ```
 
+Поразрядные операции над двоичной формой числа:
+
+- `&` И
+- `|` ИЛИ
+- `^` исключающее ИЛИ / XOR
+- `~` инверсия
+- `x<<y` / `x>>y` сдвигает число `x` на `y` разрядов
+
+Операции с присваиванием
+ `+=`, `-=`, `^=`, ...
+ `x += y` эквивалент `x = x + y`
+
 #### Логические операторы
 
-Поразрядные операции над двоичной формой числа.
+Логические операторы возвращают bool
 
-`&` И
-`|` ИЛИ
-`^` исключающее ИЛИ / XOR
-`~` инверсия
-`x<y` / `x>>y` логический сдвиг, сдвигает число x на y разрядов
+- `|`, `&` - логическое ИЛИ / И
+- `||` / `&&` - оптимизированные операции ИЛИ / И: второе условие вычисляется только, если первое прошло проверку
+- `!` - логическое отрицание
+- `^` - исключающие ИЛИ
 
-Логические операторы:
+- `==` равенство `if (a == b)`
+- `!=` неравенство
 
-`||` / `&&` - оптимизированные операции ИЛИ / И для bool
-`!` - логическое отрицание
-`==` равенство `if (a == b)`
-`!=` неравенство
-`??` [null-coalescing](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-conditional-operator) `int x = param1 ?? localDefault;`
-`?:` ternary operator `int result = Check() ? 1 : 0;`, [example](https://stackoverflow.com/questions/3312786/benefits-of-using-the-conditional-ternary-operator)
-`?.` [null-conditional operator](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-conditional-operators) - проверяет на null до доступа к полю/свойству/индексу обьекта
+#### Null-операторы
+
+1. [Null-coalescing](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-conditional-operator) `??`
+
+Возвращает левый объект, если он не != null, иначе возвращает правый.
+Можно складывать в цепочку
+
+ ``` C#
+ int x = param1 ?? localDefault;
+ string anybody = getValue() ?? localDefault ?? globalDefault;
+ ```
+
+2. Ternary operator `?:`
+
+По условию возвращает левое или правое значение
+
+``` C#
+int result = Check() ? 1 : 0;
+
+int ticketLifetime = licenses.Any()
+    ? licenses.Select(x => x.TicketExpiration).Min()
+    : TicketMinutesLifetime;
+```
+
+[Examples of usage](https://stackoverflow.com/questions/3312786/benefits-of-using-the-conditional-ternary-operator)
+
+3. [null-conditional operator](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/operators/null-conditional-operators) `?.`
+
+Проверяет на null до доступа к полю/свойству/индексу обьекта
 
 ``` C#
 int? length = customers?.Length; // null if customers is null
 Customer first = customers?[0];  // null if customers is null
 int? count = customers?[0]?.Orders?.Count();  // null if customers, the first customer, or Orders is null
 ```
-
-Операции с присваиванием
- `+=`, `-=`, `^=`, ...
- `x += y` эквивалент `x = x + y`
 
 ### Локальная инициализация
 
@@ -215,6 +243,17 @@ foreach (var element in myList)
 
 ### Namespaces
 
+Пространства имен нужны для логической группировки родственных типов.
+Делают имя класса уникальным для компилятора.
+
+``` C#
+using System.IO; // директива заставляет компилятор добавлять этот префикс к классам, пока не найдет
+
+using myButton = Abbyy.SharedControls.Button; // Добавляем alias для класса при пересечении с другим таким же классом
+```
+
+Пространства имен и сборки могут не быть связаны друг с другом. Типы одного пространства имен могут быть реализованы разными сборками.
+
 ### Переполнение
 
 По-умолчанию проверка переполнения выключена. Код выполняется быстрее.
@@ -222,20 +261,25 @@ foreach (var element in myList)
 Операторы `checked`/`unchecked`
 
 ``` C#
-byte b = checked((Byte) (100 + 200));  // OverflowException
-byte b = (Byte)checked(100 + 200);   // b содержит 44
+byte a = 100;
+byte b = checked((Byte) (a + 200));  // OverflowException
+byte c = (Byte)checked(a + 200);   // b содержит 44
 
 checked
 {
     // Начало проверяемого блока
-    Byte b = 100;
-    b = (Byte) (b + 200);
+    Byte d = 100;
+    b = (Byte) (d + 200);
 }
 ```
 
 Decimal не примитивный тип. `checked / unchecked` для него не работают. Кидает `OverflowException`.
 
 Рихтер рекомендует в процессе разработки ставить флаг компилятору `checked+`, чтобы проверка по-дефолту была включена всегда, программист уже руками расставляет `cheched / unchecked`, где нужно. А при релизе убрать этот флаг компилятора.
+
+### Enum
+
+### Datetime
 
 ### Referenced VS Value types
 
