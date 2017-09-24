@@ -1,4 +1,4 @@
-## Types
+Types
 
 ### System.Object
 
@@ -47,7 +47,7 @@ int b = (int) a;
 object a = new object();
 bool b = a is object; // true
 bool b2 = a is int; // false
-``` 
+```
 
 По факту CLR приходится 2 раза производить проверку типов при использовании `is`. Поэтому сделали:
 
@@ -65,23 +65,53 @@ if (a != null)
 
 ### Базовые типы
 
-| Type                  | Alias            | Size                    | Explanation  |
-| --------------------- | ---------------- | ----------------------- | ------------ |
-| System.Boolean        | boolean          | [1 byte][bool-url]      | true / false |
-| System.Byte / SByte   | byte / sbyte     | 1 byte                  | Unsigned integer 0 to 255             |
-| System.Int16 / UInt16 | short / ushort   | 2 byte                  | 32,767             |
-| System.Int32 / UInt32 | int / uint       | 4 byte                  | 2,147,483,647             |
-| System.Int64 / UInt64 | long / ulong     | 8 byte                  | 9,223,372,036,854,775,807             |
-| System.Single         | float            | 4 byte                  | ~3.40 e38             |
-| System.Double         | double           | 8 byte                  | ~1.7977 e308             |
-| System.Decimal        | decimal          | 16 byte                 | Decimal number < 10 e28             |
-| System.Char           | char             | 2 byte                  | Single unicode char             |
-| System.String         | string           |            |Sequence of char             |
-| System.Object         | object           | 4 / 8 (x86/x64, в стеке)| Base Type             |
-| System.Guid           | [Guid][guid-url] | 16 byte                 |              |
+| Type                  | Alias                  | Size                     | Explanation                              |
+| --------------------- | ---------------------- | ------------------------ | ---------------------------------------- |
+| System.Boolean        | boolean                | [1 byte][bool-url]       | true / false                             |
+| System.Byte / SByte   | byte / sbyte           | 1 byte                   | Unsigned integer 0 to 255                |
+| System.Int16 / UInt16 | short / ushort         | 2 byte                   | Signed integer ±32,767                   |
+| System.Int32 / UInt32 | int / uint             | 4 byte                   | ... ±2,147,483,647                       |
+| System.Int64 / UInt64 | long / ulong           | 8 byte                   | ... ±9,223,372,036,854,775,807           |
+| System.Single         | float                  | 4 byte                   | Single-precision floating-point  ±3.4*10^38 |
+| System.Double         | double                 | 8 byte                   | Double-precision floating point ±1.7*10^308 |
+| System.Decimal        | [decimal][decimal-url] | 16 byte                  | decimal number ±7.9*10^28                |
+| System.Char           | char                   | 2 byte                   | Single unicode char                      |
+| System.String         | string                 |                          | Sequence of char                         |
+| System.Object         | object                 | 4 / 8 (x86/x64, в стеке) | Base Type                                |
+| System.Guid           | [Guid][guid-url]       | 16 byte                  |                                          |
 
 [bool-url]:https://stackoverflow.com/questions/2308034/primitive-boolean-size-in-c-sharp
 [guid-url]:https://msdn.microsoft.com/en-us/library/system.guid(v=vs.110).aspx
+[decimal-url]:https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/decimal
+
+Не рекомендуется использовать Sbyte / UInt как не CLS совместимые. Помимо этого:
+
+- Многие стандартные методы возвращают обычные типы (получится дополнительная конвертация).
+- Если не хватает размера, то увеличение в 2 раза не решает проблему.
+
+#### Decimal vs (Float/Double)
+
+|         | bits | base | mantissa | exponent | precision digits |
+| ------- | ---- | ---- | -------- | -------- | ---------------- |
+| float   | 32   | 2    | 23       | 8        | 7                |
+| double  | 64   | 2    | 52       | 11       | 15-16            |
+| decimal | 128  | 10   | 96       | 5 (0-28) | 28-29            |
+
+decimal - не примитивный тип и работает сильно медленее double (до 20 раз).
+Используется для валют и чисел, которые исконно "десятичные" (CAD, engineering, etc).
+
+Не надо сравнивать double через `==`.
+У double есть зарезервированные значения `double.NaN`, `double.Epsilon`, `double.Infinity`.
+
+``` C#
+double a = 0.1;
+double b = 0.2;
+Console.WriteLine(a + b == 0.3); // false
+
+decimal c = 0.1M;
+decimal d = 0.2M;
+Console.WriteLine(c + d == 0.3M); // true
+```
 
 ### Операторы
 
@@ -203,8 +233,9 @@ checked
 }
 ```
 
-Decimal не примитивный тип. Это структура, которая обрабатывается медленее. 
-checked / unchecked для него не работают. Кидает `OverflowException`.
+Decimal не примитивный тип. `checked / unchecked` для него не работают. Кидает `OverflowException`.
+
+Рихтер рекомендует в процессе разработки ставить флаг компилятору `checked+`, чтобы проверка по-дефолту была включена всегда, программист уже руками расставляет `cheched / unchecked`, где нужно. А при релизе убрать этот флаг компилятора.
 
 ### Referenced VS Value types
 
