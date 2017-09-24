@@ -14,7 +14,7 @@
 
 ## 1. May the primitive types be with you
 
-Tags: primitive types, operations, checked/unchecked arithmetics, number formatting and parsing, console.
+Tags: primitive types, numbers, operations, checked/unchecked arithmetics, number formatting and parsing, console.
 
 В данном задании вы познакомитесь с:
 
@@ -26,29 +26,18 @@ Tags: primitive types, operations, checked/unchecked arithmetics, number formatt
 
 Инструкция лежит в [01-primitive-types/01-primitive-types.md](01-primitive-types/01-primitive-types.md).
 
-### 1.1 The numbers strikes back
-
-Открываете солюшен `Numbers/Numbers.sln`, в проекте Numbers находите файл Program.cs и дальше следуете комментариям в нем.
-
-TODO: дописать
-
-### 1.2 Return of the Calculator
-
-Необходимо написать консольное приложение-калькулятор, которое поддерживает следующие входные данные (по одному на строку):
-
-- `i` или `f` - задает режим работы калькулятора:
-  - `i`nteger - режим работы с целыми числами (по умолчанию),
-  - `f`loat - режим работы с вещественными числами
-- `+`, `-`, `*`, `/` - задает режим текущей операции. Режим по умолчанию - сложение.
-- `#`, `ch`, `unch` - задает режим контроля переполнения:
-  - `ch` - режим явного контроля переполнения,
-  - `unch` - режим явного разрешения переполнения,
-  - `#` - режим "игнорирования проблемы переполнеия" - режим "по умолчанию",когда явно не задан ни один из вышеперечисленных режимов.
-- целочисленное или вещественнозначное число в зависимости от текущего режима.
-
 ## 2. What time is it? Adventure Time!
 
 Tags: datetime, datetime.kind, utc, timezone, timespan, datetimeoffset, time formatting and parsing.
+
+В данном задании вы познакомитесь с:
+
+- типами данных для базовой работы со временем,
+- операциями над ними,
+- чтением дат и отрезков времени из строки и форматированием их обратно в строку,
+- некоторыми проблемами, связанными со временем.
+
+Инструкция лежит в [02-adventure-time/02-adventure-time.md](02-adventure-time/02-adventure-time.md).
 
 ## 3. Go home, Fibonacci, you're drunk
 
