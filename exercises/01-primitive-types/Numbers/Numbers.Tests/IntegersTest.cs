@@ -1,3 +1,9 @@
+﻿/*
+    Атрибуты [Fact] и [Theory] означают, что данный метод является тестовым, т.е. TestRunner должен его запускать. 
+    Совсем обывательски - разница в том, что метод с [Theory] дает возможность тестовому методу принимать аргументы и быть запущенным с разными входными данными.
+    Посмотри на два первых тестовых метода. Первый при тестовом прогоне будет запущен один раз, а второй три - каждый раз с разным набором входных данных.
+*/
+
 using System;
 using Xunit;
 
@@ -12,21 +18,21 @@ namespace Numbers.Tests
         }
 
         [Theory]
-        [InlineData(10)]
-        [InlineData(-10)]
-        [InlineData(-1)]
-        public void Test_Cube_ReturnsCorrectValue(int x)
+        [InlineData(10, 1000)]
+        [InlineData(-10, -1000)]
+        [InlineData(-1, -1)]
+        public void Test_Cube_ReturnsCorrectValue(int x, int cube)
         {
-            Assert.Equal(Integers.Cube(x), x * x * x);
+            Assert.Equal(Integers.Cube(x), cube);
         }
 
         [Theory]
-        [InlineData(10)]
-        [InlineData(-10)]
-        [InlineData(-1)]
-        public void Test_CubeWithOverflowCheck_ReturnsCorrectValue(int x)
+        [InlineData(10, 1000)]
+        [InlineData(-10, -1000)]
+        [InlineData(-1, -1)]
+        public void Test_CubeWithOverflowCheck_ReturnsCorrectValue(int x, int cube)
         {
-            Assert.Equal(Integers.CubeWithOverflowCheck(x), x * x * x);
+            Assert.Equal(Integers.CubeWithOverflowCheck(x), cube);
         }
 
         [Theory]
@@ -38,12 +44,12 @@ namespace Numbers.Tests
         }
 
         [Theory]
-        [InlineData(10)]
-        [InlineData(-10)]
-        [InlineData(-1)]
-        public void Test_CubeWithoutOverflowCheck_ReturnsCorrectValue(int x)
+        [InlineData(10, 1000)]
+        [InlineData(-10, -1000)]
+        [InlineData(-1, -1)]
+        public void Test_CubeWithoutOverflowCheck_ReturnsCorrectValue(int x, int cube)
         {
-            Assert.Equal(Integers.CubeWithoutOverflowCheck(x), x * x * x);
+            Assert.Equal(Integers.CubeWithoutOverflowCheck(x), cube);
         }
 
         [Theory]
@@ -51,7 +57,7 @@ namespace Numbers.Tests
         [InlineData(-1073741824)]
         public void Test_CubeWithoutOverflowCheck_ShouldNotThrow(int x)
         {
-            Assert.Equal(Integers.CubeWithoutOverflowCheck(x), x * x * x);
+            Integers.CubeWithoutOverflowCheck(x);
         }
 
         [Theory]
