@@ -1,5 +1,35 @@
 # Types
 
+Plan:
+
+- namespaces:
+  - логич группировка
+  - using
+  - aliases
+- integers:
+  - часть таблички про byte, short, int, long
+  - столбцы короткое имя, полное, размер в битах, диапазон значений
+- float numbers:
+  - то же самое про float, double, decimal (+ столбцы из decimal vs float/double)
+  - комментарии про них
+- остальные: bool, char, string, guid, object (не нужно размер object :)
+- операции (арифм, логические, тернарные)
+- контроль переполнения
+- приведение примитивных типов (явное и неявное)
+- enum
+- datetime
+- guid ??
+- инициализация, создание объекта через new
+- value types vs reference types
+  - думаю, что про стек и кучу не нужно общей инфы - они ее знают.
+  - с другой стороны про то, что CLR сама все решает и нет возможности выбирать - это супер, да
+- object
+- null operators (??, ?.)
+- boxing?
+- может про nullable?
+- про структуры ничего не будем пока кроме того, что это кастомные value типы?
+
+
 ## Базовые типы
 
 | Type                  | Alias                  | Size                     | Explanation                 |
@@ -42,7 +72,7 @@ decimal - не примитивный тип и работает сильно м
 Не надо сравнивать double через `==`.
 У double есть зарезервированные значения `double.NaN`, `double.Epsilon`, `double.Infinity`.
 
-``` C#
+```cs
 double a = 0.1;
 double b = 0.2;
 Console.WriteLine(a + b == 0.3); // false
@@ -54,12 +84,12 @@ Console.WriteLine(c + d == 0.3M); // true
 
 ## Локальная инициализация
 
-``` C#
+```cs
 <datatype> <variable name>;
 <datatype> <variable name> = <value>;
 ```
 
-``` C#
+```cs
 int x;
 System.Int32 x = new System.Int32(); // Эквивалент
 bool isValid = true;
@@ -77,14 +107,14 @@ int i, j, k, l = 0;
 
 Компилятор сам понимает, какой тип.
 
-``` C#
+```cs
 var x = 1;
 var y = null; // Нельзя
 ```
 
 [Microsoft C# coding convensions](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/inside-a-program/coding-conventions) var usage:
 
-``` C#
+```cs
 // Используйте неявную типизацию для локальных переменных, когда тип элементарно понимается из правого выражения или не важен
 var x = new MyClass();
 var i = 3;
@@ -110,7 +140,7 @@ foreach (var element in myList)
 Пространства имен нужны для логической группировки родственных типов.
 Делают имя класса уникальным для компилятора.
 
-``` C#
+```cs
 using System.IO; // директива заставляет компилятор добавлять этот префикс к классам, пока не найдет
 
 using myButton = Abbyy.SharedControls.Button; // Добавляем alias для класса при пересечении с другим таким же классом
@@ -132,7 +162,7 @@ using myButton = Abbyy.SharedControls.Button; // Добавляем alias для
 
 У инкремента, декремента выше приоритет, чем у операций умножения, сложения, остатка.
 
-``` C#
+```cs
 int x = 2;
 int y = ++x;
 Console.WriteLine($"{x} - {y}"); // y=3; x=3
@@ -172,11 +202,11 @@ Console.WriteLine($"{a} - {b}"); // b=2; a=3
 
 `result = condition ? left : right`
 
-``` C#
+```cs
 // Аналог
 if (condition)
     result = left;
-else 
+else
     result = right;
 
 // Лучше всего использовать для присвоения / возврата простых значений
@@ -211,7 +241,7 @@ string result = x > y
 
 Можно складывать в цепочку.
 
- ``` C#
+ ```cs
  int x = param1 ?? localDefault;
  string anybody = getValue() ?? localDefault ?? globalDefault;
  ```
@@ -224,7 +254,7 @@ string result = x > y
 
  Позволяет убрать некоторое количество проверок объектов на null / упростить использование тернарного оператора
 
-``` C#
+```cs
 int? length = customers?.Length; // null if customers is null
 
 // Вместо примерно такого кода
@@ -246,7 +276,7 @@ int? count = customers?[0]?.Orders?.Count();  // Множественный сл
 
 Операторы `checked`/`unchecked`
 
-``` C#
+```cs
 byte a = 100;
 byte b = checked((Byte) (a + 200));  // OverflowException
 byte c = (Byte)checked(a + 200);   // b содержит 44, потому что сначала сложение конвертируется к Int32, потом проверяется, а потом кастуется к byte
@@ -342,7 +372,7 @@ CLR гарантирует безопасность типов.
 Всегда можно получить `.GetType()`, который нельзя переопределить.
 В C# разрешено неявное безопасное приведение к базовому типу:
 
-``` C#
+```cs
 int i = 1;
 object a = i;
 ```
@@ -355,13 +385,13 @@ object a = i;
 
 Для приведения к производному типу или в небезопасных  нужно явное приведение:
 
-``` C#
+```cs
 int b = (int) a;
 ```
 
 **_IS_** - проверяет совместимость с типом, возвращает bool, никогда не генерирует исключение.
 
-``` C#
+```cs
 object a = new object();
 bool b = a is object; // true
 bool b2 = a is int; // false
@@ -371,7 +401,7 @@ bool b2 = a is int; // false
 
 **_AS_** - проверяет совместимость и если можно, то приводит к заданному типу и возвращает его. Иначе возвращает null
 
-``` C#
+```cs
 decimal a = o as decimal;
 if (a != null)
 {
