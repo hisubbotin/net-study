@@ -26,6 +26,13 @@ Tags: primitive types, numbers, operations, checked/unchecked arithmetics, numbe
 
 Инструкция лежит в [01-primitive-types/01-primitive-types.md](01-primitive-types/01-primitive-types.md).
 
+---
+---
+---
+---
+
+Ниже еще не готово
+
 ## 2. What time is it? Adventure Time!
 
 Tags: datetime, datetime.kind, utc, timezone, timespan, datetimeoffset, time formatting and parsing.
