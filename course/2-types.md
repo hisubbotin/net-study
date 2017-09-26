@@ -1,6 +1,6 @@
 # Types
 
-Plan:
+## Overview
 
 - Namespaces
 - Примитивные типы
@@ -25,12 +25,11 @@ Plan:
 
 ## TODO Не оформлено
 
-- boxing?
-- может про nullable?
+- boxing/unboxing
+- nullable
 - enum
 - datetime
-- guid
-- про структуры ничего не будем пока кроме того, что это кастомные value типы?
+- структуры
 
 <div style="page-break-after: always;"></div>
 
@@ -81,7 +80,7 @@ var button = new Abbyy.Shared.Controls.Button();
 
 <div style="page-break-after: always;"></div>
 
-## Примитивные типы
+## Primitive types
 
 ### Integers
 
