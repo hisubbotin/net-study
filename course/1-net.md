@@ -192,7 +192,7 @@ MS не стремится сделать вес фреймворка меньш
 
 Microsoft управляет несколькими .NET фреймворками: .NET Framework, .NET Core, Xamarin, etc. При этом ядро фреймворков начало расходиться и нужно было реализовать возможность писать портируемый код между платформами. 
 
-Придумали .NET Standard. Сам по себе он не содержит реализации.
+[Придумали](https://blogs.msdn.microsoft.com/dotnet/2016/09/26/introducing-net-standard/) .NET Standard. Сам по себе он не содержит реализации.
 
 Это список типов и интерфейсов, которые он требует для реализации тех, кто хочет его поддерживать.
 
@@ -228,12 +228,33 @@ Microsoft управляет несколькими .NET фреймворкам�
 - [Visual Studio for Mac](https://www.visualstudio.com/ru/vs/visual-studio-mac/) (до этого - Xamarin)
 - [JetBrains Rider](https://www.jetbrains.com/rider/)
 - MonoDevelop, SharpDevelop, etc
+- [LINQPad](https://www.linqpad.net) - для тестирования и быстрой отладки
 
-[Установка студии](https://docs.microsoft.com/en-us/visualstudio/install/install-visual-studio) отличается красивым выбором Workloads:
+<div style="page-break-after: always;"></div>
+
+[Установка Visual Studio](https://docs.microsoft.com/en-us/visualstudio/install/install-visual-studio) отличается красивым выбором Workloads:
 ![Workloads 1](pics/vs-workloads-1.png)
+
+<div style="page-break-after: always;"></div>
+
 ![Workloads 2](pics/vs-workloads-2.png)
 
 <div style="page-break-after: always;"></div>
+
+Visual Studio Code
+
+![Visual Studio Code](pics/visualstudiocode.png)
+
+
+<div style="page-break-after: always;"></div>
+
+
+LINQPad 5
+
+![LINQPad](pics/linqpad.png)
+
+<div style="page-break-after: always;"></div>
+
 
 ### Nuget
 

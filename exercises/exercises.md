@@ -8,13 +8,13 @@
 
 ## Code of conduct
 
-> Так, детки, списывать плохо, мкей?
+> Списывать плохо, мкей. Вы не должны списывать. Если вы это делаете, то вы плохо поступаете, потому что списывать плохо, мкей. Списывать - плохая привычка, поэтому не будьте плохим, списывая. Иначе вы поступаете плохо, потому что списывать плохо, мкей.
 
 Мы против бездумной копипасты чужого кода. Кооперироваться, общаться и решать задачи сообща - это нормально, но только если каждый из участников "кружка кооперации" делает полный объем работы - гуглит, думает, пишет код, исследует.
 
 ## 1. May the primitive types be with you
 
-Tags: primitive types, operations, checked/unchecked arithmetics, number formatting and parsing, console.
+Tags: primitive types, numbers, operations, checked/unchecked arithmetics, number formatting and parsing, console.
 
 В данном задании вы познакомитесь с:
 
@@ -24,29 +24,27 @@ Tags: primitive types, operations, checked/unchecked arithmetics, number formatt
 - чтением чисел из строки и форматированием их обратно в строку,
 - работой с консолью.
 
-### 1.1 The numbers strikes back
+Инструкция лежит в [01-primitive-types/01-primitive-types.md](01-primitive-types/01-primitive-types.md).
 
-Открываете солюшен `Numbers/Numbers.sln`, в проекте Numbers находите файл Program.cs и дальше следуете комментариям в нем.
+---
+---
+---
+---
 
-TODO: дописать
-
-### 1.2 Return of the Calculator
-
-Необходимо написать консольное приложение-калькулятор, которое поддерживает следующие входные данные (по одному на строку):
-
-- `i` или `f` - задает режим работы калькулятора:
-  - `i`nteger - режим работы с целыми числами (по умолчанию),
-  - `f`loat - режим работы с вещественными числами
-- `+`, `-`, `*`, `/` - задает режим текущей операции. Режим по умолчанию - сложение.
-- `#`, `ch`, `unch` - задает режим контроля переполнения:
-  - `ch` - режим явного контроля переполнения,
-  - `unch` - режим явного разрешения переполнения,
-  - `#` - режим "игнорирования проблемы переполнеия" - режим "по умолчанию",когда явно не задан ни один из вышеперечисленных режимов.
-- целочисленное или вещественнозначное число в зависимости от текущего режима.
+Ниже еще не готово
 
 ## 2. What time is it? Adventure Time!
 
 Tags: datetime, datetime.kind, utc, timezone, timespan, datetimeoffset, time formatting and parsing.
+
+В данном задании вы познакомитесь с:
+
+- типами данных для базовой работы со временем,
+- операциями над ними,
+- чтением дат и отрезков времени из строки и форматированием их обратно в строку,
+- некоторыми проблемами, связанными со временем.
+
+Инструкция лежит в [02-adventure-time/02-adventure-time.md](02-adventure-time/02-adventure-time.md).
 
 ## 3. Go home, Fibonacci, you're drunk
 
@@ -60,7 +58,10 @@ Structs, operator overloading, extension methods, unit-testing.
 
 Generics, extension methods.
 
-## 6. Enum.HasFlag benchmark
+## 6. The primitive types strikes back
+
+- Culture info with primitive types,
+- Enum.HasFlag benchmark
 
 Enums, flag enums, boxing overhead.
 
