@@ -19,17 +19,9 @@
 - Ссылочные и значимые типы
   - Stack and Heap
   - Value and Referenced types
+  - Передача параметов (TODO)
   - System.Object
-
-<div style="page-break-after: always;"></div>
-
-### TODO Не оформлено
-
-- boxing/unboxing
-- nullable
-- enum
-- datetime
-- структуры
+  - boxing/unboxing (TODO)
 
 <div style="page-break-after: always;"></div>
 
@@ -571,25 +563,3 @@ static void ValueTypeDemo()
   - Finalize `*` - используется для очистки ресурсов, вызывается, когда сборщик мусора пометил объект для удаления, но до освобождения памяти
 
 `*` - Методы, которые можно переопределить в своих классах
-
-<div style="page-break-after: always;"></div>
-
-## Enum
-
-Перечисление
-
-```cs
-public enum Color
-{
-    Red = 1,
-    Green = 2,
-    Blue = 3
-}
-
-Console.WriteLine(Color.Red);
-Console.WriteLine((int)Color.Red);
-```
-
-## Datetime
-
-## GUID

@@ -2,11 +2,38 @@
 
 ## Overview
 
-- boxing/unboxing
-- nullable
-- enum
-- datetime
-- структуры
+- Value Types
+  - [Struct](#Struct)
+  - Nullable
+  - Guid
+  - DateTime
+    - TimeSpan
+    - DateTimeOffset
+  - Enum
+
+<div style="page-break-after: always;"></div>
+
+## Struct
+
+<div style="page-break-after: always;"></div>
+
+## Nullable
+
+<div style="page-break-after: always;"></div>
+
+## GUID
+
+<div style="page-break-after: always;"></div>
+
+## Datetime
+
+<div style="page-break-after: always;"></div>
+
+### TimeSpan
+
+<div style="page-break-after: always;"></div>
+
+### DateTimeOffset
 
 <div style="page-break-after: always;"></div>
 
@@ -25,7 +52,3 @@ public enum Color
 Console.WriteLine(Color.Red);
 Console.WriteLine((int)Color.Red);
 ```
-
-## Datetime
-
-## GUID
