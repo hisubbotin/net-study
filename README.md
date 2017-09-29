@@ -3,6 +3,7 @@
 - Система выставления [оценок](course-2017-1/readme.md)
 - Посещаемость [студентов](course-2017-1/attendance.md)
 - Список [заданий](exercises/exercises.md)
+- Гайд по воркфлоу в [git+github](exercises/git-help.md).
 
 ---
 
