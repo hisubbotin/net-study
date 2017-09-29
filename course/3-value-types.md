@@ -144,32 +144,32 @@ public static void Main()
 Посмотрим, как работает парсинг из строки:
 
 ```cs
-public enum Color
+public enum Status
 {
-    Red = 2,
-    Green = 3,
-    Blue = 4
+    New = 2,
+    Commited = 3,
+    Deleted = 4
 }
 
 public static void Main()
 {
     string[] test = new []
     {
-        "Red",  // Red | 2 | True
-        "red",  // Exception: Requested value 'red' was not found.
-        "3",    // Green | 3 | True
+        "New",  // New | 2 | True
+        "new",  // Exception: Requested value 'new' was not found.
+        "3",    // Commited | 3 | True
         "0",    // 0 | 0 | False
         "",     // Exception: Must specify valid information for parsing in the string.
-        "-7",   // -7 | -7 | False
-        "Red, Green" // Green | 3 | True      ~WTF~LUL~
+        "-1",   // -1 | -1 | False
+        "New, Commited" // Commited | 3 | True      ~WTF~LUL~
     };
 
     foreach (string s in test)
     {
         try
         {
-            Color value = (Color) Enum.Parse(typeof(Color), s);
-            Console.WriteLine($"`{s}`: {value} | {(int)value} | {Enum.IsDefined(typeof(Color), value)}");
+            Status value = (Status) Enum.Parse(typeof(Status), s);
+            Console.WriteLine($"`{s}`: {value} | {(int)value} | {Enum.IsDefined(typeof(Status), value)}");
         }
         catch(Exception e)
         {
@@ -181,7 +181,7 @@ public static void Main()
 
 В связи со всем этим рекомендуют:
 
-- Создавать отдельный элемент Unknown / None / Default = 0 enuma
+- Создавать отдельный элемент Unknown / None / Default = 0 в enumе
 - Пользоваться методом `Enum.IsDefined` для проверки валиднсти значения enum
 - Не создавать элементы enum "на будущее"
 
