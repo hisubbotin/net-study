@@ -9,8 +9,6 @@ namespace Numbers
     public static class FloatNumbers
     {
 
-        static double zero; // для метода GetNaN
-
         /// <summary>
         /// Возвращает результат проверки, имеет ли указанное вещественнозначное число значение "не число" (Not a number).
         /// </summary>
@@ -30,27 +28,20 @@ namespace Numbers
                 Необходимо вернуть значение, не используя непосредственно саму константу.
                 Для этого подумай, какой смысл в себе несет эта константа и где бы она могла стать результатом операции или вычисления функции.
             */
-            return 0 / zero;
+            return 0.0 / 0.0;
         }
 
         /// <summary>
         /// Возвращает результат сравнения двух вещественнозначных чисел.
         /// </summary>
         /// <returns>-1 - первое меньше второго, 0 - значения равны, 1 - первое больше второго.</returns>
-        internal static int Compare(double first, double second, double precision = 0.0001)
+        internal static int Compare(double first, double second, double precision)
         {
             if (Math.Abs(first - second) < precision)
             {
                 return 0;
             }
-            else if (first > second)
-            {
-                return 1;
-            }
-            else
-            {
-                return -1;
-            }
+            return (first > second) ? 1 : -1;
         }
 
     }
