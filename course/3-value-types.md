@@ -15,6 +15,39 @@
 
 ## Struct
 
+[Структуры](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/structs) позволяют создавать пользовательские значимые типы.
+
+```cs
+struct Example
+{
+    public int Value;
+
+    public string SomeString; // Можно указывать ссылочные типы
+
+    public string ExampleMethod()
+    {
+        return $"{value} - {SomeString}";
+    }
+}
+
+Example e = new Example();
+e.Value = 1;
+e.SomeString = "xmpl";
+
+Console.WriteLine(e.ExampleMethod()); // 1 - xmpl
+```
+
+Ключевые особенности:
+
+- Могут:
+  - включать конструкторы, константы, поля, методы, свойства, события, операторы, вложенные типы
+  - реализовывать интерфейс
+- Не могут:
+  - наследоваться от другой структуры или класса
+  - выступать в качестве базового класса
+  - содержать конструктор без параметров
+- При присваивании к новой переменной создается копия объекта. Все изменения в новой копии не влияют на старую.
+
 <div style="page-break-after: always;"></div>
 
 ## Nullable
