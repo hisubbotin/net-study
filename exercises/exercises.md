@@ -12,6 +12,10 @@
 
 Мы против бездумной копипасты чужого кода. Кооперироваться, общаться и решать задачи сообща - это нормально, но только если каждый из участников "кружка кооперации" делает полный объем работы - гуглит, думает, пишет код, исследует.
 
+## Git + GitHub workflow
+
+Гайд по тому, как и где делать задания, лежит [здесь](git-help.md).
+
 ## 1. May the primitive types be with you
 
 Tags: primitive types, numbers, operations, checked/unchecked arithmetics, number formatting and parsing, console.
