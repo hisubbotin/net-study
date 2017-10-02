@@ -50,11 +50,156 @@ Console.WriteLine(e.ExampleMethod()); // 1 - xmpl
 
 <div style="page-break-after: always;"></div>
 
+Рекомендации от Рихтера по создаю своего value type:
+
+- малый размер - до 16 байт
+- ведет себя как примитивный: в частности immutable поведение, отсутсвие методов изменяющих состояние полей, по сути readonly
+- тип не имеет базового и производных от него
+
+```cs
+struct Vector
+{
+    public double X {get;set;}
+
+    public double Y {get;set;}
+
+    public Vector(double x, double y)
+    {
+        X = x;
+        Y = y;
+    }
+}
+
+var vector = new Vector(5, 3);
+```
+
+<div style="page-break-after: always;"></div>
+
 ## Nullable
+
+Ссылочным типам можно присваивать `null`. Ссылка будет содержать все 0. Никаких специальных полей для `null` нет.
+
+Поэтому достаточно очевидно, что значимым полям, которые хранят только значение нельзя присвоить `null`.
+В C# 1 нельзя было присваивать null значимым типам вообще и предлагалось всячески изощряться.
+
+В C# 2 для значимых типов ввели конструкцию nullable, которая позволяет присвоить null.
+Это делается через системную структуру `System.Nullable<T>`:
+
+```cs
+int? x = 10;
+System.Nullable<int> x = 10; // Эквивалентные записи
+
+Guid? y = null;
+```
+
+<div style="page-break-after: always;"></div>
+
+Упрощенный вид `System.Nullable<T>`:
+
+```cs
+public struct Nullable<T> where T : struct
+{
+  private Boolean hasValue = false; // По дефолту null
+  internal T value = default(T);    // По дефолту все биты обнулены
+
+  public Nullable(T value)
+  {
+    this.value = value;
+    this.hasValue = true;           // Выставляем, что есть значение
+  }
+
+  public Boolean HasValue { get { return hasValue; } }
+  public T Value
+  {
+    get
+    {
+      if (!hasValue) // Бросаем исключение если идет доступ к элементу, когда его нет
+          throw new InvalidOperationException("Nullable object must have a value.");
+
+      return value;
+    }
+  }
+```
+
+<div style="page-break-after: always;"></div>
+
+Остальные методы:
+
+```cs
+  // Получение Value или дефолтного значения
+  public T GetValueOrDefault() { return value; }
+  public T GetValueOrDefault(T defaultValue) { if (!HasValue) return defaultValue; return value;}
+
+  public override Boolean Equals(Object other)
+  {
+    if (!HasValue)
+      return (other == null); // Если оба объекта null, то они равны
+    if (other == null)
+      return false;
+    return value.Equals(other);
+  }
+  public override int GetHashCode() { if (!HasValue) return 0; return value.GetHashCode();}
+  public override string ToString() { if (!HasValue) return ""; return value.ToString();}
+
+  public static implicit operator Nullable<T>(T value) { return new Nullable<T>(value);  }
+  public static explicit operator T(Nullable<T> value) { return value.Value;  } }
+```
+
+<div style="page-break-after: always;"></div>
+
+Пример использование nullable:
+
+```cs
+
+int? i = 6;
+Console.WriteLine(i.Value);     // 6
+Console.WriteLine(i.HasValue);  // true
+
+int x = (int)i; // Явное приведение к обычному int
+int? y = x;     // Неявное приведение от int
+i++;            // i = 7 Можно выполнять операции
+i = null;
+Console.WriteLine(i.Value);    //
+Console.WriteLine(i.HasValue); // false
+
+if (i == null) {}
+if (i.HasValue)
+{
+    int k = i.Value;
+}
+if (i == y) {}
+```
+
+<div style="page-break-after: always;"></div>
+
+- Интересно, что при упаковке nullable к ссылочному типу (object, например), он упаковывается либо в null ссылку, либо в ссылку на сам тип (int, например).
+- Сделать `Nullable<Nullable<int>>` нельзя :)
+- К nullable типу можно применять стандартные операторы (`+`, `*`, `>`, `^`, `>>`, etc), но настоятельно рекомендуется этого не делать и обрабатывать ситуацию `if (!i.HasValue)` отдельно
+- Если один из операндов равен `null`, то результат будет null/false в большинстве операций, но есть моменты
+  - `==`, `!=` - если оба операнда `null`, то они считаются равными
+  - `null | true` вернет `true`
+- Надо ли рассказывать про хелпер System.Nullable ?
+  - `public static int Compare<T>(Nullable<T> n1, Nullable<T> n2)`
+  - `public static bool Equals<T>(Nullable<T> n1, Nullable<T> n2)`
+  - `public static Type GetUnderlyingType(Type nullableType)`
 
 <div style="page-break-after: always;"></div>
 
 ## Guid
+
+Guid - global unique identifier - часто используемая в бд структура.
+
+- 16 байт.
+- Обеспечивает глобальную уникальность сущности, генерится по Mac-адресу сетевой карты, текущей даты и рандома. - Вероятность дублирования guid 10^-50.
+- Позволяет генерить идентификаторы для базы данных на клиенте, особенно востребовано в шардированных nosql базах.
+- `623ab58a-afc4-46c8-820e-c0a0686c1d90` Строковое представление, разделенное на 4 части.
+
+```cs
+Guid value = Guid.NewGuid(); // Генерация нового значения
+value = Guid.Empty;  // Зарезервированное значение по-умолчанию (со всеми нулями)
+
+value = Guid.Parse("c5d370a0-55d9-445a-b3d6-a2df47d2f233");
+```
 
 <div style="page-break-after: always;"></div>
 
@@ -72,7 +217,7 @@ Console.WriteLine(e.ExampleMethod()); // 1 - xmpl
 
 ## Enum
 
-[Enum](https://msdn.microsoft.com/en-us/library/system.enum(v=vs.110).aspx) - Перечисление - набор связанных пар, состоящих из строки и целочисленном значении (int / byte / short / long, по-дефолту `int`).
+[Enum](https://msdn.microsoft.com/en-us/library/system.enum(v=vs.110).aspx) - Перечисление - набор связанных пар, состоящих из строки и целочисленного значения (int / byte / short / long, по-дефолту `int`).
 
 Цепочка наследования System.Object -> System.ValueType -> System.Enum -> UserDefined Enum
 
@@ -207,12 +352,13 @@ public static void Main()
 
 Основные методы для работы с enum:
 
+- GetValues / GetNames
+- Parse / TryParse
+- IsDefined - Проверяет допустимость числового значения для енама
+
 ```cs
-// Получение списка значений
 Color[] values = (Color[]) Enum.GetValues(typeof(Color));
 string[] names = Enum.GetNames(typeof(Color));
-
-// Парсинг из строки
 Color value = (Color) Enum.Parse(typeof(Color), "Green");
 
 Object Parse(Type enumType, String value);
@@ -220,9 +366,7 @@ Object Parse(Type enumType, String value, Boolean ignoreCase);
 Boolean TryParse<TEnum>(String value, out TEnum result);
 Boolean TryParse<TEnum>(String value, Boolean ignoreCase, out TEnum result);
 
-// Is Defined
 Boolean IsDefined(Type enumType, Object value);
-// Проверяет допустимость числового значения для енама
 // Работает через reflection, то есть медленно
 // В него можно пихать строки, и он всегда с ними работает с учетом регистра
 ```

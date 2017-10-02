@@ -535,12 +535,6 @@ static void ValueTypeDemo()
 
 <div style="page-break-after: always;"></div>
 
-Рекомендации от Рихтера по создаю своего value type:
-
-- малый размер - до 16 байт
-- ведет себя как базовый: в частности immutable поведение, отсутсвие методов изменяющих состояние полей, по сути readonly
-- тип не имеет базового и производных от него
-
 Почитать:
 
 - [Heap vs steak in C#](http://www.c-sharpcorner.com/article/C-Sharp-heaping-vs-stacking-in-net-part-i/)
