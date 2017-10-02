@@ -6,7 +6,8 @@
   - [Struct](#struct)
   - [Nullable](#nullable)
   - [Guid](#guid)
-  - [DateTime](#datetime)
+  - [Dates, times](#dates-times)
+    - [DateTime](#datetime)
     - [TimeSpan](#timespan)
     - [DateTimeOffset](#datetimeoffset)
   - [Enum](#enum)
@@ -184,7 +185,7 @@ if (i == y) {}
 
 ## Guid
 
-[Guid](https://msdn.microsoft.com/en-us/library/system.guid(v=vs.110).aspx) - [global unique identifier](https://en.wikipedia.org/wiki/Universally_unique_identifier) - часто используемая в бд структура.
+[Guid](https://docs.microsoft.com/en-us/dotnet/api/system.guid?view=netframework-4.7) - [global unique identifier](https://en.wikipedia.org/wiki/Universally_unique_identifier) - часто используемая в бд структура.
 
 - 16 байт.
 - Есть несколько [версий](https://en.wikipedia.org/wiki/Universally_unique_identifier#Versions) того, как его генерить, раньше MS генерило по Mac-адресу сетевой карты, текущей дате, но вроде как это было небезопасно. Сейчас в mssql генерится на основании рандома. Как в c# сейчас не в курсе.
@@ -220,15 +221,92 @@ byte[] byteArray = value.ToByteArray();  // 16 byte array
 
 <div style="page-break-after: always;"></div>
 
-## DateTime
+## Dates, times
+
+[MSDN Работа со временем](https://docs.microsoft.com/en-us/dotnet/standard/datetime/)
+
+- DateTime - дата, время и двухбитовое поле (Kind)
+- DateTimeOffset - (date+time) и int (содерждит смещение относительно utc)
+- TimeSpan - интервалы времени
+- TimeZone - класс для работы с зонами, конвертации времени между ними  (выходит за пределы курса)
+
+[MSDN Choosing article](https://docs.microsoft.com/en-us/dotnet/standard/datetime/choosing-between-datetime)
+
+### DateTime
+
+[DateTime](https://docs.microsoft.com/en-us/dotnet/api/system.datetime?view=netframework-4.7) - структуря для работы с датой и временем
+
+Время измеряется в отрезках по 100 наносекунд, которые называют `ticks`.
+
+- 64 bit
+- 62 bit - содеражат ticks
+- 2 bit - содержат `Kind` field, это поле содержит "тип" даты:
+  - локальное время
+  - UTC
+  - время без указания timezone
+
+```cs
+DateTime date = new DateTime(2017,10,3);    // 03.10.2017 0:00:00
+date = DateTime.MinValue;                   // 01.01.0001 0:00:00
+date = DateTime.MaxValue;                   // 31.12.9999 23:59:59
+
+DateTime date1 = DateTime.Now;
+DateTime date2 = DateTime.UtcNow;
+DateTime date3 = DateTime.Today;
+```
+
+<div style="page-break-after: always;"></div>
+
+Отображение и разбор даты из строки очень сильно зависит от региональных стандартов.
+
+```cs
+DateTime d = DateTime.Parse("03.10.2017 13:45:43"); // 03.10.2017 13:45:43
+d = DateTime.Parse("5/1/2008 8:30:52 AM", System.Globalization.CultureInfo.InvariantCulture); // 01.05.2008 8:30:52
+```
+
+[CultureInfo](https://msdn.microsoft.com/en-us/library/system.globalization.cultureinfo(v=vs.110).aspx) - информация о специфической культуре в c#
+
+```cs
+// Культура текущего потока, используется в дефолтном парсинге/выводе
+CultureInfo currentThreadCulture = System.Globalization.CultureInfo.CurrentCulture;
+
+// Культура, которую используется ResourceManager при подстановке правильных ресурсов
+CultureInfo cultureForResourceManager = System.Globalization.CultureInfo.CurrentUICulture;
+
+var newCulture = new CultureInfo("ru-ru");
+System.Globalization.CultureInfo.CurrentCulture = newCulture;
+```
 
 <div style="page-break-after: always;"></div>
 
 ### TimeSpan
 
+[TimeSpan](https://docs.microsoft.com/en-us/dotnet/api/system.timespan) - Структура для хранения интервалов времени
+
+```cs
+DateTime date1 = new DateTime(2010, 1, 1, 8, 0, 15);
+DateTime date2 = new DateTime(2010, 8, 18, 13, 30, 30);
+
+TimeSpan interval = date2 - date1;
+
+Console.WriteLine("{0} - {1} = {2}", date2, date1, interval.ToString());
+Console.WriteLine($"{interval.Days} {interval.TotalDays} {interval.Hours}");
+
+TimeSpan zeroTimeSpan = TimeSpan.Zero;
+interval = interval + TimeSpan.FromDays(10);
+TimeSpan value = new TimeSpan(4, 0, 0); // 4 часа
+```
+
 <div style="page-break-after: always;"></div>
 
 ### DateTimeOffset
+
+[DateTimeOffset](https://docs.microsoft.com/en-us/dotnet/api/system.datetimeoffset?view=netframework-4.7) - структура для хранения DateTime вместе со смещением от UTC.
+
+- Содержит по сути абсолютное время (как и DateTime + kind==utc)
+- Не включает `kind` поле
+- содержит такую же дату как DateTime
+
 
 <div style="page-break-after: always;"></div>
 
