@@ -1,8 +1,8 @@
 # Value types
 
-## Overview
+<!-- TOC -->
 
-- Value Types
+- [Value types](#value-types)
   - [Struct](#struct)
   - [Nullable](#nullable)
   - [Guid](#guid)
@@ -10,6 +10,9 @@
     - [TimeSpan](#timespan)
     - [DateTimeOffset](#datetimeoffset)
   - [Enum](#enum)
+    - [Enum Flags](#enum-flags)
+
+<!-- /TOC -->
 
 <div style="page-break-after: always;"></div>
 

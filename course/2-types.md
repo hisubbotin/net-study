@@ -1,27 +1,33 @@
 # Types
 
-## Overview
+<!-- TOC -->
 
-- Namespaces
-- Примитивные типы
-  - Integers
-  - Float numbers
-  - Other common types
-- Иницализация
-  - Неявная типизация
-- Операторы
-  - Арифметические
-  - Логические
-  - С присваиванием
-  - Тернарные и Null операторы
-- Контроль переполнения
-- Приведение типов
-- Ссылочные и значимые типы
-  - Stack and Heap
-  - Value and Referenced types
-  - Передача параметов (TODO)
-  - System.Object
-  - boxing/unboxing (TODO)
+- [Types](#types)
+  - [Namespaces](#namespaces)
+  - [Primitive types](#primitive-types)
+    - [Integers](#integers)
+    - [Float numbers](#float-numbers)
+    - [Other common types](#other-common-types)
+  - [Инициализация](#инициализация)
+    - [Неявная типизация](#неявная-типизация)
+  - [Операторы](#операторы)
+    - [Арифметические](#арифметические)
+    - [Поразрядные](#поразрядные)
+    - [Операторы с присваиванием](#операторы-с-присваиванием)
+    - [Логические операторы](#логические-операторы)
+    - [Ternary operator](#ternary-operator)
+    - [Null coalescing operator](#null-coalescing-operator)
+    - [Null conditional operator](#null-conditional-operator)
+  - [Контроль переполнения](#контроль-переполнения)
+  - [Приведение типов](#приведение-типов)
+  - [Ссылочные и значимые типы](#ссылочные-и-значимые-типы)
+    - [Stack & Heap](#stack--heap)
+    - [Referenced VS Value types](#referenced-vs-value-types)
+    - [Передача параметров (TODO)](#передача-параметров-todo)
+    - [System.Object](#systemobject)
+    - [Boxing / Unboxing (TODO)](#boxing--unboxing-todo)
+
+<!-- /TOC -->
 
 <div style="page-break-after: always;"></div>
 
@@ -54,7 +60,8 @@ var list = new List<int>();
 
 Типы одного пространства имен могут быть реализованы разными сборками.
 
-Чтобы обезапасить от конфликтов имен рекомендуется использовать namespace, начинающийся с имени компании, потом название системы/подсистемы.
+Чтобы обезапасить от конфликтов имен рекомендуется использовать namespace,
+начинающийся с имени компании, потом название системы/подсистемы.
 
 Если в двух namespace содержатся одинаковые классы, то:
 
@@ -76,15 +83,15 @@ var button = new Abbyy.Shared.Controls.Button();
 
 ### Integers
 
-| Type          | Alias     | Size   | Explanation                              |
-| ------------- | --------- | ------ | ---------------------------------------- |
-| System.Byte   | **byte**  | 1 byte | unsigned `0` to `255`                    |
-| System.SByte  | sbyte     | 1 byte | signed  `-128` до `127`                  |
-| System.Int16  | **short** | 2 byte | signed `±32,767`                         |
-| System.UInt16 | ushort    | 2 byte | unsigned  `0` до `65 535`                |
-| System.Int32  | **int**   | 4 byte | signed `± 2 147 483 647`                 |
-| System.UInt32 | uint      | 4 byte | unsigned  `0` до `4 294 967 295`         |
-| System.Int64  | **long**  | 8 byte | signed `± 9 223 372 036 854 775 807`     |
+| Type          | Alias     | Size   | Explanation                                   |
+| ------------- | --------- | ------ | --------------------------------------------- |
+| System.Byte   | **byte**  | 1 byte | unsigned `0` to `255`                         |
+| System.SByte  | sbyte     | 1 byte | signed  `-128` до `127`                       |
+| System.Int16  | **short** | 2 byte | signed `±32,767`                              |
+| System.UInt16 | ushort    | 2 byte | unsigned  `0` до `65 535`                     |
+| System.Int32  | **int**   | 4 byte | signed `± 2 147 483 647`                      |
+| System.UInt32 | uint      | 4 byte | unsigned  `0` до `4 294 967 295`              |
+| System.Int64  | **long**  | 8 byte | signed `± 9 223 372 036 854 775 807`          |
 | System.UInt64 | ulong     | 8 byte | unsigned  `0` до `18 446 744 073 709 551 615` |
 
 Не рекомендуется использовать sbyte / uint / ushort / ulong как не CLS совместимые.
@@ -124,7 +131,7 @@ decimal d = 0.2M;
 Console.WriteLine(c + d == 0.3M); // true
 ```
 
-Decimal используется для валют и чисел, которые исконно "десятичные" (CAD, engineering, etc).
+`decimal` используется для валют и чисел, которые исконно "десятичные" (CAD, engineering, etc).
 
 Не надо сравнивать double через `==`.
 У double есть зарезервированные значения `double.NaN`, `double.Epsilon`, `double.Infinity`.
@@ -133,21 +140,23 @@ Decimal используется для валют и чисел, которые
 
 ### Other common types
 
-| Type                  | Alias                  | Size                     | Explanation                              |
-| --------------------- | ---------------------- | ------------------------ | ---------------------------------------- |
-| System.Boolean        | bool                   | [1 byte][bool-url]       | true / false                             |
-| System.Char           | char                   | 2 byte                   | Single unicode char                      |
-| System.String         | string                 | потом                    | Sequence of char                         |
-| System.Object         | object                 | потом                    | Base Type                                |
-| [System.Guid][guid-url]|                       | 16 byte                  | Unique identifier                        |
-| System.DateTime       |                        | 8 byte                   | Date and time                            |
+| Type                    | Alias     | Size               | Explanation         |
+| ----------------------- | ----------| -------------------| --------------------|
+| System.Boolean          | bool      | [1 byte][bool-url] | true / false        |
+| System.Char             | char      | 2 byte             | Single unicode char |
+| System.String           | string    | потом              | Sequence of char    |
+| System.Object           | object    | потом              | Base Type           |
+| [System.Guid][guid-url] |           | 16 byte            | Unique identifier   |
+| System.DateTime         |           | 8 byte             | Date and time       |
 
 [bool-url]:https://stackoverflow.com/questions/2308034/primitive-boolean-size-in-c-sharp
 [guid-url]:https://msdn.microsoft.com/en-us/library/system.guid(v=vs.110).aspx
 
-bool хоть и содержит информации на 1 бит хранится в байте. При особом желании можно упаковать его для использования в массиве скажем с помощью классов BitVector32, BitArray. Но заниматься подобными извращениями надо в исключительных ситуациях.
+`bool` хоть и содержит информации на 1 бит хранится в байте.
+При особом желании можно упаковать его для использования в массиве, скажем с помощью классов `BitVector32`, `BitArray`,
+но заниматься подобными извращениями надо в исключительных ситуациях.
 
-guid, datetime не являются примитивными.
+`Guid`, `DateTime` не являются примитивными.
 
 <div style="page-break-after: always;"></div>
 
@@ -466,7 +475,7 @@ CLR сама решает, где хранить объекты в стеке и
 
 <div style="page-break-after: always;"></div>
 
-## Referenced VS Value types
+### Referenced VS Value types
 
 Все объекты в C# делятся на 2 типа: [Value types](https://docs.microsoft.com/ru-ru/dotnet/csharp/language-reference/keywords/value-types) и [Referenced types](https://docs.microsoft.com/ru-ru/dotnet/csharp/language-reference/keywords/reference-types) (Значимые и ссылочные типы).
 
@@ -542,7 +551,9 @@ static void ValueTypeDemo()
 
 <div style="page-break-after: always;"></div>
 
-## System.Object
+### Передача параметров (TODO)
+
+### System.Object
 
 Все классы неявно наследуются от object ([System.Object](https://msdn.microsoft.com/ru-ru/library/system.object(v=vs.110).aspx))
 Общие методы:
@@ -557,3 +568,5 @@ static void ValueTypeDemo()
   - Finalize `*` - используется для очистки ресурсов, вызывается, когда сборщик мусора пометил объект для удаления, но до освобождения памяти
 
 `*` - Методы, которые можно переопределить в своих классах
+
+### Boxing / Unboxing (TODO)
