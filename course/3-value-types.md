@@ -112,16 +112,12 @@ public struct Nullable<T> where T : struct
   }
 
   public Boolean HasValue { get { return hasValue; } }
-  public T Value
-  {
-    get
-    {
-      if (!hasValue) // Бросаем исключение если идет доступ к элементу, когда его нет
-          throw new InvalidOperationException("Nullable object must have a value.");
 
-      return value;
-    }
-  }
+  public T Value { get {
+      if (!hasValue) // Бросаем исключение если идет доступ к элементу, когда его нет
+          {throw new InvalidOperationException("Nullable object must have a value.");}
+
+      return value; }}
 ```
 
 <div style="page-break-after: always;"></div>
@@ -150,20 +146,18 @@ public struct Nullable<T> where T : struct
 
 <div style="page-break-after: always;"></div>
 
-Пример использование nullable:
+Пример использования nullable:
 
 ```cs
 
 int? i = 6;
-Console.WriteLine(i.Value);     // 6
-Console.WriteLine(i.HasValue);  // true
+Console.WriteLine($"{ i.Value } { i.HasValue }");  // 6 true
 
 int x = (int)i; // Явное приведение к обычному int
 int? y = x;     // Неявное приведение от int
 i++;            // i = 7 Можно выполнять операции
 i = null;
-Console.WriteLine(i.Value);    //
-Console.WriteLine(i.HasValue); // false
+Console.WriteLine($"{ i.Value } { i.HasValue }");    // false
 
 if (i == null) {}
 if (i.HasValue)
@@ -222,7 +216,7 @@ value = Guid.Parse("c5d370a0-55d9-445a-b3d6-a2df47d2f233");
 
 [Enum](https://msdn.microsoft.com/en-us/library/system.enum(v=vs.110).aspx) - Перечисление - набор связанных пар, состоящих из строки и целочисленного значения (int / byte / short / long, по-дефолту `int`).
 
-Цепочка наследования System.Object -> System.ValueType -> System.Enum -> UserDefined Enum
+Цепочка наследования `System.Object` -> `System.ValueType` -> `System.Enum` -> UserDefined Enum
 
 ```cs
 enum Color  // Минималистичная форма записи
@@ -259,9 +253,7 @@ enum Color : int
 
 <div style="page-break-after: always;"></div>
 
-Компилируется примерно в такую структуру.
-
-Мы не можем сами написать такой код, унаследоваться от enum / valueType нельзя:
+Компилируется примерно в такую структуру (мы, конечно, не можем сами написать такой код, унаследоваться от enum нельзя):
 
 ```cs
 struct Color : System.Enum
@@ -357,7 +349,7 @@ public static void Main()
 
 - GetValues / GetNames
 - Parse / TryParse
-- IsDefined - Проверяет допустимость числового значения для енама
+- IsDefined - Проверяет допустимость числового значения для енама, работает через reflection, то есть медленно. В него можно пихать как значения типа, так и строки, и он всегда работает со строками с учетом регистра
 
 ```cs
 Color[] values = (Color[]) Enum.GetValues(typeof(Color));
@@ -368,10 +360,7 @@ Object Parse(Type enumType, String value);
 Object Parse(Type enumType, String value, Boolean ignoreCase);
 Boolean TryParse<TEnum>(String value, out TEnum result);
 Boolean TryParse<TEnum>(String value, Boolean ignoreCase, out TEnum result);
-
 Boolean IsDefined(Type enumType, Object value);
-// Работает через reflection, то есть медленно
-// В него можно пихать строки, и он всегда с ними работает с учетом регистра
 ```
 
 <div style="page-break-after: always;"></div>
@@ -406,10 +395,7 @@ public static void Main()
             Status value = (Status) Enum.Parse(typeof(Status), s);
             Console.WriteLine($"`{s}`: {value} | {(int)value} | {Enum.IsDefined(typeof(Status), value)}");
         }
-        catch(Exception e)
-        {
-            Console.WriteLine($"`{s}`, Exception: {e.Message}");
-        }
+        catch(Exception e) { Console.WriteLine($"`{s}`, Exception: {e.Message}"); }
     }
 
     Enum.IsDefined(typeof(Status), "New, Commited"); // false
@@ -443,12 +429,11 @@ enum Actions
 
 Actions actions = Actions.Read | Actions.Delete; // 0x0005
 Console.WriteLine(actions.ToString());           // "Read, Delete"
-// Методы, описанные ранее, работают и c битовыми флагами
-// ToString, если нашел [Flags], то рассматривает перечисление, как набор битовых флагов
-
-// IsDefined не работает правильно с битовыми флагами!
-// Его форма работы со строками не принимает запятые
 ```
+
+- Методы, описанные ранее, работают и c битовыми флагами
+- `IsDefined` не работает правильно с битовыми флагами! Его форма работы со строками не рассчитана на запятые (всегда возвращает false).
+- `ToString`, если нашел `[Flags]`, то рассматривает перечисление, как набор битовых флагов
 
 Как выглядит в коде примерная работа с битовыми флагами (вариант без проверок):
 
