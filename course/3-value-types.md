@@ -241,18 +241,22 @@ byte[] byteArray = value.ToByteArray();  // 16 byte array
 - 64 bit
 - 62 bit - содеражат ticks
 - 2 bit - содержат `Kind` field, это поле содержит "тип" даты:
-  - локальное время
-  - UTC
-  - время без указания timezone
+  - `Unspecified` - время без указания timezone
+  - `Local` - локальное время со смещением от utc и возможным переходом на летнее время
+  - `Utc`
 
 ```cs
-DateTime date = new DateTime(2017,10,3);    // 03.10.2017 0:00:00
-date = DateTime.MinValue;                   // 01.01.0001 0:00:00
-date = DateTime.MaxValue;                   // 31.12.9999 23:59:59
+DateTime date0 = new DateTime();          // минимальное время
+DateTime date1 = new DateTime(2017,10,3); // 03.10.2017 0:00:00 , Kind == Unspecified
+DateTime utcTime = new DateTime(2010, 11, 18, 17, 30, 0, DateTimeKind.Utc);
+DateTime date2 = DateTime.MinValue;       // 01.01.0001 0:00:00
+DateTime date3 = DateTime.MaxValue;       // 31.12.9999 23:59:59
+DateTime date4 = DateTime.Now;            // Kind == Local
+DateTime date5 = DateTime.UtcNow;         // Kind == Utc
+DateTime date6 = DateTime.Today;
 
-DateTime date1 = DateTime.Now;
-DateTime date2 = DateTime.UtcNow;
-DateTime date3 = DateTime.Today;
+DateTimeKind kind = date5.Kind;           // DateTimeKind.Utc
+var value = date1.AddHours(3);
 ```
 
 <div style="page-break-after: always;"></div>
@@ -279,6 +283,44 @@ System.Globalization.CultureInfo.CurrentCulture = newCulture;
 
 <div style="page-break-after: always;"></div>
 
+```cs
+DateTime now = DateTime.Now;
+string[] formats = new string[] {"D", "d", "F","f", "G", "g", "M", "O", "o", "R", "s", "T", "t", "U", "u","Y"};
+foreach(string s in formats) { 	Console.WriteLine($"{s}: { now.ToString(s) }"); }
+
+Console.WriteLine($"{now:D}"); // Tuesday, 03 October 2017
+
+/* D: Tuesday, 03 October 2017
+d: 10/03/2017
+F: Tuesday, 03 October 2017 01:39:28
+f: Tuesday, 03 October 2017 01:39
+G: 10/03/2017 01:39:28
+g: 10/03/2017 01:39
+M: October 03
+O: 2017-10-03T01:39:28.5397283+03:00
+o: 2017-10-03T01:39:28.5397283+03:00
+R: Tue, 03 Oct 2017 01:39:28 GMT
+s: 2017-10-03T01:39:28
+T: 01:39:28
+t: 01:39
+U: Monday, 02 October 2017 22:39:28
+u: 2017-10-03 01:39:28Z
+Y: 2017 October */
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+DateTime now = DateTime.Now;
+Console.WriteLine(now.ToString("hh:mm:ss"));    // 13:05:55
+Console.WriteLine(now.ToString("dd.MM.yyyy"));  // 05.01.2008
+```
+
+Особенности:
+
+- Допустим, вы получили дату как `DateTime.Now` (Local), сохранили ее в бд, прочитали оттуда Unspecified. Это плохо.
+- По-хорошему надо сравнивать DateTime только с одним `Kind` (при сравнении DateTime kind не учитывается)
+
 ### TimeSpan
 
 [TimeSpan](https://docs.microsoft.com/en-us/dotnet/api/system.timespan) - Структура для хранения интервалов времени
@@ -303,10 +345,44 @@ TimeSpan value = new TimeSpan(4, 0, 0); // 4 часа
 
 [DateTimeOffset](https://docs.microsoft.com/en-us/dotnet/api/system.datetimeoffset?view=netframework-4.7) - структура для хранения DateTime вместе со смещением от UTC.
 
-- Содержит по сути абсолютное время (как и DateTime + kind==utc)
-- Не включает `kind` поле
-- содержит такую же дату как DateTime
+- Содержит абсолютное время (впрочем, как и DateTime c kind==utc)
+- Не включает `Kind` поле
+- Cодержит такую же по формату дату, как DateTime
+- Надо понимать, что даты и смещения недостаточно, чтобы полностью сохранить информацию о TimeZone пользователя. Смещение не позволяет корректно идентифицировать TimeZone пользователя, ведь не только несколько временных зон могут обладать одним смещением, но и смещение одной зоны может меняться от перехода на летнее время.
+- Если конвертить DateTime в DateTimeOffset (а это происходит неявно), то `DateTime.Kind` важен:
+  - При utc будет просто нулевой offset
+  - При unspecified/local - она будет использовать текущий local для конвертации. Очень небезопасно!
 
+<div style="page-break-after: always;"></div>
+
+Методы практически повторяют `DateTime`:
+
+```cs
+DateTimeOffset dateOffset1 = DateTimeOffset.Now;
+DateTimeOffset dateOffset2 = DateTimeOffset.UtcNow;
+
+TimeSpan difference = dateOffset1 - dateOffset2;
+TimeSpan offset = dateOffset1.Offset;  // Offset - это TimeSpan!
+```
+
+<div style="page-break-after: always;"></div>
+
+Советы/замечания:
+
+- Либо используйте `DateTimeOffset`, либо используйте только DateTime c `DateTimeKind.Utc` везде (особенно сохранение в бд).
+- Если вы хотите сохранить момент времени, в который выполнялось действие, как его видел пользователь, вы **обязаны** использовать `DateTimeOffset`.
+- Если вы хотите модифицировать ранее прихраненный `DateTimeOffset`, то его Offset может поменяться и надо прихранивать `TimeZone.Id`
+
+- `DateTime` хорошо использовать для:
+  - только дата
+  - только время
+  - общие штуки, когда смещение не нужно (будильник сделать на определенное время)
+- `DateTimeOffset`
+  - однозначный момент во времени
+  - общая арифметика с датами и временем
+
+[MSDN](https://docs.microsoft.com/en-us/dotnet/standard/datetime/choosing-between-datetime):
+> These uses for DateTimeOffset values are much more common than those for DateTime values. As a result, DateTimeOffset should be considered the default date and time type for application development.
 
 <div style="page-break-after: always;"></div>
 
