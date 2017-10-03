@@ -25,7 +25,6 @@
 struct Example
 {
     public int Value;
-
     public string SomeString; // Можно указывать ссылочные типы
 
     public string ExampleMethod()
@@ -40,6 +39,8 @@ e.SomeString = "xmpl";
 
 Console.WriteLine(e.ExampleMethod()); // 1 - xmpl
 ```
+
+<div style="page-break-after: always;"></div>
 
 Ключевые особенности:
 
@@ -64,7 +65,6 @@ Console.WriteLine(e.ExampleMethod()); // 1 - xmpl
 struct Vector
 {
     public double X {get;set;}
-
     public double Y {get;set;}
 
     public Vector(double x, double y)
@@ -103,46 +103,87 @@ Guid? y = null;
 ```cs
 public struct Nullable<T> where T : struct
 {
-  private Boolean hasValue = false; // По дефолту null
-  internal T value = default(T);    // По дефолту все биты обнулены
+    private Boolean hasValue = false; // По дефолту null
+    internal T value = default(T);    // По дефолту все биты обнулены
 
-  public Nullable(T value)
-  {
-    this.value = value;
-    this.hasValue = true;           // Выставляем, что есть значение
-  }
-
-  public Boolean HasValue { get { return hasValue; } }
-
-  public T Value { get {
-      if (!hasValue) // Бросаем исключение если идет доступ к элементу, когда его нет
-          {throw new InvalidOperationException("Nullable object must have a value.");}
-
-      return value; }}
+    public Nullable(T value)
+    {
+        this.value = value;
+        this.hasValue = true; // Выставляем, что есть значение
+    }
 ```
 
 <div style="page-break-after: always;"></div>
 
-Остальные методы:
+Свойства и методы:
 
 ```cs
-  // Получение Value или дефолтного значения
-  public T GetValueOrDefault() { return value; }
-  public T GetValueOrDefault(T defaultValue) { if (!HasValue) return defaultValue; return value;}
+// Есть ли значение?
+public Boolean HasValue { get { return hasValue; } }
 
-  public override Boolean Equals(Object other)
+// Значение, бросаем исключение если идет доступ к элементу, когда его нет
+public T Value
+{
+  get
   {
-    if (!HasValue)
-      return (other == null); // Если оба объекта null, то они равны
-    if (other == null)
-      return false;
-    return value.Equals(other);
+    if (!hasValue)
+    {
+      throw new InvalidOperationException("Nullable object must have a value.");
+    }
+    return value;
   }
-  public override int GetHashCode() { if (!HasValue) return 0; return value.GetHashCode();}
-  public override string ToString() { if (!HasValue) return ""; return value.ToString();}
+}
+```
 
-  public static implicit operator Nullable<T>(T value) { return new Nullable<T>(value);  }
-  public static explicit operator T(Nullable<T> value) { return value.Value;  } }
+<div style="page-break-after: always;"></div>
+
+Еще методы:
+
+```cs
+// Получение Value или дефолтного значения
+public T GetValueOrDefault() { return value; }
+public T GetValueOrDefault(T defaultValue)
+{
+    if (!HasValue)
+        return defaultValue;
+    return value;
+}
+
+public override Boolean Equals(Object other)
+{
+  if (!HasValue)
+    return (other == null); // Если оба объекта null, то они равны
+
+  if (other == null)
+    return false;
+
+  return value.Equals(other);
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+public override int GetHashCode()
+{
+    if (!HasValue)
+        return 0;
+    return value.GetHashCode();
+}
+public override string ToString()
+{
+    if (!HasValue)
+        return "";
+    return value.ToString();
+}
+public static implicit operator Nullable<T>(T value)
+{
+    return new Nullable<T>(value);
+}
+public static explicit operator T(Nullable<T> value)
+{
+    return value.Value;
+}
 ```
 
 <div style="page-break-after: always;"></div>
@@ -192,6 +233,14 @@ if (i == y) {}
 - Обеспечивает глобальную уникальность сущности, вероятность повторения очень-очень мала, в духе 50% вероятности коллизии, если генерить миллиард записей в секунду, 45 лет подряд.
 - `623ab58a-afc4-46c8-820e-c0a0686c1d90` каноническое строковое представление, разделенное по 8-4-4-4-12 символов.
 
+```cs
+Guid value = Guid.NewGuid();    // Генерация нового значения
+value = Guid.Empty; // Зарезервированное значение по-умолчанию (со всеми нулями)
+
+value = Guid.Parse("c5d370a0-55d9-445a-b3d6-a2df47d2f233");
+byte[] byteArray = value.ToByteArray();  // 16 byte array
+```
+
 <div style="page-break-after: always;"></div>
 
 Pros:
@@ -211,16 +260,6 @@ Cons:
 
 <div style="page-break-after: always;"></div>
 
-```cs
-Guid value = Guid.NewGuid();    // Генерация нового значения
-value = Guid.Empty;             // Зарезервированное значение по-умолчанию (со всеми нулями)
-
-value = Guid.Parse("c5d370a0-55d9-445a-b3d6-a2df47d2f233");
-byte[] byteArray = value.ToByteArray();  // 16 byte array
-```
-
-<div style="page-break-after: always;"></div>
-
 ## Dates, times
 
 [MSDN Работа со временем](https://docs.microsoft.com/en-us/dotnet/standard/datetime/)
@@ -232,18 +271,18 @@ byte[] byteArray = value.ToByteArray();  // 16 byte array
 
 [MSDN Choosing article](https://docs.microsoft.com/en-us/dotnet/standard/datetime/choosing-between-datetime)
 
+<div style="page-break-after: always;"></div>
+
 ### DateTime
 
 [DateTime](https://docs.microsoft.com/en-us/dotnet/api/system.datetime?view=netframework-4.7) - структуря для работы с датой и временем
 
 Время измеряется в отрезках по 100 наносекунд, которые называют `ticks`.
+64 bit: 62 содеражат ticks, остальные 2 bit содержат поле enum `Kind`, которое определяет "тип" даты:
 
-- 64 bit
-- 62 bit - содеражат ticks
-- 2 bit - содержат `Kind` field, это поле содержит "тип" даты:
-  - `Unspecified` - время без указания timezone
-  - `Local` - локальное время со смещением от utc и возможным переходом на летнее время
-  - `Utc`
+- `Unspecified` - время без указания timezone
+- `Local` - локальное время со смещением от utc и возможным переходом на летнее время
+- `Utc`
 
 ```cs
 DateTime date0 = new DateTime();          // минимальное время
@@ -254,7 +293,6 @@ DateTime date3 = DateTime.MaxValue;       // 31.12.9999 23:59:59
 DateTime date4 = DateTime.Now;            // Kind == Local
 DateTime date5 = DateTime.UtcNow;         // Kind == Utc
 DateTime date6 = DateTime.Today;
-
 DateTimeKind kind = date5.Kind;           // DateTimeKind.Utc
 var value = date1.AddHours(3);
 ```
@@ -285,11 +323,10 @@ System.Globalization.CultureInfo.CurrentCulture = newCulture;
 
 ```cs
 DateTime now = DateTime.Now;
-string[] formats = new string[] {"D", "d", "F","f", "G", "g", "M", "O", "o", "R", "s", "T", "t", "U", "u","Y"};
-foreach(string s in formats) { 	Console.WriteLine($"{s}: { now.ToString(s) }"); }
+string[] formats = new string[] {"D", "d", "F","f", "G", "g", "M", "O", "R", "s", "T", "t", "U", "u","Y"};
+foreach(string s in formats) { Console.WriteLine($"{s}: { now.ToString(s) }"); }
 
 Console.WriteLine($"{now:D}"); // Tuesday, 03 October 2017
-
 /* D: Tuesday, 03 October 2017
 d: 10/03/2017
 F: Tuesday, 03 October 2017 01:39:28
@@ -298,7 +335,6 @@ G: 10/03/2017 01:39:28
 g: 10/03/2017 01:39
 M: October 03
 O: 2017-10-03T01:39:28.5397283+03:00
-o: 2017-10-03T01:39:28.5397283+03:00
 R: Tue, 03 Oct 2017 01:39:28 GMT
 s: 2017-10-03T01:39:28
 T: 01:39:28
@@ -310,6 +346,8 @@ Y: 2017 October */
 
 <div style="page-break-after: always;"></div>
 
+Формат можно задать более конкретно:
+
 ```cs
 DateTime now = DateTime.Now;
 Console.WriteLine(now.ToString("hh:mm:ss"));    // 13:05:55
@@ -320,6 +358,8 @@ Console.WriteLine(now.ToString("dd.MM.yyyy"));  // 05.01.2008
 
 - Допустим, вы получили дату как `DateTime.Now` (Local), сохранили ее в бд, прочитали оттуда Unspecified. Это плохо.
 - По-хорошему надо сравнивать DateTime только с одним `Kind` (при сравнении DateTime kind не учитывается)
+
+<div style="page-break-after: always;"></div>
 
 ### TimeSpan
 
@@ -369,10 +409,9 @@ TimeSpan offset = dateOffset1.Offset;  // Offset - это TimeSpan!
 
 Советы/замечания:
 
-- Либо используйте `DateTimeOffset`, либо используйте только DateTime c `DateTimeKind.Utc` везде (особенно сохранение в бд).
-- Если вы хотите сохранить момент времени, в который выполнялось действие, как его видел пользователь, вы **обязаны** использовать `DateTimeOffset`.
+- Либо используйте `DateTimeOffset`, либо используйте только DateTime c `DateTimeKind.Utc` везде (особенно сохранение в бд)
+- Если вы хотите сохранить момент времени, в который выполнялось действие, как его видел пользователь, вы **обязаны** использовать `DateTimeOffset`
 - Если вы хотите модифицировать ранее прихраненный `DateTimeOffset`, то его Offset может поменяться и надо прихранивать `TimeZone.Id`
-
 - `DateTime` хорошо использовать для:
   - только дата
   - только время
@@ -512,7 +551,6 @@ public static void Main()
 
     c = (Color) (-1); // -1 - -1
     bool flag = Enum.IsDefined(typeof(Color), c); // False
-
     c = (Color) 2; // Red - 2
 }
 ```
@@ -557,7 +595,7 @@ public static void Main()
         "new",  // Exception: Requested value 'new' was not found.
         "3",    // Commited | 3 | True
         "0",    // 0 | 0 | False
-        "",     // Exception: Must specify valid information for parsing in the string.
+        "",     // Exception: Must specify valid information...
         "-1",   // -1 | -1 | False
         "New, Commited" // Commited | 3 | True      ~WTF~LUL~
     };
@@ -567,14 +605,22 @@ public static void Main()
         try
         {
             Status value = (Status) Enum.Parse(typeof(Status), s);
-            Console.WriteLine($"`{s}`: {value} | {(int)value} | {Enum.IsDefined(typeof(Status), value)}");
+            int intValue = (int)value;
+            bool isDefined = Enum.IsDefined(typeof(Status), value);
+
+            Console.WriteLine($"`{s}`: {value} | {intValue} | {isDefined}");
         }
-        catch(Exception e) { Console.WriteLine($"`{s}`, Exception: {e.Message}"); }
+        catch(Exception e)
+        {
+            Console.WriteLine($"`{s}`, Exception: {e.Message}");
+        }
     }
 
     Enum.IsDefined(typeof(Status), "New, Commited"); // false
 }
 ```
+
+<div style="page-break-after: always;"></div>
 
 В связи со всем этим рекомендуют:
 
@@ -605,9 +651,7 @@ Actions actions = Actions.Read | Actions.Delete; // 0x0005
 Console.WriteLine(actions.ToString());           // "Read, Delete"
 ```
 
-- Методы, описанные ранее, работают и c битовыми флагами
-- `IsDefined` не работает правильно с битовыми флагами! Его форма работы со строками не рассчитана на запятые (всегда возвращает false).
-- `ToString`, если нашел `[Flags]`, то рассматривает перечисление, как набор битовых флагов
+<div style="page-break-after: always;"></div>
 
 Как выглядит в коде примерная работа с битовыми флагами (вариант без проверок):
 
@@ -632,3 +676,9 @@ Actions Clear(Actions flags, Actions clearFlags)
     return flags & ~clearFlags;
 }
 ```
+
+<div style="page-break-after: always;"></div>
+
+- Методы, описанные ранее, работают и c битовыми флагами
+- `IsDefined` не работает правильно с битовыми флагами! Его форма работы со строками не рассчитана на запятые (всегда возвращает false).
+- `ToString`, если нашел `[Flags]`, то рассматривает перечисление, как набор битовых флагов
