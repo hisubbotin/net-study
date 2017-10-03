@@ -23,7 +23,7 @@ namespace Numbers
         /// </summary>
         internal static double GetNaN()
         {
-            return double.NaN;
+            return .0/.0;
         }
 
         /// <summary>
