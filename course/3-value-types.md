@@ -211,9 +211,10 @@ if (i == y) {}
 
 <div style="page-break-after: always;"></div>
 
-- Интересно, что при упаковке nullable к ссылочному типу (object, например), он упаковывается либо в null ссылку, либо в ссылку на сам тип (int, например).
+- Интересно, что при упаковке nullable к ссылочному типу (object, например), он упаковывается либо в null ссылку, либо в ссылку на сам тип (int, например). Первое сделано для того, чтобы проверка на null оставалась верной вне зависимости от того, упаковано значение или нет.
 - Сделать `Nullable<Nullable<int>>` нельзя :)
 - К nullable типу можно применять стандартные операторы (`+`, `*`, `>`, `^`, `>>`, etc), но настоятельно рекомендуется этого не делать и обрабатывать ситуацию `if (!i.HasValue)` отдельно
+- `==` при компиляции превращается в обращение к `.HasValue`, так что оба варианта проверки являются эквивалентными
 - Если один из операндов равен `null`, то результат будет null/false в большинстве операций, но есть моменты
   - `==`, `!=` - если оба операнда `null`, то они считаются равными
   - `null | true` вернет `true`
@@ -255,7 +256,11 @@ Pros:
 Cons:
 
 - В 2 раза больше bigint
-- Плох в качестве кластерного индекса
+- Плох в качестве кластерного индекса, потому что:
+  - [большой](https://stackoverflow.com/a/11938495/1094048)
+  - не последователен (для борьбы с этим в Sql Server есть функция генерации упорядоченных `guid`-ов):
+    - вставка в середину ведет к фрагментации и постоянной перестройке индекса,
+    - "последовательные" данные не локальны (random read vs sequential read).
 - Нечитаем
 
 <div style="page-break-after: always;"></div>
@@ -264,10 +269,10 @@ Cons:
 
 [MSDN Работа со временем](https://docs.microsoft.com/en-us/dotnet/standard/datetime/)
 
-- DateTime - дата, время и двухбитовое поле (Kind)
-- DateTimeOffset - (date+time) и int (содерждит смещение относительно utc)
-- TimeSpan - интервалы времени
-- TimeZone - класс для работы с зонами, конвертации времени между ними  (выходит за пределы курса)
+- `DateTime` - дата, время и двухбитовое поле (Kind)
+- `TimeSpan` - интервалы времени
+- `DateTimeOffset` - локальные дата и время + смещение локального времени относительно UTC.
+- `TimeZone` - класс для работы с зонами, конвертации времени между ними (выходит за пределы курса)
 
 [MSDN Choosing article](https://docs.microsoft.com/en-us/dotnet/standard/datetime/choosing-between-datetime)
 
@@ -315,7 +320,7 @@ CultureInfo currentThreadCulture = System.Globalization.CultureInfo.CurrentCultu
 // Культура, которую используется ResourceManager при подстановке правильных ресурсов
 CultureInfo cultureForResourceManager = System.Globalization.CultureInfo.CurrentUICulture;
 
-var newCulture = new CultureInfo("ru-ru");
+var newCulture = new CultureInfo("ru-RU");
 System.Globalization.CultureInfo.CurrentCulture = newCulture;
 ```
 
@@ -386,6 +391,7 @@ TimeSpan value = new TimeSpan(4, 0, 0); // 4 часа
 [DateTimeOffset](https://docs.microsoft.com/en-us/dotnet/api/system.datetimeoffset?view=netframework-4.7) - структура для хранения DateTime вместе со смещением от UTC.
 
 - Содержит абсолютное время (впрочем, как и DateTime c kind==utc)
+- В отличие от DateTime содержит информацию и об абсолютном времени, и о локальном (смещение Offset)
 - Не включает `Kind` поле
 - Cодержит такую же по формату дату, как DateTime
 - Надо понимать, что даты и смещения недостаточно, чтобы полностью сохранить информацию о TimeZone пользователя. Смещение не позволяет корректно идентифицировать TimeZone пользователя, ведь не только несколько временных зон могут обладать одним смещением, но и смещение одной зоны может меняться от перехода на летнее время.
@@ -422,6 +428,8 @@ TimeSpan offset = dateOffset1.Offset;  // Offset - это TimeSpan!
 
 [MSDN](https://docs.microsoft.com/en-us/dotnet/standard/datetime/choosing-between-datetime):
 > These uses for DateTimeOffset values are much more common than those for DateTime values. As a result, DateTimeOffset should be considered the default date and time type for application development.
+
+На самом деле для серьезной работы со временем не подходит/неудобен ни один из встроенных типов. В таких случаях лучше воспользоваться специализированными библиотеками типа `NodaTime`. [И вот почему](http://blog.nodatime.org/2011/08/what-wrong-with-datetime-anyway.html)
 
 <div style="page-break-after: always;"></div>
 
