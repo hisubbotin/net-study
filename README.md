@@ -3,6 +3,7 @@
 - Система выставления [оценок](course-2017-1/readme.md)
 - Посещаемость [студентов](course-2017-1/attendance.md)
 - Список [заданий](exercises/exercises.md)
+- Гайд по воркфлоу в [git+github](exercises/git-help.md).
 
 ---
 
@@ -14,12 +15,12 @@
   - [.NET Native](course/1-net.md#net-native)
   - [IDE](course/1-net.md#ide)
   - [Nuget](course/1-net.md#nuget)
-- 2 Типы данных, значимые типы
-  - Ссылочные / значимые типы
-  - System.Object
-  - Базовые типы, enum, decimal, datetime, timespan
-  - Struct
+- 2 [Types](course/2-types.md#overview)
+  - Базовые типы
   - Базовые операции и операторы
+  - Ссылочные / значимые типы
+  - Struct
+  - System.Object
 - 3 Классы
   - Конструкторы
   - Модификаторы доступа
