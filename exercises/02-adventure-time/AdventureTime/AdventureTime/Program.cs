@@ -1,5 +1,6 @@
 ﻿using System;
-using System.Linq;
+using NodaTime;
+using NodaTime.TimeZones;
 
 namespace AdventureTime
 {
@@ -9,36 +10,53 @@ namespace AdventureTime
         {
             Console.WriteLine("Hello World!");
 
-            //Console.WriteLine(DateTime.MinValue);
-            //Console.WriteLine(DateTime.MaxValue);
+            var now = DateTime.SpecifyKind(DateTime.Now, DateTimeKind.Unspecified);
+            var dt1 = new DateTimeOffset(now, TimeSpan.FromHours(4));
+            var dt2 = new DateTimeOffset(now, TimeSpan.FromHours(8));
 
-            //Console.WriteLine(DateTime.Now);
-            //Console.WriteLine(DateTime.UtcNow.Kind);
-            //Console.WriteLine(new DateTime(2017, 10, 18).Kind);
+            Console.WriteLine(dt2 - dt1);
 
-            //Console.WriteLine(DateTime.Now.ToUniversalTime());
-            //Console.WriteLine(DateTime.UtcNow.ToUniversalTime());
-            //Console.WriteLine(new DateTime(2017, 10, 18).ToUniversalTime());
+            var fromMoscow = new DateTimeOffset(2010, 3, 28, 3, 15, 0, TimeSpan.FromHours(4));
+            var toLondon = new DateTimeOffset(2010, 3, 28, 1, 15, 0, TimeSpan.FromHours(1));
 
-            //Console.WriteLine(DateTimeOffset.MinValue);
-            //Console.WriteLine(DateTimeOffset.MaxValue);
+            Console.WriteLine(toLondon - fromMoscow);
 
-            //Console.WriteLine(TimeSpan.MinValue);
-            //Console.WriteLine(new TimeSpan(10, 20, 13, 100).Minutes);
+            fromMoscow = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(4));
+            toLondon = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(1));
 
-            var gmt = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
-            var msd = TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time");
+            Console.WriteLine(toLondon - fromMoscow);
 
-            var fromLondon = new DateTimeOffset(2010, 3, 28, 1, 15, 0, TimeSpan.FromHours(1));
-            var toMoscow = new DateTimeOffset(2010, 3, 28, 5, 0, 0, TimeSpan.FromHours(4));
+            TestNodaTime();
+        }
 
-            var fL = TimeZoneInfo.ConvertTime(fromLondon, gmt);
-            var tM = TimeZoneInfo.ConvertTime(toMoscow, msd);
+        private static void TestNodaTime()
+        {
+            const string londonTimeZoneId = "Europe/London";
+            const string moscowTimeZoneId = "Europe/Moscow";
 
-            Console.WriteLine(fL.LocalDateTime);
+            var fromMoscow = new LocalDateTime(2010, 3, 28, 2, 15, 0);
+            var toLondon = new LocalDateTime(2010, 3, 28, 2, 15, 0);
 
-            Console.WriteLine(toMoscow - fromLondon);
-            Console.WriteLine(tM - fL);
+            var fromMoscowInstant = GetInstantFromZonedLocalTime(fromMoscow, moscowTimeZoneId);
+            var toLondonInstant = GetInstantFromZonedLocalTime(toLondon, londonTimeZoneId);
+            Console.WriteLine(toLondonInstant - fromMoscowInstant);
+
+            fromMoscow = new LocalDateTime(2010, 3, 28, 3, 15, 0);
+            toLondon = new LocalDateTime(2010, 3, 28, 1, 15, 0);
+
+            fromMoscowInstant = GetInstantFromZonedLocalTime(fromMoscow, moscowTimeZoneId);
+            toLondonInstant = GetInstantFromZonedLocalTime(toLondon, londonTimeZoneId);
+            Console.WriteLine(toLondonInstant - fromMoscowInstant);
+        }
+
+        private static Instant GetInstantFromZonedLocalTime(LocalDateTime localTime, string timeZoneId)
+        {
+            var timeZone = TzdbDateTimeZoneSource.Default.ForId(timeZoneId);
+            var zonedTime = localTime.InZoneLeniently(timeZone);
+
+            Console.WriteLine(zonedTime);
+
+            return zonedTime.ToInstant();
         }
     }
 }
