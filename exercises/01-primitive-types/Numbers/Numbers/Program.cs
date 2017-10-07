@@ -18,7 +18,7 @@ namespace Numbers
         {
             // твои бро: Console.WriteLine и Console.ReadLine
 
-            Console.WriteLine("Hello World!");
+            Console.ReadLine();
         }
     }
 }
