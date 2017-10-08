@@ -3,14 +3,15 @@
 <!-- TOC -->
 
 - [Classes](#classes)
+  - [Members](#members)
   - [Конструкторы](#конструкторы)
   - [Модификаторы доступа](#модификаторы-доступа)
   - [readonly](#readonly)
-  - [static](#static)
-    - [static field](#static-field)
-    - [static метод](#static-метод)
-    - [static class](#static-class)
-    - [static конструктор](#static-конструктор)
+  - [const](#const)
+  - [`static`](#static)
+    - [`static` member](#static-member)
+    - [`static` class](#static-class)
+    - [`static` конструктор](#static-конструктор)
   - [partial](#partial)
   - [Наследование, полиморфизм, интерфейсы](#наследование-полиморфизм-интерфейсы)
     - [abstract](#abstract)
@@ -27,18 +28,23 @@
 
 <!-- /TOC -->
 
+## Members
+
+[Члены класса](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/members)
+
 ```cs
 using System;
 internal class SomeType
 {
-    private class SomeNestedType { }    // Вложенный класс
+    private class SomeNestedType { }    // Nested Type
 
-    private int _someValue = 1;
+    private int _x = 1;                 // Field
+    private SomeNestedType Value;       // --
 
-    public SomeType(Int32 x) { }        // Конструкторы экземпляров
+    internal SomeType(Int32 x) { }      // Конструкторы экземпляров
 
-    protected String Method() { return null; } // Method
-    public Int32 SomeProp { get;set;}  // Property
+    internal protected void Method() {} // Method
+    internal int Property { get;set;}   // Property
 }
 ```
 
@@ -122,43 +128,57 @@ internal class SomeType
 }
 ```
 
-## static
+## const
 
-Указывает что данный элемент относится не к конкретному экземляру, а к типу в целом.
-
-### static field
-
-Все экземпляры класса будут обращаться к единому статичному полю
+- Константы задаются на момент компиляции.
+- Могут использоваться только примитивные типы: int, double, string, etc.
 
 ```cs
-public class My
+internal class SomeType
 {
-    public static string T = 10; // Все экземпляры My будут обращаться к одному T
+    internal const int X = 10;
 }
 
-var m = new My();
-var m2 = new My();
-m2.T = 11;
-// m.T тоже = 11
+SomeType.X // 10
 ```
 
-### static метод
+## `static`
 
-Метод не относится к экземляру, а к типу в целом.
-Может использовать внутри себя только статические поля класса
+[static](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-classes-and-static-class-members) указывает что данный элемент относится не к конкретному экземляру, а к типу в целом.
+Поэтому обращие к статическим элементам / методам происходит без создания экземпляра.
+
+### `static` member
+
+- Все экземпляры класса будут обращаться к единому статичному полю / методу
+- Метод может использовать внутри себя только статические поля класса
 
 ```cs
-public class My
+public class Automobile
 {
-    public static string Method(int x) {}
+    public static int NumberOfWheels = 4;
+    public static int SizeOfGasTank
+    {
+        get
+        {
+            return 15;
+        }
+    }
+    public static void Drive() { }
+    public static event EventType RunOutOfGas;
+
+    // Other non-static fields and properties...
 }
 
-string result = My.Method(3);
+Automobile.Drive(); // Обращаемся через тип
+int i = Automobile.NumberOfWheels;
 ```
 
-### static class
+### `static` class
 
-В классе можно объявлять только статические члены.
+- В статическом классе можно объявлять только статические члены.
+- Не может быть инстанциирован
+- Sealed
+
 Используется для написания хелперов с общей логикой без состояния.
 
 ```cs
@@ -168,9 +188,12 @@ public static class MyHelper
 }
 
 string result = MyHelper.Encode(myValue);
+
+double dub = -3.14;
+Console.WriteLine(Math.Abs(dub));
 ```
 
-### static конструктор
+### `static` конструктор
 
 Статический конструктор используется для инициализации статических полей класса
 
@@ -195,10 +218,12 @@ public static class MyHelper
 Рекомендации:
 
 - Не используйте статические классы, кроме сценариев хелперов
+- Не используйте статические классы для реализации singleton!
 - Они ломают тестируемость и модульность приложения
 - Они не ложатся в концепции di
 - Они создают зависимости, которыми очень сложно управлять и неочевидно как отлаживать
 - Не используйте статические конструкторы
+- [SOF discussion](https://stackoverflow.com/questions/241339/when-to-use-static-classes-in-c-sharp)
 
 ## partial
 
@@ -225,6 +250,8 @@ public parital MyClass
 ### sealed
 
 ## Перегрузка методов, операторов
+
+[Перегрузка операторов](https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/statements-expressions-operators/overloadable-operators)
 
 ## Аттрибуты
 
