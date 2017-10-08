@@ -6,6 +6,7 @@
   - [Members](#members)
   - [Конструкторы](#конструкторы)
   - [Модификаторы доступа](#модификаторы-доступа)
+  - [Properties](#properties)
   - [readonly](#readonly)
   - [const](#const)
   - [`static`](#static)
@@ -107,6 +108,50 @@ internal class SomeType
 - Проверку доступа производит как базовый компилятор, так и JIT компилятор
 - При наследовании от базового класса CLR позволяет снижать, но не повышать ограничения доступа к члену.
 
+## Properties
+
+Специальный член для реализации инкапсуляции. [MSDN](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/using-properties)
+Состоит из двух accessor: `get`/`set`
+
+```cs
+public class Sample
+{
+    private int _x;
+
+    public int PropertyX
+    {
+        get { return _x; }
+        set { _x = value;}
+    }
+}
+
+var sample = new Sample();
+sample.PropertyX = 1;
+```
+
+```cs
+public class Sample
+{
+    private string firstName;
+    private string lastName;
+
+    // AutoProperty
+    public int PropertyX {get;set;}
+    public int PropertyZ {get; private set;}
+
+    // Expression bodied
+    public DateTime Time => DateTime.UtcNow;
+    public string Name => $"{firstName} {lastName}";
+
+    // Через epression методы
+    public int X
+    {
+        get => name;
+        set => name = value;
+    }
+}
+```
+
 ## readonly
 
 Поле класса, помеченное `readonly` может быть изменено только в конструкторе
@@ -132,11 +177,15 @@ internal class SomeType
 
 - Константы задаются на момент компиляции.
 - Могут использоваться только примитивные типы: int, double, string, etc.
+- Должны быть здесь же инициализированы
 
 ```cs
 internal class SomeType
 {
     internal const int X = 10;
+    const int months = 12, weeks = 52, days = 365;
+
+    const double daysPerWeek = (double) days / (double) weeks;
 }
 
 SomeType.X // 10
@@ -176,8 +225,10 @@ int i = Automobile.NumberOfWheels;
 ### `static` class
 
 - В статическом классе можно объявлять только статические члены.
-- Не может быть инстанциирован
-- Sealed
+- Не может быть инстанциирован (нельзя использовать в качестве локальной переменной или параметра метода)
+- Класс должен быть Sealed
+- Должен не реализовывать никаких интерфейсов
+- нельзя сделать статическую стуктуру (всегда можно создать экземпляр)
 
 Используется для написания хелперов с общей логикой без состояния.
 
@@ -227,7 +278,8 @@ public static class MyHelper
 
 ## partial
 
-Частичные классы. `partial` позволяет создавать класс, расположенный в нескольких файлах, которые компилятор соединит в один
+Частичные классы. `partial` позволяет создавать класс (структуру или интерфейс), расположенный в нескольких файлах, которые компилятор соединит в один.
+Для удобства редактирования кода и автогенерации кода.
 
 ```cs
 public parital MyClass
