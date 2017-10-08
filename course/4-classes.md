@@ -14,9 +14,9 @@
     - [`static` class](#static-class)
     - [`static` конструктор](#static-конструктор)
   - [partial](#partial)
-  - [Наследование, полиморфизм, интерфейсы](#наследование-полиморфизм-интерфейсы)
-    - [abstract](#abstract)
+  - [Наследование, полиморфизм](#наследование-полиморфизм)
     - [sealed](#sealed)
+    - [abstract](#abstract)
   - [Перегрузка методов, операторов](#перегрузка-методов-операторов)
   - [Аттрибуты](#аттрибуты)
   - [Generic типы и методы, constraint](#generic-типы-и-методы-constraint)
@@ -295,11 +295,153 @@ public parital MyClass
 }
 ```
 
-## Наследование, полиморфизм, интерфейсы
+## Наследование, полиморфизм
+
+В C# есть ряд ключевых слов для управления связей между классами
+
+- `virtual` - член может быть переопределен в производном типе
+- `override` - переопределение члена в производном типе
+
+- `abstract` - базовый класс, не предполагающий инстанцирование
+- `sealed` - закрытый класс, от которого нельзя наследоваться
+- `new` - метод/поле не связаны с членом базового класса
+
+- виртуальные методы медленнее невиртуальных (call / callvirt), целесообразно делать их как можно меньше
+- Рихтер рекомендует делать все классы по-умолчанию sealed
+
+Базовый пример наследования:
+
+```cs
+internal class A
+{
+    internal A(int x)
+    {
+        X = x;
+    }
+
+    internal int X {get;set;}
+}
+
+internal class B:A
+{
+    internal B(int x, int y):base(x)
+    {
+        Y = y;
+        // base.X;
+    }
+
+    internal int Y {get;set;}
+}
+```
+
+Базовый пример полиморфизма:
+
+```cs
+public class A
+{
+    public virtual string Method => "this A";
+}
+
+internal class B:A
+{
+    public override string Method => "this B";
+}
+
+A valueAB = new B();
+Console.WriteLine(valueAB.Method); // this B
+A valueA = new A();
+Console.WriteLine(valueA.Method); // this A
+B valueB = new B();
+Console.WriteLine(valueB.Method); // this B
+```
+
+Пример оператора `new`:
+
+```cs
+public class A
+{
+    public virtual string Method => "this A";
+}
+
+internal class B:A
+{
+    public new string Method => "this B";
+}
+
+A valueAB = new B();
+Console.WriteLine(valueAB.Method); // this A
+A valueA = new A();
+Console.WriteLine(valueA.Method); // this A
+B valueB = new B();
+Console.WriteLine(valueB.Method); // this B
+```
+
+### sealed
+
+- Если применяется на класс: запрет наследования от этого класса
+- Если применяется на member: запрет на переопределение элемента в производных классах, используется только совместно с override
+
+```cs
+public class A
+{
+    public virtual string Method => "this A";
+}
+
+public class B:A
+{
+    public override sealed string Method => "this B";
+}
+
+public sealed C:B
+{
+    //
+}
+```
 
 ### abstract
 
-### sealed
+Позволяет создать базовый незаконченный класс, который должен быть реализован в наследниках.
+
+```cs
+public abstract class A
+{
+    // Class members here.
+}
+```
+
+- Абстрактный класс не может быть инстанциирован
+- Может содержать абстрактные методы, которые не содержат реализации (производный класс должен будет переопределить все такие методы)
+- Может содержать базовые поля и реализации методов
+
+```cs
+public abstract class A
+{
+    public int X { get; set; }
+    public abstract void DoWork(int i);
+
+    public string MethodWithBasicBehaviour()
+    {
+        return "some string";
+    }
+}
+```
+
+- при этом переопределении абстрактного метода производный класс должен использовать `override`. Ключевого слова `virtual` нет, а поведение похожее.
+
+```cs
+public abstract class A
+{
+    public abstract void DoWork(int i);
+}
+
+public class B:A
+{
+    public override void DoWork(int i)
+    {
+        Console.WriteLine(i);
+    }
+}
+```
 
 ## Перегрузка методов, операторов
 
