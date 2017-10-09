@@ -57,7 +57,7 @@ namespace Numbers
         /// </summary>
         internal static int CubeWithOverflowCheck(int x)
         {
-            return checked(x * x * x);
+            return checked (x * x * x);
         }
 
         /// <summary>
