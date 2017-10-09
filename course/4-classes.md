@@ -51,6 +51,8 @@ internal class SomeType
 }
 ```
 
+<div style="page-break-after: always;"></div>
+
 ## Конструкторы
 
 Все объекты создаются оператором `new`.
@@ -79,20 +81,60 @@ e.SomeProp = 5  // Идентично
 
 <div style="page-break-after: always;"></div>
 
-Есть ключевое слово `this` для доступа к полям экземпляра
+- Конструкторы позволяют инициализировать объект
+- Есть ключевое слово `this` для доступа к полям экземпляра
+- Конструкторы не наследуются
+- Если конструктор не указать, компилятор создаст пустой конструктор без параметров автоматически.
+
+```cs
+public class SomeType {  public SomeType() }
+public class SomeType {  public SomeType() : base() { } }
+```
 
 ```cs
 internal class SomeType
 {
     private int _value;
 
-    public SomeType(Int32 x)
+    internal SomeType(int x)
     {
         _value = x;
         this._value = x; // Ключевое слово this
     }
 }
+
+var value = new SomeType(x);
 ```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+internal class SomeType
+{
+    internal int Value;
+}
+
+var value = new SomeType();
+value.Value = 10;
+var value = new SomeType { Value = 10 };
+```
+
+- Если указать в классе поля со значениями, то компилятор по сути добавит инициализацию этого метода в цепочку вызова конструкторов
+
+```cs
+internal class SomeType
+{
+    internal int Value = 10;
+
+    public SomeType() {}
+}
+
+var value = new SomeType();
+value.Value = 10;
+var value = new SomeType { Value = 10 };
+```
+
+<div style="page-break-after: always;"></div>
 
 ## Модификаторы доступа
 
@@ -109,6 +151,8 @@ internal class SomeType
 - По-умолчанию, если не указать будет private
 - Проверку доступа производит как базовый компилятор, так и JIT компилятор
 - При наследовании от базового класса CLR позволяет снижать, но не повышать ограничения доступа к члену.
+
+<div style="page-break-after: always;"></div>
 
 ## Properties
 
@@ -130,6 +174,8 @@ public class Sample
 var sample = new Sample();
 sample.PropertyX = 1;
 ```
+
+<div style="page-break-after: always;"></div>
 
 ```cs
 public class Sample
@@ -154,6 +200,8 @@ public class Sample
 }
 ```
 
+<div style="page-break-after: always;"></div>
+
 ## readonly
 
 Поле класса, помеченное `readonly` может быть изменено только в конструкторе
@@ -175,6 +223,8 @@ internal class SomeType
 }
 ```
 
+<div style="page-break-after: always;"></div>
+
 ## const
 
 - Константы задаются на момент компиляции.
@@ -192,6 +242,8 @@ internal class SomeType
 
 SomeType.X // 10
 ```
+
+<div style="page-break-after: always;"></div>
 
 ## `static`
 
@@ -224,6 +276,8 @@ Automobile.Drive(); // Обращаемся через тип
 int i = Automobile.NumberOfWheels;
 ```
 
+<div style="page-break-after: always;"></div>
+
 ### `static` class
 
 - В статическом классе можно объявлять только статические члены.
@@ -246,6 +300,8 @@ double dub = -3.14;
 Console.WriteLine(Math.Abs(dub));
 ```
 
+<div style="page-break-after: always;"></div>
+
 ### `static` конструктор
 
 Статический конструктор используется для инициализации статических полей класса
@@ -253,6 +309,7 @@ Console.WriteLine(Math.Abs(dub));
 - Вызывается в **неопределенный** момент времени до использования. В clr реализовано, что он непосредственно вызывается перед первым использованием класса. Повлиять на это никак нельзя.
 - Ему нельзя задавать модификатор доступа
 - Ему нельзя передавать параметры
+- Может быть только один на тип
 
 ```cs
 public static class MyHelper
@@ -268,6 +325,13 @@ public static class MyHelper
 }
 ```
 
+- CLR гарантирует, что статический конструктор выполнится только один раз
+- Если в таком конструкторе происходит исключение CLR считает весь тип непригодным
+- Во время его вызова CLR накладывает исключительную блокировку на весь тип для всех остальных потоков в рамках домена приложения
+- Поэтому возможны взаимные блокировки, нельзя писать код, который полагается на определенный порядок вызовов таких конструкторов
+
+<div style="page-break-after: always;"></div>
+
 Рекомендации:
 
 - Не используйте статические классы, кроме сценариев хелперов
@@ -277,6 +341,8 @@ public static class MyHelper
 - Они создают зависимости, которыми очень сложно управлять и неочевидно как отлаживать
 - Не используйте статические конструкторы
 - [SOF discussion](https://stackoverflow.com/questions/241339/when-to-use-static-classes-in-c-sharp)
+
+<div style="page-break-after: always;"></div>
 
 ## partial
 
@@ -297,6 +363,8 @@ public parital MyClass
 }
 ```
 
+<div style="page-break-after: always;"></div>
+
 ## Наследование, полиморфизм
 
 В C# Нет множественного наследования классов.
@@ -310,6 +378,8 @@ public parital MyClass
 - `new` - метод/поле не связаны с членом базового класса
 
 - Виртуальные методы медленнее невиртуальных (call / callvirt), целесообразно делать их как можно меньше
+
+<div style="page-break-after: always;"></div>
 
 Базовый пример наследования:
 
@@ -336,6 +406,8 @@ internal class B:A
 }
 ```
 
+<div style="page-break-after: always;"></div>
+
 Базовый пример полиморфизма:
 
 ```cs
@@ -357,6 +429,8 @@ B valueB = new B();
 Console.WriteLine(valueB.Method); // this B
 ```
 
+<div style="page-break-after: always;"></div>
+
 Пример оператора `new`:
 
 ```cs
@@ -377,6 +451,15 @@ Console.WriteLine(valueA.Method); // this A
 B valueB = new B();
 Console.WriteLine(valueB.Method); // this B
 ```
+
+<div style="page-break-after: always;"></div>
+
+Общее про наследование:
+
+- Не вызывайте виртуальные методы из конструктора
+- Наследование - самая сильная связь между классами, используйте ее только там, где это реально нужно
+
+<div style="page-break-after: always;"></div>
 
 ### sealed
 
@@ -401,16 +484,11 @@ public sealed C:B
 }
 ```
 
+<div style="page-break-after: always;"></div>
+
 ### abstract
 
 Позволяет создать базовый незаконченный класс, который должен быть реализован в наследниках.
-
-```cs
-public abstract class A
-{
-    // Class members here.
-}
-```
 
 - Абстрактный класс не может быть инстанциирован
 - Может содержать абстрактные методы, которые не содержат реализации (производный класс должен будет переопределить все такие методы)
@@ -429,6 +507,8 @@ public abstract class A
 }
 ```
 
+<div style="page-break-after: always;"></div>
+
 - при этом переопределении абстрактного метода производный класс должен использовать `override`. Ключевого слова `virtual` нет, а поведение похожее.
 
 ```cs
@@ -445,6 +525,8 @@ public class B:A
     }
 }
 ```
+
+<div style="page-break-after: always;"></div>
 
 ## Interface
 
@@ -478,6 +560,8 @@ public class A: IEquatable<A>
 }
 ```
 
+<div style="page-break-after: always;"></div>
+
 Случай, когда в интерфейсах есть одинаковые методы
 
 ```cs
@@ -500,6 +584,8 @@ class SampleClass : IControl, ISurface
     srfc.Paint();
 }
 ```
+
+<div style="page-break-after: always;"></div>
 
 - Можно переопределить отдельно для каждого интерфейса.
 - Надо иметь в виду, что явное указание интерфейса при реализации обязывает указывать интерфейс при вызове экземплярного метода, поэтому всегда предпочтительна "неявная" реализация интерфейса
@@ -525,6 +611,8 @@ ISurface s = (ISurface)obj;
 s.Paint(); // Calls ISurface.Paint on SampleClass.
 ```
 
+<div style="page-break-after: always;"></div>
+
 Если разные члены с одним именем, то придется явно указывать интерфейсы
 
 ```cs
@@ -544,6 +632,8 @@ class Middle : ILeft, IRight
 }
 ```
 
+<div style="page-break-after: always;"></div>
+
 Абстрактный класс VS Реализация интерфейса
 
 - Абстрактные классы могут иметь поля и базовую реализацию методов
@@ -552,6 +642,8 @@ class Middle : ILeft, IRight
 - При наследовании от абстрактного класса производный должен переопределить только абстрактные члены
 
 SOF Discussion [1](https://stackoverflow.com/questions/56867/interface-vs-base-class), [2](https://stackoverflow.com/questions/1913098/what-is-the-difference-between-an-interface-and-abstract-class?rq=1), [3](https://stackoverflow.com/questions/761194/interface-vs-abstract-class-general-oo?rq=1)
+
+<div style="page-break-after: always;"></div>
 
 ## Перегрузка операторов
 
@@ -579,6 +671,8 @@ public class Example
 }
 ```
 
+<div style="page-break-after: always;"></div>
+
 Использование в коде:
 
 ```cs
@@ -594,6 +688,8 @@ static void Main(string[] args)
 }
 ```
 
+<div style="page-break-after: always;"></div>
+
 Еще примеры:
 
 ```cs
@@ -607,6 +703,8 @@ public static Example operator ++(Example e)
     return new Example { X = e.X + 10 };
 }
 ```
+
+<div style="page-break-after: always;"></div>
 
 Еще можно переопределить true / false:
 
@@ -626,9 +724,11 @@ else
     Console.WriteLine(false);
 ```
 
+<div style="page-break-after: always;"></div>
+
 ### Перегрузка преобразований типов
 
-- Позволяет задавать `implicit` | `explicit` преобразования между типами
+- Позволяет задавать `implicit` | `explicit` [преобразования](https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/statements-expressions-operators/conversion-operators) между типами
 - должен быть `public static`
 
 ```cs
@@ -637,6 +737,8 @@ public static implicit|explicit operator TypeTo(BaseType value)
     return <TypeToObject>...;
 }
 ```
+
+<div style="page-break-after: always;"></div>
 
 ```cs
 public class Example
@@ -661,13 +763,36 @@ Example result = intX;
 Console.WriteLine(result.X);  // 3
 ```
 
+<div style="page-break-after: always;"></div>
+
+## Extension methods
+
+- Методы расширения позволяют добавлять методы в уже существующие типы
+- Метод расширения может жить только в статическом классе и сам быть статическим
+
+```cs
+public static class StringHelper
+{
+    public static string Left(this string value, int size)
+    {
+        if (string.IsNullOrEmpty(value))
+            return value;
+
+        return value.Length <= size
+               ? value
+               : value.Substring(0, size);
+    }
+}
+
+string s = "my string";
+Console.WriteLine(s.Left(5)); // my st
+```
+
 ## Аттрибуты
 
 ## Generic типы и методы, constraint
 
 ## Анонимные типы, dynamic
-
-## Extension methods
 
 ## Сборка мусора
 
