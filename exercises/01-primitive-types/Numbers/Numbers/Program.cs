@@ -19,6 +19,10 @@ namespace Numbers
             // твои бро: Console.WriteLine и Console.ReadLine
 
             Console.WriteLine("Hello World!");
+            Console.WriteLine("Cube 5: {0}", Integers.Cube(5));
+            Console.WriteLine("Parse: {0}" ,Integers.Parse("5"));
+            
+            Console.ReadKey();
         }
     }
 }
