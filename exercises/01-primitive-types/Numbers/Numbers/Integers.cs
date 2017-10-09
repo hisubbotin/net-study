@@ -46,7 +46,8 @@ namespace Numbers
                 Особенно это касается связки Visual Studio + Resharper, используя которую, если просто набрать return и нажать пробел,
                     то в появившемся списке автодополнения одной из первых будет нужная тебе константа :)
             */
-            throw new NotImplementedException();
+            return int.MaxValue / 2;
+            // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -55,7 +56,8 @@ namespace Numbers
         internal static int Cube(int x)
         {
             // не сомневайся, пиши. Тут без подвохов.
-            throw new NotImplementedException();
+            return x * x * x;
+            // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -67,7 +69,8 @@ namespace Numbers
                 Если спал на лекции, то тут придется погуглить, сорри.
                 И заодно подумай какой режим выставлен по умолчанию. Почему. И почему категорически нельзя надеяться на режим по умолчанию.
             */
-            throw new NotImplementedException();
+            return checked(x * x * x);
+            // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -76,7 +79,8 @@ namespace Numbers
         internal static int CubeWithoutOverflowCheck(int x)
         {
             // если сделал предыдущие, то с этим уже должно быть понятно.
-            throw new NotImplementedException();
+            return unchecked(x * x * x);
+            // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -93,7 +97,8 @@ namespace Numbers
 
                 Подсказка: нужно воспользоваться методом, который есть у абсолютно всех объектов.
             */
-            throw new NotImplementedException();
+            return x.ToString();
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -107,7 +112,8 @@ namespace Numbers
                 Продолжай идти простым путем -нужен метод, обратный методу ToString выше, который распарсит дефолтное строковое представление числа.
                 Подсказка: у каждого примитивного типа есть набор статических методов, среди которых есть нужный.
             */
-            throw new NotImplementedException();
+            return int.Parse(s);
+            // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -119,7 +125,8 @@ namespace Numbers
                 Реализуй умножение числа на 10 без использования арифметических операций над числами.
                 Воспользуйся реализованными выше методами ToString и Parse. И не думай ни о каких переполнениях - задача не на это :)
             */
-            throw new NotImplementedException();
+            return Parse(ToString(x) + '0');
+            // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -133,7 +140,8 @@ namespace Numbers
                 У метода ToString числовых типов есть перегрузка, которая принимает строку с одним из заданного набора форматов.
                 В студии дается хорошая и понятная подсказка с этим набором форматов, в других же IDE скорее всего такого не будет, и придется погуглить форматы.
             */
-            throw new NotImplementedException();
+            return x.ToString("X");
+            // throw new NotImplementedException();
         }
 
         /*
