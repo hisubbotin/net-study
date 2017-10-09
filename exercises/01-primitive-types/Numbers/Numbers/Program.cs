@@ -19,6 +19,27 @@ namespace Numbers
             // твои бро: Console.WriteLine и Console.ReadLine
 
             Console.WriteLine("Hello World!");
+
+            Console.WriteLine(Integers.HalfIntMaxValue());
+            Console.WriteLine(Integers.Cube(3));
+            Console.WriteLine(Integers.CubeWithoutOverflowCheck(3));
+            Console.WriteLine(Integers.CubeWithoutOverflowCheck(3));
+            Console.WriteLine(Integers.ToString(12));
+            Console.WriteLine(Integers.Parse("12"));
+            Console.WriteLine(Integers.TenTimes(3));
+            Console.WriteLine(Integers.ToHexString(2));
+            Console.WriteLine(Integers.ToHexString(10));
+
+            Console.WriteLine();
+
+            Console.WriteLine(FloatNumbers.IsNaN(5.3));
+            Console.WriteLine(FloatNumbers.IsNaN(double.NaN));
+            Console.WriteLine(FloatNumbers.GetNaN());
+            Console.WriteLine(FloatNumbers.Compare(1, 2, 1e-150));
+            Console.WriteLine(FloatNumbers.Compare(2, 1, 1e-150));
+            Console.WriteLine(FloatNumbers.Compare(2, 2, 1e-150));
+
+            Console.ReadLine();
         }
     }
 }
