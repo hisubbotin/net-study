@@ -413,7 +413,7 @@ public abstract class A
 
 - Абстрактный класс не может быть инстанциирован
 - Может содержать абстрактные методы, которые не содержат реализации (производный класс должен будет переопределить все такие методы)
-- Может содержать базовые поля и реализации методов
+- Может содержать базовые поля и реализации методов (эти члены можно не переопределять в производных классах)
 
 ```cs
 public abstract class A
@@ -447,8 +447,107 @@ public class B:A
 
 ## Interface
 
-Интерфейсы опеределяют некоторый функционал, не имеющий конкретной реализации.
+[Интерфейсы](https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/interfaces/) опеределяют некоторый функционал, не имеющий конкретной реализации.
 В отличие от наследования связь между классами не `is-a`, а `can-do`
+
+- Определяют некоторый контракт
+- Есть множественная реализация интерфейсов
+- У методов интерфейса нет модификаторов доступа
+- Задается только сигнатура методов
+- Могут содержать методы, свойства, события, индексаторы
+- Класс реализующий интерфейс должен реализовать все его члены
+
+```cs
+public interface IEquatable<T>
+{
+    bool Equals(T obj);
+}
+
+public class A: IEquatable<A>
+{
+    public int X {get;set;}
+
+    // Очень плохая реализация для примера
+    public bool Equals(A obj)
+    {
+        if (this.X == obj.X)
+            return true;
+        return false;
+    }
+}
+```
+
+Случай, когда в интерфейсах есть одинаковые методы
+
+```cs
+interface IControl { void Paint(); }
+interface ISurface { void Paint(); }
+
+class SampleClass : IControl, ISurface
+{
+    public void Paint()
+    {
+        Console.WriteLine("Paint");
+    }
+
+    SampleClass sc = new SampleClass();
+    IControl ctrl = (IControl)sc;
+    ISurface srfc = (ISurface)sc;
+
+    sc.Paint();
+    ctrl.Paint();
+    srfc.Paint();
+}
+```
+
+Можно переопределить отдельно для каждого интерфейса
+
+```cs
+public class SampleClass : IControl, ISurface
+{
+    void IControl.Paint()
+    {
+        System.Console.WriteLine("IControl.Paint");
+    }
+    void ISurface.Paint()
+    {
+        System.Console.WriteLine("ISurface.Paint");
+    }
+}
+
+SampleClass obj = new SampleClass();
+//obj.Paint();  // Compiler error.
+IControl c = (IControl)obj;
+c.Paint();  // Calls IControl.Paint on SampleClass.
+ISurface s = (ISurface)obj;
+s.Paint(); // Calls ISurface.Paint on SampleClass.
+```
+
+Если разные члены с одним именем
+
+```cs
+interface ILeft
+{
+    int P { get;}
+}
+interface IRight
+{
+    int P();
+}
+
+class Middle : ILeft, IRight
+{
+    public int P() { return 0; }
+    int ILeft.P { get { return 0; } }
+}
+```
+
+Наследование VS Реализация интерфейса
+
+- Абстрактные классы могут иметь поля и базовую реализацию методов
+- В абстрактных классах можно задавать видимость элементов
+- Базовый класс может повышать видимость при наследовании и в то время, как при реализации интерфейса должны оставить такой же видимости, как интерфейс
+- При наследовании от абстрактного класса производный должен переопределить только абстрактные члены
 
 ## Перегрузка методов, операторов
 
