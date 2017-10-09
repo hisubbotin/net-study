@@ -4,26 +4,27 @@
 
 - [Classes](#classes)
   - [Members](#members)
-  - [Конструкторы](#конструкторы)
   - [Модификаторы доступа](#модификаторы-доступа)
+  - [Конструкторы](#конструкторы)
+  - [Methods](#methods)
   - [Properties](#properties)
-  - [readonly](#readonly)
-  - [const](#const)
+  - [`readonly`](#readonly)
+  - [`const`](#const)
   - [`static`](#static)
     - [`static` member](#static-member)
     - [`static` class](#static-class)
     - [`static` конструктор](#static-конструктор)
-  - [partial](#partial)
+  - [`partial`](#partial)
   - [Наследование, полиморфизм](#наследование-полиморфизм)
-    - [sealed](#sealed)
-    - [abstract](#abstract)
+    - [`sealed`](#sealed)
+    - [`abstract`](#abstract)
   - [Interface](#interface)
   - [Перегрузка операторов](#перегрузка-операторов)
     - [Перегрузка преобразований типов](#перегрузка-преобразований-типов)
+  - [Extension methods](#extension-methods)
   - [Аттрибуты](#аттрибуты)
   - [Generic типы и методы, constraint](#generic-типы-и-методы-constraint)
   - [Анонимные типы, dynamic](#анонимные-типы-dynamic)
-  - [Extension methods](#extension-methods)
   - [Сборка мусора](#сборка-мусора)
     - [Алгоритм, GC](#алгоритм-gc)
     - [Финализаторы](#финализаторы)
@@ -50,6 +51,24 @@ internal class SomeType
     internal int Property { get;set;}   // Property
 }
 ```
+
+<div style="page-break-after: always;"></div>
+
+## Модификаторы доступа
+
+Определяют видимость элемента
+
+- `public` - доступен в любых сборках
+- `internal` - только в текущей сборке
+- `private` - только в данном классе
+- `protected` - в классе и его наследниках
+- `protected internal` - в классе и его наследниках из данной сборки
+
+Можно определить сборку [дружественной](https://msdn.microsoft.com/en-us/library/0tke9fxk(v=vs.100).aspx), чтобы internal можно было использовать в другой сборке.
+
+- По-умолчанию, если не указать будет private
+- Проверку доступа производит как базовый компилятор, так и JIT компилятор
+- При наследовании от базового класса CLR позволяет снижать, но не повышать ограничения доступа к члену.
 
 <div style="page-break-after: always;"></div>
 
@@ -136,21 +155,169 @@ var value = new SomeType { Value = 10 };
 
 <div style="page-break-after: always;"></div>
 
-## Модификаторы доступа
+## Methods
 
-Определяют видимость элемента
+```cs
+public class Example
+{
+    public int Add(int x, int y)
+    {
+        return x + y;
+    }
 
-- `public` - доступен в любых сборках
-- `internal` - только в текущей сборке
-- `private` - только в данном классе
-- `protected` - в классе и его наследниках
-- `protected internal` - в классе и его наследниках из данной сборки
+    public void Print(int x)
+    {
+        Console.WriteLine(x);
+    }
+}
+```
 
-Можно определить сборку [дружественной](https://msdn.microsoft.com/en-us/library/0tke9fxk(v=vs.100).aspx), чтобы internal можно было использовать в другой сборке.
+<div style="page-break-after: always;"></div>
 
-- По-умолчанию, если не указать будет private
-- Проверку доступа производит как базовый компилятор, так и JIT компилятор
-- При наследовании от базового класса CLR позволяет снижать, но не повышать ограничения доступа к члену.
+Необязательные параметры:
+
+- Значения по умолчанию
+  - идут после остальных параметров
+  - определяются на этапе компиляции, поэтому либо примитивные типы, либо такие значения как `null`, `default`, `new(...)`
+  - не задаются для `ref` / `out` параметров
+
+```cs
+public static int Method(int x, int y=0, int z=0,
+    String s = "A", DateTime dt = default(DateTime), Guid guid = new Guid())
+{
+    return x + y + z;
+}
+
+int i = Method(5);
+int u = Method(5, z:4); // Именованный параметр
+```
+
+<div style="page-break-after: always;"></div>
+
+Перегрузка методов:
+
+```cs
+public class Example
+{
+    public void Test(int a)
+    {
+        Console.WriteLine($"{a}");
+    }
+    public void Test(int a, int b)
+    {
+        Console.WriteLine($"{a} {b}");
+    }
+    public int Test(int a, int b, int c)
+    {
+        Console.WriteLine($"{a} {b} {c}");
+        return a + b + c;
+    }
+    public void Test(double a, double b)
+    {
+        Console.WriteLine($"{a} {b}");
+    }
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+- `ref` / `out` - заставляют компилятор передавать значение параметра по ссылке [MSDN](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/ref)
+- не вызывают boxing/unboxing, передается ссылка на стек
+- оба типа компилируются в одинаковый IL код (отличается один бит в метаданных)
+- `ref` - должен быть инициализирован до вызова метода
+
+```cs
+static void ExampleReference(ref int x, int y)
+{
+    x = x + y;
+}
+static void ExampleValue(int x, int y)
+{
+    x = x + y;
+}
+
+int x = 1;
+int y = 2;
+
+ExampleValue(x, y);
+Console.WriteLine(x); // 1
+ExampleReference(ref a, b);
+Console.WriteLine(x); // 3
+```
+
+<div style="page-break-after: always;"></div>
+
+- `out` - позволяет не инициализировать параметр до вызова метода.
+- метод не может читать значение параметра, должен сам инициализировать его обязательно
+- указание `ref`/`out` при вызове метода сделано для более наглядного использования кода (плюс это важно т.к. могут быть перегрузки методов)
+
+```cs
+static try TryParseInt(string value, out int result)
+{
+   // реализация
+}
+
+int result;
+bool isParsed = TryParseInt("33", out result);
+```
+
+<div style="page-break-after: always;"></div>
+
+Рассмотрим пример, когда передается ссылочный параметр:
+
+```cs
+class Product
+{
+    public int X { get; set; }
+    public int Y { get; set; }
+}
+static void ChangeByReference(ref Product itemRef)
+{
+    itemRef = new Product { X = 1 };
+    itemRef.Y = 2;
+}
+
+Product item = new Product { X = 4, Y = 5};
+System.Console.WriteLine($"{item.X}, {item.Y}"); // 4, 5
+ChangeByReference(ref item);
+System.Console.WriteLine($"{item.X}, {item.Y}"); // 1, 2
+```
+
+<div style="page-break-after: always;"></div>
+
+Рекомендации по использованию `ref` / `out`.
+Это сильно упрощает поддержку кода:
+
+- Не используйте `ref` без крайней необходимости
+- Используйте `out` со значимыми типами
+- Если нужно внутри метода изменить состояние объекта, то возвращайте измененное состояние и присваивайте его экземпляру `var newValue = methodThatChange(value)`
+
+<div style="page-break-after: always;"></div>
+
+Передача массива параметров, когда мы не знаем количество параметров
+
+- `params` может пометить только послдений элемент
+- только одномерный массив :) произвольного типа
+
+```cs
+public static int Add(params int[] values)
+{
+    int sum = 0;
+    if (values != null);
+    {
+        for (int x = 0; x < values.Length; x++)
+        {
+            sum += values[x];
+        }
+    }
+    return sum;
+}
+
+int result = Add(new int[] {1, 2, 3, 4, 5});
+result = Add(1, 2, 3, 4, 5);
+result = Add(); // Все варианты валидцы
+result = Add(null);
+```
 
 <div style="page-break-after: always;"></div>
 
@@ -202,9 +369,24 @@ public class Sample
 
 <div style="page-break-after: always;"></div>
 
-## readonly
+Все пользуются свойствами, никто не пишет свои get/set. Но надо понимать:
 
-Поле класса, помеченное `readonly` может быть изменено только в конструкторе
+- Свойства могут быть доступны только для чтения или только для записи, в то время как поля всегда доступны и для чтения, и для записи
+- Свойство, являясь по сути методом, может выдавать исключения, а при обращениям к полям исключений не бывает
+- Свойства нельзя передавать в метод в качестве параметров с ключевым словом `out` или `ref`
+
+Рекомендации:
+
+- Не используйте property чаще, чем нужно!!!
+- Не делайте в property длинные вызовы - напишите метод
+- Не делайте property, если повторный вызов на тот же экземпляр может вернуть другое значение. Например `DateTime.Now` - это косяк, должен быть `DateTime.Now()`
+- Не создавайте новых экземпляров объектов в свойствах
+
+<div style="page-break-after: always;"></div>
+
+## `readonly`
+
+Поле класса, помеченное `readonly` может быть изменено **только** в конструкторе:
 
 ```cs
 internal class SomeType
@@ -225,10 +407,10 @@ internal class SomeType
 
 <div style="page-break-after: always;"></div>
 
-## const
+## `const`
 
 - Константы задаются на момент компиляции.
-- Могут использоваться только примитивные типы: int, double, string, etc.
+- Могут использоваться только примитивные типы: `int`, `double`, `string`, etc.
 - Должны быть здесь же инициализированы
 
 ```cs
@@ -282,7 +464,7 @@ int i = Automobile.NumberOfWheels;
 
 - В статическом классе можно объявлять только статические члены.
 - Не может быть инстанциирован (нельзя использовать в качестве локальной переменной или параметра метода)
-- Класс должен быть Sealed
+- Класс должен быть `sealed`
 - Должен не реализовывать никаких интерфейсов
 - нельзя сделать статическую стуктуру (всегда можно создать экземпляр)
 
@@ -309,7 +491,7 @@ Console.WriteLine(Math.Abs(dub));
 - Вызывается в **неопределенный** момент времени до использования. В clr реализовано, что он непосредственно вызывается перед первым использованием класса. Повлиять на это никак нельзя.
 - Ему нельзя задавать модификатор доступа
 - Ему нельзя передавать параметры
-- Может быть только один на тип
+- Может быть только один конструктор на тип
 
 ```cs
 public static class MyHelper
@@ -325,8 +507,12 @@ public static class MyHelper
 }
 ```
 
-- CLR гарантирует, что статический конструктор выполнится только один раз
-- Если в таком конструкторе происходит исключение CLR считает весь тип непригодным
+<div style="page-break-after: always;"></div>
+
+Надо иметь в виду:
+
+- CLR гарантирует, что статический конструктор выполнится только один раз для всех потоков
+- Если в таком конструкторе происходит исключение CLR считает весь тип непригодным и при попытке доступа к любым / полям методам будет кидать исключение
 - Во время его вызова CLR накладывает исключительную блокировку на весь тип для всех остальных потоков в рамках домена приложения
 - Поэтому возможны взаимные блокировки, нельзя писать код, который полагается на определенный порядок вызовов таких конструкторов
 
@@ -344,7 +530,7 @@ public static class MyHelper
 
 <div style="page-break-after: always;"></div>
 
-## partial
+## `partial`
 
 Частичные классы. `partial` позволяет создавать класс (структуру или интерфейс), расположенный в нескольких файлах, которые компилятор соединит в один.
 Для удобства редактирования кода и автогенерации кода.
@@ -461,11 +647,11 @@ Console.WriteLine(valueB.Method); // this B
 
 <div style="page-break-after: always;"></div>
 
-### sealed
+### `sealed`
 
 - Если применяется на класс: запрет наследования от этого класса
 - Если применяется на member: запрет на переопределение элемента в производных классах, используется только совместно с override
-- Рихтер рекомендует делать все классы по-умолчанию sealed (на практике никто не заморачивается)
+- Рихтер рекомендует делать все классы по-умолчанию `sealed` (на практике никто не заморачивается)
 
 ```cs
 public class A
@@ -486,7 +672,7 @@ public sealed C:B
 
 <div style="page-break-after: always;"></div>
 
-### abstract
+### `abstract`
 
 Позволяет создать базовый незаконченный класс, который должен быть реализован в наследниках.
 
@@ -562,7 +748,7 @@ public class A: IEquatable<A>
 
 <div style="page-break-after: always;"></div>
 
-Случай, когда в интерфейсах есть одинаковые методы
+Случай, когда в интерфейсах есть одинаковые методы:
 
 ```cs
 interface IControl { void Paint(); }
@@ -613,7 +799,7 @@ s.Paint(); // Calls ISurface.Paint on SampleClass.
 
 <div style="page-break-after: always;"></div>
 
-Если разные члены с одним именем, то придется явно указывать интерфейсы
+Если разные члены с одним именем, то придется явно указывать интерфейсы:
 
 ```cs
 interface ILeft
