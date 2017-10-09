@@ -18,7 +18,8 @@
     - [sealed](#sealed)
     - [abstract](#abstract)
   - [Interface](#interface)
-  - [Перегрузка методов, операторов](#перегрузка-методов-операторов)
+  - [Перегрузка операторов](#перегрузка-операторов)
+    - [Перегрузка преобразований типов](#перегрузка-преобразований-типов)
   - [Аттрибуты](#аттрибуты)
   - [Generic типы и методы, constraint](#generic-типы-и-методы-constraint)
   - [Анонимные типы, dynamic](#анонимные-типы-dynamic)
@@ -500,7 +501,8 @@ class SampleClass : IControl, ISurface
 }
 ```
 
-Можно переопределить отдельно для каждого интерфейса
+- Можно переопределить отдельно для каждого интерфейса.
+- Надо иметь в виду, что явное указание интерфейса при реализации обязывает указывать интерфейс при вызове экземплярного метода, поэтому всегда предпочтительна "неявная" реализация интерфейса
 
 ```cs
 public class SampleClass : IControl, ISurface
@@ -523,7 +525,7 @@ ISurface s = (ISurface)obj;
 s.Paint(); // Calls ISurface.Paint on SampleClass.
 ```
 
-Если разные члены с одним именем
+Если разные члены с одним именем, то придется явно указывать интерфейсы
 
 ```cs
 interface ILeft
@@ -542,16 +544,122 @@ class Middle : ILeft, IRight
 }
 ```
 
-Наследование VS Реализация интерфейса
+Абстрактный класс VS Реализация интерфейса
 
 - Абстрактные классы могут иметь поля и базовую реализацию методов
 - В абстрактных классах можно задавать видимость элементов
-- Базовый класс может повышать видимость при наследовании и в то время, как при реализации интерфейса должны оставить такой же видимости, как интерфейс
+- Базовый класс может повышать видимость при наследовании и в то время, как при реализации интерфейса должны оставить такой же видимости, как интерфейс (но вообще это довольно бесполезная возможность)
 - При наследовании от абстрактного класса производный должен переопределить только абстрактные члены
 
-## Перегрузка методов, операторов
+SOF Discussion [1](https://stackoverflow.com/questions/56867/interface-vs-base-class), [2](https://stackoverflow.com/questions/1913098/what-is-the-difference-between-an-interface-and-abstract-class?rq=1), [3](https://stackoverflow.com/questions/761194/interface-vs-abstract-class-general-oo?rq=1)
 
-[Перегрузка операторов](https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/statements-expressions-operators/overloadable-operators)
+## Перегрузка операторов
+
+Можно [перегрузить стандартные операторы](https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/statements-expressions-operators/overloadable-operators) для своего класса.
+
+- `public static` обязательно указываются
+- Для операторов возвращающих обьект - Не надо изменять состояние передаваемых в параметры объектов - надо создать новый объект !!!
+- Есть ряд операторов, которые нельзя переопределить `=`, `?:`, etc
+
+```cs
+public class Example
+{
+    public int X { get; set; }
+
+    public static Example operator +(Example f, Example s)
+    {
+        return new Example { X = f.X + s.X };
+    }
+
+    public static bool operator >(Example f, Example s) =>
+        return (f.X > s.X);
+
+    public static bool operator <(Example f, Example s) =>
+        return (f.X < s.X);
+}
+```
+
+Использование в коде:
+
+```cs
+static void Main(string[] args)
+{
+    Example e1 = new Example { X = 4 };
+    Example e2 = new Example { X = 7 };
+    Example e3 = e1 + e2;
+    Console.WriteLine(e3.X);  // 11
+
+    bool result = e1 > e2;
+    Console.WriteLine(result); // false
+}
+```
+
+Еще примеры:
+
+```cs
+public static int operator +(Example e, int value)
+{
+    return e.X + value;
+}
+
+public static Example operator ++(Example e)
+{
+    return new Example { X = e.X + 10 };
+}
+```
+
+Еще можно переопределить true / false:
+
+```cs
+public class Example
+{
+    public int X { get; set; }
+
+    public static bool operator true(Example e) => return e.X > 0;
+    public static bool operator false(Example e) => return e.X <= 0;
+}
+
+var value = new Example { X = 0 };
+if (value)
+    Console.WriteLine(true);
+else
+    Console.WriteLine(false);
+```
+
+### Перегрузка преобразований типов
+
+- Позволяет задавать `implicit` | `explicit` преобразования между типами
+- должен быть `public static`
+
+```cs
+public static implicit|explicit operator TypeTo(BaseType value)
+{
+    return <TypeToObject>...;
+}
+```
+
+```cs
+public class Example
+{
+    public int X { get; set; }
+
+    public static implicit operator Example(int value)
+    {
+        return new Example { X = value };
+    }
+
+    public static explicit operator int(Example value)
+    {
+        return value.X;
+    }
+}
+
+Example value = new Example { X = 3 };
+
+int intX = (int)value;
+Example result = intX;
+Console.WriteLine(result.X);  // 3
+```
 
 ## Аттрибуты
 
