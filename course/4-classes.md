@@ -32,6 +32,8 @@
 
 <!-- /TOC -->
 
+<div style="page-break-after: always;"></div>
+
 ## Members
 
 [Члены класса](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/members)
@@ -127,30 +129,28 @@ var value = new SomeType(x);
 
 <div style="page-break-after: always;"></div>
 
+Еще пример с инициализатором:
+
 ```cs
 internal class SomeType
 {
     internal int Value;
 }
-
+// Инициализируем
 var value = new SomeType();
 value.Value = 10;
+// Эквивалент через инициализатор
 var value = new SomeType { Value = 10 };
 ```
 
-- Если указать в классе поля со значениями, то компилятор по сути добавит инициализацию этого метода в цепочку вызова конструкторов
+Если указать в классе поля со значениями, то компилятор по сути добавит инициализацию этого метода в цепочку вызова конструкторов:
 
 ```cs
 internal class SomeType
 {
     internal int Value = 10;
-
     public SomeType() {}
 }
-
-var value = new SomeType();
-value.Value = 10;
-var value = new SomeType { Value = 10 };
 ```
 
 <div style="page-break-after: always;"></div>
@@ -169,6 +169,11 @@ public class Example
     {
         Console.WriteLine(x);
     }
+
+    // Expression-bodied method
+    // без return
+    // для методов/конструкторов/property содержащих одно выражение
+    public void NewPrint(int x) => Console.WriteLine(x);
 }
 ```
 
@@ -296,7 +301,7 @@ System.Console.WriteLine($"{item.X}, {item.Y}"); // 1, 2
 
 Передача массива параметров, когда мы не знаем количество параметров
 
-- `params` может пометить только послдений элемент
+- `params` может пометить только последний элемент
 - только одномерный массив :) произвольного типа
 
 ```cs
@@ -315,7 +320,7 @@ public static int Add(params int[] values)
 
 int result = Add(new int[] {1, 2, 3, 4, 5});
 result = Add(1, 2, 3, 4, 5);
-result = Add(); // Все варианты валидцы
+result = Add(); // Все варианты валидны
 result = Add(null);
 ```
 
@@ -441,16 +446,9 @@ SomeType.X // 10
 public class Automobile
 {
     public static int NumberOfWheels = 4;
-    public static int SizeOfGasTank
-    {
-        get
-        {
-            return 15;
-        }
-    }
+    public static int SizeOfGasTank { get { return 15; } }
     public static void Drive() { }
     public static event EventType RunOutOfGas;
-
     // Other non-static fields and properties...
 }
 
@@ -726,6 +724,10 @@ public class B:A
 - Могут содержать методы, свойства, события, индексаторы
 - Класс реализующий интерфейс должен реализовать все его члены
 
+<div style="page-break-after: always;"></div>
+
+Пример:
+
 ```cs
 public interface IEquatable<T>
 {
@@ -849,11 +851,8 @@ public class Example
         return new Example { X = f.X + s.X };
     }
 
-    public static bool operator >(Example f, Example s) =>
-        return (f.X > s.X);
-
-    public static bool operator <(Example f, Example s) =>
-        return (f.X < s.X);
+    public static bool operator >(Example f, Example s) => return (f.X > s.X);
+    public static bool operator <(Example f, Example s) => return (f.X < s.X);
 }
 ```
 
@@ -1014,7 +1013,7 @@ int Method3() { return 0; }
 
 <div style="page-break-after: always;"></div>
 
-- `[AttributeUsage]` Указывает область применимости атрибута для компилятора
+- `[AttributeUsage]` указывает область применимости атрибута для компилятора
 - Если не пометить, то атрибут можно будет применять к любому объекту
 - `Inherited` - должен ли атрибут применятся к производному классу (по-умолчанию true) при overrid'инге методов
 - `AllowMultiple` - можно ли навешать несколько одинаковых атрибутов на член (по-умолчанию false)
@@ -1104,8 +1103,8 @@ System.Attribute[] values = System.Attribute.GetCustomAttributes(typeof(myType))
 Некоторые примеры использования:
 
 - Маппинг объектов в БД
-- Calling unmanaged code using the [DllImportAttribute](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.dllimportattribute?view=netframework-4.7) class.
-- Настройки сериализации, какие поля и как сериализовать
+- Вызов unmanaged кода с помощью [DllImportAttribute](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.dllimportattribute?view=netframework-4.7)
+- Настройки сериализации, какие поля и как сериализовать в xml, json
 - Описание требований безопасности к методам / классам (используется в asp.net mvc)
 
 <div style="page-break-after: always;"></div>
