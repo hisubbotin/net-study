@@ -78,7 +78,7 @@ internal class SomeType
 
 ```cs
 SomeType e = new SomeType(4);
-SomeType e = new SomeType(3) { SomeProp = 5}; // Инициализатор
+SomeType e = new SomeType(3) { SomeProp = 5 }; // Инициализатор
 
 e.SomeProp = 5  // Идентично
 ```
@@ -974,7 +974,141 @@ string s = "my string";
 Console.WriteLine(s.Left(5)); // my st
 ```
 
+<div style="page-break-after: always;"></div>
+
 ## Аттрибуты
+
+[MSDN Atributes](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/concepts/attributes/index)
+Есть много готовых атрибутов `[Serialized]`, `[Flags]` и др.
+
+- Можно создавать кастомные атрибуты, наследуясь от `System.Attribute`
+- Стандартное соглашение, что аттрибуты именуются словом Attribute, компилятор умеет убирать его
+- Должны содержать хоть один конструктор
+
+```cs
+[System.Serializable]
+public class SampleClass
+{
+    // Objects of this type can be serialized.
+}
+
+public class FlagsAttribute : System.Attribute
+{
+    public FlagsAttribute() {}
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+- Обычно атрибут применяется на элемент после него, но можно явно задать, на что именно будет применяться атрибут: `assembly`, `module`, `field`, `event`, `method`, `param`, `property`, `return`, `type`
+
+```cs
+// applies to method
+[method: SomeAttr]
+int Method2() { return 0; }
+
+// applies to return value
+[return: SomeAttr]
+int Method3() { return 0; }
+```
+
+<div style="page-break-after: always;"></div>
+
+- `[AttributeUsage]` Указывает область применимости атрибута для компилятора
+- Если не пометить, то атрибут можно будет применять к любому объекту
+- `Inherited` - должен ли атрибут применятся к производному классу (по-умолчанию true) при overrid'инге методов
+- `AllowMultiple` - можно ли навешать несколько одинаковых атрибутов на член (по-умолчанию false)
+
+```cs
+namespace System
+{
+    [AttributeUsage(AttributeTargets.Enum, Inherited = false)]
+    public class FlagsAttribute : System.Attribute
+    {
+        public FlagsAttribute() {}
+    }
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+`Inherited` example:
+
+```cs
+[AttributeUsage(AttributeTargets.Class | AttributeTargets.Method, Inherited=true)]
+internal class TastyAttribute : Attribute {}
+
+[Tasty]
+[Serializable]
+internal class BaseType
+{
+    [Tasty]
+    protected virtual void DoSomething() { }
+}
+
+internal class DerivedType : BaseType
+{
+    protected override void DoSomething() { }
+}    // И DerivedType и DoSomething будут помечены Tasty
+```
+
+<div style="page-break-after: always;"></div>
+
+- Можно задавать конструктор и публичные нестатические поля / свойства для атрибута
+- В конструкторе можно использовать только маленький набор типов: `bool`, `char`, `byte`, SByte, `short`, UInt16, `int`, UInt32, `long`, UInt64, `float`, `double`, `string`, `Type`, `object`, `enum`
+- Можно передавать в конструктор только константы и `typeof()` для получения типа
+- При компиляции вызовется конструктор атрибута, и его сериализованный объект запишется в метаданные
+- Можно массив константных типов передавать в конструктор, но лучше так не делать (!)
+
+```cs
+internal enum Color { Red }
+
+[AttributeUsage(AttributeTargets.All)]
+internal sealed class SomeAttribute : Attribute
+{
+    public SomeAttribute(String name, Object o, Type[] types)
+    {
+    }
+}
+
+[Some("Jeff", Color.Red, new Type[] { typeof(Math), typeof(Console) })]
+internal sealed class SomeType {}
+```
+
+<div style="page-break-after: always;"></div>
+
+Как их использовать? `System.Attribute`
+
+- `IsDefined`
+- `GetCustmoAttributes`
+- `GetCustmoAttribute`
+
+```cs
+public static String Format(Type enumType, Object value, String format)
+{
+    // Is [FlagsAttribute] applied to instance?
+    if (enumType.IsDefined(typeof(FlagsAttribute), false))
+    {
+        // Yes; execute code treating value as a bit flag enumerated type.
+    } else
+    {
+        // No; execute code treating value as a normal enumerated type.
+    }
+}
+
+System.Attribute[] values = System.Attribute.GetCustomAttributes(typeof(myType));
+```
+
+<div style="page-break-after: always;"></div>
+
+Некоторые примеры использования:
+
+- Маппинг объектов в БД
+- Calling unmanaged code using the [DllImportAttribute](https://docs.microsoft.com/en-us/dotnet/api/system.runtime.interopservices.dllimportattribute?view=netframework-4.7) class.
+- Настройки сериализации, какие поля и как сериализовать
+- Описание требований безопасности к методам / классам (используется в asp.net mvc)
+
+<div style="page-break-after: always;"></div>
 
 ## Generic типы и методы, constraint
 
