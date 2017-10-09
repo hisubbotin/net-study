@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿# Курс .NET
 
 - Система выставления [оценок](course-2017-1/readme.md)
@@ -81,3 +82,89 @@
 - 16 Работа в web
   - Http в .Net, класс HttpClient
   - ASP.Net MVC Core
+=======
+﻿# Курс .NET
+
+- Система выставления [оценок](course-2017-1/readme.md)
+- Посещаемость [студентов](course-2017-1/attendance.md)
+- Список [заданий](exercises/exercises.md)
+- Гайд по воркфлоу в [git+github](exercises/git-help.md).
+
+---
+
+- 1 [.NET](course/1-net.md#net)
+  - [.NET Framework](course/1-net.md#net-framework)
+    - [CLR](course/1-net.md#clr)
+  - [.NET Core](course/1-net.md#net-core)
+  - [.NET Standard](course/1-net.md#net-standard)
+  - [.NET Native](course/1-net.md#net-native)
+  - [IDE](course/1-net.md#ide)
+  - [Nuget](course/1-net.md#nuget)
+- 2 [Types](course/2-types.md#overview)
+  - Базовые типы
+  - Базовые операции и операторы
+  - Ссылочные / значимые типы
+  - Struct
+  - System.Object
+- 3 Классы
+  - Конструкторы
+  - Модификаторы доступа
+  - Модификаторы типов: static, abstract, partial, sealed
+  - Наследование, полиморфизм, интерфейсы
+  - Перегрузка методов, операторов
+  - Аттрибуты
+  - Generic типы и методы, constraint
+  - Анонимные типы, dynamic
+  - Extension methods
+  - Сборка мусора:
+    - Алгоритм, GC
+    - Финализаторы
+    - Внешние ресурсы, IDisposable pattern
+- 4 Строки
+  - Символы и строки
+  - Создание, преобразование строк. Класс StringBuilder
+  - Кодировки, преобразование строк в байт
+- 5 Управление программой
+  - Циклы, IEnumerable, yield
+  - Условные операторы
+- 6 Коллекции
+  - Типы коллекций и различия между ними
+- 7 Делегаты и события
+  - Делегаты и обобщенные делегаты, лямбда выражения
+  - События
+  - Замыкания
+- 8 LINQ
+  - Отложенные и неотложенные запросы
+  - Стандартный и Query Expressions синтакис запросов
+- 9 Обработка ошибок
+  - Exception
+  - throw / try / catch / finally
+  - Debug / Trace
+- 10 Reflection
+- 11 Многопоточность и ассинхронность
+  - Проблемы многопоточности
+  - Примитивы синхронизации
+  - Thread / Threadpool
+  - TPL. Класс Task, Continuation, Cancellation
+  - async / await, SyncronizationContext
+- 12 Сериализация данных
+  - JSON
+  - XML
+- 13 Ввод / вывод
+  - Потоки
+  - Чтение и запись текстовой информации
+  - Работа с файловой системой. System.IO
+- 14 Работа с базами данных
+  - ADO.Net
+  - Entity Framework
+  - Simple mapper: dapper, linq2db
+- 15 Принципы и паттерны проектирования
+  - SOLID
+  - Связь классов: наследование, ассоциация, композиция, агрегация
+  - Dependency Injection, IOC, управление зависимостями
+  - Тестируемость приложения, unit-test, Moq
+  - Паттерны: Singleton, Factory, Strategy, Facade, Repository
+- 16 Работа в web
+  - Http в .Net, класс HttpClient
+  - ASP.Net MVC Core
+>>>>>>> upstream/master
