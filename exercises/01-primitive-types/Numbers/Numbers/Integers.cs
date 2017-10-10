@@ -107,12 +107,7 @@ namespace Numbers
                 Продолжай идти простым путем -нужен метод, обратный методу ToString выше, который распарсит дефолтное строковое представление числа.
                 Подсказка: у каждого примитивного типа есть набор статических методов, среди которых есть нужный.
             */
-            int value;
-            if (int.TryParse(s, out value)) {
-                return value;
-            } else {
-                throw new ArgumentException("String does not contain correct integer", nameof(s));
-            }
+            return int.Parse(s);
         }
 
         /// <summary>

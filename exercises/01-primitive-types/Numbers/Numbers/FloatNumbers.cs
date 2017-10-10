@@ -38,7 +38,7 @@ namespace Numbers
         /// <param name="b">Второе число</param>
         /// <param name="epsilon">Точность сравнения на равенство</param>
         /// <returns>-1 - первое меньше второго, 0 - значения равны, 1 - первое больше второго.</returns>
-        internal static int Compare(double a, double b, double epsilon=0.0000001)
+        internal static int Compare(double a, double b, double epsilon)
         {
             /*
                 Подумай, почему это задание дано в части про вещественнозначные числа. И почему не дана полная сигнатура метода.
