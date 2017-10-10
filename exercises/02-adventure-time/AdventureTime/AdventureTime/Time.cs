@@ -118,7 +118,7 @@ namespace AdventureTime
                 2) Проверь, учитывается ли Kind объектов при арифметических операциях.
                 3) Подумай, почему возвращаемое значение может отличаться от действительности.
             */
-            return (dt2 - dt1).Hours;
+            return (int)(dt2 - dt1).TotalHours;
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            return (int)new TimeSpan(3 * 30, 0, 0, 0).TotalMinutes;  // Не 30, конечно, но не знаю, как по-другому
+            return (int)(DateTime.Today.AddMonths(3) - DateTime.Today).TotalMinutes;
         }
 
         #region Adventure time saga
@@ -149,7 +149,7 @@ namespace AdventureTime
             */
             var moscow = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(3));
             var london = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(0));
-            return (london - moscow).Minutes;
+            return (int)(london - moscow).TotalMinutes;
         }
 
         /// <summary>
