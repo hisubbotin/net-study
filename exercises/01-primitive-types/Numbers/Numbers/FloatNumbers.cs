@@ -3,6 +3,11 @@
 */
 
 using System;
+using System.IO;
+using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
+using System.Runtime.InteropServices.ComTypes;
+using static System.Math;
 
 namespace Numbers
 {
@@ -16,7 +21,7 @@ namespace Numbers
         internal static bool IsNaN(double d)
         {
             // Подсказка: по аналогии с константами типа int, у типа double тоже есть свой набор констант.
-            throw new NotImplementedException();
+            return double.IsNaN(d);
         }
 
         /// <summary>
@@ -28,20 +33,38 @@ namespace Numbers
                 Необходимо вернуть значение, не используя непосредственно саму константу.
                 Для этого подумай, какой смысл в себе несет эта константа и где бы она могла стать результатом операции или вычисления функции.
             */
-            throw new NotImplementedException();
+            const double zero = 0.0;
+            return 0 / zero;
         }
 
         /// <summary>
         /// Возвращает результат сравнения двух вещественнозначных чисел.
         /// </summary>
         /// <returns>-1 - первое меньше второго, 0 - значения равны, 1 - первое больше второго.</returns>
-        internal static int Compare(/* дополни сигнатуру метода как считаешь правильным */)
+        internal static int Compare(double a, double b, double precision)
         {
             /*
                 Подумай, почему это задание дано в части про вещественнозначные числа. И почему не дана полная сигнатура метода.
                 Если сходу идей нет, перестань искать подвох и просто реализуй дословно. Теперь еще раз посмотри на код и подумай в чем может быть проблема, сколько должно быть аргументов.
             */
-            throw new NotImplementedException();
+            if (IsNaN(a))
+            {
+                return IsNaN(b) ? 0 : 1;
+            }
+            if (IsNaN(b))
+            {
+                return -1;
+            }
+            var difference = a - b;
+            if (Math.Abs(difference).CompareTo(precision) <= 0)
+            {
+                return 0;
+            }
+            if (difference < 0)
+            {
+                return 1;
+            }
+            return -1;
         }
 
         // и все?!! О_о
