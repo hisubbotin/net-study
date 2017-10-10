@@ -21,5 +21,14 @@ namespace Numbers.Tests
         {
             Assert.True(FloatNumbers.IsNaN(FloatNumbers.GetNaN()));
         }
+
+        [Fact]
+        public void Test_Compare()
+        {
+            Assert.True(FloatNumbers.Compare(15.0, 11.5, 0.5) > 0);
+            Assert.True(FloatNumbers.Compare(-15.0, -11.5, 0.5) < 0);
+            Assert.True(FloatNumbers.Compare(15.0, 15.1, 0.01) < 0);
+            Assert.True(FloatNumbers.Compare(15.0, 15.1, 0.2) == 0);
+        }
     }
 }
