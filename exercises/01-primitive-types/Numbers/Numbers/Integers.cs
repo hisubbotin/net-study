@@ -46,7 +46,7 @@ namespace Numbers
                 Особенно это касается связки Visual Studio + Resharper, используя которую, если просто набрать return и нажать пробел,
                     то в появившемся списке автодополнения одной из первых будет нужная тебе константа :)
             */
-            return System.Int32.MaxValue / 2;
+            return Int32.MaxValue / 2;
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Numbers
         /// </summary>
         internal static int Cube(int x)
         {
-            return (int)Math.Pow(x, 3.0);
+            return x*x*x;
         }
 
         /// <summary>
@@ -66,8 +66,7 @@ namespace Numbers
                 Если спал на лекции, то тут придется погуглить, сорри.
                 И заодно подумай какой режим выставлен по умолчанию. Почему. И почему категорически нельзя надеяться на режим по умолчанию.
             */
-            return checked((int)Math.Pow(x, 3.0));
-            throw new NotImplementedException();
+            return checked(x*x*x);
         }
 
         /// <summary>
@@ -76,7 +75,7 @@ namespace Numbers
         internal static int CubeWithoutOverflowCheck(int x)
         {
             // если сделал предыдущие, то с этим уже должно быть понятно.
-            return unchecked((int)Math.Pow(x, 3.0));
+            return unchecked(x*x*x);
         }
 
         /// <summary>
@@ -107,8 +106,7 @@ namespace Numbers
                 Продолжай идти простым путем -нужен метод, обратный методу ToString выше, который распарсит дефолтное строковое представление числа.
                 Подсказка: у каждого примитивного типа есть набор статических методов, среди которых есть нужный.
             */
-            Int32.TryParse(s, out int s_to_int);
-            return s_to_int;
+            return Int32.Parse(s);
         }
 
         /// <summary>
@@ -120,8 +118,7 @@ namespace Numbers
                 Реализуй умножение числа на 10 без использования арифметических операций над числами.
                 Воспользуйся реализованными выше методами ToString и Parse. И не думай ни о каких переполнениях - задача не на это :)
             */
-            Int32.TryParse((x.ToString() + '0'), out int result);
-            return result;
+            return Int32.Parse(x.ToString() + '0');
         }
 
         /// <summary>

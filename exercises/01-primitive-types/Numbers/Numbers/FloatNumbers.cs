@@ -35,7 +35,7 @@ namespace Numbers
         /// Возвращает результат сравнения двух вещественнозначных чисел.
         /// </summary>
         /// <returns>-1 - первое меньше второго, 0 - значения равны, 1 - первое больше второго.</returns>
-        internal static int Compare(double a, double b, double epsilon = Double.Epsilon)
+        internal static int Compare(double a, double b, double epsilon)
         {
             /*
                 Подумай, почему это задание дано в части про вещественнозначные числа. И почему не дана полная сигнатура метода.
