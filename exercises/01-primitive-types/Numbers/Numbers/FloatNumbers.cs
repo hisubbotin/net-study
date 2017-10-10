@@ -16,7 +16,7 @@ namespace Numbers
         internal static bool IsNaN(double d)
         {
             // Подсказка: по аналогии с константами типа int, у типа double тоже есть свой набор констант.
-            return d.Equals(double.NaN);
+            return double.IsNaN(d);
         }
 
         /// <summary>
@@ -28,8 +28,7 @@ namespace Numbers
                 Необходимо вернуть значение, не используя непосредственно саму константу.
                 Для этого подумай, какой смысл в себе несет эта константа и где бы она могла стать результатом операции или вычисления функции.
             */
-            const double zero = 0.0;
-            return zero / zero;
+            return 0.0 / 0.0;
         }
 
         /// <summary>
