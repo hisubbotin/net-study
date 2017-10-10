@@ -41,12 +41,7 @@ namespace Numbers
         /// </summary>
         internal static int HalfIntMaxValue()
         {
-            /*
-                После C++ вы будете приятно удивлены какое умное в .Net автодополнение (IntelliSense).
-                Особенно это касается связки Visual Studio + Resharper, используя которую, если просто набрать return и нажать пробел,
-                    то в появившемся списке автодополнения одной из первых будет нужная тебе константа :)
-            */
-            throw new NotImplementedException();
+            return int.MaxValue / 2;
         }
 
         /// <summary>
@@ -54,8 +49,7 @@ namespace Numbers
         /// </summary>
         internal static int Cube(int x)
         {
-            // не сомневайся, пиши. Тут без подвохов.
-            throw new NotImplementedException();
+            return x * x * x;
         }
 
         /// <summary>
@@ -63,11 +57,7 @@ namespace Numbers
         /// </summary>
         internal static int CubeWithOverflowCheck(int x)
         {
-            /*
-                Если спал на лекции, то тут придется погуглить, сорри.
-                И заодно подумай какой режим выставлен по умолчанию. Почему. И почему категорически нельзя надеяться на режим по умолчанию.
-            */
-            throw new NotImplementedException();
+            return checked (x * x * x);
         }
 
         /// <summary>
@@ -75,8 +65,7 @@ namespace Numbers
         /// </summary>
         internal static int CubeWithoutOverflowCheck(int x)
         {
-            // если сделал предыдущие, то с этим уже должно быть понятно.
-            throw new NotImplementedException();
+            return unchecked (x * x * x);
         }
 
         /// <summary>
@@ -86,14 +75,7 @@ namespace Numbers
         /// <returns>Эквивалентное строковое представление числа.</returns>
         internal static string ToString(int x)
         {
-            /*
-                Возможно ты уже в курсе, что "эквивалентное ему строковое представление" - понятие очень расплывчатое, и существует
-                огромная куча различных форматов вывода чисел: "123456789", "123 456 789", "0123456789" и т.п.
-                Сейчас представим, что такой проблемы не существует, и выберем самый простой вариант, который использует какие-то дефолтные настройки.
-
-                Подсказка: нужно воспользоваться методом, который есть у абсолютно всех объектов.
-            */
-            throw new NotImplementedException();
+            return x.ToString();
         }
 
         /// <summary>
@@ -103,11 +85,7 @@ namespace Numbers
         /// <returns>32-битное знаковое целочисленное представление числа.</returns>
         internal static int Parse(string s)
         {
-            /*
-                Продолжай идти простым путем -нужен метод, обратный методу ToString выше, который распарсит дефолтное строковое представление числа.
-                Подсказка: у каждого примитивного типа есть набор статических методов, среди которых есть нужный.
-            */
-            throw new NotImplementedException();
+            return int.Parse(s);
         }
 
         /// <summary>
@@ -115,11 +93,7 @@ namespace Numbers
         /// </summary>
         internal static int TenTimes(int x)
         {
-            /*
-                Реализуй умножение числа на 10 без использования арифметических операций над числами.
-                Воспользуйся реализованными выше методами ToString и Parse. И не думай ни о каких переполнениях - задача не на это :)
-            */
-            throw new NotImplementedException();
+            return Parse(ToString(x) + "0");
         }
 
         /// <summary>
@@ -129,15 +103,8 @@ namespace Numbers
         /// <returns>Эквивалентное строковое представление в шестнадцатиричной системе счисления.</returns>
         internal static string ToHexString(int x)
         {
-            /*
-                У метода ToString числовых типов есть перегрузка, которая принимает строку с одним из заданного набора форматов.
-                В студии дается хорошая и понятная подсказка с этим набором форматов, в других же IDE скорее всего такого не будет, и придется погуглить форматы.
-            */
-            throw new NotImplementedException();
+            return x.ToString("x");
         }
 
-        /*
-            Закончил? Переходи в FloatNumbers.cs
-        */
     }
 }
