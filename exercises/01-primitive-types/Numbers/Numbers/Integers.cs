@@ -67,9 +67,10 @@ namespace Numbers
                 Если спал на лекции, то тут придется погуглить, сорри.
                 И заодно подумай какой режим выставлен по умолчанию. Почему. И почему категорически нельзя надеяться на режим по умолчанию.
             */
-            checked {
-				return x * x * x;
-			}
+            checked
+            {
+                return x * x * x;
+            }
         }
 
         /// <summary>
@@ -78,9 +79,10 @@ namespace Numbers
         internal static int CubeWithoutOverflowCheck(int x)
         {
             // если сделал предыдущие, то с этим уже должно быть понятно.
-            unchecked {
-				return x * x * x;
-			}
+            unchecked
+            {
+                return x * x * x;
+            }
         }
 
         /// <summary>
