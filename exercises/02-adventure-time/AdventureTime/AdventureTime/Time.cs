@@ -202,8 +202,8 @@ namespace AdventureTime
                 ниже ты найдешь готовый метод GetZonedTime. Просто посмотри на него (можешь даже посмотреть методы и свойства типа TimeZoneInfo, если интересно) и воспользуйся им для вычисления правильного времени
                 "отбытия" и "прибытия" наших героев. Затем посчитай длительность путешествия. Также даны правильные идентификаторы зон.
             */
-            var moscowZoneId = TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time");
-            var londonZoneId = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
+            const string moscowZoneId = "Russian Standard Time";
+            const string londonZoneId = "GMT Standard Time";
 
             throw new NotImplementedException();
         }
@@ -216,8 +216,8 @@ namespace AdventureTime
             /*
                 Реши по аналогии с предыдущим методом и проверь, что оба метода действительно возвращают одно и то же время (и что оно правильное).
             */
-            var moscowZoneId = TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time");
-            var londonZoneId = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
+            const string moscowZoneId = "Russian Standard Time";
+            const string londonZoneId = "GMT Standard Time";
             throw new NotImplementedException();
         }
 
