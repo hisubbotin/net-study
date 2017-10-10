@@ -3,6 +3,8 @@
 - Система выставления [оценок](course-2017-1/readme.md)
 - Посещаемость [студентов](course-2017-1/attendance.md)
 - Список [заданий](exercises/exercises.md)
+- Таблица [успеваемости](course-2017-1/performance-table.md)
+- Гайд по воркфлоу в [git+github](exercises/git-help.md).
 
 ---
 
@@ -14,13 +16,36 @@
   - [.NET Native](course/1-net.md#net-native)
   - [IDE](course/1-net.md#ide)
   - [Nuget](course/1-net.md#nuget)
-- 2 Типы данных, значимые типы
-  - Ссылочные / значимые типы
-  - System.Object
-  - Базовые типы, enum, decimal, datetime, timespan
-  - Struct
-  - Базовые операции и операторы
-- 3 Классы
+- 2 [Types](course/2-types.md#overview)
+  - [Namespaces](course/2-types.md#namespaces)
+  - [Primitive types](course/2-types.md#primitive-types)
+    - [Integers](course/2-types.md#integers)
+    - [Float numbers](course/2-types.md#float-numbers)
+    - [Other common types](course/2-types.md#other-common-types)
+  - [Операторы](course/2-types.md#Операторы)
+    - [Арифметические](course/2-types.md#Арифметические)
+    - [Поразрядные](course/2-types.md#Поразрядные)
+    - [Операторы с присваиванием](course/2-types.md#Операторы-с-присваиванием)
+    - [Логические операторы](course/2-types.md#Логические-операторы)
+    - [Ternary operator](course/2-types.md#ternary-operator)
+    - [Null coalescing operator](course/2-types.md#null-coalescing-operator)
+    - [Null conditional operator](course/2-types.md#null-conditional-operator)
+  - [Контроль переполнения](course/2-types.md#Контроль-переполнения)
+  - [Приведение типов](course/2-types.md#Приведение-типов)
+  - [Ссылочные и значимые типы](course/2-types.md#Ссылочные-и-значимые-типы)
+    - [Stack & Heap](course/2-types.md#stack--heap)
+    - [Referenced VS Value types](course/2-types.md#referenced-vs-value-types)
+    - [System.Object](course/2-types.md#systemobject)
+- 3 [Value types](course/3-value-types.md#value-types)
+  - [Struct](course/3-value-types.md#struct)
+  - [Nullable](course/3-value-types.md#nullable)
+  - [Guid](course/3-value-types.md#guid)
+  - [Dates, times](course/3-value-types.md#dates-times)
+    - [DateTime](course/3-value-types.md#datetime)
+    - [DateTimeOffset](course/3-value-types.md#datetimeoffset)
+  - [Enum](course/3-value-types.md#enum)
+    - [Enum Flags](course/3-value-types.md#enum-flags)
+- 4 Классы
   - Конструкторы
   - Модификаторы доступа
   - Модификаторы типов: static, abstract, partial, sealed
@@ -34,50 +59,50 @@
     - Алгоритм, GC
     - Финализаторы
     - Внешние ресурсы, IDisposable pattern
-- 4 Строки
+- 5 Строки
   - Символы и строки
   - Создание, преобразование строк. Класс StringBuilder
   - Кодировки, преобразование строк в байт
-- 5 Управление программой
+- 6 Управление программой
   - Циклы, IEnumerable, yield
   - Условные операторы
-- 6 Коллекции
+- 7 Коллекции
   - Типы коллекций и различия между ними
-- 7 Делегаты и события
+- 8 Делегаты и события
   - Делегаты и обобщенные делегаты, лямбда выражения
   - События
   - Замыкания
-- 8 LINQ
+- 9 LINQ
   - Отложенные и неотложенные запросы
   - Стандартный и Query Expressions синтакис запросов
-- 9 Обработка ошибок
+- 10 Обработка ошибок
   - Exception
   - throw / try / catch / finally
   - Debug / Trace
-- 10 Reflection
-- 11 Многопоточность и ассинхронность
+- 11 Reflection
+- 12 Многопоточность и ассинхронность
   - Проблемы многопоточности
   - Примитивы синхронизации
   - Thread / Threadpool
   - TPL. Класс Task, Continuation, Cancellation
   - async / await, SyncronizationContext
-- 12 Сериализация данных
+- 13 Сериализация данных
   - JSON
   - XML
-- 13 Ввод / вывод
+- 14 Ввод / вывод
   - Потоки
   - Чтение и запись текстовой информации
   - Работа с файловой системой. System.IO
-- 14 Работа с базами данных
+- 15 Работа с базами данных
   - ADO.Net
   - Entity Framework
   - Simple mapper: dapper, linq2db
-- 15 Принципы и паттерны проектирования
+- 16 Принципы и паттерны проектирования
   - SOLID
   - Связь классов: наследование, ассоциация, композиция, агрегация
   - Dependency Injection, IOC, управление зависимостями
   - Тестируемость приложения, unit-test, Moq
   - Паттерны: Singleton, Factory, Strategy, Facade, Repository
-- 16 Работа в web
+- 17 Работа в web
   - Http в .Net, класс HttpClient
   - ASP.Net MVC Core
