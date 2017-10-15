@@ -85,7 +85,7 @@ namespace AdventureTime
         public static DateTime AddTenSeconds(DateTime dt)
         {
             // здесь воспользуйся методами самого объекта и заодно посмотри какие еще похожие есть
-            return dt.Add(TimeSpan.FromSeconds(10));
+            return dt.AddSeconds(10);
         }
 
         /// <summary>
@@ -124,7 +124,7 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            return TimeSpan.FromDays(3 * 30).Minutes;
+            return (int) TimeSpan.FromDays(3 * 30).TotalMinutes;
         }
 
         #region Adventure time saga
@@ -144,8 +144,8 @@ namespace AdventureTime
                 Держи, заготовочку для копипасты:
                     - 2010, 3, 28, 2, 15, 0
             */
-            return (int) (new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(0)).UtcDateTime -
-                          new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(3)).UtcDateTime).TotalMinutes;
+            return (int) (new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(0)) -
+                          new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(3))).TotalMinutes;
         }
 
         /// <summary>
@@ -163,8 +163,8 @@ namespace AdventureTime
                     - 2010, 3, 28, 3, 15, 0
                     - 2010, 3, 28, 1, 15, 0
             */
-            return (int) (new DateTimeOffset(2010, 3, 28, 1, 15, 0, TimeSpan.FromHours(0)).UtcDateTime -
-                          new DateTimeOffset(2010, 3, 28, 3, 15, 0, TimeSpan.FromHours(3)).UtcDateTime).TotalMinutes;
+            return (int) (new DateTimeOffset(2010, 3, 28, 1, 15, 0, TimeSpan.FromHours(0)) -
+                          new DateTimeOffset(2010, 3, 28, 3, 15, 0, TimeSpan.FromHours(3))).TotalMinutes;
         }
 
         /// <summary>
@@ -179,8 +179,8 @@ namespace AdventureTime
                 На самом деле смещения таковы: Лондон +1 (BST - British Summer Time), Москва +4 (MSD - Moscow Daylight Time).
                 Давай теперь учтем правильное смещение. Я понимаю, что это очевидно, что результат не изменится, но тебе же не сложно скопипастить и просто поменять смещения?
             */
-            return (int) (new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(1)).UtcDateTime -
-                          new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(4)).UtcDateTime).TotalMinutes;
+            return (int) (new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(1)) -
+                          new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(4))).TotalMinutes;
         }
 
         // GetGenderSwappedAdventureTimeDurationInMinutes_ver1_FeelsSmarter опустим, там то же самое
@@ -279,7 +279,7 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            return person1Birthday.Date == person2Birthday.Date;
+            return (person1Birthday.Day == person2Birthday.Day && person1Birthday.Month == person2Birthday.Month);
         }
     }
 }
