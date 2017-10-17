@@ -222,6 +222,8 @@ foreach (var element in myList)
 
 ## Операторы
 
+[MSDN Операторы](https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/statements-expressions-operators/operators)
+
 ### Арифметические
 
 - Бинарные
