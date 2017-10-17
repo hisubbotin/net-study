@@ -1441,23 +1441,34 @@ public class ComplexResourceHolder : IDisposable
 {
     private IntPtr buffer; // unmanaged memory buffer
     private SafeHandle resource; // disposable handle to a resource
-    public ComplexResourceHolder() { this.buffer = ...; this.resource = ...  }
 
-    protected virtual void Dispose(bool disposing)
-    {
-        ReleaseBuffer(buffer); // release unmanaged memory
-        if (disposing)
-        { // release other disposable objects
-            if (resource!= null)
-                resource.Dispose();
-        }
-    }
+    private bool disposed = false; // Уже удален или еще нет
+
     public void Dispose()
     {
         Dispose(true);
         GC.SuppressFinalize(this);
     }
-    ~ ComplexResourceHolder() { Dispose(false); }
+
+    ~ ComplexResourceHolder()
+    {
+        Dispose(false);
+    }
+
+    protected virtual void Dispose(bool disposing)
+    {
+        if (disposed)
+            return;
+
+        ReleaseBuffer(buffer); // release unmanaged memory
+
+        if (disposing)
+        {
+            // release other disposable objects Here
+            if (resource!= null)
+                resource.Dispose();
+        }
+    }
 }
 ```
 
