@@ -44,64 +44,79 @@
     - [DateTimeOffset](course/3-value-types.md#datetimeoffset)
   - [Enum](course/3-value-types.md#enum)
     - [Enum Flags](course/3-value-types.md#enum-flags)
-- 4 Классы
-  - Конструкторы
-  - Модификаторы доступа
-  - Модификаторы типов: static, abstract, partial, sealed
-  - Наследование, полиморфизм, интерфейсы
-  - Перегрузка методов, операторов
-  - Аттрибуты
-  - Generic типы и методы, constraint
-  - Анонимные типы, dynamic
-  - Extension methods
-  - Сборка мусора:
-    - Алгоритм, GC
-    - Финализаторы
-    - Внешние ресурсы, IDisposable pattern
-- 5 Строки
+- 4 [Classes](#classes)
+  - [Members](#members)
+  - [Модификаторы доступа](#Модификаторы-доступа)
+  - [Конструкторы](#Конструкторы)
+  - [Methods](#methods)
+  - [Properties](#properties)
+  - [`readonly`](#readonly)
+  - [`const`](#const)
+  - [`static`](#static)
+  - [`partial`](#partial)
+  - [Наследование, полиморфизм, abstract, sealed](#Наследование-полиморфизм)
+  - [Interface](#interface)
+  - [Перегрузка операторов](#Перегрузка-операторов)
+    - [Перегрузка преобразований типов](#Перегрузка-преобразований-типов)
+  - [Extension methods](#extension-methods)
+  - [Аттрибуты](#Аттрибуты)
+- 5 [GC](#gc)
+  - [Сборка мусора](#Сборка-мусора)
+    - [Условия сборки](#Условия-сборки)
+    - [Управляемая куча](#Управляемая-куча)
+    - [Поколения](#Поколения)
+    - [Ephemeral generations](#ephemeral-generations)
+    - [Что происходит](#Что-происходит)
+    - [Большие объекты](#Большие-объекты)
+    - [Settings](#settings)
+    - [Методы GC](#Методы-gc)
+  - [Финализаторы](#Финализаторы)
+  - [Внешние ресурсы, Dispose](#Внешние-ресурсы-dispose)
+    - [IDisposable pattern](#idisposable-pattern)
+- 6 Строки
   - Символы и строки
   - Создание, преобразование строк. Класс StringBuilder
   - Кодировки, преобразование строк в байт
-- 6 Управление программой
+- 7 Управление программой
   - Циклы, IEnumerable, yield
   - Условные операторы
-- 7 Коллекции
+- 8 Коллекции
   - Типы коллекций и различия между ними
-- 8 Делегаты и события
+- 9 Делегаты и события
   - Делегаты и обобщенные делегаты, лямбда выражения
   - События
   - Замыкания
-- 9 LINQ
+- 10 LINQ
   - Отложенные и неотложенные запросы
   - Стандартный и Query Expressions синтакис запросов
-- 10 Обработка ошибок
+- 11 Обработка ошибок
   - Exception
   - throw / try / catch / finally
   - Debug / Trace
-- 11 Reflection
-- 12 Многопоточность и ассинхронность
+- 12 Reflection
+- 13 Многопоточность и ассинхронность
   - Проблемы многопоточности
   - Примитивы синхронизации
   - Thread / Threadpool
   - TPL. Класс Task, Continuation, Cancellation
   - async / await, SyncronizationContext
-- 13 Сериализация данных
+- 14 Сериализация данных
   - JSON
   - XML
-- 14 Ввод / вывод
+- 15 Ввод / вывод
   - Потоки
   - Чтение и запись текстовой информации
   - Работа с файловой системой. System.IO
-- 15 Работа с базами данных
+- 16 Работа с базами данных
   - ADO.Net
   - Entity Framework
   - Simple mapper: dapper, linq2db
-- 16 Принципы и паттерны проектирования
+- 17 Принципы и паттерны проектирования
   - SOLID
   - Связь классов: наследование, ассоциация, композиция, агрегация
   - Dependency Injection, IOC, управление зависимостями
   - Тестируемость приложения, unit-test, Moq
   - Паттерны: Singleton, Factory, Strategy, Facade, Repository
-- 17 Работа в web
+- 18 Работа в web
   - Http в .Net, класс HttpClient
   - ASP.Net MVC Core
