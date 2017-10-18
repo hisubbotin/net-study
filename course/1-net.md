@@ -3,12 +3,12 @@
 <!-- TOC -->
 
 - [.Net](#net)
-  - [Литература](#литература)
-  - [Использование и применение](#использование-и-применение)
-    - [Применение](#применение)
+  - [Литература](#Литература)
+  - [Использование и применение](#Использование-и-применение)
+    - [Применение](#Применение)
   - [.NET Framework](#net-framework)
   - [CLR](#clr)
-  - [История версий](#история-версий)
+  - [История версий](#История-версий)
   - [.NET Core](#net-core)
     - [Command-line interface tools](#command-line-interface-tools)
   - [.NET Standard](#net-standard)
@@ -18,6 +18,8 @@
 
 <!-- /TOC -->
 
+<div style="page-break-after: always;"></div>
+
 ## Литература
 
 - [.NET Documentation](https://docs.microsoft.com/en-us/dotnet/)
@@ -26,7 +28,7 @@
 - Andrew Troelsen, C# 6.0 and the .NET 4.6 Framework (Саый низкий порог вхождения в изучение C#)
 - Сергей Тепляков, [Набор доступных статей про принципам проектирования](http://sergeyteplyakov.blogspot.ru/2013/10/articles.html), книга "Паттерны проектирования на платформе .NET"
 
-<div style="page-break-after: always;"></div> 
+<div style="page-break-after: always;"></div>
 
 ## Использование и применение
 
@@ -49,6 +51,8 @@
 - Высочайшая скорость разработки новых фреймворков
 
 [Java vs C# Stackoverflow](https://stackoverflow.com/questions/610199/the-art-of-programming-java-vs-c-sharp)
+
+<div style="page-break-after: always;"></div>
 
 ### Применение
 
