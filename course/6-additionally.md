@@ -2,15 +2,22 @@
 
 <!-- TOC -->
 
-- [Generic](#generic)
-  - [Generic типы и методы, constraint](#generic-типы-и-методы-constraint)
+- [Additionally](#additionally)
+  - [Generic](#generic)
+    - [`default`](#default)
+    - [Ограничения обобщений](#ограничения-обобщений)
+    - [Наследования и реализация обобщенных типов](#наследования-и-реализация-обобщенных-типов)
+  - [Some Interfaces](#some-interfaces)
+    - [Ковариантность](#ковариантность)
+    - [Контрвариантность](#контрвариантность)
+  - [Equals](#equals)
   - [Анонимные типы, dynamic](#анонимные-типы-dynamic)
 
 <!-- /TOC -->
 
 <div style="page-break-after: always;"></div>
 
-## Generic типы и методы, constraint
+## Generic
 
 ```cs
 class Element
@@ -43,6 +50,29 @@ string key2 = another.Id;
 
 <div style="page-break-after: always;"></div>
 
+Если надо задать несколько типов:
+
+```cs
+class Element<TKey, TValue>
+{
+    public TKey Key { get; set; }
+    public TValue Value { get; set; }
+}
+```
+
+Если хочется обобщить метод:
+
+```cs
+public static void WriteToLog<T>(T x)
+{
+    ILogger.Log(x);
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+### `default`
+
 - `default` используется для получения дефолтного значения в Generic типах/методах, поскольку null просто так получить не можем (для значимых)
 - для ссылочных возвращает `null`
 - для значимых 0 (инициализированное нулями значение)
@@ -60,26 +90,17 @@ class Element<T>
 Element<string> element = new Element("some text");
 ```
 
-<div style="page-break-after: always;"></div>
+### Ограничения обобщений
 
-Если надо задать несколько типов
+### Наследования и реализация обобщенных типов
 
-```cs
-class Element<TKey, TValue>
-{
-    public TKey Key { get; set; }
-    public TValue Value { get; set; }
-}
-```
+## Some Interfaces
 
-Если хочется обобщить метод
+### Ковариантность
 
-```cs
-public static void WriteToLog<T>(T x)
-{
-    ILogger.Log(x);
-}
-```
+### Контрвариантность
+
+## Equals
 
 ## Анонимные типы, dynamic
 

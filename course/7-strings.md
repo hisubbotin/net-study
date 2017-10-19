@@ -3,7 +3,9 @@
 <!-- TOC -->
 
 - [Strings](#strings)
-  - [Символы и строки](#символы-и-строки)
+  - [Char](#char)
+    - [Char methods](#char-methods)
+  - [String](#string)
   - [Создание, преобразование строк. Класс StringBuilder](#создание-преобразование-строк-класс-stringbuilder)
   - [Кодировки, преобразование строк в байт](#кодировки-преобразование-строк-в-байт)
 
@@ -11,9 +13,7 @@
 
 <div style="page-break-after: always;"></div>
 
-## Символы и строки
-
-### Char
+## Char
 
 [сhar](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/char) - 16 bite символ [UTF-16](https://en.wikipedia.org/wiki/UTF-16)
 
@@ -35,7 +35,7 @@ chars[3] = '\u0058';   // Unicode
 
 <div style="page-break-after: always;"></div>
 
-Методы работы с символами:
+### Char methods
 
 ```cs
 char chA = 'A', ch1 = '1';
@@ -71,7 +71,7 @@ string strng = new String(chars);
 sw.WriteLine(strng);                // ä
 ```
 
-### String
+## String
 
 Строка - последовательная коллекция `char`
 
