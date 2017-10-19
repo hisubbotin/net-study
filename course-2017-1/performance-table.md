@@ -8,6 +8,7 @@
 
 1. Primitive Types: 10.10
 1. Adventure Time: 24.10
+1. Boring Vector: 02.11
 
 ## КЛ
 
