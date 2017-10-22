@@ -16,7 +16,7 @@ namespace Numbers
         internal static bool IsNaN(double d)
         {
             // Подсказка: по аналогии с константами типа int, у типа double тоже есть свой набор констант.
-            return double.IsNaN(d);
+            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -28,23 +28,20 @@ namespace Numbers
                 Необходимо вернуть значение, не используя непосредственно саму константу.
                 Для этого подумай, какой смысл в себе несет эта константа и где бы она могла стать результатом операции или вычисления функции.
             */
-            return 0 / (double)0;
+            throw new NotImplementedException();
         }
 
         /// <summary>
         /// Возвращает результат сравнения двух вещественнозначных чисел.
         /// </summary>
         /// <returns>-1 - первое меньше второго, 0 - значения равны, 1 - первое больше второго.</returns>
-        internal static int Compare(double first, double second, double eps)
+        internal static int Compare(/* дополни сигнатуру метода как считаешь правильным */)
         {
             /*
                 Подумай, почему это задание дано в части про вещественнозначные числа. И почему не дана полная сигнатура метода.
                 Если сходу идей нет, перестань искать подвох и просто реализуй дословно. Теперь еще раз посмотри на код и подумай в чем может быть проблема, сколько должно быть аргументов.
             */
-            if (Math.Abs(second - first) < eps) {
-                return 0;
-            }
-            return second - first > 0 ? -1 : 1;
+            throw new NotImplementedException();
         }
 
         // и все?!! О_о

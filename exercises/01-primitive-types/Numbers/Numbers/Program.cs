@@ -16,7 +16,9 @@ namespace Numbers
     {
         private static void Main()
         {
-            Console.WriteLine(FloatNumbers.Compare(1, 2, 0.1));
+            // твои бро: Console.WriteLine и Console.ReadLine
+
+            Console.WriteLine("Hello World!");
         }
     }
 }
