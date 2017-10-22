@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("BoringVector.Tests")]
+
 
 namespace BoringVector
 {
@@ -14,7 +18,15 @@ namespace BoringVector
             Vector задается парой вещественных координат X и Y.
         */
 
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
 
+        public double X { get; }
+        public double Y { get; }
+        
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
                 - квадрат длины
@@ -26,28 +38,36 @@ namespace BoringVector
 
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+        
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
+        
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(k * X, k * Y);
         }
+        
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+        
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+        public override string ToString()
+        {
+            return $"({X}; {Y})";
+        }
 
         #region operators
 
@@ -57,6 +77,42 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+
+        public static Vector operator + (Vector v, Vector u)
+        {
+            return v.Add(u);
+        }
+
+        public static Vector operator - (Vector v, Vector u)
+        {
+            return new Vector(v.X - u.X, v.Y - u.Y);
+        }
+        
+        public static Vector operator * (double k, Vector v)
+        {
+            return v.Scale(k);
+        }
+        
+        public static Vector operator * (Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+        
+        public static Vector operator / (Vector v, double k)
+        {
+            // (±X; ±Y) / 0 => (±Inf, ±Inf)
+            return v.Scale(1.0 / k);
+        }
+        
+        public static Vector operator + (Vector v)
+        {
+            return v;
+        }
+
+        public static Vector operator - (Vector v)
+        {
+            return -1.0 * v;
+        }
 
         #endregion
     }
