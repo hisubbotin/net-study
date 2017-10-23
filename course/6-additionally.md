@@ -4,6 +4,7 @@
 
 - [Additionally](#additionally)
   - [Generic](#generic)
+    - [Generic methods](#generic-methods)
     - [Open / Closed constructed types](#open--closed-constructed-types)
     - [Обобщения при наследовании](#обобщения-при-наследовании)
     - [Generic Interface](#generic-interface)
@@ -81,13 +82,25 @@ class Element<TKey, TValue>
 }
 ```
 
+### Generic methods
+
 Если хочется обобщить только метод:
 
 ```cs
-public static void WriteToLog<T>(T x)
+static void Swap<T>(ref T left, ref T right)
 {
-    ILogger.Log(x);
+    T temp;
+    temp = left;
+    left = right;
+    right = temp;
 }
+```
+
+```cs
+// Можно перегружать
+void DoWork() { }
+void DoWork<T>() { }
+void DoWork<T, U>() { }
 ```
 
 <div style="page-break-after: always;"></div>
@@ -150,11 +163,11 @@ void Swap(List<int> list1, List<int> list2)
 class BaseNode { }
 class BaseNodeGeneric<T> { }
 
-class NodeConcrete<T> : BaseNode { }        // concrete type
+class NodeConcrete<T> : BaseNode { }            // concrete type
 
-class NodeClosed<T> : BaseNodeGeneric<int> { } //closed constructed type
+class NodeClosed<T> : BaseNodeGeneric<int> { }  // closed constructed type
 
-class NodeOpen<T> : BaseNodeGeneric<T> { }  //open constructed type
+class NodeOpen<T> : BaseNodeGeneric<T> { }      // open constructed type
 ```
 
 <div style="page-break-after: always;"></div>
@@ -179,7 +192,7 @@ o = Activator.CreateInstance(typeof(List<string>)); // Создастся
 - Для каждого closed constructed type создается отдельный объект, что увеличивает рабочий размер приложения
 - Статические поля для каждого такого объекта будут разными
 - Статический конструктор (он же без параметров) будет вызван один на всех
-- Для всех ссылочных таких типов CLR генерирует один код, что ускоряет ситуацию
+- Для всех ссылочных таких типов CLR компилирует один код, что ускоряет ситуацию
 
 ```cs
 internal sealed class GenericTypeThatRequiresAnEnum<T>
