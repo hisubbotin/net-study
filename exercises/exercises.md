@@ -1,5 +1,25 @@
 # Exercises
 
+<!-- TOC -->
+
+- [Exercises](#exercises)
+  - [Цель заданий](#цель-заданий)
+  - [Code of conduct](#code-of-conduct)
+  - [Git + GitHub workflow](#git--github-workflow)
+  - [01. May the primitive types be with you](#01-may-the-primitive-types-be-with-you)
+  - [02. What time is it? Adventure Time!](#02-what-time-is-it-adventure-time)
+  - [04. Boring vector](#04-boring-vector)
+  - [03. Go home, Fibonacci, you're drunk](#03-go-home-fibonacci-youre-drunk)
+  - [05. Here's my `T` value so call me `Maybe<T>`](#05-heres-my-t-value-so-call-me-maybet)
+  - [06. The primitive types strikes back](#06-the-primitive-types-strikes-back)
+  - [07. The beginning of Broken Telephone](#07-the-beginning-of-broken-telephone)
+  - [08. String building benchmark](#08-string-building-benchmark)
+  - [09. Broken Telephone. Dark knight](#09-broken-telephone-dark-knight)
+  - [10. Reflection](#10-reflection)
+  - [11. Web api](#11-web-api)
+
+<!-- /TOC -->
+
 ## Цель заданий
 
 Первые 10 заданий предполагаются достаточно простыми и направлены на то, чтобы максимально полно покрыть базовые части фреймворка. Мы старательно избегаем задач на алгоритмы и прочие зубодробительные штуки, чтобы вы полностью сконцентрировались на самом языке, фреймворке и их возможностях.
@@ -16,7 +36,7 @@
 
 Гайд по тому, как и где делать задания, лежит [здесь](git-help.md).
 
-## 1. May the primitive types be with you
+## 01. May the primitive types be with you
 
 Tags: primitive types, numbers, operations, checked/unchecked arithmetics, number formatting and parsing, console.
 
@@ -30,6 +50,25 @@ Tags: primitive types, numbers, operations, checked/unchecked arithmetics, numbe
 
 Инструкция лежит в [01-primitive-types/01-primitive-types.md](01-primitive-types/01-primitive-types.md).
 
+## 02. What time is it? Adventure Time!
+
+Tags: datetime, datetime.kind, utc, timezone, timezoneinfo, timespan, datetimeoffset, noda time, time formatting and parsing.
+
+В данном задании вы познакомитесь с:
+
+- типами данных для базовой работы со временем,
+- операциями над ними,
+- чтением дат и отрезков времени из строки и форматированием их обратно в строку,
+- проблемами, связанными со временем.
+
+Инструкция лежит в [02-adventure-time/02-adventure-time.md](02-adventure-time/02-adventure-time.md).
+
+## 04. Boring vector
+
+Tags: struct, operator overloading, extension methods, xml documentation comments, unit-testing.
+
+Инструкция лежит в [04-boring-vector/04-boring-vector.md](04-boring-vector/04-boring-vector.md).
+
 ---
 ---
 ---
@@ -37,47 +76,32 @@ Tags: primitive types, numbers, operations, checked/unchecked arithmetics, numbe
 
 Ниже еще не готово
 
-## 2. What time is it? Adventure Time!
 
-Tags: datetime, datetime.kind, utc, timezone, timespan, datetimeoffset, time formatting and parsing.
-
-В данном задании вы познакомитесь с:
-
-- типами данных для базовой работы со временем,
-- операциями над ними,
-- чтением дат и отрезков времени из строки и форматированием их обратно в строку,
-- некоторыми проблемами, связанными со временем.
-
-Инструкция лежит в [02-adventure-time/02-adventure-time.md](02-adventure-time/02-adventure-time.md).
-
-## 3. Go home, Fibonacci, you're drunk
+## 03. Go home, Fibonacci, you're drunk
 
 Collections, Enumerables, lambdas.
 
-## 4. 2-dimensional vector
 
-Structs, operator overloading, extension methods, unit-testing.
-
-## 5. Here's my `T` value so call me `Maybe<T>`
+## 05. Here's my `T` value so call me `Maybe<T>`
 
 Generics, extension methods.
 
-## 6. The primitive types strikes back
+## 06. The primitive types strikes back
 
 - Culture info with primitive types,
 - Enum.HasFlag benchmark
 
 Enums, flag enums, boxing overhead.
 
-## 7. The beginning of Broken Telephone
+## 07. The beginning of Broken Telephone
 
 String modifiers, unicode categories.
 
-## 8. String building benchmark
+## 08. String building benchmark
 
 String.Join, string.+=, StringBuilder.
 
-## 9. Broken Telephone. Dark knight
+## 09. Broken Telephone. Dark knight
 
 Complex task using #3, #5, #7 exercises, file/archive I/O, async, high-order functions
 

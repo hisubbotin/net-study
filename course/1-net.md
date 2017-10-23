@@ -1,6 +1,24 @@
-﻿## .Net
+﻿# .Net
 
-### Литература
+<!-- TOC -->
+
+- [.Net](#net)
+  - [Литература](#литература)
+  - [Использование и применение](#использование-и-применение)
+    - [Применение](#применение)
+  - [.NET Framework](#net-framework)
+  - [CLR](#clr)
+  - [История версий](#история-версий)
+  - [.NET Core](#net-core)
+    - [Command-line interface tools](#command-line-interface-tools)
+  - [.NET Standard](#net-standard)
+  - [.NET Native](#net-native)
+  - [IDE](#ide)
+  - [Nuget](#nuget)
+
+<!-- /TOC -->
+
+## Литература
 
 - [.NET Documentation](https://docs.microsoft.com/en-us/dotnet/)
 - Jeffrey Richter, CLR Via C# (4th edition)
@@ -10,7 +28,7 @@
 
 <div style="page-break-after: always;"></div> 
 
-### Использование и применение
+## Использование и применение
 
 - Высокоуровневый ооп язык
 - Строгая типизация
@@ -32,15 +50,15 @@
 
 [Java vs C# Stackoverflow](https://stackoverflow.com/questions/610199/the-art-of-programming-java-vs-c-sharp)
 
-#### Применение
+### Применение
 
 - ServerSide
 - GameDev (Unity, ServerSide, etc)
 - UWP / WPF / WinForms Application
 
-<div style="page-break-after: always;"></div> 
+<div style="page-break-after: always;"></div>
 
-### .NET Framework
+## .NET Framework
 
 ![DotNet.svg](pics/DotNet.svg.png)
 
@@ -50,11 +68,11 @@
 
 ![Standard support](pics/compiler-pipeline-lang-svc.png)
 
-<div style="page-break-after: always;"></div> 
+<div style="page-break-after: always;"></div>
 
 Пример кода CIL языка (IL), который получается:
 
-```cil
+```cs
 .class public Foo
 {
     .method public static int32 Add(int32, int32) cil managed
@@ -70,13 +88,13 @@
 
 <div style="page-break-after: always;"></div>
 
-```cil
+```cs
 int r = Foo.Add(2, 3);    // 5
 ```
 
 In CIL:
 
-```cil
+```cs
 ldc.i4.2
 ldc.i4.3
 call int32 Foo::Add(int32, int32)
@@ -85,7 +103,7 @@ stloc.0
 
 <div style="page-break-after: always;"></div>
 
-```cil
+```cs
 .class public Car
 {
     .method public specialname rtspecialname instance void .ctor(int32, int32) cil managed
@@ -114,7 +132,7 @@ Microsoft заложила возможность мультиплатформе
 [wiki-il]:https://en.wikipedia.org/wiki/Common_Intermediate_Language
 [wiki-cli]:https://en.wikipedia.org/wiki/Common_Language_Infrastructure
 
-### CLR
+## CLR
 
 [CLR](https://docs.microsoft.com/en-us/dotnet/standard/clr) - исполняющая среда для выполнения CIL. JIT компилятор - часть CLR.
 
@@ -126,7 +144,7 @@ Stroustrup: "On the difficult and controversial question of what the CLI binding
 
 <div style="page-break-after: always;"></div> 
 
-### История версий
+## История версий
 
 | C#                  | C# 1.0  | C# 2.0                                   | C# 3.0                                   | C# 4.0                                  | C# 5.0  | C# 6.0                 | C# 7.0                 |
 | --------------------| ------- | ---------------------------------------- | ---------------------------------------- | --------------------------------------- | ------- | ---------------------- | ---------------------- |
@@ -145,11 +163,12 @@ Stroustrup: "On the difficult and controversial question of what the CLI binding
 - [.NET Core Roadmap & Supported Platforms](https://github.com/dotnet/core/blob/master/roadmap.md)
 - [C#7.0 with .Net Framework 4.0/4.5](https://stackoverflow.com/questions/42482520/does-c-sharp-7-0-work-for-net-4-5)
 
-<div style="page-break-after: always;"></div> 
+<div style="page-break-after: always;"></div>
 
-### .NET Core
+## .NET Core
 
 [Платформа](https://docs.microsoft.com/en-us/dotnet/core/) для разработки:
+
 - Кроcсплатформенная
 - Все CLI комманды могут быть реализованы через командную строку command-line interface (CLI) tools
 - OpenSource: MIT + Apache2.0
@@ -168,11 +187,12 @@ MS не стремится сделать вес фреймворка меньш
 
 <div style="page-break-after: always;"></div>
 
-#### Command-line interface tools
+### Command-line interface tools
 
 Портировали MSBuild на .NET Core и добавили в него новые методы.
 
-Базовые [CLI команды](https://docs.microsoft.com/en-us/dotnet/core/tools/?tabs=netcore2x)
+Базовые [CLI команды](https://docs.microsoft.com/en-us/dotnet/core/tools/?tabs=netcore2x):
+
 - new
 - restore
 - run
@@ -182,13 +202,14 @@ MS не стремится сделать вес фреймворка меньш
 - pack
 
 Примеры вызова через командную строку:
+
 - `dotnet restore`
 - `dotnet <command> --help`
 - `dotnet publish -o pub -c Release`
 
 <div style="page-break-after: always;"></div>
 
-### .NET Standard
+## .NET Standard
 
 Microsoft управляет несколькими .NET фреймворками: .NET Framework, .NET Core, Xamarin, etc. При этом ядро фреймворков начало расходиться и нужно было реализовать возможность писать портируемый код между платформами. 
 
@@ -206,7 +227,7 @@ Microsoft управляет несколькими .NET фреймворкам�
 
 <div style="page-break-after: always;"></div>
 
-### .NET Native
+## .NET Native
 
 [Технология](https://docs.microsoft.com/en-us/dotnet/framework/net-native/) компиляции в нативный код ahead-of-time. 
 Раньше для этого использовался [ngen][ngen-link], но у них есть существенные [отличия][native-comp] (не использует CLR и JIT вообще, вместо него обрезанный, отрефакторенный runtime).
@@ -221,7 +242,7 @@ Microsoft управляет несколькими .NET фреймворкам�
 
 <div style="page-break-after: always;"></div>
 
-### IDE
+## IDE
 
 - [Visual Studio 2017](https://www.visualstudio.com/ru/vs/) + [Resharper](https://www.jetbrains.com/resharper/)
 - [Visual Studio Code](https://code.visualstudio.com)
@@ -245,9 +266,7 @@ Visual Studio Code
 
 ![Visual Studio Code](pics/visualstudiocode.png)
 
-
 <div style="page-break-after: always;"></div>
-
 
 LINQPad 5
 
@@ -255,8 +274,7 @@ LINQPad 5
 
 <div style="page-break-after: always;"></div>
 
-
-### Nuget
+## Nuget
 
 Система публикации сборок.
 
@@ -265,6 +283,7 @@ LINQPad 5
 <div style="page-break-after: always;"></div>
 
 В Visual Studio:
+
 - Tools -> Nuget Package Manager
 - Right click на проекте -> Manage Nuget Packages
 
