@@ -166,6 +166,7 @@ Stroustrup: "On the difficult and controversial question of what the CLI binding
 - [.NET Framework Guide](https://docs.microsoft.com/en-us/dotnet/framework/)
 - [.NET Core Roadmap & Supported Platforms](https://github.com/dotnet/core/blob/master/roadmap.md)
 - [C#7.0 with .Net Framework 4.0/4.5](https://stackoverflow.com/questions/42482520/does-c-sharp-7-0-work-for-net-4-5)
+- [StackOverflow C# Versions](https://stackoverflow.com/questions/247621/what-are-the-correct-version-numbers-for-c?rq=1)
 
 <div style="page-break-after: always;"></div>
 
