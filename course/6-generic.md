@@ -1,9 +1,9 @@
-# Additionally
+# Generic
 
 <!-- TOC -->
 
-- [Additionally](#additionally)
-  - [Generic](#generic)
+- [Generic](#generic)
+  - [Geeneric](#geeneric)
     - [Generic methods](#generic-methods)
     - [Open / Closed constructed types](#open--closed-constructed-types)
     - [Обобщения при наследовании](#обобщения-при-наследовании)
@@ -17,17 +17,17 @@
       - [Приведение переменной обобщенного типа](#приведение-переменной-обобщенного-типа)
       - [Использование в качестве операндов](#использование-в-качестве-операндов)
     - [Рекомендации](#рекомендации)
-  - [Some Interfaces](#some-interfaces)
-    - [Ковариантность](#ковариантность)
-    - [Контрвариантность](#контрвариантность)
-  - [Equals](#equals)
-  - [Анонимные типы, dynamic](#анонимные-типы-dynamic)
+    - [Ковариантность и контрвариантность в интерфейсах](#ковариантность-и-контрвариантность-в-интерфейсах)
+  - [Tuple](#tuple)
+    - [Класс `System.Tuple`](#класс-systemtuple)
+    - [Tuple C# 7.0](#tuple-c-70)
+    - [Deconstructors](#deconstructors)
 
 <!-- /TOC -->
 
 <div style="page-break-after: always;"></div>
 
-## Generic
+## Geeneric
 
 Позволяют многократно использовать алгоритмы, создавая типизированные параметры.
 [MSDN](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/generics/)
@@ -81,6 +81,8 @@ class Element<TKey, TValue>
     public TValue Value { get; set; }
 }
 ```
+
+<div style="page-break-after: always;"></div>
 
 ### Generic methods
 
@@ -477,14 +479,307 @@ public T Parse<T>(string value) where T : struct, IComparable, IFormattable, ICo
 
 <div style="page-break-after: always;"></div>
 
-## Some Interfaces
+### Ковариантность и контрвариантность в интерфейсах
 
-### Ковариантность
+Параметры типы в обобщенных интерфейсах могут быть инвариантными, ковариантными, контрвариантными. [MSDN](https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/concepts/covariance-contravariance/), [SOF Eric Lippert Answet](https://stackoverflow.com/questions/2184551/difference-between-covariance-contra-variance)
+По умолчанию параметр тип инвариантен - его тип не может изменяться.
 
-### Контрвариантность
+- Ковариантность - аргумент тип можно преобразовать к одному из его базовых классов (`out`)
+- Контравариантность - можно преобразовать к производному от него (`in`)
 
-## Equals
+```cs
+// Covariance
+IEnumerable<string> strings = new List<string>();
+IEnumerable<object> objects = strings;
 
-## Анонимные типы, dynamic
+// Contravariance
+Action<object> actObject = SetObject; // static void SetObject(object o) { }
+Action<string> actString = actObject;
+
+Int32 Count(IEnumerable<Object> collection) { ... }
+Int32 c = Count(new[] { "Grant" });
+```
 
 <div style="page-break-after: always;"></div>
+
+Вариативность в стандартных интерфейсах:
+
+- `IEnumerable<T>` - T является ковариантным
+- `IEnumerator<T>` - T является ковариантным
+- `IQueryable<T>` - T является ковариантным
+- `IGrouping<TKey,TElement>` - TKey и TElement являются ковариантными
+- `IComparer<T>` - T является контравариантным
+- `IEqualityComparer<T>` - T является контравариантным
+- `IComparable<T>` - T является контравариантным
+
+Мне правда кажется, что запомнить это нереально и в практике никто не помнит, какая там вариативность у часто используемых интерфейсов
+
+<div style="page-break-after: always;"></div>
+
+```cs
+class BaseClass { }
+class DerivedClass : BaseClass { }
+
+class BaseComparer : IEqualityComparer<BaseClass>
+{
+    public int GetHashCode(BaseClass baseInstance)
+    {
+        return baseInstance.GetHashCode();
+    }
+    public bool Equals(BaseClass x, BaseClass y)
+    {
+        return x == y;
+    }
+}
+class Program
+{
+    static void Test()
+    {
+        IEqualityComparer<BaseClass> baseComparer = new BaseComparer();
+        IEqualityComparer<DerivedClass> childComparer = baseComparer;
+    }
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+- Параметры `ref` и `out` не могут быть вариантными
+- значимые типы не поддерживают вариативность
+
+```cs
+IEnumerable<DateTime> dts = new List<DateTime>();
+IEnumerable<object> objects = dts; // Нельзя! Со значимыми не работает
+```
+
+- Классы в любом случае инвариативны, даже при вариативном интерфейсе
+
+```cs
+List<Object> list = new List<String>();                 // Так нельзя
+IEnumerable<Object> listObjects = new List<String>();   // Так можно
+```
+
+<div style="page-break-after: always;"></div>
+
+- Ковариантность - обозначается ключевым словом `out`
+  - должен возвращать этот параметр
+  - не быть параметром методов или ограничителем
+
+```cs
+interface ICovariant<out R>
+{
+    R GetSomething();                   // Так можно
+    void SetSometing(R sampleArg);      // В качестве параметра нельзя!
+    void DoSomething<T>() where T : R;  // В качестве ограничительно тоже нельзя!
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+- контрвариантность - обозначается ключевым словом `in`
+  - можно использовать только в качестве аргументов метода
+  - можно использовать для универсальных ограничений
+
+```cs
+interface IContravariant<in A>
+{
+    void SetSomething(A sampleArg);     // Можно
+    void DoSomething<T>() where T : A;  // Можно
+    A GetSomething();                   // Нельзя!
+}
+
+interface IVariant<out R, in A>
+{
+    R GetSomething();
+    void SetSomething(A sampleArg);
+    R GetSetSometings(A sampleArg);
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+Реализация ковариативности:
+
+```cs
+interface ICovariant<out R>
+{
+    R GetSomething();
+}
+class SampleImplementation<R> : ICovariant<R>
+{
+    public R GetSomething()
+    {
+        return default(R);
+    }
+}
+
+ICovariant<Button> ibutton = new SampleImplementation<Button>();
+ICovariant<Object> iobj = ibutton;
+
+SampleImplementation<Button> button = new SampleImplementation<Button>();
+SampleImplementation<Object> obj = button; // Так нельзя!
+```
+
+<div style="page-break-after: always;"></div>
+
+При расширении интерфейсов надо явно задавать `in`/`out`, чтобы тип параметр не был инвариантным
+
+```cs
+interface ICovariant<out T> { }
+interface IInvariant<T> : ICovariant<T> { }
+interface IExtCovariant<out T> : ICovariant<T> { }
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+class Animal { }
+class Cat : Animal { }
+class Dog : Animal { }
+
+class Pets : IEnumerable<Cat>, IEnumerable<Dog> // IEnumerable<out T> is covariant
+{
+    IEnumerator<Cat> IEnumerable<Cat>.GetEnumerator()
+    {
+        Console.WriteLine("Cat");
+        return null;
+    }
+    IEnumerator IEnumerable.GetEnumerator() { return null; }
+    IEnumerator<Dog> IEnumerable<Dog>.GetEnumerator()
+    {
+        Console.WriteLine("Dog");
+        return null;
+    }
+}
+
+IEnumerable<Animal> pets = new Pets();
+pets.GetEnumerator(); // !! LUL WTF !! Ambiguity
+```
+
+<div style="page-break-after: always;"></div>
+
+## Tuple
+
+Есть два вида кортежей:
+
+1. Класс `System.Tuple`
+1. Класс `System.ValueTuple` - кортежи C# 7.0
+
+### Класс `System.Tuple`
+
+- Статический класс для генерации конкретных `Tuple<T1>`, `Tuple<T1, T2>`
+- System.Tuple - ссылочные типы
+- У всех конкреных классов кортежа переопределены методы Equals, GetHashCode
+- Immutable - все элементы Readonly
+
+```cs
+var test = new Tuple<int, int>(3, 33);
+Console.WriteLine("{0}, {1}", test.Item1, test.Item2);
+```
+
+```cs
+var test = new Tuple.Create(3, 33);
+Console.WriteLine("{0}, {1}", test.Item1, test.Item2);
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+Create<T1>(T1)
+Create<T1, T2>(T1, T2)
+Create<T1, T2, T3>(T1, T2, T3)
+Create<T1, T2, T3, T4>(T1, T2, T3, T4)
+Create<T1, T2, T3, T4, T5>(T1, T2, T3, T4, T5)
+Create<T1, T2, T3, T4, T5, T6>(T1, T2, T3, T4, T5, T6)
+Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6, T7)
+```
+
+<div style="page-break-after: always;"></div>
+
+### Tuple C# 7.0
+
+- Появились из этого [предложения](https://github.com/dotnet/roslyn/issues/347)
+- Компилируются в `System.ValueTuple`
+- Значимый тип, причем mutable [MSDN Blog](https://blogs.msdn.microsoft.com/mazhou/2017/05/26/c-7-series-part-1-value-tuples/), [SOF](https://stackoverflow.com/questions/41084411/whats-the-difference-between-system-valuetuple-and-system-tuple)
+
+```cs
+var tuple = (5, 10);
+Console.WriteLine(tuple.Item1); // 5
+Console.WriteLine(tuple.Item2); // 10
+
+(int, int) pair = (5, 10);
+(string, int, double) trinity = ("Tom", 25, 81.23);
+```
+
+<div style="page-break-after: always;"></div>
+
+Examples:
+
+```cs
+var tuple = (count:5, sum:10);
+Console.WriteLine(tuple.count); // 5
+Console.WriteLine(tuple.sum); // 10
+```
+
+```cs
+var (name, age) = ("Tom", 23);
+Console.WriteLine(name);    // Tom
+Console.WriteLine(age);     // 23
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+static void Main(string[] args)
+{
+    (int sum, int count) tuple = GetNamedValues(Enumerable.Range(0, 10));
+    Console.WriteLine(tuple.count);
+    Console.WriteLine(tuple.sum);
+}
+private static (int sum, int count) GetNamedValues(int[] numbers)
+{
+    var result = (sum:0, count: 0);
+    foreach (var value in numbers)
+    {
+        result.sum += value;
+        result.count++;
+    }
+    return result;
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+ValueTuple limitations
+
+```cs
+var person = (Name: "John", Last: "Smith");
+var result = JsonConvert.SerializeObject(person);
+
+Console.WriteLine(result);
+// {"Item1":"John","Item2":"Smith"}
+```
+
+- no reflection
+- no dynamic access to named elements
+- no razor usage
+
+<div style="page-break-after: always;"></div>
+
+### Deconstructors
+
+```cs
+public class Person
+{
+    public string Name => "John Smith";
+    public int Age => 43;
+    public void Deconstruct(out string name, out int age)
+    {
+        name = Name;
+        age = Age;
+    }
+}
+
+var person = new Person();
+var (name, age) = person;
+Console.WriteLine(name);    // John Smith
+```
