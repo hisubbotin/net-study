@@ -124,7 +124,8 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            return (int) TimeSpan.FromDays(3 * 30).TotalMinutes;
+            var today = new DateTime();
+            return (int) (today.AddMonths(3) - today).TotalMinutes;
         }
 
         #region Adventure time saga
@@ -279,7 +280,9 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            return (person1Birthday.Day == person2Birthday.Day && person1Birthday.Month == person2Birthday.Month);
+            var p1b = person1Birthday.ToUniversalTime();
+            var p2b = person2Birthday.ToUniversalTime();
+            return (p1b.Day == p2b.Day && p1b.Month == p2b.Month);
         }
     }
 }
