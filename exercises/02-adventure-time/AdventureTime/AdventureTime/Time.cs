@@ -137,7 +137,7 @@ namespace AdventureTime
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
             var time = new DateTime();
-            return (int)(time.AddMonths(3) - time).TotalHours;
+            return (int)(time.AddMonths(3) - time).TotalMinutes;
             //throw new NotImplementedException();
         }
 
