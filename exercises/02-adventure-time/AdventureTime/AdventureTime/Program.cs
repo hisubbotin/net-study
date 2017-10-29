@@ -53,7 +53,7 @@ namespace AdventureTime
 
             /* AreEqualBirthdays */
             Console.WriteLine(Time.AreEqualBirthdays(
-                DateTime.Now, Time.AddTenSeconds(DateTime.Now)
+                DateTime.Now, new DateTime(2015, 10, 29, 0, 0, 0)
                 ));
         }
     }
