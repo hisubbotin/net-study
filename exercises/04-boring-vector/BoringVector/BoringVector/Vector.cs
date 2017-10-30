@@ -54,14 +54,14 @@ namespace BoringVector
         /// </summary>
         /// <param name="v">Объект типа <see cref="Vector"/>, на который умножаем.</param>
         /// <returns>Величина типа <see cref="double"/> - скалярное произведение данного вектора и <paramref name="v"/>.</returns>
-        public double DotProduct(Vector v) => X * v.X + Y + v.Y;
+        public double DotProduct(Vector v) => X * v.X + Y * v.Y;
 
         /// <summary>
         /// Возвращает векторное произведение.
         /// </summary>
         /// <param name="v">Объект типа <see cref="Vector"/>, на который умножаем.</param>
         /// <returns>Величина типа <see cref="double"/> - площадь параллелограмма, образованного данным веткором и <paramref name="v"/>.</returns>
-        public double CrossProduct(Vector v) => X * v.Y - v.X - Y;
+        public double CrossProduct(Vector v) => X * v.Y - v.X * Y;
 
         /// <summary>
         /// Возвращает строковое представление вектора.
