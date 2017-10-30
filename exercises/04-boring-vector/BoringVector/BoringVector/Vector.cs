@@ -3,71 +3,64 @@
 namespace BoringVector
 {
     #region 1. Структура Vector
-
-    /*
-        Реализуй структуру Vector - см. комментарии внутри нее.
-    */
-
+    
+    /// <summary>
+    /// Двумерный вектор.
+    /// </summary>
     internal struct Vector
     {
-        /*
-            Vector задается парой вещественных координат X и Y.
-        */
+        /// <summary>
+        /// Координата x.
+        /// </summary>
+        public double X { get; set; }
+        /// <summary>
+        /// Координата y.
+        /// </summary>
+        public double Y { get; set; }
 
-
-        /*
-            На месте заглушек добавь реализацию базовых методов вектора:
-                - квадрат длины
-                - сумма векторов
-                - умножение на коэффициент
-                - скалярное произведение
-                - векторное произведение (= площадь параллелограмма)
-        */
-
-        public double SquareLength()
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        public Vector(double x, double y)
         {
-            throw new NotImplementedException();
-        }
-        public Vector Add(Vector v)
-        {
-            throw new NotImplementedException();
-        }
-        public Vector Scale(double k)
-        {
-            throw new NotImplementedException();
-        }
-        public double DotProduct(Vector v)
-        {
-            throw new NotImplementedException();
-        }
-        public double CrossProduct(Vector v)
-        {
-            throw new NotImplementedException();
+            X = x;
+            Y = y;
         }
 
-        /*
-            Переопредели ниже метод ToString - пусть выводит (X; Y)
-        */
+        public double SquareLength() => DotProduct(this);
+
+        public Vector Add(Vector v) => new Vector(X + v.X, Y + v.Y);
+
+        public Vector Scale(double k) => new Vector(k * X, k * Y);
+
+        public double DotProduct(Vector v) => X * v.X + Y + v.Y;
+
+        public double CrossProduct(Vector v) => X * v.Y - v.X - Y;
+
+        public override string ToString() => String.Format("({0}, {1})", X, Y);
 
         #region operators
+   
+        public static Vector operator +(Vector v, Vector u) => v.Add(u);
 
-        /*
-            Реализуй также следущие операторы (Vector v, u и double k):
-                - v + u, v - u
-                - k * v, v * k, v / k
-                - +v, -v
-        */
+        public static Vector operator -(Vector v, Vector u) => v + (-u);
+
+        public static Vector operator *(double k, Vector v) => v.Scale(k);
+
+        public static Vector operator *(Vector v, double k) => k * v;
+
+        public static Vector operator /(Vector v, double k) => (1 / k) * v;
+
+        public static Vector operator +(Vector v) => 1 * v;
+
+        public static Vector operator -(Vector v) => -1 * v;
 
         #endregion
     }
 
     #endregion
-
-    /*
-        Время отправиться в VectorExtensions.cs за новой порцией квестов, герой!
-        Как закончишь, возвращайся за щедрым вознаграждением!
-    */
-
 
     #region 3. Комментарии
 
