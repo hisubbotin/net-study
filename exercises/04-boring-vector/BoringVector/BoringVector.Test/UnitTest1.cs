@@ -1,4 +1,5 @@
 using System;
+using System.Runtime;
 using Xunit;
 
 namespace BoringVector.Test
@@ -7,6 +8,10 @@ namespace BoringVector.Test
     {
         internal static bool Equals(double one, double other)
         {
+            // ¬ключает в себ€ случаи различных Infinity
+            if (one == other)
+                return true;
+
             return Math.Abs(one - other) < VectorExtentions.Eps;
         }
 
@@ -43,6 +48,13 @@ namespace BoringVector.Test
             Vector v1 = new Vector(X1, Y1);
             Vector v2 = new Vector(X2, Y2);
             Assert.True(Equals(v1.GetAngleBetween(v2), v2.GetAngleBetween(v1)));
+        }
+
+        [Fact]
+        public void TestNothingDoingOperator()
+        {
+            var v = new Vector(1.2345, 2.34567);
+            Assert.True(Equals(v, +v));
         }
 
     }
