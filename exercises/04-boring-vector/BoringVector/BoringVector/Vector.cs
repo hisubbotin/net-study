@@ -16,6 +16,11 @@ namespace BoringVector
         public double X { get; private set; }
         public double Y { get; private set; }
 
+        /// <summary>
+        /// Конструктор класса <see cref="Vector"/>
+        /// </summary>
+        /// <param name="x">Число <see cref="double"/> -- координата x вектора</param>
+        /// <param name="y">Число <see cref="double"/> -- координата y вектора</param>
         public Vector(double x, double y)
         {
             X = x;
@@ -96,7 +101,7 @@ namespace BoringVector
         /// <summary>
         /// Оператор "бинарный минус" (разность двух векторов)
         /// </summary>
-        /// <param name="left">Объект <see cref="Vector"/>, </param>
+        /// <param name="left">Объект <see cref="Vector"/>, уменьшаемое</param>
         /// <param name="right">Объект <see cref="Vector"/>, вычитаемое</param>
         /// <returns>Новый объект <see cref="Vector"/>, разность</returns>
         public static Vector operator -(Vector left, Vector right)

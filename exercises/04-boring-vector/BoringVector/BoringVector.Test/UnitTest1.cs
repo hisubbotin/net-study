@@ -1,5 +1,5 @@
 using System;
-using System.Runtime;
+using System.Collections.Generic;
 using Xunit;
 
 namespace BoringVector.Test
@@ -28,7 +28,30 @@ namespace BoringVector.Test
         [InlineData(-1, 567.4, "(-1; 567,4)")]
         public void TestToString(double X, double Y, string result)
         {
-            Assert.True(Equals(result, new Vector(X, Y).ToString()));
+            Assert.Equal(result, new Vector(X, Y).ToString());
+        }
+
+        internal static IEnumerable<object[]> VectorAriphmetics()
+        {
+            yield return new object[] { new Vector(0, 0), new Vector(0, 0), new Vector(0, 0) };
+            yield return new object[] { new Vector(1, 2), new Vector(3, 4), new Vector(4, 6) };
+            yield return new object[] { new Vector(0.123, -0.123), new Vector(0.123, -0.123), new Vector(0.246, -0.246) };
+            yield return new object[] { new Vector(42, -100500), new Vector(-42, 100500), new Vector(0, 0) };
+        }
+
+
+        [Theory]
+        [MemberData(nameof(VectorAriphmetics))]
+        internal void TestAdd(Vector one, Vector other, Vector sum)
+        {
+            Assert.True(Equals(one + other, sum));
+        }
+
+        [Theory]
+        [MemberData(nameof(VectorAriphmetics))]
+        internal void TestMinus(Vector difference, Vector subtrahend, Vector minuend)
+        {
+            Assert.True(Equals(minuend - subtrahend, difference));
         }
 
 
