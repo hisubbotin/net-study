@@ -23,41 +23,84 @@ namespace BoringVector
                 - скалярное произведение
                 - векторное произведение (= площадь параллелограмма)
         */
+        public double X, Y;
 
+        public Vector(double X, double Y)
+        {
+            this.X = X;
+            this.Y = Y;
+        }
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return Math.Sqrt(Math.Pow(X, 2.0) + Math.Pow(X, 2.0));            
         }
+        // Предположу, что в методах, возвращающих вектор, текущий объект не должен изменяться, а возвращать новый. Типа чистые функции.
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(k*X, k*Y);
         }
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return Math.Abs(X * v.Y - Y * v.X);
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
 
+        override public string ToString() 
+        {
+            return String.Format("({0}; {1})", X, Y);
+        }
         #region operators
-
         /*
-            Реализуй также следущие операторы (Vector v, u и double k):
-                - v + u, v - u
-                - k * v, v * k, v / k
-                - +v, -v
-        */
+Реализуй также следущие операторы (Vector v, u и double k):
+- v + u, v - u
+- k * v, v * k, v / k
+- +v, -v
+*/
+        public static Vector operator+(Vector v, Vector u)
+        {
+            return new Vector(v.X + u.X, v.Y + u.Y);
+        }
 
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return new Vector(v.X - u.X, v.Y - u.Y);
+        }
+
+        public static Vector operator*(double k, Vector v)
+        {
+            return v.Scale(k);
+        }
+
+        public static Vector operator *(Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+
+        public static Vector operator /(Vector v, double k)
+        {
+            return new Vector(v.X / k, v.Y / k);
+        }
+
+        public static Vector operator +(Vector v)
+        {
+            return v;
+        }
+
+        public static Vector operator -(Vector v)
+        {
+            return new Vector(-v.X, -v.Y);
+        }
         #endregion
     }
 
