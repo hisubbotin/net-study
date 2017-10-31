@@ -74,50 +74,65 @@
   - [Финализаторы](course/5-gc.md#Финализаторы)
   - [Внешние ресурсы, Dispose](course/5-gc.md#Внешние-ресурсы-dispose)
     - [IDisposable pattern](course/5-gc.md#idisposable-pattern)
-- 6 Строки
-  - Символы и строки
-  - Создание, преобразование строк. Класс StringBuilder
-  - Кодировки, преобразование строк в байт
-- 7 Управление программой
+- 6 [Generic](course/6-generic.md#generic)
+  - Generic
+    - [Generic methods](course/6-generic.md#generic-methods)
+    - [Open / Closed constructed types](course/6-generic.md#open--closed-constructed-types)
+    - [Обобщения при наследовании](course/6-generic.md#Обобщения-при-наследовании)
+    - [Generic Interface / Delegate](course/6-generic.md#generic-interface)
+    - [Ограничения обобщений](course/6-generic.md#Ограничения-обобщений)
+    - [Работа с переменными обобщенного типа](course/6-generic.md#Работа-с-переменными-обобщенного-типа)
+    - [Рекомендации](course/6-generic.md#Рекомендации)
+    - [Ковариантность и контрвариантность в интерфейсах](course/6-generic.md#Ковариантность-и-контрвариантность-в-интерфейсах)
+  - [Tuple](course/6-generic.md#tuple)
+    - [Класс `System.Tuple`](course/6-generic.md#Класс-systemtuple)
+    - [Tuple C# 7.0](course/6-generic.md#tuple-c-70)
+    - [Deconstructors](course/6-generic.md#deconstructors)
+- 7 [Strings](course/7-strings.md#strings)
+  - [Char](course/7-strings.md#char)
+  - [String](course/7-strings.md#string)
+  - [Создание, преобразование строк. Класс StringBuilder](course/7-strings.md#Создание-преобразование-строк-класс-stringbuilder)
+  - [Кодировки, преобразование строк в байт](course/7-strings.md#Кодировки-преобразование-строк-в-байт)
+- 8 Управление программой
   - Циклы, IEnumerable, yield
   - Условные операторы
-- 8 Коллекции
+- 9 Коллекции
   - Типы коллекций и различия между ними
-- 9 Делегаты и события
+- 10 Делегаты и события
   - Делегаты и обобщенные делегаты, лямбда выражения
   - События
   - Замыкания
-- 10 LINQ
+- 11 LINQ
   - Отложенные и неотложенные запросы
   - Стандартный и Query Expressions синтакис запросов
-- 11 Обработка ошибок
+- 12 Обработка ошибок
   - Exception
   - throw / try / catch / finally
   - Debug / Trace
-- 12 Reflection
-- 13 Многопоточность и ассинхронность
+- 13 Reflection
+- 14 Многопоточность и ассинхронность
   - Проблемы многопоточности
   - Примитивы синхронизации
   - Thread / Threadpool
   - TPL. Класс Task, Continuation, Cancellation
   - async / await, SyncronizationContext
-- 14 Сериализация данных
+- 15 Сериализация данных
   - JSON
   - XML
-- 15 Ввод / вывод
+- 16 Ввод / вывод
   - Потоки
   - Чтение и запись текстовой информации
   - Работа с файловой системой. System.IO
-- 16 Работа с базами данных
+- 17 Работа с базами данных
   - ADO.Net
   - Entity Framework
   - Simple mapper: dapper, linq2db
-- 17 Принципы и паттерны проектирования
+- 18 Принципы и паттерны проектирования
   - SOLID
   - Связь классов: наследование, ассоциация, композиция, агрегация
   - Dependency Injection, IOC, управление зависимостями
   - Тестируемость приложения, unit-test, Moq
   - Паттерны: Singleton, Factory, Strategy, Facade, Repository
-- 18 Работа в web
+- 19 Работа в web
   - Http в .Net, класс HttpClient
   - ASP.Net MVC Core

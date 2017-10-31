@@ -6,13 +6,13 @@
   - [Char](#char)
     - [Char methods](#char-methods)
   - [String](#string)
-    - [Сравнение строк](#сравнение-строк)
+    - [Сравнение строк](#Сравнение-строк)
     - [Compare](#compare)
     - [Interning](#interning)
-    - [Методы](#методы)
+    - [Methods](#methods)
     - [Format](#format)
-  - [Создание, преобразование строк. Класс StringBuilder](#создание-преобразование-строк-класс-stringbuilder)
-  - [Кодировки, преобразование строк в байт](#кодировки-преобразование-строк-в-байт)
+  - [Создание, преобразование строк. Класс StringBuilder](#Создание-преобразование-строк-класс-stringbuilder)
+  - [Кодировки, преобразование строк в байт](#Кодировки-преобразование-строк-в-байт)
 
 <!-- /TOC -->
 
@@ -264,7 +264,7 @@ Console.WriteLine(Object.ReferenceEquals(s1, s3)); // True
 
 <div style="page-break-after: always;"></div>
 
-### Методы
+### Methods
 
 ```cs
 string text = "hello world";
