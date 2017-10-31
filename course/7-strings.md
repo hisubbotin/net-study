@@ -108,7 +108,26 @@ s = $"{myVariable1} some text {myClassVariable.SomeProperty}"; // интерпо
 
 <div style="page-break-after: always;"></div>
 
-- Для verbatim строк символ `\` не рассматривается как управляющий
+Escape последовательности не отличаются от С:
+
+- `\'` single quote
+- `\"` double quote
+- `\\` backslash
+- `\0` [null](https://en.wikipedia.org/wiki/Null_character) character
+- `\a` alert character
+- `\b` backspace
+- `\f` form feed
+- `\n` new line
+- `\r` carriage return
+- `\t` horizontal tab
+- `\v` vertical tab
+- `\uxxxx` unicode character hex value `\u0020`
+- `\x` is the same as \u, but you don't need leading zeroes `\x20`
+- `\Uxxxxxxxx` unicode character hex value (longer form needed for generating surrogates)
+
+<div style="page-break-after: always;"></div>
+
+- Для verbatim строк символ `\` не рассматривается, как управляющий
 
 ```cs
 string file = "C:\\Windows\\System32\\Notepad.exe";
