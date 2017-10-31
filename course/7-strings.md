@@ -8,6 +8,9 @@
   - [String](#string)
     - [Сравнение строк](#сравнение-строк)
     - [Compare](#compare)
+    - [Interning](#interning)
+    - [Методы](#методы)
+    - [Format](#format)
   - [Создание, преобразование строк. Класс StringBuilder](#создание-преобразование-строк-класс-stringbuilder)
   - [Кодировки, преобразование строк в байт](#кодировки-преобразование-строк-в-байт)
 
@@ -80,6 +83,8 @@ string bad =  "Tab\x9Bad compiler";     // Tab鮭 compiler
 
 ```
 
+<div style="page-break-after: always;"></div>
+
 ## String
 
 Строка - неизменяемая упорядоченная коллекция `char`
@@ -101,6 +106,8 @@ s = string.Format("{0} {1}", "Hi", "there.");
 s = $"{myVariable1} some text {myClassVariable.SomeProperty}"; // интерполяция
 ```
 
+<div style="page-break-after: always;"></div>
+
 - Для verbatim строк символ `\` не рассматривается как управляющий
 
 ```cs
@@ -118,6 +125,8 @@ if (s.ToUpperInvariant().Substring(10, 21).EndsWith("EXE"))
 {
 }
 ```
+
+<div style="page-break-after: always;"></div>
 
 ### Сравнение строк
 
@@ -141,8 +150,21 @@ public enum StringComparison
 }
 ```
 
+<div style="page-break-after: always;"></div>
+
 - Ordinal сравнивает по unicode кодам
 - Invariant по некому "дефолтному" списку символов
+
+```cs
+var s1 = "Strasse";
+var s2 = "Straße";
+
+s1.Equals(s2, StringComparison.Ordinal);           // false
+s1.Equals(s2, StringComparison.InvariantCulture);  // true
+```
+
+<div style="page-break-after: always;"></div>
+
 
 [MSDN Strings Best Practice](https://docs.microsoft.com/en-us/dotnet/standard/base-types/best-practices-strings), [SOF Ordinal Vs Invariant](https://stackoverflow.com/questions/492799/difference-between-invariantculture-and-ordinal-string-comparison):
 
@@ -152,6 +174,8 @@ public enum StringComparison
 - Используйте `CurrentCulture` для отображения пользователю
 - Используйте `String.ToUpperInvariant` вместо Lower для нормализации сравнения
 - Не используйте `Invariant` в большинстве случаев, кроме суперредких ситуаций, когда вам важны спец символы, но при этом не важны особенности культуры
+
+<div style="page-break-after: always;"></div>
 
 ### Compare
 
@@ -164,28 +188,32 @@ static int Compare(String strA, String strB, CultureInfo culture, CompareOptions
 - Используйте Compare только для сортировки, не для равенства!
 
 ```cs
-[Flags]
-public enum CompareOptions
-{
-    None = 0,
-    IgnoreCase = 1,
-    IgnoreNonSpace = 2,
-    IgnoreSymbols = 4,
-    IgnoreKanaType = 8,
-    IgnoreWidth = 0x00000010,
-    Ordinal = 0x40000000,
-    OrdinalIgnoreCase = 0x10000000,
-    StringSort = 0x20000000
-}
-```
-
-```cs
 bool StartsWith(String value, StringComparison comparisonType);
 bool StartsWith(String value, Boolean ignoreCase, CultureInfo culture);
 
 bool EndsWith(String value, StringComparison comparisonType);
 bool EndsWith(String value, Boolean ignoreCase, CultureInfo culture);
 ```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+var l = new List<string>
+  { "0", "9", "A", "Ab", "a", "aB", "aa", "ab", "ss", "ß",
+      "Ä", "Äb", "ä", "äb", "あ", "ぁ", "ア", "ァ", "Ａ", "亜", "Ё", "ё" };
+
+Ordinal                   // 0 9 A Ab a aB aa ab ss Ä Äb ß ä äb Ё ё ぁ あ ァ ア 亜 Ａ
+OrdinalIgnoreCase         // 0 9 A a aa Ab aB ab ss Ä ä äb Äb ß Ё ё ぁ あ ァ ア 亜 Ａ
+InvariantCulture          // 0 9 a A Ａ ä Ä aa ab aB Ab äb Äb ss ß ё Ё ァ ぁ ア あ 亜
+InvariantCultureIgnoreCase// 0 9 a A Ａ ä Ä aa aB Ab ab äb Äb ss ß ё Ё ァ ぁ ア あ 亜
+"da-DK" culture           // 0 9 a A Ａ ab aB Ab ss ß ä Ä äb Äb aa ё Ё ァ ぁ ア あ 亜
+"de-DE"                   // 0 9 a A Ａ ä Ä aa ab aB Ab äb Äb ss ß ё Ё ァ ぁ ア あ 亜
+"en-US"                   // 0 9 a A Ａ ä Ä aa ab aB Ab äb Äb ss ß ё Ё ァ ぁ ア あ 亜
+"ja-JP"                   // 0 9 a A Ａ ä Ä aa ab aB Ab äb Äb ss ß ё Ё ァ ぁ ア あ 亜
+"ru-RU"                   // 0 9 a A Ａ ä Ä aa ab aB Ab äb Äb ss ß ё Ё ァ ぁ ア あ 亜
+```
+
+<div style="page-break-after: always;"></div>
 
 ### Interning
 
@@ -201,6 +229,8 @@ public static String IsInterned(String str); // Возвращает null, ес�
 - По-умолчанию clr интернирует все литеральные строки, описанные в метаданных. Но не надо на это рассчитывать
 - Можно рассчитывать только на ручной вызов `Intern`
 
+<div style="page-break-after: always;"></div>
+
 ```cs
 String s1 = "Hello";
 String s2 = "Hello" + string.Empty;
@@ -213,6 +243,139 @@ s3 = String.Intern(s3);
 Console.WriteLine(Object.ReferenceEquals(s1, s3)); // True
 ```
 
+<div style="page-break-after: always;"></div>
+
+### Методы
+
+```cs
+string text = "hello world";
+int indexOfChar = text.IndexOf('o'); // равно 4
+text.IndexOf("orl"); // равно 6
+
+text.EndsWith("ld") == true // true
+string[] words = text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+text = "   hello world ".Trim(); // результат "hello world"
+text = text.Trim(new char[] { 'd', 'h' }); // результат "ello worl"
+"   hello world  ".TrimStart();  // "hello world  "
+"hell world".Insert(4, "o");
+text.Remove(0,6); // "world"
+text.Replace("hello","my");
+text.ToUpper(); // HELLO WORLD
+text.Substring(1,4); // ello
+```
+
+<div style="page-break-after: always;"></div>
+
+### Format
+
+```cs
+string output = String.Format("name: {0} , last name: {1}", name, lastname);
+```
+
+```cs
+int number = 30;
+String.Format("{0:d}", number);   // 30
+String.Format("{0:d4}", number);  // 0030
+
+number.ToString("d4");  // 0030
+```
+
+<div style="page-break-after: always;"></div>
+
+MSDN [1](https://msdn.microsoft.com/ru-ru/library/system.string.format(v=vs.110).aspx#QA), [2](https://msdn.microsoft.com/ru-ru/library/dwhawy9k(v=vs.110).aspx), [3](https://msdn.microsoft.com/ru-ru/library/0c899ak8(v=vs.110).aspx):
+
+- C / c Задает формат денежной единицы, указывает количество десятичных разрядов после запятой
+- D / d Целочисленный формат, указывает минимальное количество цифр
+- E / e Экспоненциальное представление числа, указывает количество десятичных разрядов после запятой
+- F / f Формат дробных чисел с фиксированной точкой, указывает количество десятичных разрядов после запятой
+- G / g Задает более короткий из двух форматов: F или E
+- N / n Также задает формат дробных чисел с фиксированной точкой, определяет количество разрядов после запятой
+- P / p Задает отображения знака процентов рядом с число, указывает количество десятичных разрядов после запятой
+- X / x Шестнадцатеричный формат числа
+
+```cs
+double number = 45.08;
+String.Format("{0:f4}", number); // 45,0800
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+long number = 12345678910;
+String.Format("{0:+# (###) ###-##-##}", number); // +1 (234) 567-89-10
+
+Decimal price = 123.54M;
+String s = price.ToString("C", CultureInfo.InvariantCulture); // ¤123.54
+
+ value = 123;
+ Console.WriteLine(value.ToString("00000"));
+ Console.WriteLine(String.Format("{0:00000}", value));  // Displays 00123
+
+ value = 1234567890.123456;
+ Console.WriteLine(value.ToString("0,0.0", CultureInfo.InvariantCulture));
+ Console.WriteLine(String.Format(CultureInfo.InvariantCulture, "{0:0,0.0}", value));
+ // Displays 1,234,567,890.1
+```
+
+<div style="page-break-after: always;"></div>
+
 ## Создание, преобразование строк. Класс StringBuilder
 
+- [Класс](https://msdn.microsoft.com/ru-ru/library/system.text.stringbuilder(v=vs.110).aspx) для создания строк
+- `using System.Text;`
+- Разбивает блоки по 8000 символов, чтобы объект не попадал в Large Object Heap и не пересоздавался для `Append` (начиная с .net 4)
+
+```cs
+StringBuilder sb = new StringBuilder("Text");
+Console.WriteLine("Length: {0}", sb.Length); // 4
+Console.WriteLine("Capacity: {0}", sb.Capacity); // 16
+
+sb.Append(" 1 ");
+sb.AppendFormat("{0} {1}", "First", "Second");
+sb.Replace("Second", "Third");
+sb.ToString(); // Text 1 First Third
+sb.AppendLine();
+// Insert
+// Remove
+// Replace
+```
+
+<div style="page-break-after: always;"></div>
+
+- `String`
+  - Небольшое количество операций и изменений над строками
+  - Фиксированное количество операций объединения (компилятор может объединить все в одну)
+  - Надо выполнять масштабные операции поиска (например IndexOf или StartsWith)
+- `StringBuilder`
+  - Неизвестное количество операций и изменений над строками во время выполнения программы
+  - Приложению придется сделать множество подобных операций
+- Часто проще заиспользовать `string.Join` вместо `StringBuilder`
+
+<div style="page-break-after: always;"></div>
+
 ## Кодировки, преобразование строк в байт
+
+- UTF-16 (В C# `Unicode`) Каждый символ по 2 байта
+  - некоторые символы идут парами для составления буквы
+- UTF-8 кодирует символы от 1 до 4 байт в зависимости от кода.
+- UTF-32 все символы в 4 байта
+- UTF-7 древний формат. deprecated
+- ASCII или производную кодовую страницу
+- Понятно, что надо использовать UTF-16 / UTF-8
+- Можно управлять ByteOrderMark
+
+- `System.Text.Encoding`
+
+<div style="page-break-after: always;"></div>
+
+```cs
+String s = "Hi there.";
+Encoding encodingUTF8 = Encoding.UTF8;
+Byte[] encodedBytes = encodingUTF8.GetBytes(s);
+
+String decodedString = encodingUTF8.GetString(encodedBytes);
+
+String s = Convert.ToBase64String(encodedBytes);
+bytes = Convert.FromBase64String(s);
+```

@@ -481,7 +481,7 @@ public T Parse<T>(string value) where T : struct, IComparable, IFormattable, ICo
 
 ### Ковариантность и контрвариантность в интерфейсах
 
-Параметры типы в обобщенных интерфейсах могут быть инвариантными, ковариантными, контрвариантными. [MSDN](https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/concepts/covariance-contravariance/), [SOF Eric Lippert Answet](https://stackoverflow.com/questions/2184551/difference-between-covariance-contra-variance)
+Параметры типы в обобщенных интерфейсах могут быть инвариантными, ковариантными, контрвариантными. [MSDN](https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/concepts/covariance-contravariance/), [SOF Eric Lippert Answer](https://stackoverflow.com/questions/2184551/difference-between-covariance-contra-variance)
 По умолчанию параметр тип инвариантен - его тип не может изменяться.
 
 - Ковариантность - аргумент тип можно преобразовать к одному из его базовых классов (`out`)
