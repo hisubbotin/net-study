@@ -104,7 +104,7 @@ namespace AdventureTime
              * Отмечу, что в разных 3 месяцах разное число минут :)
              * Недолго думая, взял за основу авторитетное мнение моего интернет-провайдера...
              */
-            return (int)TimeSpan.FromDays(90).TotalHours;
+            return (int)TimeSpan.FromDays(90).TotalMinutes;
         }
 
         #region Adventure time saga

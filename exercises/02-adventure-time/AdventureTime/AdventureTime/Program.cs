@@ -24,9 +24,11 @@ namespace AdventureTime
             Console.WriteLine(Time.GetGenderSwappedAdventureTimeDurationInMinutes_ver2_FeelsLikeRocketScience());
             Console.WriteLine("");
 
-            var moscowTime = new DateTime(2011, 3, 28, 3, 15, 0);
-            var londonTime = new DateTime(2010, 4, 28, 1, 15, 0);
-            Console.WriteLine(Time.AreEqualBirthdays(moscowTime, londonTime));
+            var time1 = new DateTime(2011, 3, 28, 3, 15, 0);
+            var time2 = new DateTime(2011, 4, 28, 3, 15, 0);
+            var time3 = new DateTime(1970, 3, 28, 17, 45, 0);
+            Console.WriteLine(Time.AreEqualBirthdays(time1, time2));
+            Console.WriteLine(Time.AreEqualBirthdays(time1, time3));
 
             Console.ReadKey();
         }
