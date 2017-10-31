@@ -6,13 +6,13 @@
   - [Char](#char)
     - [Char methods](#char-methods)
   - [String](#string)
-    - [Сравнение строк](#Сравнение-строк)
+    - [Equals](#equals)
     - [Compare](#compare)
     - [Interning](#interning)
     - [Methods](#methods)
     - [Format](#format)
-  - [Создание, преобразование строк. Класс StringBuilder](#Создание-преобразование-строк-класс-stringbuilder)
-  - [Кодировки, преобразование строк в байт](#Кодировки-преобразование-строк-в-байт)
+  - [StringBuilder](#stringbuilder)
+  - [Encoding](#encoding)
 
 <!-- /TOC -->
 
@@ -94,10 +94,10 @@ string bad =  "Tab\x9Bad compiler";     // Tab鮭 compiler
 - класс sealed из-за оптимизации
 
 ```cs
-String s = "Hi\r\nthere.";                  // неправильно
-s = "Hi" + Environment.NewLine + "there.";  // правильно
+String s = "Hi\r\nthere.";                  // лучше не надо так
+s = "Hi" + Environment.NewLine + "there.";  // а вот так красивше
 
-s = "";           // плохо
+s = "";           // так себе
 s = string.Empty; // норм
 
 s = "Hi" + " " + "there."; // Строки литеральные, выполнится при компиляции
@@ -147,7 +147,9 @@ if (s.ToUpperInvariant().Substring(10, 21).EndsWith("EXE"))
 
 <div style="page-break-after: always;"></div>
 
-### Сравнение строк
+### Equals
+
+Сравнение строк
 
 ```cs
 if (myStr == myStr2) // Не надо так
@@ -184,15 +186,15 @@ s1.Equals(s2, StringComparison.InvariantCulture);  // true
 
 <div style="page-break-after: always;"></div>
 
-
 [MSDN Strings Best Practice](https://docs.microsoft.com/en-us/dotnet/standard/base-types/best-practices-strings), [SOF Ordinal Vs Invariant](https://stackoverflow.com/questions/492799/difference-between-invariantculture-and-ordinal-string-comparison):
 
-- Используйте перегруженные версии Equals для сравнения строк
+- Используйте перегруженные версии Equals для сравнения строк (static версия не кидает исключений, если первая строка `null`)
 - Используйте `StringComparison.Ordinal` or `StringComparison.OrdinalIgnoreCase` по-дефолту, когда вам не важна локаль
 - Ordinal намного быстрее Invariant ([to 10x](https://rhale78.wordpress.com/2011/05/16/string-equality-and-performance-in-c/))
 - Используйте `CurrentCulture` для отображения пользователю
 - Используйте `String.ToUpperInvariant` вместо Lower для нормализации сравнения
 - Не используйте `Invariant` в большинстве случаев, кроме суперредких ситуаций, когда вам важны спец символы, но при этом не важны особенности культуры
+- Используйте форматирование и интерполяцию - код должен быть красивым
 
 <div style="page-break-after: always;"></div>
 
@@ -339,10 +341,11 @@ String s = price.ToString("C", CultureInfo.InvariantCulture); // ¤123.54
 
 <div style="page-break-after: always;"></div>
 
-## Создание, преобразование строк. Класс StringBuilder
+## StringBuilder
 
-- [Класс](https://msdn.microsoft.com/ru-ru/library/system.text.stringbuilder(v=vs.110).aspx) для создания строк
+- [Класс](https://msdn.microsoft.com/ru-ru/library/system.text.stringbuilder(v=vs.110).aspx) для создания и преобразования строк
 - `using System.Text;`
+- эффективен для многократного добавления строк
 - Разбивает блоки по 8000 символов, чтобы объект не попадал в Large Object Heap и не пересоздавался для `Append` (начиная с .net 4)
 
 ```cs
@@ -373,7 +376,7 @@ sb.AppendLine();
 
 <div style="page-break-after: always;"></div>
 
-## Кодировки, преобразование строк в байт
+## Encoding
 
 - UTF-16 (В C# `Unicode`) Каждый символ по 2 байта
   - некоторые символы идут парами для составления буквы

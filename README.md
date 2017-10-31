@@ -91,8 +91,8 @@
 - 7 [Strings](course/7-strings.md#strings)
   - [Char](course/7-strings.md#char)
   - [String](course/7-strings.md#string)
-  - [Создание, преобразование строк. Класс StringBuilder](course/7-strings.md#Создание-преобразование-строк-класс-stringbuilder)
-  - [Кодировки, преобразование строк в байт](course/7-strings.md#Кодировки-преобразование-строк-в-байт)
+  - [StringBuilder](course/7-strings.md#stringbuilder)
+  - [Encoding](course/7-strings.md#encoding)
 - 8 Управление программой
   - Циклы, IEnumerable, yield
   - Условные операторы
