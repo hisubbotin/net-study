@@ -30,7 +30,7 @@ namespace BoringVector
         /// <returns>Результат проверки<see cref="bool"/> вектора.</returns>
         public static bool IsZero(this Vector v)
         {
-            return (v.X < 1e-6 && v.Y < 1e-6);
+            return (Math.Abs(v.X) < 1e-6 && Math.Abs(v.Y) < 1e-6);
         }
 
         /// <summary>
