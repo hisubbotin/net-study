@@ -9,7 +9,7 @@
   - [01. May the primitive types be with you](#01-may-the-primitive-types-be-with-you)
   - [02. What time is it? Adventure Time!](#02-what-time-is-it-adventure-time)
   - [03. Go home, Fibonacci, you're drunk](#03-go-home-fibonacci-youre-drunk)
-  - [04. 2-dimensional vector](#04-2-dimensional-vector)
+  - [04. Boring vector](#04-boring-vector)
   - [05. Here's my `T` value so call me `Maybe<T>`](#05-heres-my-t-value-so-call-me-maybet)
   - [06. The primitive types strikes back](#06-the-primitive-types-strikes-back)
   - [07. The beginning of Broken Telephone](#07-the-beginning-of-broken-telephone)
@@ -63,6 +63,30 @@ Tags: datetime, datetime.kind, utc, timezone, timezoneinfo, timespan, datetimeof
 
 Инструкция лежит в [02-adventure-time/02-adventure-time.md](02-adventure-time/02-adventure-time.md).
 
+## 03. Go home, Fibonacci, you're drunk
+
+Tags: generics, linq, collections, enumerables, lambdas, random.
+
+В данном задании вы познакомитесь с:
+
+- обобщенными коллекциями и перечисляемыми последовательностями,
+- операциями фильтрации, группировки, проекции и агрегации над ними.
+
+Инструкция лежит в [03-drunk-fibonacci/03-drunk-fibonacci.md](03-drunk-fibonacci/03-drunk-fibonacci.md).
+
+## 04. Boring vector
+
+Tags: struct, operator overloading, extension methods, xml documentation comments, unit-testing.
+
+В данном задании вы познакомитесь с:
+
+- созданием пользовательских структур,
+- перегрузкой операторов и методами-расширениями,
+- документированием кода с использованием стандартного формата комментариев,
+- юнит-тестированием.
+
+Инструкция лежит в [04-boring-vector/04-boring-vector.md](04-boring-vector/04-boring-vector.md).
+
 ---
 ---
 ---
@@ -71,13 +95,6 @@ Tags: datetime, datetime.kind, utc, timezone, timezoneinfo, timespan, datetimeof
 Ниже еще не готово
 
 
-## 03. Go home, Fibonacci, you're drunk
-
-Collections, Enumerables, lambdas.
-
-## 04. 2-dimensional vector
-
-Structs, operator overloading, extension methods, unit-testing.
 
 ## 05. Here's my `T` value so call me `Maybe<T>`
 
