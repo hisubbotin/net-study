@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("BoringVector.Tests")]
 namespace BoringVector
 {
     #region 1. Структура Vector
@@ -7,7 +9,9 @@ namespace BoringVector
     /*
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
-
+    /// <summary>
+    /// Структура двумерного вектора
+    /// </summary>    
     internal struct Vector
     {
         /*
@@ -23,30 +27,69 @@ namespace BoringVector
                 - скалярное произведение
                 - векторное произведение (= площадь параллелограмма)
         */
+
+        /// <summary>
+        /// Координаты вектора
+        /// </summary>
         public double X, Y;
 
+        /// <summary>
+        /// Конструктор вектора от двух вещественных чисел
+        /// </summary>
+        /// <param name="X">X-координата</param>
+        /// <param name="Y">Y-координата</param>
         public Vector(double X, double Y)
         {
             this.X = X;
             this.Y = Y;
         }
+
+        /// <summary>
+        /// Длина вектора
+        /// </summary>
+        /// <returns>Длину вектора</returns>
         public double SquareLength()
         {
-            return Math.Sqrt(Math.Pow(X, 2.0) + Math.Pow(X, 2.0));            
+            return Math.Sqrt(Math.Pow(X, 2.0) + Math.Pow(Y, 2.0));
         }
+
         // Предположу, что в методах, возвращающих вектор, текущий объект не должен изменяться, а возвращать новый. Типа чистые функции.
+
+        /// <summary>
+        /// Сложить вектор с другим
+        /// </summary>
+        /// <param name="v">Другой вектор</param>
+        /// <returns>Вектор, полученный суммированием</returns>
         public Vector Add(Vector v)
         {
             return new Vector(X + v.X, Y + v.Y);
         }
+
+        /// <summary>
+        /// Умножить вектор на число
+        /// </summary>
+        /// <param name="k">Множитель</param>
+        /// <returns>Умноженный вектор</returns>
         public Vector Scale(double k)
         {
-            return new Vector(k*X, k*Y);
+            return new Vector(k * X, k * Y);
         }
+
+        /// <summary>
+        /// Скалярное произведение
+        /// </summary>
+        /// <param name="v">Другой вектор</param>
+        /// <returns>Скалярное произведение</returns>
         public double DotProduct(Vector v)
         {
             return X * v.X + Y * v.Y;
         }
+
+        /// <summary>
+        /// Векторное произведение
+        /// </summary>
+        /// <param name="v">Другой вектор</param>
+        /// <returns>Векторное произведение</returns>
         public double CrossProduct(Vector v)
         {
             return Math.Abs(X * v.Y - Y * v.X);
@@ -56,47 +99,92 @@ namespace BoringVector
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
 
-        override public string ToString() 
+        /// <summary>
+        /// Переводит вектор в строку в формате (X; Y)
+        /// </summary>
+        /// <returns>Строковое представление</returns>
+        override public string ToString()
         {
             return String.Format("({0}; {1})", X, Y);
         }
         #region operators
         /*
-Реализуй также следущие операторы (Vector v, u и double k):
-- v + u, v - u
-- k * v, v * k, v / k
-- +v, -v
-*/
-        public static Vector operator+(Vector v, Vector u)
+        Реализуй также следущие операторы (Vector v, u и double k):
+        - v + u, v - u
+        - k * v, v * k, v / k
+        - +v, -v
+        */
+
+        /// <summary>
+        /// Сумма векторов
+        /// </summary>
+        /// <param name="v">Первый вектор</param>
+        /// <param name="u">Второй вектор</param>
+        /// <returns>Вектор суммы</returns>
+        public static Vector operator +(Vector v, Vector u)
         {
             return new Vector(v.X + u.X, v.Y + u.Y);
         }
 
+        /// <summary>
+        /// Разность векторов
+        /// </summary>
+        /// <param name="v">Уменьшаемый вектор</param>
+        /// <param name="u">Вычитаемые вектор</param>
+        /// <returns>Вектор разности</returns>
         public static Vector operator -(Vector v, Vector u)
         {
             return new Vector(v.X - u.X, v.Y - u.Y);
         }
 
-        public static Vector operator*(double k, Vector v)
+        /// <summary>
+        /// Произведение вектора на число
+        /// </summary>
+        /// <param name="k">Множитель</param>
+        /// <param name="v">Вектор</param>
+        /// <returns>Вектор произведения</returns>
+        public static Vector operator *(double k, Vector v)
         {
             return v.Scale(k);
         }
 
+        /// <summary>
+        /// Произведение вектора на число
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        /// <param name="k">Множитель</param>
+        /// <returns>Вектор произведения</returns>
         public static Vector operator *(Vector v, double k)
         {
             return v.Scale(k);
         }
 
+        /// <summary>
+        /// Деление вектора на число
+        /// </summary>
+        /// <param name="v">Вектор делимое</param>
+        /// <param name="k">Число делитель</param>
+        /// <returns>Вектор деления</returns>
         public static Vector operator /(Vector v, double k)
         {
             return new Vector(v.X / k, v.Y / k);
         }
 
+        /// <summary>
+        /// Числовое значение
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        /// <returns>Вектор</returns>
         public static Vector operator +(Vector v)
         {
             return v;
         }
 
+        /// <summary>
+        /// Обратный вектор
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        /// <returns>Обратный вектор</returns>
         public static Vector operator -(Vector v)
         {
             return new Vector(-v.X, -v.Y);
