@@ -23,7 +23,7 @@ namespace BoringVector
         /// <returns>Является ли вектор нулевым, <see cref="bool"/></returns>
         public static bool IsZero(Vector v, double eps = 1e-6)
         {
-            return v.X < eps && v.Y < eps;
+            return Math.Abs(v.X) < eps && Math.Abs(v.Y) < eps;
         }
 
         /// <summary>

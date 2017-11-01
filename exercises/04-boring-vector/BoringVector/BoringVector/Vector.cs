@@ -18,8 +18,8 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
-        public double X;
-        public double Y;
+        public double X { get; set; }
+        public double Y { get; set; }
 
         /// <summary>
         /// Конструктор вектора, принимающий его координаты
