@@ -61,7 +61,7 @@
             if (one.IsZero() || other.IsZero())
                 return 0;
 
-            return one.DotProduct(other) / Math.Sqrt(one.SquareLength() * other.SquareLength());
+            return Math.Acos(one.DotProduct(other) / Math.Sqrt(one.SquareLength() * other.SquareLength()));
         }
 
         /// <summary>

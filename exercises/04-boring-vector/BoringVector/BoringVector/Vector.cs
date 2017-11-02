@@ -63,7 +63,7 @@ namespace BoringVector
         /// <returns>Число <see cref="double"/>, равное скалярному произведению векторов</returns>
         public double DotProduct(Vector v)
         {
-            return X * v.X + Y + v.Y;
+            return X * v.X + Y * v.Y;
         }
 
         /// <summary>
