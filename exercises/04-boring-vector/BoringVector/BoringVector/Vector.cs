@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("BoringVector.Tests")]
 
 namespace BoringVector
 {
@@ -7,13 +10,24 @@ namespace BoringVector
     /*
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
-
+    /// <summary>
+    /// Структура, которая реализует некоторые операции с векторами
+    /// </summary>
     internal struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
 
+        /// <summary>
+        /// Первая координата вектора
+        /// </summary>
+        public double X;
+
+        /// <summary>
+        /// Вторая координата вектора
+        /// </summary>
+        public double Y;
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -24,30 +38,78 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        /// <summary>
+        /// Конструктор класса Vector
+        /// </summary>
+        /// <param name="x"> Число <see cref="double"/>, задающее первую координату вектора</param>
+        /// <param name="y"> Число <see cref="double"/>, задающее вторую координату вектора</param>
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
+
+        /// <summary>
+        /// Возвращает квадрат длины вектора
+        /// </summary>
+        /// <returns>Число <see cref="double"/>, равное квадрату длины вектора</returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+
+        /// <summary>
+        /// Возвращает сумму двух векторов
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/>, с которым происходит сложение</param>
+        /// <returns>Объект <see cref="Vector"/>, являющийся суммой двух заданных векторов</returns>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
+
+        /// <summary>
+        /// Возращает произведение вектора на число
+        /// </summary>
+        /// <param name="k">Число типа <see cref="double"/>, на которое происходит умножение вектора</param>
+        /// <returns>Объект <see cref="Vector"/>, явлющееся произведением исходного вектора и данного числа <paramref name="k"/></returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(k * X, k * Y);
         }
+
+        /// <summary>
+        /// Возвращает скалярное произведение двух векторов
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/>, с которым берется скалярное произведение</param>
+        /// <returns>Возвращает число <see cref="double"/>, равное скалярному произведению двух векторов</returns>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+
+        /// <summary>
+        /// Возвращает модуль векторного произведения двух векторов
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/>, с которым берется векторное произведение</param>
+        /// <returns>Возвращает число <see cref="double"/>, равное площади параллелограмма, построенному на двух векторах</returns>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+
+        /// <summary>
+        /// Возвращает строковое представление вектора
+        /// </summary>
+        /// <returns>Возвращает строку <see cref="string"/>, равную (X, Y)</returns>
+        public override string ToString()
+        {
+            return $"({X}, {Y})";
+        }
 
         #region operators
 
@@ -58,6 +120,80 @@ namespace BoringVector
                 - +v, -v
         */
 
+        /// <summary>
+        /// Унарный плюс, который ничего не делает с вектором
+        /// </summary>
+        /// <param name="v">Объет <see cref="Vector"/></param>
+        /// <returns>Возвращает тот же объект <paramref name="v"/></returns>
+        public static Vector operator +(Vector v)
+        {
+            return v;
+        }
+
+        /// <summary>
+        /// Унарный минус, который отражает вектор
+        /// </summary>
+        /// <param name="v">Объет <see cref="Vector"/></param>
+        /// <returns>Возвращает отраженный вектор <paramref name="v"/></returns>
+        public static Vector operator -(Vector v)
+        {
+            return new Vector(-v.X, -v.Y);
+        }
+
+        /// <summary>
+        /// Сложение двух векторов
+        /// </summary>
+        /// <param name="v">Первое слагаемое</param>
+        /// <param name="u">Второе слагаемое</param>
+        /// <returns>Возвращает объект <see cref="Vector"/>, равный сумме двух векторов</returns>
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return v.Add(u);
+        }
+
+        /// <summary>
+        /// Разность двух векторов
+        /// </summary>
+        /// <param name="v">Уменьшаемое</param>
+        /// <param name="u">Вычитаемое</param>
+        /// <returns>Возвращает объект <see cref="Vector"/>, равный разности двух векторов</returns>
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return v.Add(-u);
+        }
+
+        /// <summary>
+        /// Умножение вектора на число
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/></param>
+        /// <param name="k">Коэффициент растяжения</param>
+        /// <returns>Возвращает объект <see cref="Vector"/>, равный результату растяжения вектора <paramref name="v"/> в <paramref name="k"/>раз</returns>
+        public static Vector operator *(Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+
+        /// <summary>
+        /// Умножение числа на вектор
+        /// </summary>
+        /// <param name="k">Коэффициент растяжения</param>
+        /// <param name="v">Объект <see cref="Vector"/></param>
+        /// <returns>Возвращает объект <see cref="Vector"/>, равный результату растяжения вектора <paramref name="v"/> в <paramref name="k"/>раз</returns>
+        public static Vector operator *(double k, Vector v)
+        {
+            return v.Scale(k);
+        }
+
+        /// <summary>
+        /// Деление вектора на число
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/></param>
+        /// <param name="k">Коэффициент сжатия</param>
+        /// <returns>Возвращает объект <see cref="Vector"/>, равный результату сжимания вектора <paramref name="v"/> в <paramref name="k"/>раз</returns>
+        public static Vector operator /(Vector v, double k)
+        {
+            return v.Scale(1 / k);
+        }
         #endregion
     }
 
