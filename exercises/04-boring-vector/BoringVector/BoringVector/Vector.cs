@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
+
+[assembly: InternalsVisibleTo("BoringVector.Tests")]
 namespace BoringVector
 {
     #region 1. Структура Vector
@@ -7,13 +10,36 @@ namespace BoringVector
     /*
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
+    
+    /// <summary>
+    /// Двумерный вектор
+    /// </summary>
 
-    internal struct Vector
+    public struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
 
+        /// <summary>
+        /// X координата  <see cref="Vector"/> .
+        /// </summary>
+        public double X { get; set; }
+        /// <summary>
+        /// Y координата <see cref="Vector"/>
+        /// </summary>
+        public double Y { get; set; }
+
+        /// <summary>
+        /// Конструктор по двум координатам <see cref="Vector"/>.
+        /// </summary>
+        /// <param name="x">double X - координата.</param>
+        /// <param name="y">double Y - координата.</param>
+        public Vector(double x, double y)
+        {
+            this.X = x;
+            this.Y = y;
+        }
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -24,30 +50,67 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        /// <summary>
+        /// Квадрат длины <see cref="Vector"/>.
+        /// </summary>
+        /// <returns>double - квадрат длины.</returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return Math.Pow(X, 2) + Math.Pow(Y, 2);
         }
+        
+        /// <summary>
+        /// Сложение двух <see cref="Vector"/>.
+        /// </summary>
+        /// <param name="v">Второй <see cref="Vector"/></param>
+        /// <returns><see cref="Vector"/> - сумма исходного с аргументом.</returns>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
+        
+        /// <summary>
+        /// Умножение на скаляр.
+        /// </summary>
+        /// <param name="k">double, скаляр, на который происходит умножение.</param>
+        /// <returns>Объект <see cref="Vector"/> равный произведению исходного на скаляр.</returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(X * k, Y * k);
         }
+        
+        /// <summary>
+        /// Скалярное произведение.
+        /// </summary>
+        /// <param name="v"><see cref="Vector"/>, на который происходит умножение.</param>
+        /// <returns>double - скалярное произведение исходного <see cref="Vector"/> и аргумента</returns>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+        
+        /// <summary>
+        /// Модуль векторного произведения.
+        /// </summary>
+        /// <param name="v"><see cref="Vector"/>, на который происходит умножение.</param>
+        /// <returns>double - модуль векторного произведения исходного <see cref="Vector"/> и аргумента</returns>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return Math.Abs(X * v.Y - Y * v.X);
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+
+        /// <summary>
+        /// Строка в формате (X, Y).
+        /// </summary>
+        /// <returns>string в формате (X, Y)</returns>
+        public override string ToString()
+        {
+            return string.Format("({0}, {1})", X.ToString(), Y.ToString());
+        }
 
         #region operators
 
@@ -57,6 +120,81 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+        
+        /// <summary>
+        /// Сложение векторов
+        /// </summary>
+        /// <param name="v"><see cref="Vector"/> раз</param>
+        /// <param name="u"><see cref="Vector"/> два</param>
+        /// <returns><see cref="Vector"/> - сумма векторов </returns>
+        public static Vector operator+(Vector v, Vector u)
+        {
+            return v.Add(u);
+        }
+        
+        /// <summary>
+        /// Разница векторов
+        /// </summary>
+        /// <param name="v"><see cref="Vector"/> откуда вычитаем</param>
+        /// <param name="u"><see cref="Vector"/> что вычитаем</param>
+        /// <returns><see cref="Vector"/> - разница векторов</returns>
+        public static Vector operator-(Vector v, Vector u)
+        {
+            return v.Add(-u);
+        }
+        
+        /// <summary>
+        /// Положительный вектор
+        /// </summary>
+        /// <param name="v"><see cref="Vector"/> вектор</param>
+        /// <returns><see cref="Vector"/> исходный вектор (домноженный на +1)</returns>
+        public static Vector operator+(Vector v)
+        {
+            return v;
+        }
+        
+        /// <summary>
+        /// Обратный вектор
+        /// </summary>
+        /// <param name="v"><see cref="Vector"/> вектор</param>
+        /// <returns><see cref="Vector"/> обратный исходному (домноженный на -1)</returns>
+        public static Vector operator-(Vector v)
+        {
+            return new Vector(-v.X, -v.Y);
+        }
+        
+        /// <summary>
+        /// Умножение скаляра на вектор 
+        /// </summary>
+        /// <param name="k">double скаляр</param>
+        /// <param name="u"><see cref="Vector"/> вектор</param>
+        /// <returns><see cref="Vector"/> исходный вектор, домноженный на скаляр</returns>
+        public static Vector operator*(double k, Vector u)
+        {
+            return u.Scale(k);
+        }
+        
+        /// <summary>
+        /// Умножение вектора на скаляр  
+        /// </summary>
+        /// <param name="v"><see cref="Vector"/> вектор</param>
+        /// /// <param name="k">double скаляр</param>
+        /// <returns><see cref="Vector"/> исходный вектор, домноженный на скаляр</returns>
+        public static Vector operator*(Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+        
+        /// <summary>
+        /// Деление вектора на скаляр  
+        /// </summary>
+        /// <param name="v"><see cref="Vector"/> вектор</param>
+        /// /// <param name="k">double скаляр</param>
+        /// <returns><see cref="Vector"/> исходный вектор, разделённый на скаляр</returns> 
+        public static Vector operator/(Vector v, double k)
+        {
+            return v.Scale(1.0/k);
+        }
 
         #endregion
     }
