@@ -102,7 +102,7 @@ namespace AdventureTime
                 Ну а здесь воспользуйся сложением с TimeSpan. Обрати внимание, что помимо конструктора, у класса есть набор полезных статических методов-фабрик.
                 Обрати внимание, что у TimeSpan нет статических методов FromMonth, FromYear. Как думаешь, почему?
             */
-            return dt - TimeSpan.FromSeconds(10);
+            return dt + TimeSpan.FromSeconds(10);
         }
 
         /// <summary>
@@ -293,7 +293,8 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            return person1Birthday.DayOfYear == person2Birthday.DayOfYear;
+            return (person1Birthday.DayOfYear == person2Birthday.DayOfYear) 
+                && (person1Birthday.Month == person2Birthday.Month);
         }
     }
 }
