@@ -293,7 +293,7 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            return (person1Birthday.DayOfYear == person2Birthday.DayOfYear) 
+            return (person1Birthday.Day == person2Birthday.Day) 
                 && (person1Birthday.Month == person2Birthday.Month);
         }
     }
