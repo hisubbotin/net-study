@@ -89,8 +89,7 @@ namespace AdventureTime
         public static DateTime AddTenSeconds(DateTime dt)
         {
             // здесь воспользуйся методами самого объекта и заодно посмотри какие еще похожие есть
-            dt.AddSeconds(10);
-            return dt;
+            return dt.AddSeconds(10);
         }
 
         /// <summary>
@@ -104,8 +103,7 @@ namespace AdventureTime
                 Ну а здесь воспользуйся сложением с TimeSpan. Обрати внимание, что помимо конструктора, у класса есть набор полезных статических методов-фабрик.
                 Обрати внимание, что у TimeSpan нет статических методов FromMonth, FromYear. Как думаешь, почему?
             */
-            dt += TimeSpan.FromSeconds(10);
-            return dt;
+            return dt + TimeSpan.FromSeconds(10);
         }
 
         /// <summary>
@@ -300,9 +298,11 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            var birthday1 = person1Birthday.ToUniversalTime();
-            var birthday2 = person2Birthday.ToUniversalTime();
-            return birthday1.Month == birthday2.Month && birthday1.Day == birthday2.Day;
+            if (person1Birthday.Kind == DateTimeKind.Utc || person2Birthday.Kind == DateTimeKind.Utc)
+            {
+                throw new ArgumentException("Birthday date with Utc kind");
+            }
+            return person1Birthday.Month == person2Birthday.Month && person1Birthday.Day == person2Birthday.Day;
         }
     }
 }
