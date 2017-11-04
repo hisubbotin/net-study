@@ -51,7 +51,7 @@ namespace AdventureTime
                 Ну и на будущее запомни этот прекрасный строковый формат представления времени - он твой бро!
                 Название запоминать не нужно, просто помни, что для передачи значения в виде строки, выбирать лучше инвариантные относительно сериализации/десериализации форматы.
             */
-            return dt.ToString("yyyy-MM-ddTHH\\:mm\\:ss.fffffffzzz");
+            return dt.ToString("O");
         }
 
         /// <summary>
@@ -92,8 +92,7 @@ namespace AdventureTime
         public static DateTime AddTenSeconds(DateTime dt)
         {
             // здесь воспользуйся методами самого объекта и заодно посмотри какие еще похожие есть
-            DateTime new_dt = dt.AddSeconds(10);
-            return new_dt;
+            return dt.AddSeconds(10);
         }
 
         /// <summary>
@@ -111,8 +110,7 @@ namespace AdventureTime
             /*
                 Зависит от момента времени, продолжительность месяца не постоянна, как и продолжительность года.
             */
-            TimeSpan add = TimeSpan.FromSeconds(10);
-            return dt + add;
+            return dt + TimeSpan.FromSeconds(10);
         }
 
         /// <summary>
@@ -149,9 +147,8 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            DateTime dt = DateTime.Now;
-            DateTime dt2 = dt.AddMonths(3);
-            return (int)(dt2 - dt).TotalMinutes;
+            // Тут мои гневные комментарии
+            throw new NotImplementedException();
         }
 
         #region Adventure time saga
@@ -319,17 +316,8 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            person1Birthday = person1Birthday.ToUniversalTime();
-            person2Birthday = person2Birthday.ToUniversalTime();
-            if (person1Birthday.DayOfYear == person2Birthday.DayOfYear && 
-                person1Birthday.Year == person2Birthday.Year)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            // Тут мои гневные комментарии
+            throw new NotImplementedException();
         }
     }
 }
