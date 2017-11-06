@@ -126,7 +126,7 @@ namespace AdventureTime
                 3) Подумай, почему возвращаемое значение может отличаться от действительности.
             */
             return (int)(dt2.ToUniversalTime() - dt1.ToUniversalTime()).TotalDays;
-            // 1. Hours - просто аттрибут объекта ("Часы"), TotalHours - кастует весь TimeSpan в часы
+            // 1. Hours - просто атрибут объекта ("Часы"), TotalHours - кастует весь TimeSpan в часы
         }
 
         /// <summary>
@@ -135,8 +135,8 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            return (int)TimeSpan.FromDays(91.5).TotalMinutes;
-            // взял средние 3 месяца
+            throw new NotImplementedException();
+            // невозможно однозначно реализовать данную функцию
         }
 
         #region Adventure time saga
@@ -293,16 +293,21 @@ namespace AdventureTime
         #endregion
 
         /// <summary>
-        /// Указывает, родились ли два человека в один день.
+        /// Указывает, родились ли два человека в один день (года рождения могут быть разными).
         /// </summary>
         /// <param name="person1Birthday">День рождения первого человека.</param>
         /// <param name="person2Birthday">День рождения второго человека.</param>
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            var person1BirthdayUtc = person1Birthday.ToUniversalTime();
-            var person2BirthdayUtc = person2Birthday.ToUniversalTime();
-            return (person1BirthdayUtc.Day == person2BirthdayUtc.Day && person1BirthdayUtc.Month == person2BirthdayUtc.Month);
+            if (person1Birthday.Kind != DateTimeKind.Unspecified || person2Birthday.Kind != DateTimeKind.Unspecified) {
+                throw new ArgumentException("DateTime.Kind property should equal to 'Unspecified'");
+                // не понимаю, чем вам не нравится ненулевой TimeOfDay? время рождения в роддоме разве не записывают?
+                // имплементирую собственный метод! с unspecified kind и ненулевым TimeOfDay!
+            }
+            else {
+                return (person1Birthday.Day == person2Birthday.Day && person1Birthday.Month == person2Birthday.Month);
+            }
         }
     }
 }
