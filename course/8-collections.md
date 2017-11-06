@@ -7,7 +7,8 @@
     - [switch](#switch)
   - [Array](#array)
   - [Foreach + `IEnumerable<T>`](#foreach--ienumerablet)
-  - [yield](#yield)
+  - [yield - итераторный блок](#yield---итераторный-блок)
+  - [Рекомендации](#рекомендации)
 
 <!-- /TOC -->
 
@@ -207,7 +208,7 @@ for (int i = 0; i < jagged.Length; i++)
 {
     for (int k = 0; k < jagged[i].Length; k++)
     {
-        Console.Write($"{numbers[i][k]} ");
+        Console.Write($"{jagged[i][k]} ");
     }
     Console.WriteLine();
 }
@@ -234,7 +235,7 @@ public interface IEnumerator<out T> : IDisposable, IEnumerator
 
     void Dispose();
     bool MoveNext();
-    void Reset();
+    void Reset(); // Для совместимости с COM, для нового цикла енумератор создается заново
 }
 ```
 
@@ -247,7 +248,7 @@ foreach (int x in src)
 }
 
 var e = src.GetEnumerator();
-while (e.MoveNext())
+while (e.MoveNext()) // вначале Current кидает ошибку, необходимо выполнить MoveNext
 {
   var x = (int)e.Current; // without the cast if src was an IEnumerable<T>
   // Do something with x.
@@ -262,6 +263,50 @@ using (var e = src.GetEnumerator())
     }
 }
 ```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+public class BoxEnumerator : IEnumerator<Box>
+{
+    private BoxCollection _collection;
+    private int curIndex;
+    private Box current;
+
+    public BoxEnumerator(BoxCollection collection)
+    {
+        _collection = collection;
+        curIndex = -1;
+        current = default(Box);
+    }
+
+    public bool MoveNext()
+    {
+        //Avoids going beyond the end of the collection.
+        if (++curIndex >= _collection.Count)
+            return false;
+
+        current = _collection[curIndex];
+        return true;
+    }
+
+
+    public void Reset() { curIndex = -1; }
+
+    void IDisposable.Dispose() { }
+
+    public Box Current { get { return current; } }
+
+    object IEnumerator.Current { get { return Current; } }
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+- всегда явно использовать foreach
+- обычно енумератор считается валидным пока коллекция не изменялась
+- обычно при удалении, добавлении, элементов методы `MoveNext` or `Reset` должны кидать `InvalidOperationException`
+- в дефолтной ситуации перебор коллекции непотокобезопасен и надо делать собственную синхронизацию
 
 <div style="page-break-after: always;"></div>
 
@@ -305,10 +350,80 @@ while (x.Items.MoveNext())
 
 <div style="page-break-after: always;"></div>
 
-## yield
+## yield - итераторный блок
 
-Ограничения
+- можно использовать только в методе, возвращающем IEnumerable, IEnumerator или обобщенные эквиваленты
+- внутри итераторного блока запрещены обычные `return`
+- создает автомат состояний, который фактически генерит енумератор поверх метода
+- при yield return приостанавливает выполнение кода, фактически завершая метод `MoveNext()` + `Current` и отдавая управление коду, использующему итератор
+
+```cs
+static IEnumerable<int> CreateEnumerable()
+{
+    for (int i = 0; i < 3; i++)
+    {
+        yield return i;
+        if (DateTime.Now >= limit)
+            yield break;
+    }
+    yield return -1;
+}
+
+foreach(int i in CreateEnumerable()) { .... }
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+for (DateTime day = timetable.StartDate; day <= timetable.EndDate; day = day.AddDays(1))
+{}
+
+foreach (DateTime day in timetable.DateRange)
+{}
+
+public IEnumerable<DateTime> DateRange
+{
+    get
+    {
+        for (DateTime day = StartDate; day <= EndDate; day = day.AddDays(1))
+        {
+            yield return day;
+        }
+    }
+}
+
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+static IEnumerable<int> CountWithTimeLimit(DateTime limit)
+{
+    try
+    {
+        for (int i = 1; i <= 100; i++)
+        {
+            if (DateTime.Now >= limit)
+                yield break;
+            yield return i;
+        }
+    }
+    finally
+    {
+        Console.WriteLine("Stopping!");
+    }
+}
+```
+
+Ограничения (Lippert [blog](http://blogs.msdn.com/b/ericlippert/archive/tags/iterators/))
 
 - Оператор yield return не разрешено использовать внутри блока try при наличии любых блоков catch
 - не допускается применять оператор yield return или yield break в блоке finally
-http://blogs.msdn.com/b/ericlippert/archive/tags/iterators/
+
+<div style="page-break-after: always;"></div>
+
+## Рекомендации
+
+- Используйте foreach везде, где возможно
+- Если вдруг будете реализовывать енумератор - делайте это проще, без структур и полагания на duck typing
+- Используйте итераторный блок, если это делает код красивее и проще
