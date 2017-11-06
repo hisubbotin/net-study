@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
-
-[assembly: InternalsVisibleTo("BoringVector.Tests")]
 
 namespace BoringVector
 {
@@ -9,7 +6,7 @@ namespace BoringVector
     {
         private static void Main()
         {
-            Console.WriteLine("Hello, vector World!");
+            Console.WriteLine("Hello World!");
         }
     }
 }

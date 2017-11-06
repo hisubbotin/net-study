@@ -8,166 +8,55 @@ namespace BoringVector
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
 
-    /// <summary>
-    /// Реализует двумерный вектор евклидова пространства.
-    /// </summary>
     internal struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
-        /// <summary>
-        /// Абсцисса вектора. </summary>
-        private double _x;
 
-        /// <summary>
-        /// Ордината вектора. </summary>
-        private double _y;
-
-        /// <summary>
-        /// Параметризованный конструктор вектора. </summary>
-        /// <param name="x"> Абсцисса вектора. </param>
-        /// <param name="y"> Ордината вектора. </param>
-        public Vector(double x, double y)
-        {
-            _x = x;
-            _y = y;
-        }
-
-        /// <summary>
-        /// Аксессоры абсциссы вектора. </summary>
-        public double X
-        {
-            get => _x;
-            set => _x = value;
-        }
-
-        /// <summary>
-        /// Аксессоры ординаты вектора. </summary>
-        public double Y
-        {
-            get => _y;
-            set => _y = value;
-        }
 
         /*
-        На месте заглушек добавь реализацию базовых методов вектора:
-        - квадрат длины
-        - сумма векторов
-        - умножение на коэффициент
-        - скалярное произведение
-        - векторное произведение (= площадь параллелограмма)
-        // векторное произведение в двумерном пространстве это и так скаляр
+            На месте заглушек добавь реализацию базовых методов вектора:
+                - квадрат длины
+                - сумма векторов
+                - умножение на коэффициент
+                - скалярное произведение
+                - векторное произведение (= площадь параллелограмма)
         */
 
-        /// <summary>
-        /// Вычисляет значение квадрата длины вектора. </summary>
-        /// <returns> Возвращает значение квадрата длины вектора. </returns>
         public double SquareLength()
         {
-            return _x * _x + _y * _y;
+            throw new NotImplementedException();
         }
-        // почему <returns></returns> не влияет на выводимую информацию о методе?
-
-        /// <summary>
-        /// Прибавляет вектор vector к текущему вектору. </summary>
-        /// <param name="vector"> Прибавляемый вектор. </param>
-        /// <returns> Возвращает объект измененного вектора. </returns>
-        public Vector Add(Vector vector)
+        public Vector Add(Vector v)
         {
-            _x += vector.X;
-            _y += vector.Y;
-            return this;
+            throw new NotImplementedException();
         }
-
-        /// <summary>
-        /// Умножает вектор на скаляр k. </summary>
-        /// <param name="k"> Скаляр, на который умножается вектор. </param>
-        /// <returns> Возвращает объект измененного вектора. </returns>
         public Vector Scale(double k)
         {
-            _x *= k;
-            _y *= k;
-            return this;
+            throw new NotImplementedException();
         }
-
-        /// <summary>
-        /// Скалярно умножает вектор vector на текущий вектор. </summary>
-        /// <param name="vector"> Вектор, на который умножается текущий вектор. </param>
-        /// <returns> Возвращает значение скалярного произведения двух векторов. </returns>
-        public double DotProduct(Vector vector)
+        public double DotProduct(Vector v)
         {
-            return _x * vector.X + _y * vector.Y;
+            throw new NotImplementedException();
         }
-
-        /// <summary>
-        /// Векторно умножает вектор vector на текущий вектор. </summary>
-        /// <param name="vector"> Вектор, на который умножается текущий вектор. </param>
-        /// <returns> Возвращает значение векторного произведения двух векторов. </returns>
-        public double CrossProduct(Vector vector)
+        public double CrossProduct(Vector v)
         {
-            return _x * vector.Y - _y * vector.X;
-            // http://mathworld.wolfram.com/CrossProduct.html
+            throw new NotImplementedException();
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
 
-        /// <summary>
-        /// Преобразует координаты вектора в соответствующую запись в формате (X; Y).
-        /// </summary>
-        /// <returns> Строка формата (X; Y), соответствующая координатам вектора. </returns>
-        public override string ToString()
-        {
-            return $"({_x}; {_y})";
-            // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/interpolated-strings
-        }
-
         #region operators
 
         /*
-            Реализуй также следующие операторы (Vector v, u и double k):
+            Реализуй также следущие операторы (Vector v, u и double k):
                 - v + u, v - u
                 - k * v, v * k, v / k
                 - +v, -v
         */
-
-        // нет желания комментировать операторы - я не герой, а всего лишь котик
-        public static Vector operator+(Vector vector) => vector;
-
-        public static Vector operator-(Vector vector) => new Vector(-vector.X, -vector.Y);
-
-        public static Vector operator+(Vector augend, Vector addend)
-        {
-            var sum = new Vector(augend.X + addend.X, augend.Y + addend.Y);
-            return sum;
-        }
-        // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/overloadable-operators
-
-        public static Vector operator-(Vector minuend, Vector subtrahend)
-        {
-            var difference = new Vector(minuend.X - subtrahend.X, minuend.Y - subtrahend.Y);
-            return difference;
-        }
-
-        public static Vector operator*(Vector multiplicand, double multiplier)
-        {
-            var product = new Vector(multiplicand.X * multiplier, multiplicand.Y * multiplier);
-            return product;
-        }
-        
-        public static Vector operator*(double multiplier, Vector multiplicand)
-        {
-            var product = new Vector(multiplicand.X * multiplier, multiplicand.Y * multiplier);
-            return product;
-        }
-
-        public static Vector operator/(Vector dividend, double divisor)
-        {
-            var quotient = new Vector(dividend.X / divisor, dividend.Y / divisor);
-            return quotient;
-        }
 
         #endregion
     }
