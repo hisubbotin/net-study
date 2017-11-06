@@ -67,7 +67,7 @@ namespace AdventureTime
                 Поиграйся и проверь, что round-trip действительно round-trip, т.е. туда-обратно равно оригиналу (для туда воспользуйся предыдущим методом).
                 Проверь для всех значений DateTime.Kind.
             */
-            return DateTime.Parse(dtStr, null, DateTimeStyles.RoundtripKind);
+            return DateTime.Parse(dtStr, null, DateTimeStyles.RoundtripKind); 
         }
 
         /// <summary>
@@ -122,7 +122,7 @@ namespace AdventureTime
                 3) Подумай, почему возвращаемое значение может отличаться от действительности.
             */
             // ToatalHours - это все ticks, деленные на кол-во ticks в часе
-            // Hours - берет во внимание только полные часы, кол-во дней, например не учитывается            
+            // Hours - берет во внимание только полные часы, кол-во дней, например не учитывается             
             return (int)(dt1 - dt2).TotalHours;
         }
 
@@ -132,7 +132,7 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            // Вообще в разных трех месяцах будет разно кол-во минут
+            // Вообще в разных трех месяцах будет разно кол-во минут 
             throw new Exception("Bad method");
             //var dt1 = new DateTime();
             //var dt2 = dt1.AddMonths(3);
