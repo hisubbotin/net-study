@@ -15,7 +15,13 @@ namespace AdventureTime
             Console.WriteLine(Time.GetHoursBetween(DateTime.Now, DateTime.Now +
                 TimeSpan.FromHours(2) + TimeSpan.FromDays(10))); // = -2
             Console.WriteLine(Time.GetHoursBetween(DateTime.Now, DateTime.UtcNow)); // = 2
-            Console.WriteLine(Time.GetTotalMinutesInThreeMonths());
+            try
+            {
+                Console.WriteLine(Time.GetTotalMinutesInThreeMonths());
+            } catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             Console.WriteLine(Time.AreEqualBirthdays(new DateTime(1891, 5, 1, 4, 3, 0,DateTimeKind.Unspecified),
                 new DateTime(1712, 5, 1, 11, 30, 0, DateTimeKind.Unspecified)));
             var someDate = new DateTime(2010, 1, 1, 0, 0, 0, DateTimeKind.Unspecified);

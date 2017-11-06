@@ -2,6 +2,7 @@
 using NodaTime;
 using NodaTime.TimeZones;
 using System.Globalization;
+using System.Diagnostics;
 
 namespace AdventureTime
 {
@@ -103,9 +104,8 @@ namespace AdventureTime
                 Ну а здесь воспользуйся сложением с TimeSpan. Обрати внимание, что помимо конструктора, у класса есть набор полезных статических методов-фабрик.
                 Обрати внимание, что у TimeSpan нет статических методов FromMonth, FromYear. Как думаешь, почему?
             */
-            // Нельзя делать TimeSpan от месяца и т.д. т.к. их рамер не фиксирован
-            TimeSpan tenSec = TimeSpan.FromSeconds(10);
-            return dt + tenSec;
+            // Нельзя делать TimeSpan от месяца и т.д. т.к. их рамер не фиксирован            
+            return dt + TimeSpan.FromSeconds(10); 
         }
 
         /// <summary>
@@ -123,7 +123,7 @@ namespace AdventureTime
             */
             // ToatalHours - это все ticks, деленные на кол-во ticks в часе
             // Hours - берет во внимание только полные часы, кол-во дней, например не учитывается            
-            return (dt1 - dt2).Hours;
+            return (int)(dt1 - dt2).TotalHours;
         }
 
         /// <summary>
@@ -133,10 +133,11 @@ namespace AdventureTime
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
             // Вообще в разных трех месяцах будет разно кол-во минут
-            DateTime dt1 = new DateTime();
-            DateTime dt2 = dt1.AddMonths(3);
-            TimeSpan ts = dt2 - dt1;
-            return (int)ts.TotalMinutes;
+            throw new Exception("Bad method");
+            //var dt1 = new DateTime();
+            //var dt2 = dt1.AddMonths(3);
+            //var ts = dt2 - dt1;
+            //return (int)ts.TotalMinutes;
         }
 
         #region Adventure time saga
@@ -159,7 +160,7 @@ namespace AdventureTime
             var fromMoscow = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(3));
             var toLondon = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(0));
 
-            TimeSpan duration = toLondon - fromMoscow;
+            var duration = toLondon - fromMoscow;
             return (int)duration.TotalMinutes;
         }
 
@@ -181,7 +182,7 @@ namespace AdventureTime
             var fromMoscow = new DateTimeOffset(2010, 3, 28, 3, 15, 0, TimeSpan.FromHours(3));
             var toLondon = new DateTimeOffset(2010, 3, 28, 1, 15, 0, TimeSpan.FromHours(0));
 
-            TimeSpan duration = toLondon - fromMoscow;
+            var duration = toLondon - fromMoscow;
             return (int)duration.TotalMinutes;
         }
 
@@ -200,7 +201,7 @@ namespace AdventureTime
             var fromMoscow = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(4));
             var toLondon = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(1));
 
-            TimeSpan duration = toLondon - fromMoscow;
+            var duration = toLondon - fromMoscow;
             return (int)duration.TotalMinutes;
         }
 
@@ -225,10 +226,10 @@ namespace AdventureTime
             */
             const string moscowZoneId = "Russian Standard Time";
             const string londonZoneId = "GMT Standard Time";
-            DateTimeOffset fromMoscow = GetZonedTime(new DateTime(2010, 3, 28, 2, 15, 0), moscowZoneId);
-            DateTimeOffset toLondon = GetZonedTime(new DateTime(2010, 3, 28, 2, 15, 0), londonZoneId);
+            var fromMoscow = GetZonedTime(new DateTime(2010, 3, 28, 2, 15, 0), moscowZoneId);
+            var toLondon = GetZonedTime(new DateTime(2010, 3, 28, 2, 15, 0), londonZoneId);
 
-            TimeSpan duration = toLondon - fromMoscow;
+            var duration = toLondon - fromMoscow;
             return (int)duration.TotalMinutes;
         }
 
@@ -242,10 +243,10 @@ namespace AdventureTime
             */
             const string moscowZoneId = "Russian Standard Time";
             const string londonZoneId = "GMT Standard Time";
-            DateTimeOffset fromMoscow = GetZonedTime(new DateTime(2010, 3, 28, 3, 15, 0), moscowZoneId);
-            DateTimeOffset toLondon = GetZonedTime(new DateTime(2010, 3, 28, 1, 15, 0), londonZoneId);
+            var fromMoscow = GetZonedTime(new DateTime(2010, 3, 28, 3, 15, 0), moscowZoneId);
+            var toLondon = GetZonedTime(new DateTime(2010, 3, 28, 1, 15, 0), londonZoneId);
 
-            TimeSpan duration = toLondon - fromMoscow;
+            var duration = toLondon - fromMoscow;
             return (int)duration.TotalMinutes;
         }
 
@@ -305,11 +306,12 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            // Приведем обе даты к UTC, а то мало ли
-            var p1B = person1Birthday.ToUniversalTime();
-            var p2B = person2Birthday.ToUniversalTime();
-
-            return (p1B.Month == p2B.Month) && (p1B.Day == p2B.Day);
+            // Ну ладно, не буду переводить. Будем надеяться, что дадут даты с одинаковым Kind
+            //var p1B = person1Birthday.ToUniversalTime();
+            //var p2B = person2Birthday.ToUniversalTime();
+            Trace.Assert(person1Birthday.Kind == person2Birthday.Kind);
+            return (person1Birthday.Month == person2Birthday.Month) &&
+                (person1Birthday.Day == person2Birthday.Day);
         }
     }
 }
