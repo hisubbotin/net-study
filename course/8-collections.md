@@ -464,34 +464,118 @@ static IEnumerable<int> CountWithTimeLimit(DateTime limit)
 - `SortedList<TKey, TValue>` - коллекция, хранящая пары "ключ-значение", отсортированные по ключу
 - `SortedDictionary<TKey, TValue>` отличия в реализации, использовании памяти, скорости выполнения отдельных методов
 - `Stack<T>` LIFO
+- `HashSet<T>` - высокопроизводительный список
 
 <div style="page-break-after: always;"></div>
 
 ### `List<T>`
 
+```cs
+public class List: IList<T>, ICollection<T>, IEnumerable<T>
+
+// Некоторые методы
+void Add(T item);                       // добавление нового элемента
+void AddRange(ICollection collection);  // добавление коллекции
+int IndexOf(T item);                    // находит индекс первого вхождения
+void Insert(int index, T item);         // вставляет элемент на позицию index
+bool Remove(T item);                    // удаляет элемент из списка (return true, если успешно)
+void RemoveAt(int index);               // удаление элемента по указанному индексу index
+void Sort();                            // сортировка
+int BinarySearch(T item);               // бинарный поиск (возвращает индекс, если нашел). Список должен быть отсортирован
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+List<int> list = new List<int>() { 1, 22, 3, 4, 5 };
+
+list.Add(6);
+
+list.AddRange(new int[] { 3, 2 });
+
+list.RemoveAt(1); //  удаляем второй элемент
+
+list.Insert(0, 33); // вставляем на первое место в списке число 33
+
+foreach (int i in numbers)
+{
+    Console.WriteLine(i);
+}
+```
+
 <div style="page-break-after: always;"></div>
 
 ### `Dictionary<TKey,TValue>`
 
+```cs
+public class Dictionary<TKey, TValue>: IDictionary<TKey, TValue>,
+    ICollection<KeyValuePair<TKey, TValue>>, IEnumerable<KeyValuePair<TKey, TValue>>,
+    IEnumerable, IDictionary, ICollection
+```
+
 - Hashtable
 - Dictionary is O(1) and in worst case O(log(N))
 - По факту содержит внутри 3 коллекции (пары, `Keys`, `Values`)
+- Содержит перечисление `KeyValuePair<TKey, TValue>`
+
+<div style="page-break-after: always;"></div>
+
+Properties:
+
+- `Comparer` - `IEqualityComparer<T>` объект сравнивающий ключи на равенство
+- `Count` - количество пар
+- `Item[TKey]` - Get / set для значения по ключу
+- `Keys` - коллекция ключей
+- `Values` - коллекция значений
+
+Methods:
+
+```cs
+void Add(TKey, TValue);
+void Clear();
+bool ContainsKey(TKey key);                   // Есть ли ключ в коллекции
+bool ContainsValue(TValue value);             // Есть ли значение
+bool Remove(TKey key);                        // удалить пару
+bool TryGetValue(TKey key, out TValue value); // попробовать получить значение по ключу
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+Dictionary<string, string> openWith = new Dictionary<string, string>();
+
+openWith.Add("txt", "notepad.exe");
+openWith.Add("bmp", "paint.exe");
+openWith.Add("dib", "paint.exe");
+openWith.Add("rtf", "wordpad.exe");
+
+try
+{
+    openWith.Add("txt", "winword.exe");
+}
+catch (ArgumentException)
+{
+    Console.WriteLine("An element with Key = \"txt\" already exists.");
+}
+```
 
 <div style="page-break-after: always;"></div>
 
 Итерирование:
 
 ```cs
-foreach(KeyValuePair<string, string> item in myDictionary)
+foreach(KeyValuePair<string, string> item in openWith)
 {
   foo(item.Key);
   bar(item.Value);
 }
-foreach(var item in myDictionary.Keys)
+
+foreach(var item in openWith.Keys)
 {
   foo(item);
 }
-foreach(var item in myDictionary.Values)
+
+foreach(var item in openWith.Values)
 {
   foo(item);
 }
@@ -499,6 +583,14 @@ foreach(var item in myDictionary.Values)
 
 <div style="page-break-after: always;"></div>
 
-### SortedList vs Dictionary
+### SortedList vs SortedDictionary
 
-https://stackoverflow.com/questions/935621/whats-the-difference-between-sortedlist-and-sorteddictionary
+- И то и другое binary search tree with O(log n) retrieval
+- Похожие объектные модели
+- Разница в использовании памяти, скорости вставки и удаления:
+  - `SortedList<TKey, TValue>` ипользует меньше памяти
+  - `SortedDictionary<TKey, TValue>` - быстрее вставка и удаление для несортированных данных - O(log n), вместо O(n) у `SortedList<TKey, TValue>`
+  - `SortedList<TKey,TValue>` быстрее, если вставка идет одним куском из сортированных данных
+
+[SOF](https://stackoverflow.com/questions/935621/whats-the-difference-between-sortedlist-and-sorteddictionary)
+
