@@ -2,19 +2,24 @@
 
 <!-- TOC -->
 
-- [Collections](#collections)
-  - [Управление программой](#управление-программой)
+- [Control flow + Collections](#control-flow--collections)
+  - [Control flow](#control-flow)
     - [switch](#switch)
-  - [Array](#array)
-  - [Foreach + `IEnumerable<T>`](#foreach--ienumerablet)
-  - [yield - итераторный блок](#yield---итераторный-блок)
+    - [Array](#array)
+    - [Foreach + `IEnumerable<T>`](#foreach--ienumerablet)
+    - [yield - итераторный блок](#yield---итераторный-блок)
   - [Рекомендации](#рекомендации)
+  - [Collections](#collections)
+    - [Interfaces](#interfaces)
+    - [`List<T>`](#listt)
+    - [`Dictionary<TKey,TValue>`](#dictionarytkeytvalue)
+    - [SortedList vs Dictionary](#sortedlist-vs-dictionary)
 
 <!-- /TOC -->
 
 <div style="page-break-after: always;"></div>
 
-## Управление программой
+## Control flow
 
 Циклы:
 
@@ -154,7 +159,7 @@ switch(shape)
 
 <div style="page-break-after: always;"></div>
 
-## Array
+### Array
 
 - нумерация с нуля
 
@@ -216,7 +221,7 @@ for (int i = 0; i < jagged.Length; i++)
 
 <div style="page-break-after: always;"></div>
 
-## Foreach + `IEnumerable<T>`
+### Foreach + `IEnumerable<T>`
 
 ```cs
 foreach (int x in src)
@@ -350,9 +355,9 @@ while (x.Items.MoveNext())
 
 <div style="page-break-after: always;"></div>
 
-## yield - итераторный блок
+### yield - итераторный блок
 
-- можно использовать только в методе, возвращающем IEnumerable, IEnumerator или обобщенные эквиваленты
+- [yield](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/yield) можно использовать только в методе, возвращающем IEnumerable, IEnumerator или обобщенные эквиваленты
 - внутри итераторного блока запрещены обычные `return`
 - создает автомат состояний, который фактически генерит енумератор поверх метода
 - при yield return приостанавливает выполнение кода, фактически завершая метод `MoveNext()` + `Current` и отдавая управление коду, использующему итератор
@@ -419,11 +424,81 @@ static IEnumerable<int> CountWithTimeLimit(DateTime limit)
 
 - Оператор yield return не разрешено использовать внутри блока try при наличии любых блоков catch
 - не допускается применять оператор yield return или yield break в блоке finally
+- не допускаются out/ref параметры, в анонимных методах
 
 <div style="page-break-after: always;"></div>
 
-## Рекомендации
+### Рекомендации
 
 - Используйте foreach везде, где возможно
 - Если вдруг будете реализовывать енумератор - делайте это проще, без структур и полагания на duck typing
 - Используйте итераторный блок, если это делает код красивее и проще
+
+<div style="page-break-after: always;"></div>
+
+## Collections
+
+### Interfaces
+
+Интерфейсы, имеющие отношение к коллекциям
+
+- `IEnumerable<T>` - доступ к enumerator, для последовательного доступа к элементам через foreach
+- `IEnumerator<T>`
+- `ICollection<T>` - общие свойства и методы для всех коллекций (CopyTo, Add, Remove, Contains, свойство Count)
+- `IList<T>` - последовательный список
+- `IDictionary<TKey, TValue>` - интерфейс для коллекции, хранящей объекты в виде пар ключ-значение
+- `IComparer<T>` - метод Compare для сравнения двух однотипных объектов
+- `IEqualityComparer<T>` - для сравнения двух объектов на равенство
+
+<div style="page-break-after: always;"></div>
+
+`System.Collections.Generic`
+
+Главные коллекции:
+
+- `List<T>` - последовательный список
+- `Dictionary<TKey, TValue>` - набор уникальных пар "ключ-значение"
+- `LinkedList<T>` - двухсвязанный список
+- `Queue<T>` - очередь объектов FIFO
+- `SortedSet<T>` - отсортированная коллекция
+- `SortedList<TKey, TValue>` - коллекция, хранящая пары "ключ-значение", отсортированные по ключу
+- `SortedDictionary<TKey, TValue>` отличия в реализации, использовании памяти, скорости выполнения отдельных методов
+- `Stack<T>` LIFO
+
+<div style="page-break-after: always;"></div>
+
+### `List<T>`
+
+<div style="page-break-after: always;"></div>
+
+### `Dictionary<TKey,TValue>`
+
+- Hashtable
+- Dictionary is O(1) and in worst case O(log(N))
+- По факту содержит внутри 3 коллекции (пары, `Keys`, `Values`)
+
+<div style="page-break-after: always;"></div>
+
+Итерирование:
+
+```cs
+foreach(KeyValuePair<string, string> item in myDictionary)
+{
+  foo(item.Key);
+  bar(item.Value);
+}
+foreach(var item in myDictionary.Keys)
+{
+  foo(item);
+}
+foreach(var item in myDictionary.Values)
+{
+  foo(item);
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+### SortedList vs Dictionary
+
+https://stackoverflow.com/questions/935621/whats-the-difference-between-sortedlist-and-sorteddictionary
