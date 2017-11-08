@@ -2,18 +2,18 @@
 
 <!-- TOC -->
 
-- [Control flow + Collections](#control-flow--collections)
+- [Collections](#collections)
   - [Control flow](#control-flow)
     - [switch](#switch)
     - [Array](#array)
     - [Foreach + `IEnumerable<T>`](#foreach--ienumerablet)
     - [yield - итераторный блок](#yield---итераторный-блок)
-  - [Рекомендации](#рекомендации)
-  - [Collections](#collections)
+    - [Рекомендации](#рекомендации)
+  - [Collections](#collections-1)
     - [Interfaces](#interfaces)
     - [`List<T>`](#listt)
     - [`Dictionary<TKey,TValue>`](#dictionarytkeytvalue)
-    - [SortedList vs Dictionary](#sortedlist-vs-dictionary)
+    - [SortedList vs SortedDictionary](#sortedlist-vs-sorteddictionary)
 
 <!-- /TOC -->
 
@@ -458,13 +458,13 @@ static IEnumerable<int> CountWithTimeLimit(DateTime limit)
 
 - `List<T>` - последовательный список
 - `Dictionary<TKey, TValue>` - набор уникальных пар "ключ-значение"
-- `LinkedList<T>` - двухсвязанный список
-- `Queue<T>` - очередь объектов FIFO
+- `HashSet<T>` - высокопроизводительный список
 - `SortedSet<T>` - отсортированная коллекция
 - `SortedList<TKey, TValue>` - коллекция, хранящая пары "ключ-значение", отсортированные по ключу
 - `SortedDictionary<TKey, TValue>` отличия в реализации, использовании памяти, скорости выполнения отдельных методов
 - `Stack<T>` LIFO
-- `HashSet<T>` - высокопроизводительный список
+- `Queue<T>` - очередь объектов FIFO
+- `LinkedList<T>` - двухсвязанный список
 
 <div style="page-break-after: always;"></div>
 
@@ -593,4 +593,3 @@ foreach(var item in openWith.Values)
   - `SortedList<TKey,TValue>` быстрее, если вставка идет одним куском из сортированных данных
 
 [SOF](https://stackoverflow.com/questions/935621/whats-the-difference-between-sortedlist-and-sorteddictionary)
-
