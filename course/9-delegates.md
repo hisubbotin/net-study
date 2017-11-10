@@ -16,3 +16,7 @@
 ## Event
 
 ## Lambdas
+
+## Closures
+
+http://sergeyteplyakov.blogspot.ru/2010/04/c.html

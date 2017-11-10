@@ -14,6 +14,8 @@
 
 ## Exceptions
 
+https://docs.microsoft.com/en-us/dotnet/standard/design-guidelines/exceptions-and-performance
+
 ## throw / try / catch / finally
 
 ## Debug / Trace

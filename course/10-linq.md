@@ -10,6 +10,10 @@
 
 <div style="page-break-after: always;"></div>
 
+## Monads
+
+http://mikehadlow.blogspot.ru/2011/01/monads-in-c-4-linq-loves-monads.html
+
 ## Отложенные и неотложенные запросы
 
 ## Стандартный и Query Expressions синтакис запросов

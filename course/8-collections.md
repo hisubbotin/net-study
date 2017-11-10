@@ -14,6 +14,11 @@
     - [`List<T>`](#listt)
     - [`Dictionary<TKey,TValue>`](#dictionarytkeytvalue)
     - [SortedList vs SortedDictionary](#sortedlist-vs-sorteddictionary)
+    - [HashSet](#hashset)
+  - [Равенство](#равенство)
+    - [`IEquatable<T>`](#iequatablet)
+    - [`IEqualityComparer<T>`](#iequalitycomparert)
+    - [`IComparable<T>`](#icomparablet)
 
 <!-- /TOC -->
 
@@ -315,6 +320,8 @@ public class BoxEnumerator : IEnumerator<Box>
 
 <div style="page-break-after: always;"></div>
 
+Duck Typing [habr](https://habrahabr.ru/post/148905/) [habr2](https://habrahabr.ru/post/68430/)
+
 ```cs
 public class List<T> : IEnumerable<T>
 {
@@ -447,8 +454,6 @@ static IEnumerable<int> CountWithTimeLimit(DateTime limit)
 - `ICollection<T>` - общие свойства и методы для всех коллекций (CopyTo, Add, Remove, Contains, свойство Count)
 - `IList<T>` - последовательный список
 - `IDictionary<TKey, TValue>` - интерфейс для коллекции, хранящей объекты в виде пар ключ-значение
-- `IComparer<T>` - метод Compare для сравнения двух однотипных объектов
-- `IEqualityComparer<T>` - для сравнения двух объектов на равенство
 
 <div style="page-break-after: always;"></div>
 
@@ -470,6 +475,12 @@ static IEnumerable<int> CountWithTimeLimit(DateTime limit)
 
 ### `List<T>`
 
+Аналог Vector в C++
+
+- Random access - constant O(1)
+- Insertion or removal of elements at the end - amortized constant O(1)
+- Insertion or removal of elements - linear in the distance to the end of the vector O(n)
+
 ```cs
 public class List: IList<T>, ICollection<T>, IEnumerable<T>
 
@@ -490,12 +501,10 @@ int BinarySearch(T item);               // бинарный поиск (возв
 List<int> list = new List<int>() { 1, 22, 3, 4, 5 };
 
 list.Add(6);
-
-list.AddRange(new int[] { 3, 2 });
-
-list.RemoveAt(1); //  удаляем второй элемент
-
-list.Insert(0, 33); // вставляем на первое место в списке число 33
+list.AddRange(new int[] { 3, 2 });  // Можно добавлять коллекцию
+list.RemoveAt(1);                   // Удаляем второй элемент
+list.Insert(0, 33);                 // вставляем на первое место
+list[2] = 2;                        // Можно по индексу обращаться
 
 foreach (int i in numbers)
 {
@@ -593,3 +602,38 @@ foreach(var item in openWith.Values)
   - `SortedList<TKey,TValue>` быстрее, если вставка идет одним куском из сортированных данных
 
 [SOF](https://stackoverflow.com/questions/935621/whats-the-difference-between-sortedlist-and-sorteddictionary)
+
+### HashSet
+
+http://theburningmonk.com/2011/03/hashset-vs-list-vs-dictionary/
+
+Типичное применение:
+
+- Добавляем данные нечасто
+- Нужен O(1) доступ к элементам
+
+```cs
+var sqlErrorCodes = new HashSet<int>(){};
+
+if (sqlErrorCode.Contains(someCode))
+{
+}
+```
+
+## Равенство
+
+https://msdn.microsoft.com/ru-ru/library/ms173147%28v=vs.90%29.aspx?f=255&MSPPError=-2147217396
+
+https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/statements-expressions-operators/how-to-define-value-equality-for-a-type
+
+### `IEquatable<T>`
+
+https://docs.microsoft.com/ru-ru/dotnet/api/system.iequatable-1?view=netframework-4.7.1
+
+### `IEqualityComparer<T>`
+
+https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx
+
+### `IComparable<T>`
+
+https://msdn.microsoft.com/en-us/library/4d7sx9hd.aspx
