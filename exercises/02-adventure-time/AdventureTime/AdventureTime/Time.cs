@@ -256,7 +256,7 @@ namespace AdventureTime
         /// </summary>
         /// <param name="date">Дата для проверки</param>
         /// <returns>True или False</returns>
-        private static bool AreDateTime(DateTime date)
+        private static bool DateTimeIsDate(DateTime date)
         {
             return date.Kind == DateTimeKind.Unspecified &&
                    date.Hour == 0 &&
@@ -267,12 +267,12 @@ namespace AdventureTime
         /// <summary>
         /// Указывает, родились ли два человека в один день.
         /// </summary>
-        /// <param name="person1Birthday">День рождения первого человека. Должен удовлетворять формату <see cref="AreDateTime"/></param>
-        /// <param name="person2Birthday">День рождения второго человека. Должен удовлетворять формату <see cref="AreDateTime"/></param>
+        /// <param name="person1Birthday">День рождения первого человека. Должен удовлетворять формату <see cref="DateTimeIsDate"/></param>
+        /// <param name="person2Birthday">День рождения второго человека. Должен удовлетворять формату <see cref="DateTimeIsDate"/></param>
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            if (!AreDateTime(person1Birthday) || !AreDateTime(person2Birthday))
+            if (!DateTimeIsDate(person1Birthday) || !DateTimeIsDate(person2Birthday))
             {
                 throw new ArgumentException("Wrong date format");
             }
