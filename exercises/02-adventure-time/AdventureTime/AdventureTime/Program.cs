@@ -8,8 +8,14 @@ namespace AdventureTime
         {
             var now = Time.WhatTimeIsIt();
             var nowUtc = Time.WhatTimeIsItInUtc();
-            Console.WriteLine("Now: " + now);
-            Console.WriteLine("Now UTC: " + nowUtc);
+            var nowUtc2 = DateTime.SpecifyKind(nowUtc, DateTimeKind.Local);
+            Environment.Exit(1);
+
+           
+
+            var test = now.Hour == nowUtc.Hour;
+            Console.WriteLine("Now: " + nowUtc);
+            Console.WriteLine("Now UTC: " + nowUtc2);
 
             Console.WriteLine(nowUtc.Date == Time.ToUtc(now).Date);
             Console.WriteLine(now == Time.ParseFromRoundTripFormat(Time.ToRoundTripFormatString(now)));
@@ -17,7 +23,6 @@ namespace AdventureTime
 
             Console.WriteLine("We are in " + Time.GetHoursBetween(nowUtc, Time.AddTenSeconds(now)) +
                               " hours ahead of UTC");
-            Console.WriteLine("Minutes in 3 months: " + Time.GetTotalMinutesInThreeMonths());
 
             Console.WriteLine("");
             Console.WriteLine(Time.GetAdventureTimeDurationInMinutes_ver2_FeelsLikeRocketScience());

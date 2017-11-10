@@ -92,7 +92,7 @@ namespace AdventureTime
         /// <returns>Полное количество часов заданного временного отрезка.</returns>
         public static int GetHoursBetween(DateTime dt1, DateTime dt2)
         {
-            return (int)(dt2 - dt1).TotalHours;
+            return (int)(dt2.ToUniversalTime() - dt1.ToUniversalTime()).TotalHours;
         }
 
         /// <summary>
@@ -100,11 +100,7 @@ namespace AdventureTime
         /// </summary>
         public static int GetTotalMinutesInThreeMonths()
         {
-            /* 
-             * Отмечу, что в разных 3 месяцах разное число минут :)
-             * Недолго думая, взял за основу авторитетное мнение моего интернет-провайдера...
-             */
-            return (int)TimeSpan.FromDays(90).TotalMinutes;
+            throw new NotImplementedException();
         }
 
         #region Adventure time saga
@@ -255,15 +251,31 @@ namespace AdventureTime
         }
 
         #endregion
-
+        /// <summary>
+        /// Проверка формата даты. Необходимы Unspecified kind, и 0:00:00 время
+        /// </summary>
+        /// <param name="date">Дата для проверки</param>
+        /// <returns>True или False</returns>
+        private static bool AreDateTime(DateTime date)
+        {
+            return date.Kind == DateTimeKind.Unspecified &&
+                   date.Hour == 0 &&
+                   date.Minute == 0 &&
+                   date.Second == 0 &&
+                   date.Millisecond == 0;
+        }
         /// <summary>
         /// Указывает, родились ли два человека в один день.
         /// </summary>
-        /// <param name="person1Birthday">День рождения первого человека.</param>
-        /// <param name="person2Birthday">День рождения второго человека.</param>
+        /// <param name="person1Birthday">День рождения первого человека. Должен удовлетворять формату <see cref="AreDateTime"/></param>
+        /// <param name="person2Birthday">День рождения второго человека. Должен удовлетворять формату <see cref="AreDateTime"/></param>
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
+            if (!AreDateTime(person1Birthday) || !AreDateTime(person2Birthday))
+            {
+                throw new ArgumentException("Wrong date format");
+            }
             return (person1Birthday.Day == person2Birthday.Day 
                 && person1Birthday.Month == person2Birthday.Month);
         }
