@@ -27,4 +27,6 @@
 
 ### async / await
 
+[async Main](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-7-1)
+
 ### SyncronizationContext
