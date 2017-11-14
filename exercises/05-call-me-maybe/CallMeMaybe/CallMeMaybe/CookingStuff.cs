@@ -20,7 +20,7 @@ namespace CallMeMaybe
 
     #endregion
 
-    #region Reservoirs
+    #region Containers
 
     public struct CansOf<T>
     {
@@ -70,7 +70,7 @@ namespace CallMeMaybe
 
     #endregion
 
-    #region Cooking stuff repository
+    #region Cooking table is like repository of the cooking stuff
 
     public class CookingTable
     {
@@ -107,7 +107,7 @@ namespace CallMeMaybe
 
     #endregion
 
-    #region Intermediate cooking stuff
+    #region Intermediate cooking ingredients
 
     internal struct FlourMixture { }
     internal struct EggsMixture { }
