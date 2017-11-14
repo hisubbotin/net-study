@@ -626,6 +626,8 @@ https://msdn.microsoft.com/ru-ru/library/ms173147%28v=vs.90%29.aspx?f=255&MSPPEr
 
 https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/statements-expressions-operators/how-to-define-value-equality-for-a-type
 
+https://habrahabr.ru/post/188038/
+
 ### `IEquatable<T>`
 
 https://docs.microsoft.com/ru-ru/dotnet/api/system.iequatable-1?view=netframework-4.7.1

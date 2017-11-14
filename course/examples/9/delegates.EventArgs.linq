@@ -1,23 +1,20 @@
 <Query Kind="Program" />
 
-class Program
+static void Main(string[] args)
 {
-    static void Main(string[] args)
+    Counter c = new Counter(new Random().Next(10));
+    c.ThresholdReached += c_ThresholdReached;
+    while (true)
     {
-        Counter c = new Counter(new Random().Next(10));
-        c.ThresholdReached += c_ThresholdReached;
-        while (true)
-        {
-            Console.WriteLine("adding one");
-            c.Add(1);
-        }
+        Console.WriteLine("adding one");
+        c.Add(1);
     }
+}
 
-    static void c_ThresholdReached(object sender, ThresholdReachedEventArgs e)
-    {
-        Console.WriteLine("The threshold of {0} was reached at {1}.", e.Threshold, e.TimeReached);
-        Environment.Exit(0);
-    }
+static void c_ThresholdReached(object sender, ThresholdReachedEventArgs e)
+{
+    Console.WriteLine($"{e.Threshold} was reached at {e.TimeReached}.");
+    Environment.Exit(0);
 }
 
 public class ThresholdReachedEventArgs : EventArgs

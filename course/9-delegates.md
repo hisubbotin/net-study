@@ -5,9 +5,9 @@
 - [Delegates](#delegates)
   - [Delegate](#delegate)
   - [Generic delegates](#generic-delegates)
+  - [Covariance & Contravariance](#covariance--contravariance)
   - [Event](#event)
   - [Lambdas](#lambdas)
-  - [Covariance & Contravariance](#covariance--contravariance)
   - [Closures](#closures)
 
 <!-- /TOC -->
@@ -16,7 +16,7 @@
 
 ## Delegate
 
-- Безопасный к типам обратный вызов
+- Безопасный к типам callback
 - `Invoke` чтобы вызвать
 
 Простейший пример объявления делегата:
@@ -160,7 +160,8 @@ static void Main(string[] args)
 - `Predicate<T>` - в принципе тоже самое, что `Func<T,bool>`
 - Делегат для проверки условия
 - [Может использоваться](https://stackoverflow.com/questions/1710301/what-is-a-predicate-in-c) для фильтрации коллекций в linq
-- Вообще он по сути [Deprecated](https://blogs.msdn.microsoft.com/mirceat/2008/03/12/linq-framework-design-guidelines/) и лучше вместо него использовать `Func<T,bool>`
+- Вообще он по сути [Deprecated](https://blogs.msdn.microsoft.com/mirceat/2008/03/12/linq-framework-design-guidelines/)
+- Всегда вместо него используйте `Func<T,bool>`
 
 ```cs
 Predicate<int> isPositive = delegate (int x) { return x > 0; };
@@ -214,7 +215,6 @@ class Base
     public int I {get;set;}
     public void Display() => Console.WriteLine(I);
 }
-
 class Derived : Base {}
 ```
 
@@ -238,20 +238,17 @@ public delegate TResult Func<in T1, in T2, out TResult>(T1 arg1, T2 arg2);
 
 ## Event
 
+Рассмотрим пример кода:
+
 ```cs
 public class Publisher
 {
     public delegate void CallEveryOne();
     public CallEveryOne call = null;
 }
-
 public class Subscriber
 {
-    public Subscriber(Publisher p)
-    {
-        p.call += ShowMessage;
-    }
-
+    public Subscriber(Publisher p) { p.call += ShowMessage; }
     public void ShowMessage() => Console.WriteLine("S");
 }
 
@@ -262,6 +259,8 @@ static void Main(string[] args)
     p.call.Invoke();
 }
 ```
+
+<div style="page-break-after: always;"></div>
 
 Проблемы:
 
@@ -323,24 +322,21 @@ void button1_Click(Object sender, EventArgs e)
 Пример с созданием собственного `EventArgs` [msdn](https://docs.microsoft.com/en-us/dotnet/standard/events/index), [msdn](https://msdn.microsoft.com/en-us/library/db0etb8x(v=vs.110).aspx):
 
 ```cs
-class Program
+static void Main(string[] args)
 {
-    static void Main(string[] args)
+    Counter c = new Counter(new Random().Next(10));
+    c.ThresholdReached += c_ThresholdReached;
+    while (true)
     {
-        Counter c = new Counter(new Random().Next(10));
-        c.ThresholdReached += c_ThresholdReached;
-        while (true)
-        {
-            Console.WriteLine("adding one");
-            c.Add(1);
-        }
+        Console.WriteLine("adding one");
+        c.Add(1);
     }
+}
 
-    static void c_ThresholdReached(object sender, ThresholdReachedEventArgs e)
-    {
-        Console.WriteLine("The threshold of {0} was reached at {1}.", e.Threshold, e.TimeReached);
-        Environment.Exit(0);
-    }
+static void c_ThresholdReached(object sender, ThresholdReachedEventArgs e)
+{
+    Console.WriteLine($"{e.Threshold} was reached at {e.TimeReached}.");
+    Environment.Exit(0);
 }
 
 public class ThresholdReachedEventArgs : EventArgs
@@ -384,6 +380,8 @@ class Counter
 
 <div style="page-break-after: always;"></div>
 
+Определения для `EventArgs`
+
 ```cs
 //
 // Summary:
@@ -402,6 +400,8 @@ public class EventArgs
     public EventArgs();
 }
 ```
+
+<div style="page-break-after: always;"></div>
 
 Определения для `EventHandler`
 
@@ -427,7 +427,7 @@ public delegate void EventHandler<TEventArgs>(object sender, TEventArgs e);
 
 ## Lambdas
 
-- Обнаружив лямбда-выражение вместо делегата компилятор генерит private метод
+- Обнаружив [лямбда](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/lambda-expressions)-выражение вместо делегата компилятор генерит private метод
 - Этот метод называется анонимная функция
 - Автоматически будет статическим или нет в зависимости от используемых переменных
 
@@ -484,4 +484,112 @@ double t = Benchmark(50, () => {var xs = Enumerable.Range(0, 1000000).ToList(); 
 
 ## Closures
 
-http://sergeyteplyakov.blogspot.ru/2010/04/c.html
+- Умеет использовать объекты вызывающего метода (локальные переменные и т.п.) в контексте анонимных функций и лямбд
+- [Jon Skeet](http://csharpindepth.com/Articles/Chapter5/Closures.aspx), [Тепляков](http://sergeyteplyakov.blogspot.ru/2010/04/c.html), [SOF](https://stackoverflow.com/questions/428617/what-are-closures-in-net)
+
+```cs
+static Action CreateAction()
+{
+    int count = 0;
+    return () =>
+    {
+        count++;
+        Console.WriteLine($"Count = {count}");
+    };
+}
+
+static void Main(string[] args)
+{
+    var action = CreateAction();
+    action(); // 1
+    action(); // 2
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+static Action CreateAction()
+{
+    DisplayClass1 c1 = new DisplayClass1();
+    c1.count = 0;
+    Action action = new Action(c1.ActionMethod);
+    return action;
+}
+
+// "<>c__DisplayClass1".
+private sealed class DisplayClass1
+{
+    // "<CreateAction>b__0".
+    public void ActionMethod()
+    {
+        count++;
+        Console.WriteLine("{0}. Count = {1}", message, count);
+    }
+    public int count;
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+- Переменная count из стека переехала в кучу в специально созданный объект
+- Имена для класса и метода даются такие, чтобы мы не смогли их повторить
+- Все это происходит за кадром и мы не влияем на это
+
+<div style="page-break-after: always;"></div>
+
+- Что происходит с переменными?
+- Происходит захват переменной на манер передачи ref параметра
+
+```cs
+string str = "Initial value";
+Action action = () =>
+{
+    Console.WriteLine(str);
+    str = "Modified by closure";
+};
+str = "After delegate creation";
+action();
+Console.WriteLine(str);
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+// After delegate creation
+// Modified by closure
+```
+
+- С циклами могут возникнуть сложности:
+
+```cs
+var funcs = new List<Func<int>>();
+for (int i = 0; i < 3; i++)
+{
+    funcs.Add(() => i);
+}
+
+foreach (var f in funcs)
+    Console.WriteLine(f());
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+// 3
+// 3
+// 3
+```
+
+- Можно поправить:
+
+```cs
+var funcs = new List<Func<int>>();
+for (int i = 0; i < 3; ++i)
+{
+    int tmp = i;
+    funcs.Add(() => tmp);
+}
+foreach (var f in funcs)
+    Console.WriteLine(f());
+```
