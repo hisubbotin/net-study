@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 
 namespace CallMeMaybe
 {
@@ -13,7 +14,7 @@ namespace CallMeMaybe
         }
 
         /// <inheritdoc />
-        public ICollection<PumpkinMuffin> CookPumpkinMuffins()
+        public IImmutableList<PumpkinMuffin> CookPumpkinMuffins()
         {
             var wholeWheatFlour = _cookingTable.FindCupsOf<WholeWheatFlour>(3.5m);
             var allPurposeFlour = _cookingTable.FindCupsOf<AllPurposeFlour>(3.5m);
@@ -23,7 +24,7 @@ namespace CallMeMaybe
 
             if (wholeWheatFlour != null && allPurposeFlour != null && pumpkinPieSpice != null && bakingSoda != null && salt != null)
             {
-                var flourMixture = Mix(
+                var flourMixture = MakeFlourMixture(
                     wholeWheatFlour.Value,
                     allPurposeFlour.Value,
                     pumpkinPieSpice.Value,
@@ -39,7 +40,7 @@ namespace CallMeMaybe
 
                 if (pumpkinPieFilling != null && sugar != null && oil != null && water != null && eggs != null)
                 {
-                    var eggMixture = Mix(
+                    var eggMixture = MakeEggsMixture(
                         pumpkinPieFilling.Value,
                         sugar.Value,
                         oil.Value,
@@ -55,26 +56,33 @@ namespace CallMeMaybe
                             pumpkinBatterCups.Add(new PumpkinBatterCup());
                         }
 
+                        var backingDish = _cookingTable.FindBakingDish(pumpkinBatterCups.ToImmutable());
+                        if (backingDish != null)
+                        {
+                            var oven = new Oven();
+                            oven.Heat(166);
 
+                            var pumpkinMuffins = oven.Bake<PumpkinBatterCup, PumpkinMuffin>(backingDish.Value, TimeSpan.FromMinutes(30));
+                            if (pumpkinMuffins != null)
+                            {
+                                return pumpkinMuffins.Value.Cups;
+                            }
+                        }
                     }
                 }
             }
 
-            throw new NotImplementedException();
+            return null;
         }
 
-        private BowlOf<EggsMixture>? Mix(CansOf<PumpkingPieFilling> pumpkinPieFilling, CupsOf<WhiteSugar> sugar, CupsOf<VegetableOil> oil, CupsOf<Water> water, Some<Egg> eggs)
+        private BowlOf<EggsMixture>? MakeEggsMixture(CansOf<PumpkingPieFilling> pumpkinPieFilling, CupsOf<WhiteSugar> sugar, CupsOf<VegetableOil> oil, CupsOf<Water> water, Some<Egg> eggs)
         {
-            throw new NotImplementedException();
+            return _cookingTable.FindBowlAndFillItWith(new EggsMixture());
         }
 
-        private BowlOf<FlourMixture>? Mix(CupsOf<WholeWheatFlour> wholeWheatFlour, CupsOf<AllPurposeFlour> allPurposeFlour, TeaspoonsOf<PumpkinPieSpice> pumpkinPieSpice, TeaspoonsOf<BakingSoda> bakingSoda, TeaspoonsOf<Salt> salt)
+        private BowlOf<FlourMixture>? MakeFlourMixture(CupsOf<WholeWheatFlour> wholeWheatFlour, CupsOf<AllPurposeFlour> allPurposeFlour, TeaspoonsOf<PumpkinPieSpice> pumpkinPieSpice, TeaspoonsOf<BakingSoda> bakingSoda, TeaspoonsOf<Salt> salt)
         {
             return _cookingTable.FindBowlAndFillItWith(new FlourMixture());
         }
-
-
-
-        //private BowlOf<FlourMixture>? MixFlours(CupsOf<WholeWheatFlour> wholeWheatFlour, )
     }
 }

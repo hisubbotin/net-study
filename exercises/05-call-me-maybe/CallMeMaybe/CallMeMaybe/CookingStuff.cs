@@ -31,16 +31,6 @@ namespace CallMeMaybe
         }
     }
 
-    public struct BowlOf<T>
-    {
-        public T Content { get; }
-
-        public BowlOf(T content)
-        {
-            Content = content;
-        }
-    }
-
     public struct CupsOf<T>
     {
         public decimal Count { get; }
@@ -65,6 +55,16 @@ namespace CallMeMaybe
         public Some(decimal count)
         {
             Count = count;
+        }
+    }
+
+    public struct BowlOf<T>
+    {
+        public T Content { get; }
+
+        public BowlOf(T content)
+        {
+            Content = content;
         }
     }
 
@@ -99,9 +99,9 @@ namespace CallMeMaybe
             return new Some<T>(count);
         }
 
-        public BakingDish<T> FindBakingDish<T>()
+        public BakingDish<T>? FindBakingDish<T>(IImmutableList<T> cups)
         {
-            return new BakingDish<T>();
+            return new BakingDish<T>(cups);
         }
     }
 
@@ -165,10 +165,11 @@ namespace CallMeMaybe
             DegreesCelsius = degreesCelsius;
         }
 
-        public BakingDish<TBaked> Bake<TRaw, TBaked>(BakingDish<TRaw> dish, TimeSpan duration)
+        public BakingDish<TBaked>? Bake<TRaw, TBaked>(BakingDish<TRaw> dish, TimeSpan duration)
             where TBaked: IBaked
             where TRaw: IBakeableTo<TBaked>
         {
+            // or null
             return new BakingDish<TBaked>(
                 dish
                     .Cups
