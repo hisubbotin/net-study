@@ -4,10 +4,10 @@
 
 - [Delegates](#delegates)
   - [Delegate](#delegate)
-    - [Generic delegates](#generic-delegates)
-    - [Covariance & Contravariance](#covariance--contravariance)
+  - [Generic delegates](#generic-delegates)
   - [Event](#event)
   - [Lambdas](#lambdas)
+  - [Covariance & Contravariance](#covariance--contravariance)
   - [Closures](#closures)
 
 <!-- /TOC -->
@@ -103,25 +103,7 @@ internal class Message : System.MulticastDelegate
 
 <div style="page-break-after: always;"></div>
 
-Типичное использование обычных делегатов:
-
-```cs
-button1.Click += new EventHandler(button1_Click);
-
-...
-
-///
-/// Здесь button1_Click — метод, который выглядит примерно так:
-///
-void button1_Click(Object sender, EventArgs e)
-{
-    // Действия после нажатие на кнопку
-}
-```
-
-<div style="page-break-after: always;"></div>
-
-### Generic delegates
+## Generic delegates
 
 По-большому счету обычно не нужно объявлять свои делегаты, достаточно стандартных generic вариантов
 
@@ -210,11 +192,295 @@ class AClass
 
 <div style="page-break-after: always;"></div>
 
-### Covariance & Contravariance
+## Covariance & Contravariance
+
+- Делегаты коварианты для выходного значения
+- и контрварианты для параметров
+
+```cs
+static void Main(string[] args)
+{
+    Factory d;
+    d = Create;         // ковариантность
+    Base b = Create(3);
+    b.Display();
+}
+
+delegate Base Factory(int value);
+private static Derived Create(int value) => new Derived { I = value };
+
+class Base
+{
+    public int I {get;set;}
+    public void Display() => Console.WriteLine(I);
+}
+
+class Derived : Base {}
+```
+
+<div style="page-break-after: always;"></div>
+
+Для generic делегатов вариативность аналогична generic методам
+
+- `out` - возвращаемый тип-параметр ковариантен
+- `in` - параметр метода контрвариантен
+
+```cs
+Action<object> actObject = SetObject; // static void SetObject(object o) { }
+Action<string> actString = actObject;
+
+// Syntax:
+public delegate void Action<in T>(T obj);
+public delegate TResult Func<in T1, in T2, out TResult>(T1 arg1, T2 arg2);
+```
+
+<div style="page-break-after: always;"></div>
 
 ## Event
 
+```cs
+public class Publisher
+{
+    public delegate void CallEveryOne();
+    public CallEveryOne call = null;
+}
+
+public class Subscriber
+{
+    public Subscriber(Publisher p)
+    {
+        p.call += ShowMessage;
+    }
+
+    public void ShowMessage() => Console.WriteLine("S");
+}
+
+static void Main(string[] args)
+{
+    var p = new Publisher();
+    var s = new Subscriber(p);
+    p.call.Invoke();
+}
+```
+
+Проблемы:
+
+- либо надо давать подписчикам делегат полностью (но тогда они видят полную цепочку вызовов и могут запускать и изменять ее)
+- либо они не имеют прав для контроля над действием
+
+Решение:
+
+- [`Event`](https://docs.microsoft.com/en-us/dotnet/standard/events/index) энкапсулирует multicast delegate.
+- Реализует [Observer](https://en.wikipedia.org/wiki/Observer_pattern) паттерн
+
+```cs
+public class Publisher
+{
+    public delegate void CallEveryOne();
+    public event CallEveryOne call;
+
+    public void RunCall() => call();
+}
+
+public class Subscriber
+{
+    public Subscriber(Publisher p)
+    {
+        p.call += ShowMessage;
+    }
+
+    public void ShowMessage() => Console.WriteLine("Subscriber");
+}
+
+static void Main(string[] args)
+{
+    var p = new Publisher();
+    var s = new Subscriber(p);
+    p.RunCall();
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+Типичное использование обычных event:
+
+```cs
+button1.Click += new EventHandler(button1_Click);
+
+...
+
+///
+/// Здесь button1_Click — обработчик нажатия
+///
+void button1_Click(Object sender, EventArgs e)
+{
+    // Действия после нажатия на кнопку
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+Пример с созданием собственного `EventArgs` [msdn](https://docs.microsoft.com/en-us/dotnet/standard/events/index), [msdn](https://msdn.microsoft.com/en-us/library/db0etb8x(v=vs.110).aspx):
+
+```cs
+class Program
+{
+    static void Main(string[] args)
+    {
+        Counter c = new Counter(new Random().Next(10));
+        c.ThresholdReached += c_ThresholdReached;
+        while (true)
+        {
+            Console.WriteLine("adding one");
+            c.Add(1);
+        }
+    }
+
+    static void c_ThresholdReached(object sender, ThresholdReachedEventArgs e)
+    {
+        Console.WriteLine("The threshold of {0} was reached at {1}.", e.Threshold, e.TimeReached);
+        Environment.Exit(0);
+    }
+}
+
+public class ThresholdReachedEventArgs : EventArgs
+{
+    public int Threshold { get; set; }
+    public DateTime TimeReached { get; set; }
+}
+
+class Counter
+{
+    private int threshold;
+    private int total;
+
+    public Counter(int passedThreshold)
+    {
+        threshold = passedThreshold;
+    }
+
+    public void Add(int x)
+    {
+        total += x;
+        if (total < threshold)
+            return;
+
+        ThresholdReachedEventArgs args = new ThresholdReachedEventArgs
+        {
+            Threshold = threshold,
+            TimeReached = DateTime.Now
+        };
+        OnThresholdReached(args);
+    }
+
+    protected virtual void OnThresholdReached(ThresholdReachedEventArgs e)
+    {
+        ThresholdReached?.Invoke(this, e);
+    }
+
+    public event EventHandler<ThresholdReachedEventArgs> ThresholdReached;
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+//
+// Summary:
+//     Represents the base class for classes that contain event data, and provides a
+//     value to use for events that do not include event data.
+public class EventArgs
+{
+    //
+    // Summary:
+    //     Provides a value to use with events that do not have event data.
+    public static readonly EventArgs Empty;
+
+    //
+    // Summary:
+    //     Initializes a new instance of the System.EventArgs class.
+    public EventArgs();
+}
+```
+
+Определения для `EventHandler`
+
+```cs
+//
+// Summary:
+//     Represents the method that will handle an event when the event provides data.
+//
+// Parameters:
+//   sender:
+//     The source of the event.
+//
+//   e:
+//     An object that contains the event data.
+//
+// Type parameters:
+//   TEventArgs:
+//     The type of the event data generated by the event.
+public delegate void EventHandler<TEventArgs>(object sender, TEventArgs e);
+```
+
+<div style="page-break-after: always;"></div>
+
 ## Lambdas
+
+- Обнаружив лямбда-выражение вместо делегата компилятор генерит private метод
+- Этот метод называется анонимная функция
+- Автоматически будет статическим или нет в зависимости от используемых переменных
+
+```cs
+Func<string> d1 = () => "test";
+Func<int, string> d2 = (int x) => x.ToString();
+Func<int, int, string> d3 = (int x, int y) => (x + y).ToString();
+
+Func<int, string> d4 = x => x.ToString();
+Func<int, int, string> d5 = (x, y) => (x + y).ToString();
+
+delWithOut d6 = (out int x) => x = 5;
+Func<int, int, string> d7 = (x, y) =>
+    {
+        int sum = x + y;
+        return sum.ToString();
+    };
+
+delegate void delWithOut(out int z);
+```
+
+<div style="page-break-after: always;"></div>
+
+- Если код используется в нескольких местах - логично написать метод
+- Если в одном - вполне можно использовать lambda
+- Они должны упрощать код и ускорять разработку, код с ними не должен становиться сложнее
+- У Рихтера есть правило - не использовать лямбда выражения для больше чем 3 строк кода (хотя это, конечно, спорно)
+
+<div style="page-break-after: always;"></div>
+
+```cs
+public double Benchmark(int times, Action func)
+{
+    var watch = new System.Diagnostics.Stopwatch();
+    double totalTime = 0.0;
+
+    for (int i = 0; i < times; i++)
+    {
+        watch.Start();
+        func();
+        watch.Stop();
+
+        totalTime += watch.ElapsedTicks;
+        watch.Reset();
+    }
+
+    return totalTime / (10000 * times);
+}
+
+double t = Benchmark(50, () => {var xs = Enumerable.Range(0, 1000000).ToList(); });
+```
+
+<div style="page-break-after: always;"></div>
 
 ## Closures
 
