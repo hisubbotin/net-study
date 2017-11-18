@@ -22,6 +22,9 @@ namespace CallMeMaybe
 
     #region Containers
 
+    /// <summary>
+    /// Связка жестяных банок с содержимым <see cref="T"/>.
+    /// </summary>
     public struct CansOf<T>
     {
         public decimal Count { get; }
@@ -31,6 +34,9 @@ namespace CallMeMaybe
         }
     }
 
+    /// <summary>
+    /// Несколько чашек с содержимым <see cref="T"/>.
+    /// </summary>
     public struct CupsOf<T>
     {
         public decimal Count { get; }
@@ -40,6 +46,9 @@ namespace CallMeMaybe
         }
     }
 
+    /// <summary>
+    /// Несколько чайных ложек с содержимым <see cref="T"/>.
+    /// </summary>
     public struct TeaspoonsOf<T>
     {
         public decimal Count { get; }
@@ -49,6 +58,9 @@ namespace CallMeMaybe
         }
     }
 
+    /// <summary>
+    /// Немножко <see cref="T"/>.
+    /// </summary>
     public struct Some<T>
     {
         public decimal Count { get; }
@@ -58,6 +70,9 @@ namespace CallMeMaybe
         }
     }
 
+    /// <summary>
+    /// Миска с <see cref="T"/>.
+    /// </summary>
     public struct BowlOf<T>
     {
         public T Content { get; }
@@ -72,6 +87,9 @@ namespace CallMeMaybe
 
     #region Cooking table is like repository of the cooking stuff
 
+    /// <summary>
+    /// Кухонный стол aka репозиторий всей кухонной утвари и ингредиентов. Осторожно, очень нестабилен!
+    /// </summary>
     public class CookingTable
     {
         public CansOf<T>? FindCansOf<T>(decimal cansCount)
@@ -116,11 +134,19 @@ namespace CallMeMaybe
 
     #region Baking stuff
 
+    /// <summary>
+    /// Я запекаемый в.
+    /// </summary>
+    /// <typeparam name="TBaked">А это, во что оно превращается при запекании.</typeparam>
     internal interface IBakeableTo<out TBaked>
         where TBaked: IBaked
     {
         TBaked Bake(TimeSpan duration, decimal degreesCelsius);
     }
+
+    /// <summary>
+    /// Я запекшийся.
+    /// </summary>
     internal interface IBaked
     {
         void SmellMe();
@@ -129,6 +155,9 @@ namespace CallMeMaybe
         void Enjoy();
     }
 
+    /// <summary>
+    /// Формочка для выпечки маффинов, наполненная тыквенно-масляной жижей.
+    /// </summary>
     internal class PumpkinBatterCup : IBakeableTo<PumpkinMuffin>
     {
         public PumpkinMuffin Bake(TimeSpan duration, decimal degreesCelsius)
@@ -138,6 +167,9 @@ namespace CallMeMaybe
             return new PumpkinMuffin();
         }
     }
+    /// <summary>
+    /// Бабушкина радость тыквенный маффин.
+    /// </summary>
     public class PumpkinMuffin: IBaked
     {
         public void SmellMe() { }
@@ -146,6 +178,9 @@ namespace CallMeMaybe
         public void Enjoy() { }
     }
 
+    /// <summary>
+    /// Форма для выпечки.
+    /// </summary>
     public struct BakingDish<T>
     {
         public IImmutableList<T> Cups { get; }
@@ -156,15 +191,25 @@ namespace CallMeMaybe
         }
     }
 
+    /// <summary>
+    /// Духовка.
+    /// </summary>
     internal class Oven
     {
         public decimal DegreesCelsius { get; protected set; }
 
+        /// <summary>
+        /// Подогревает (или охлаждает) духовку до заданной температуры.
+        /// </summary>
+        /// <param name="degreesCelsius"></param>
         public void Heat(decimal degreesCelsius)
         {
             DegreesCelsius = degreesCelsius;
         }
 
+        /// <summary>
+        /// Запекает все, что есть в форме для выпечки, в течение указанного времени.
+        /// </summary>
         public BakingDish<TBaked>? Bake<TRaw, TBaked>(BakingDish<TRaw> dish, TimeSpan duration)
             where TBaked: IBaked
             where TRaw: IBakeableTo<TBaked>
