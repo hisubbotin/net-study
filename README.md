@@ -9,130 +9,86 @@
 ---
 
 - 1 [.NET](course/1-net.md#net)
-  - [.NET Framework](course/1-net.md#net-framework)
-    - [CLR](course/1-net.md#clr)
-  - [.NET Core](course/1-net.md#net-core)
-  - [.NET Standard](course/1-net.md#net-standard)
-  - [.NET Native](course/1-net.md#net-native)
-  - [IDE](course/1-net.md#ide)
-  - [Nuget](course/1-net.md#nuget)
+  - .NET Framework, CLR
+  - .NET Core, .NET Standard
+  - IDE
+  - Nuget
 - 2 [Types](course/2-types.md#overview)
-  - [Namespaces](course/2-types.md#namespaces)
-  - [Primitive types](course/2-types.md#primitive-types)
-    - [Integers](course/2-types.md#integers)
-    - [Float numbers](course/2-types.md#float-numbers)
-    - [Other common types](course/2-types.md#other-common-types)
-  - [Операторы](course/2-types.md#Операторы)
-    - [Арифметические](course/2-types.md#Арифметические)
-    - [Поразрядные](course/2-types.md#Поразрядные)
-    - [Операторы с присваиванием](course/2-types.md#Операторы-с-присваиванием)
-    - [Логические операторы](course/2-types.md#Логические-операторы)
-    - [Ternary operator](course/2-types.md#ternary-operator)
-    - [Null coalescing operator](course/2-types.md#null-coalescing-operator)
-    - [Null conditional operator](course/2-types.md#null-conditional-operator)
-  - [Контроль переполнения](course/2-types.md#Контроль-переполнения)
-  - [Приведение типов](course/2-types.md#Приведение-типов)
-  - [Ссылочные и значимые типы](course/2-types.md#Ссылочные-и-значимые-типы)
-    - [Stack & Heap](course/2-types.md#stack--heap)
-    - [Referenced VS Value types](course/2-types.md#referenced-vs-value-types)
-    - [System.Object](course/2-types.md#systemobject)
+  - Namespaces
+  - Primitive types: Integers, Float numbers, etc
+  - Операторы: Арифметические, поразрядные, операторы с присваиванием, логические операторы, Тернарный, null-операторы
+  - Контроль переполнения
+  - Приведение типов
+  - `switch`, Pattern Matching
+  - Ссылочные и значимые типы
+    - Размещение в стеке и куче
+    - `System.Object`
 - 3 [Value types](course/3-value-types.md#value-types)
-  - [Struct](course/3-value-types.md#struct)
-  - [Nullable](course/3-value-types.md#nullable)
-  - [Guid](course/3-value-types.md#guid)
-  - [Dates, times](course/3-value-types.md#dates-times)
-    - [DateTime](course/3-value-types.md#datetime)
-    - [DateTimeOffset](course/3-value-types.md#datetimeoffset)
-  - [Enum](course/3-value-types.md#enum)
-    - [Enum Flags](course/3-value-types.md#enum-flags)
+  - `struct`
+  - `Nullable`, `Guid`, `DateTime`, `DateTimeOffset`
+  - `enum`
 - 4 [Classes](course/4-classes.md#classes)
-  - [Members](course/4-classes.md#members)
-  - [Модификаторы доступа](course/4-classes.md#Модификаторы-доступа)
-  - [Конструкторы](course/4-classes.md#Конструкторы)
-  - [Methods](course/4-classes.md#methods)
-  - [Properties](course/4-classes.md#properties)
-  - [`readonly`](course/4-classes.md#readonly)
-  - [`const`](course/4-classes.md#const)
-  - [`static`](course/4-classes.md#static)
-  - [`partial`](course/4-classes.md#partial)
-  - [Наследование, полиморфизм, abstract, sealed](course/4-classes.md#Наследование-полиморфизм)
-  - [Interface](course/4-classes.md#interface)
-  - [Перегрузка операторов](course/4-classes.md#Перегрузка-операторов)
-    - [Перегрузка преобразований типов](course/4-classes.md#Перегрузка-преобразований-типов)
-  - [Extension methods](course/4-classes.md#extension-methods)
-  - [Аттрибуты](course/4-classes.md#Аттрибуты)
+  - Members, properties, constructors, methods
+  - Модификаторы доступа
+  - `static`, `readonly`, `const`
+  - Наследование, полиморфизм, `abstract`, `sealed`
+  - Интерфейсы
+  - Перегрузка операторов и преобразований типов
+  - Extension methods
+  - Аттрибуты
 - 5 [GC](course/5-gc.md#gc)
-  - [Сборка мусора](course/5-gc.md#Сборка-мусора)
-    - [Условия сборки](course/5-gc.md#Условия-сборки)
-    - [Управляемая куча](course/5-gc.md#Управляемая-куча)
-    - [Поколения](course/5-gc.md#Поколения)
-    - [Ephemeral generations](course/5-gc.md#ephemeral-generations)
-    - [Что происходит](course/5-gc.md#Что-происходит)
-    - [Большие объекты](course/5-gc.md#Большие-объекты)
-    - [Settings](course/5-gc.md#settings)
-    - [Методы GC](course/5-gc.md#Методы-gc)
-  - [Финализаторы](course/5-gc.md#Финализаторы)
-  - [Внешние ресурсы, Dispose](course/5-gc.md#Внешние-ресурсы-dispose)
-    - [IDisposable pattern](course/5-gc.md#idisposable-pattern)
+  - Сборка мусора
+  - Финализаторы
+  - Внешние ресурсы, `Dispose`, `IDisposable` pattern
 - 6 [Generic](course/6-generic.md#generic)
   - Generic
-    - [Generic methods](course/6-generic.md#generic-methods)
-    - [Open / Closed constructed types](course/6-generic.md#open--closed-constructed-types)
-    - [Обобщения при наследовании](course/6-generic.md#Обобщения-при-наследовании)
-    - [Generic Interface / Delegate](course/6-generic.md#generic-interface)
-    - [Ограничения обобщений](course/6-generic.md#Ограничения-обобщений)
-    - [Работа с переменными обобщенного типа](course/6-generic.md#Работа-с-переменными-обобщенного-типа)
-    - [Рекомендации](course/6-generic.md#Рекомендации)
-    - [Ковариантность и контрвариантность в интерфейсах](course/6-generic.md#Ковариантность-и-контрвариантность-в-интерфейсах)
-  - [Tuple](course/6-generic.md#tuple)
-    - [Класс `System.Tuple`](course/6-generic.md#Класс-systemtuple)
-    - [Tuple C# 7.0](course/6-generic.md#tuple-c-70)
-    - [Deconstructors](course/6-generic.md#deconstructors)
+    - Generic methods, classes, interfaces, delegates
+    - Open / Closed constructed types
+    - Ограничения обобщений
+    - Ковариантность и контрвариантность
+  - `Tuple`, `ValueTuple`, Deconstructors
 - 7 [Strings](course/7-strings.md#strings)
-  - [Char](course/7-strings.md#char)
-  - [String](course/7-strings.md#string)
-  - [StringBuilder](course/7-strings.md#stringbuilder)
-  - [Encoding](course/7-strings.md#encoding)
-- 8 Управление программой
-  - Циклы, IEnumerable, yield
-  - Условные операторы
-- 9 Коллекции
-  - Типы коллекций и различия между ними
-- 10 Делегаты и события
-  - Делегаты и обобщенные делегаты, лямбда выражения
-  - События
-  - Замыкания
-- 11 LINQ
+  - `char`, `string`, `StringBuilder`, Encoding
+- 8 [Collections](course/8-collections.md#collections)
+  - Control flow: `for`, `foreach`, `IEnumerable`, `yield`
+  - Collections: `Array`, `List<T>`, `Dictionary<TKey,TValue>`, `SortedList`, `SortedDictionary`, `HashSet`, etc
+  - Равенство: `Equals`, `GetHashCode`, `IEquatable<T>`, `IEqualityComparer<T>`, `IComparable<T>`
+- 9 [Delegates](course/9-delegates.md#delegates)
+  - Delegates, Generic delegates, Events, Lambdas, Closures
+- 10 [LINQ](course/10-linq.md#linq)
   - Отложенные и неотложенные запросы
   - Стандартный и Query Expressions синтакис запросов
-- 12 Обработка ошибок
+- 11 Обработка ошибок
   - Exception
   - throw / try / catch / finally
   - Debug / Trace
-- 13 Reflection
-- 14 Многопоточность и ассинхронность
+- 12 Многопоточность и ассинхронность
   - Проблемы многопоточности
   - Примитивы синхронизации
   - Thread / Threadpool
   - TPL. Класс Task, Continuation, Cancellation
   - async / await, SyncronizationContext
-- 15 Сериализация данных
+
+---
+
+- Сериализация данных
   - JSON
   - XML
-- 16 Ввод / вывод
+- Ввод / вывод
   - Потоки
   - Чтение и запись текстовой информации
   - Работа с файловой системой. System.IO
-- 17 Работа с базами данных
+- Reflection
+- Работа с базами данных
   - ADO.Net
   - Entity Framework
   - Simple mapper: dapper, linq2db
-- 18 Принципы и паттерны проектирования
+- Принципы и паттерны проектирования
   - SOLID
   - Связь классов: наследование, ассоциация, композиция, агрегация
   - Dependency Injection, IOC, управление зависимостями
   - Тестируемость приложения, unit-test, Moq
   - Паттерны: Singleton, Factory, Strategy, Facade, Repository
-- 19 Работа в web
+- Работа в web
   - Http в .Net, класс HttpClient
   - ASP.Net MVC Core

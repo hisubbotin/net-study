@@ -18,9 +18,9 @@
       - [Использование в качестве операндов](#Использование-в-качестве-операндов)
     - [Рекомендации](#Рекомендации)
     - [Ковариантность и контрвариантность в интерфейсах](#Ковариантность-и-контрвариантность-в-интерфейсах)
-  - [Tuple](#tuple)
-    - [Класс `System.Tuple`](#Класс-systemtuple)
-    - [Tuple C# 7.0](#tuple-c-70)
+  - [Tuples](#tuples)
+    - [Tuple](#tuple)
+    - [ValueTuple](#valuetuple)
     - [Deconstructors](#deconstructors)
 
 <!-- /TOC -->
@@ -657,17 +657,17 @@ pets.GetEnumerator(); // !! LUL WTF !! Ambiguity
 
 <div style="page-break-after: always;"></div>
 
-## Tuple
+## Tuples
 
 Есть два вида кортежей:
 
-1. Класс `System.Tuple`
-1. Класс `System.ValueTuple` - кортежи C# 7.0
+1. `System.Tuple` - ссылочные
+1. `System.ValueTuple` - кортежи C# 7.0, значимые
 
-### Класс `System.Tuple`
+### Tuple
 
-- Статический класс для генерации конкретных `Tuple<T1>`, `Tuple<T1, T2>`
-- System.Tuple - ссылочные типы
+- Статический класс `System.Tuple` для генерации конкретных `Tuple<T1>`, `Tuple<T1, T2>`
+- Cсылочные типы!
 - У всех конкреных классов кортежа переопределены методы Equals, GetHashCode
 - Immutable - все элементы Readonly
 
@@ -695,9 +695,9 @@ Create<T1, T2, T3, T4, T5, T6, T7>(T1, T2, T3, T4, T5, T6,
 
 <div style="page-break-after: always;"></div>
 
-### Tuple C# 7.0
+### ValueTuple
 
-- Появились из этого [предложения](https://github.com/dotnet/roslyn/issues/347)
+- Tuple C# 7.0 появились из этого [предложения](https://github.com/dotnet/roslyn/issues/347)
 - Компилируются в `System.ValueTuple`
 - Значимый тип, причем mutable [MSDN Blog](https://blogs.msdn.microsoft.com/mazhou/2017/05/26/c-7-series-part-1-value-tuples/), [SOF](https://stackoverflow.com/questions/41084411/whats-the-difference-between-system-valuetuple-and-system-tuple)
 

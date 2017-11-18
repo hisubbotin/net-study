@@ -3,15 +3,16 @@
 <!-- TOC -->
 
 - [LINQ](#linq)
-  - [linq to](#linq-to)
-  - [Отложенные и неотложенные запросы](#отложенные-и-неотложенные-запросы)
+  - [LINQ to](#linq-to)
+  - [Methods](#methods)
+  - [Deferred, Immediate Query Execution](#deferred-immediate-query-execution)
   - [Стандартный и Query Expressions синтакис запросов](#стандартный-и-query-expressions-синтакис-запросов)
 
 <!-- /TOC -->
 
 <div style="page-break-after: always;"></div>
 
-## linq to
+## LINQ to
 
 Пачка linq запросов к различным сущностям
 
@@ -24,6 +25,8 @@
 По сути это набор extension методов для коллекций разного вида и QueryExpression синтаксис для них
 
 <div style="page-break-after: always;"></div>
+
+## Methods
 
 - Select: определяет проекцию выбранных значений
 - Where: определяет фильтр выборки
@@ -118,7 +121,7 @@ Enumerable.Range(1, 100)
 
 <div style="page-break-after: always;"></div>
 
-Использование ForEach вместо цикла `foreach` считается не очень
+Использование метода `ForEach(x=> ...)` вместо цикла `foreach` считается не очень
 
 - ухудшает читаемость
 - появляются замыкания
@@ -137,7 +140,9 @@ foreach(var x in list)
 
 <div style="page-break-after: always;"></div>
 
-## Отложенные и неотложенные запросы
+## Deferred, Immediate Query Execution
+
+Запросы делятся на [отложенные и неотложенные](https://msdn.microsoft.com/ru-ru/library/bb738633(v=vs.110).aspx):
 
 - Отложенные запросы `Where`, `OrderBy`, `Join`, etc не выполняются сразу
 - Реально выполнение запроса будет происходить только при вызове неотложенных запросов (`Count`, `SingleOrDefault`, `First`, `ToList`, etc) или при переборе `foreach`

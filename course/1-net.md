@@ -25,7 +25,7 @@
 - [.NET Documentation](https://docs.microsoft.com/en-us/dotnet/)
 - Jeffrey Richter, CLR Via C# (4th edition)
 - Jon Skeet, C# in Depth
-- Andrew Troelsen, C# 6.0 and the .NET 4.6 Framework (Саый низкий порог вхождения в изучение C#)
+- Andrew Troelsen, C# 6.0 and the .NET 4.6 Framework (Самый низкий порог вхождения в изучение C#)
 - Сергей Тепляков, [Набор доступных статей про принципам проектирования](http://sergeyteplyakov.blogspot.ru/2013/10/articles.html), книга "Паттерны проектирования на платформе .NET"
 
 <div style="page-break-after: always;"></div>

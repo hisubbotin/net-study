@@ -80,7 +80,6 @@ Console.WriteLine(strng);               // ä
 
 string good = "Tab\x9Good compiler";    // Tab  Good compiler
 string bad =  "Tab\x9Bad compiler";     // Tab鮭 compiler
-
 ```
 
 <div style="page-break-after: always;"></div>

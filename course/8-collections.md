@@ -3,19 +3,19 @@
 <!-- TOC -->
 
 - [Collections](#collections)
+  - [Array](#array)
   - [Control flow](#control-flow)
-    - [switch](#switch)
-    - [Array](#array)
-    - [Foreach + `IEnumerable<T>`](#foreach--ienumerablet)
-    - [yield - итераторный блок](#yield---итераторный-блок)
-    - [Рекомендации](#рекомендации)
-  - [Collections](#collections-1)
+    - [for](#for)
+    - [foreach, IEnumerable](#foreach-ienumerable)
+    - [yield](#yield)
+    - [Рекомендации](#Рекомендации)
+  - [Generic collections](#generic-collections)
     - [Interfaces](#interfaces)
     - [`List<T>`](#listt)
     - [`Dictionary<TKey,TValue>`](#dictionarytkeytvalue)
     - [SortedList vs SortedDictionary](#sortedlist-vs-sorteddictionary)
     - [HashSet](#hashset)
-  - [Равенство](#равенство)
+  - [Равенство TBD](#Равенство)
     - [`IEquatable<T>`](#iequatablet)
     - [`IEqualityComparer<T>`](#iequalitycomparert)
     - [`IComparable<T>`](#icomparablet)
@@ -24,147 +24,7 @@
 
 <div style="page-break-after: always;"></div>
 
-## Control flow
-
-Циклы:
-
-- for
-- foreach
-- do
-- do while
-
-Внутри циклов:
-
-- continue - следующая итерация цикла
-- break - выйти из цикла
-
-Условные операторы:
-
-- if { } else {}
-- switch
-- ternarny operator
-
-<div style="page-break-after: always;"></div>
-
-```cs
-for (int i = 0; i < 10; i++)
-{
-    Console.WriteLine("Value of i: {0}", i);
-}
-
-int i = 0;
-
-for(;;)
-{
-    if (i < 10)
-    {
-        Console.WriteLine("Value of i: {0}", i);
-        i++;
-    }
-    else
-        break;
-}
-```
-
-<div style="page-break-after: always;"></div>
-
-```cs
-int i = 0;
-
-while (true)
-{
-    Console.WriteLine("Value of i: {0}", i);
-    i++;
-    if (i > 10)
-        break;
-}
-
-i = 0;
-
-do
-{
-    Console.WriteLine("Value of i: {0}", i);
-    i++;
-
-} while (i < 10);
-
-```
-
-<div style="page-break-after: always;"></div>
-
-### switch
-
-- Обязательно должен использоваться `break`, `goto case`, `return` или `throw` при условии
-- Нельзя просто так выполнить два условия сразу
-
-```cs
-int value = 1;
-switch (value)
-{
-    case 1:
-        Console.WriteLine("case 1");
-        goto case 3; // переход к case 3
-    case 2:
-        Console.WriteLine("case 2");
-        break;
-    case 3:
-        Console.WriteLine("case 3");
-        break;
-    default:
-        Console.WriteLine("default");
-        break;
-}
-```
-
-<div style="page-break-after: always;"></div>
-
-C# 7.0 [Pattern Matching](https://blogs.msdn.microsoft.com/dotnet/2016/08/24/whats-new-in-csharp-7-0/)
-
-Patterns:
-
-- const
-- type
-- var - всегда успешен
-
-```cs
-public static void IsPattern(object o)
-{
-    if (o is null) Console.WriteLine("Const pattern");
-    if (o is int i) Console.WriteLine($"Type, int = {i}");
-    if (o is Person p) Console.WriteLine($"Type, person: {p.FirstName}");
-    if (o is var x) Console.WriteLine($"var pattern, type {x?.GetType()?.Name}");
-```
-
-<div style="page-break-after: always;"></div>
-
-- В switch можно использовать любой тип
-- В case можно использовать паттерны и дополнительные условия
-- Порядок важен
-- дефолт всегда выполнится последним (независимо от места)
-
-```cs
-switch(shape)
-{
-    case Circle c:
-        WriteLine($"circle with radius {c.Radius}");
-        break;
-    case Rectangle s when (s.Length == s.Height):
-        WriteLine($"{s.Length} x {s.Height} square");
-        break;
-    case Rectangle r:
-        WriteLine($"{r.Length} x {r.Height} rectangle");
-        break;
-    default:
-        WriteLine("<unknown shape>");
-        break;
-    case null:
-        throw new ArgumentNullException(nameof(shape));
-}
-```
-
-<div style="page-break-after: always;"></div>
-
-### Array
+## Array
 
 - нумерация с нуля
 
@@ -226,7 +86,77 @@ for (int i = 0; i < jagged.Length; i++)
 
 <div style="page-break-after: always;"></div>
 
-### Foreach + `IEnumerable<T>`
+## Control flow
+
+Циклы:
+
+- `for`
+- `foreach`
+- `do`
+- `while`
+
+Внутри циклов:
+
+- `continue` - следующая итерация цикла
+- `break` - выйти из цикла
+
+Условные операторы:
+
+- `if { } else {}`
+- `switch`
+- ternarny operator
+
+<div style="page-break-after: always;"></div>
+
+### for
+
+```cs
+for (int i = 0; i < 10; i++)
+{
+    Console.WriteLine("Value of i: {0}", i);
+}
+
+int i = 0;
+
+for(;;)
+{
+    if (i < 10)
+    {
+        Console.WriteLine("Value of i: {0}", i);
+        i++;
+    }
+    else
+        break;
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+int i = 0;
+
+while (true)
+{
+    Console.WriteLine("Value of i: {0}", i);
+    i++;
+    if (i > 10)
+        break;
+}
+
+i = 0;
+
+do
+{
+    Console.WriteLine("Value of i: {0}", i);
+    i++;
+
+} while (i < 10);
+
+```
+
+<div style="page-break-after: always;"></div>
+
+### foreach, IEnumerable
 
 ```cs
 foreach (int x in src)
@@ -362,12 +292,12 @@ while (x.Items.MoveNext())
 
 <div style="page-break-after: always;"></div>
 
-### yield - итераторный блок
+### yield
 
-- [yield](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/yield) можно использовать только в методе, возвращающем IEnumerable, IEnumerator или обобщенные эквиваленты
+- итераторный блок [yield](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/yield) можно использовать только в методе, возвращающем `IEnumerable`, `IEnumerator` или обобщенные эквиваленты
 - внутри итераторного блока запрещены обычные `return`
-- создает автомат состояний, который фактически генерит енумератор поверх метода
-- при yield return приостанавливает выполнение кода, фактически завершая метод `MoveNext()` + `Current` и отдавая управление коду, использующему итератор
+- создает **автомат состояний**, который фактически генерит енумератор поверх метода
+- при `yield return` приостанавливает выполнение кода, фактически завершая метод `MoveNext()` + `Current` и отдавая управление коду, использующему итератор
 
 ```cs
 static IEnumerable<int> CreateEnumerable()
@@ -437,13 +367,13 @@ static IEnumerable<int> CountWithTimeLimit(DateTime limit)
 
 ### Рекомендации
 
-- Используйте foreach везде, где возможно
+- Используйте foreach везде, где удобно
 - Если вдруг будете реализовывать енумератор - делайте это проще, без структур и полагания на duck typing
 - Используйте итераторный блок, если это делает код красивее и проще
 
 <div style="page-break-after: always;"></div>
 
-## Collections
+## Generic collections
 
 ### Interfaces
 
@@ -603,6 +533,8 @@ foreach(var item in openWith.Values)
 
 [SOF](https://stackoverflow.com/questions/935621/whats-the-difference-between-sortedlist-and-sorteddictionary)
 
+<div style="page-break-after: always;"></div>
+
 ### HashSet
 
 http://theburningmonk.com/2011/03/hashset-vs-list-vs-dictionary/
@@ -620,7 +552,11 @@ if (sqlErrorCode.Contains(someCode))
 }
 ```
 
+<div style="page-break-after: always;"></div>
+
 ## Равенство
+
+TBD
 
 https://msdn.microsoft.com/ru-ru/library/ms173147%28v=vs.90%29.aspx?f=255&MSPPError=-2147217396
 
@@ -628,14 +564,30 @@ https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/statements-expr
 
 https://habrahabr.ru/post/188038/
 
+### Equals
+
+### GetHashCode
+
+<div style="page-break-after: always;"></div>
+
 ### `IEquatable<T>`
+
+TBD
 
 https://docs.microsoft.com/ru-ru/dotnet/api/system.iequatable-1?view=netframework-4.7.1
 
+<div style="page-break-after: always;"></div>
+
 ### `IEqualityComparer<T>`
+
+TBD
 
 https://msdn.microsoft.com/en-us/library/ms132151(v=vs.110).aspx
 
+<div style="page-break-after: always;"></div>
+
 ### `IComparable<T>`
+
+TBD
 
 https://msdn.microsoft.com/en-us/library/4d7sx9hd.aspx
