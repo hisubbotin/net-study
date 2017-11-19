@@ -87,6 +87,19 @@ Tags: struct, operator overloading, extension methods, xml documentation comment
 
 Инструкция лежит в [04-boring-vector/04-boring-vector.md](04-boring-vector/04-boring-vector.md).
 
+## 05. Here's my `T` value so call me `Maybe<T>`
+
+Tags: generics, extension methods, lambdas, LINQ-query syntax, maybe monad.
+
+В данном задании вы познакомитесь с:
+
+- обобщенными типами-контейнерами на примере реализации монады _maybe_,
+- обобщенными методами-расширениями с ограничениями на применяемые типы,
+- анонимными-функциями (aka лямбдs) и типами, в т.ч. обобщенными,
+- техникой добавления поддержки синтаксиса LINQ-запросов.
+
+Инструкция лежит в [05-call-me-maybe/05-call-me-maybe.md](05-call-me-maybe/05-call-me-maybe.md).
+
 ---
 ---
 ---
@@ -96,9 +109,6 @@ Tags: struct, operator overloading, extension methods, xml documentation comment
 
 
 
-## 05. Here's my `T` value so call me `Maybe<T>`
-
-Generics, extension methods.
 
 ## 06. The primitive types strikes back
 
