@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Immutable;
-using System.Linq;
 using CallMeMaybe.BaseModel;
 
-namespace CallMeMaybe.V2
+namespace CallMeMaybe.Final
 {
     public class MaybeChef: IOneRecipeChef
     {
@@ -21,7 +20,6 @@ namespace CallMeMaybe.V2
             var oven = new Oven();
             oven.Heat(166);
 
-
             var result =
                 from flourMixture in MakeFlourMixture()
                 from eggsMixture in MakeEggsMixture()
@@ -29,8 +27,7 @@ namespace CallMeMaybe.V2
                 from pumpkinMuffins in oven.Bake<PumpkinBatterCup, PumpkinMuffin>(backingDish, TimeSpan.FromMinutes(30)).ToMaybe()
                 select pumpkinMuffins.Cups;
 
-            // нужно явно вернуться из IEnumerable в Maybe - для этого и нужен соответствующий экстеншн.
-            return result.ToMaybe().GetValueOrDefault();
+            return result.GetValueOrDefault();
         }
 
         private Maybe<BakingDish<PumpkinBatterCup>> PrepareBackingDish(BowlOf<FlourMixture> flourMixture, BowlOf<EggsMixture> eggsMixture)
@@ -51,13 +48,10 @@ namespace CallMeMaybe.V2
         private Maybe<BowlOf<EggsMixture>> MakeEggsMixture()
         {
             /*
-                Выглядит чуть лучше и писать несколько удобнее.
-                Если бы было ветвление логики, то пришлось бы разбивать на куски и миксовать с вызовом методов
-                Select/SelectOrElse/Do/DoOrElse.
-
-                Основной же минус - мы работаем с IEnumerable и на выходе тоже IEnumerable, что как бы не очень.
+                Теперь мы оперируем объектами типа Maybe<T> - 
+                больше никаких непонятных преобразований в IEnumerable и обратно :)
             */
-            var result =
+            return 
                 from pumpkinPieFilling in _cookingTable.FindCansOf<PumpkingPieFilling>(1m).ToMaybe()
                 from sugar in _cookingTable.FindCupsOf<WhiteSugar>(3m).ToMaybe()
                 from oil in _cookingTable.FindCupsOf<VegetableOil>(0.5m).ToMaybe()
@@ -65,9 +59,6 @@ namespace CallMeMaybe.V2
                 from eggs in _cookingTable.FindSome<Egg>(4m).ToMaybe()
                 from eggsMixture in _cookingTable.FindBowlAndFillItWith(new EggsMixture()).ToMaybe()
                 select eggsMixture;
-
-            // нужно явно вернуться из IEnumerable в Maybe - для этого и нужен соответствующий экстеншн.
-            return result.ToMaybe();
         }
 
         private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()

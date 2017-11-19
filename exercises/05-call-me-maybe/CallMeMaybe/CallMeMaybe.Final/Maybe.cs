@@ -1,19 +1,9 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 
-namespace CallMeMaybe.Maybe
+namespace CallMeMaybe.Final
 {
-    public struct Maybe<T> : IEnumerable<T>
+    public struct Maybe<T>
     {
-        /*
-            Как ты думаешь, почему Maybe - структура?
-        */
-
-        /// <summary>
-        /// Зачем может быть нужно такое выделенное значение?
-        /// Сколько по факту будет экземпляров данного объекта?
-        /// </summary>
         public static readonly Maybe<T> Nothing = new Maybe<T>();
 
         public bool HasValue { get; }
@@ -21,9 +11,6 @@ namespace CallMeMaybe.Maybe
         private readonly T _value;
         public T Value => HasValue ? _value : throw new InvalidOperationException($"{typeof(Maybe<T>)} doesn't have value.");
 
-        /// <summary>
-        /// Как думаешь, почему я скрыл конструктор?
-        /// </summary>
         private Maybe(T value)
         {
             _value = value;
@@ -38,34 +25,33 @@ namespace CallMeMaybe.Maybe
 
         public static implicit operator Maybe<T>(T value)
         {
-            /*
-                По смыслу это фабрика объектов данного типа.
-                Т.к. это оператор неявного приведения, позволяет не засорять код кастами.
-            */
             throw new NotImplementedException();
         }
 
-        #region IEnumerable<T> inerface implementation
+        #region LINQ syntax providers
 
-        /*
-            Здесь реализуй интерфейс IEnumerable<T>.
-            Про какой подводный камень нужно помнить, когда объекты Maybe<T> используются как объекты типа IEnumerable?
-        */
-
-        /// <inheritdoc />
-        public IEnumerator<T> GetEnumerator()
+        public Maybe<TResult> Select<TResult>(Func<T, TResult> map)
         {
+            // обеспечит поддержку одинарного from
             throw new NotImplementedException();
         }
-
-        /// <inheritdoc />
-        IEnumerator IEnumerable.GetEnumerator()
+        public Maybe<TResult> Select<TResult>(Func<T, Maybe<TResult>> map)
         {
-            return GetEnumerator();
+            // обеспечит поддержку одинарного from
+            throw new NotImplementedException();
+        }
+        public Maybe<TResult> SelectMany<T2, TResult>(Func<T, Maybe<T2>> otherSelector, Func<T, T2, TResult> resultSelector)
+        {
+            // обеспечит поддержку цепочки from
+            throw new NotImplementedException();
+        }
+        public Maybe<T> Where(Predicate<T> predicate)
+        {
+            // обеспечит поддержку кляузы where
+            throw new NotImplementedException();
         }
 
         #endregion
-
 
         #region Optional useful methods
 
@@ -77,14 +63,6 @@ namespace CallMeMaybe.Maybe
         public T GetValueOrDefault() => throw new NotImplementedException();
         public T GetValueOrDefault(T defaultValue) => throw new NotImplementedException();
 
-        //public Maybe<TResult> Select<TResult>(Func<T, TResult> map)
-        //{
-        //    throw new NotImplementedException();
-        //}
-        //public Maybe<TResult> Select<TResult>(Func<T, Maybe<TResult>> map)
-        //{
-        //    throw new NotImplementedException();
-        //}
         public Maybe<TResult> SelectOrElse<TResult>(Func<T, TResult> map, Func<TResult> elseMap)
         {
             throw new NotImplementedException();
@@ -111,11 +89,6 @@ namespace CallMeMaybe.Maybe
         {
             throw new NotImplementedException();
         }
-
-        //public Maybe<TResult> SelectMany<T2, TResult>(Func<T, Maybe<T2>> otherSelector, Func<T, T2, TResult> resultSelector)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         #endregion
     }

@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using CallMeMaybe.BaseModel;
 
 namespace CallMeMaybe.V2
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             var nullDtMaybe = ((DateTime?)null).ToMaybe();
             var nowDtMaybe = DateTime.Now.ToMaybe();
@@ -19,21 +18,8 @@ namespace CallMeMaybe.V2
             TestMultipleFrom(nowDtMaybe, nowDtMaybe);
             TestMultipleFrom<int>(10, 20);
 
-            var maybeDt2 = from t in nullDtMaybe select t;
-            Console.WriteLine(maybeDt2.GetType());
-
-            var maybeDt3 = from t in DateTime.Now.ToMaybe() select t;
-            Console.WriteLine(string.Join(", ", maybeDt3));
-
-            var multipleFromRes =
-                from dt1 in nullDtMaybe
-                from dt2 in maybeDt2
-                select dt1.Date + dt2.TimeOfDay;
-            Console.WriteLine(string.Join(", ", multipleFromRes));
-
-
-            var selectChain = nullDtMaybe
-                .Select(dt1 => maybeDt2.Select(dt2 => dt1.Date + dt2.TimeOfDay));
+            TestMultipleFromWithFilter(3, 4, 5);
+            TestMultipleFromWithFilter(2, 3, 5);
 
             var cookingTable = new CookingTable();
             var naiveChef = new NaiveChef(cookingTable);
@@ -50,7 +36,7 @@ namespace CallMeMaybe.V2
             Console.WriteLine($"Test from clause for: {m}");
             var res = from x in m select x;
 
-            // ===> res = m.Select(x => x);
+            // <===> res = m.Select(x => x);
 
             Console.WriteLine($"type: {res.GetType()}; values: [{string.Join(", ", res)}]");
             Console.WriteLine("==========================");
@@ -65,7 +51,30 @@ namespace CallMeMaybe.V2
                 from y in m2
                 select new {x, y};
 
-            // ===> res = m1.SelectMany(x => m2, (x, y) => new {x, y});
+            // <===> res = m1.SelectMany(x => m2, (x, y) => new {x, y});
+
+            Console.WriteLine($"type: {res.GetType()}; values: [{string.Join(", ", res)}]");
+            Console.WriteLine("==========================");
+        }
+
+
+        private static void TestMultipleFromWithFilter(Maybe<int> m1, Maybe<int> m2, Maybe<int> m3)
+        {
+            Console.WriteLine($"Test multiple from clause with filter for: {m1}; {m2}; {m3}");
+            var res =
+                from x in m1
+                from y in m2
+                from z in m3
+                where x + y > z
+                select new { x, y, z };
+
+            /*
+            <===> res = m1
+                    .SelectMany(x => m2, (x, y) => new { x, y })
+                    .SelectMany(t => m3, (t, z) => new { t, z })
+                    .Where(t => t.t.x + t.t.y > t.z)
+                    .Select(t => new { t.t.x, t.t.y, t.z });
+            */
 
             Console.WriteLine($"type: {res.GetType()}; values: [{string.Join(", ", res)}]");
             Console.WriteLine("==========================");

@@ -4,33 +4,23 @@ using CallMeMaybe.BaseModel;
 
 namespace CallMeMaybe.V1
 {
-    class Program
+    internal class Program
     {
-        static void Main(string[] args)
+        private static void Main()
         {
             Console.WriteLine("Hello World!");
 
             Maybe<List<int>> x = null;
             Console.WriteLine(x);
 
-            TestDateTimeMaybe(((DateTime?) null).ToMaybe());
-            TestDateTimeMaybe(DateTime.Now);
+            var nullDtMaybe = ((DateTime?) null).ToMaybe();
+            var maybeDt = DateTime.Now.ToMaybe();
 
+            TestDateTimeMaybe(nullDtMaybe);
+            TestDateTimeMaybe(maybeDt);
 
-            var maybeDt2 = from t in ((DateTime?) null).ToMaybe() select t;
-            Console.WriteLine(maybeDt2.GetType());
-
-            var maybeDt3 = from t in DateTime.Now.ToMaybe() select t;
-            Console.WriteLine(maybeDt3);
-
-            Console.WriteLine(Maybe<int>.Nothing);
-
-            var selectManyUnderTheHood =
-                from dt1 in ((DateTime?) null).ToMaybe()
-                from dt2 in maybeDt2
-                select dt1.Date + dt2.TimeOfDay;
-
-            var selectChain = ((DateTime?) null).ToMaybe().Select(dt1 => maybeDt2.Select(dt2 => dt1.Date + dt2.TimeOfDay));
+            TestSelectChain(nullDtMaybe, maybeDt);
+            TestSelectChain(DateTime.Today.AddDays(-1), DateTime.Now);
 
             var cookingTable = new CookingTable();
             var naiveChef = new NaiveChef(cookingTable);
@@ -42,14 +32,24 @@ namespace CallMeMaybe.V1
             Console.WriteLine(muffins.Count);
         }
 
+        private static void TestSelectChain(Maybe<DateTime> maybeDt1, Maybe<DateTime> maybeDt2)
+        {
+            Console.WriteLine($"Test select chain for: {maybeDt1}; {maybeDt2}");
+            var res = maybeDt1.Select(dt1 => maybeDt2.Select(dt2 => dt1.Date + dt2.TimeOfDay));
+            Console.WriteLine($"type: {res.GetType()}; value: {res}");
+            Console.WriteLine("=======================================");
+        }
+
         private static void TestDateTimeMaybe(Maybe<DateTime> maybeDt)
         {
+            Console.WriteLine($"Test Maybe<DateTime> for: {maybeDt}");
             Console.WriteLine(maybeDt.HasValue);
             Console.WriteLine(maybeDt.ToString());
             Console.WriteLine(
                 maybeDt.SelectOrElse(dt => dt.Date == DateTime.Today ? "Today" : "Not today", () => "Don't know, man"));
             maybeDt.Do(dt => Console.WriteLine("I have a value"));
             maybeDt.OrElseDo(() => Console.WriteLine("I have no value"));
+            Console.WriteLine("=======================================");
         }
     }
 }

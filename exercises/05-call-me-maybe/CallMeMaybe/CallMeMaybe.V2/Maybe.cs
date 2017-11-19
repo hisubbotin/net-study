@@ -13,9 +13,6 @@ namespace CallMeMaybe.V2
         private readonly T _value;
         public T Value => HasValue ? _value : throw new InvalidOperationException($"{typeof(Maybe<T>)} doesn't have value.");
 
-        /// <summary>
-        /// Как думаешь, почему я скрыл конструктор?
-        /// </summary>
         private Maybe(T value)
         {
             _value = value;
