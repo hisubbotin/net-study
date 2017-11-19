@@ -1,6 +1,6 @@
 ﻿using System.Collections.Immutable;
 
-namespace CallMeMaybe
+namespace CallMeMaybe.BaseModel
 {
     public interface IOneRecipeChef
     {

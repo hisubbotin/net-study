@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Immutable;
 
-namespace CallMeMaybe
+namespace CallMeMaybe.BaseModel
 {
     public class NaiveChef : IOneRecipeChef
     {
@@ -55,23 +55,14 @@ namespace CallMeMaybe
             return new PumpkinBatterCup();
         }
 
-        private BowlOf<EggsMixture>? MakeEggsMixture()
-        {
-            var pumpkinPieFilling = _cookingTable.FindCansOf<PumpkingPieFilling>(1m);
-            var sugar = _cookingTable.FindCupsOf<WhiteSugar>(3m);
-            var oil = _cookingTable.FindCupsOf<VegetableOil>(0.5m);
-            var water = _cookingTable.FindCupsOf<Water>(0.5m);
-            var eggs = _cookingTable.FindSome<Egg>(4m);
-
-            if (pumpkinPieFilling == null || sugar == null || oil == null || water == null || eggs == null)
-            {
-                return null;
-            }
-            return _cookingTable.FindBowlAndFillItWith(new EggsMixture());
-        }
-
         private BowlOf<FlourMixture>? MakeFlourMixture()
         {
+            /*
+                здесь представим, что ничего плохого в том, что мы проверяем на null
+                полученные значения только в конце, нет.
+                Ты должен[-а] понимать, что в каких-то случаях такая стратегия может быть допустимой,
+                а в каких-то - нет.
+            */
             var wholeWheatFlour = _cookingTable.FindCupsOf<WholeWheatFlour>(3.5m);
             var allPurposeFlour = _cookingTable.FindCupsOf<AllPurposeFlour>(3.5m);
             var pumpkinPieSpice = _cookingTable.FindTeaspoonsOf<PumpkinPieSpice>(5m);
@@ -85,5 +76,45 @@ namespace CallMeMaybe
             }
             return _cookingTable.FindBowlAndFillItWith(new FlourMixture());
         }
+
+        private BowlOf<EggsMixture>? MakeEggsMixture()
+        {
+            /*
+                здесь наоборот посмотрим, как сильно распухает метод, если проверять
+                на null каждое полученное значение сразу.
+            */
+            var pumpkinPieFilling = _cookingTable.FindCansOf<PumpkingPieFilling>(1m);
+            if (pumpkinPieFilling == null)
+            {
+                return null;
+            }
+
+            var sugar = _cookingTable.FindCupsOf<WhiteSugar>(3m);
+            if (sugar == null)
+            {
+                return null;
+            }
+
+            var oil = _cookingTable.FindCupsOf<VegetableOil>(0.5m);
+            if (oil == null)
+            {
+                return null;
+            }
+
+            var water = _cookingTable.FindCupsOf<Water>(0.5m);
+            if (water == null)
+            {
+                return null;
+            }
+
+            var eggs = _cookingTable.FindSome<Egg>(4m);
+            if (eggs == null)
+            {
+                return null;
+            }
+
+            return _cookingTable.FindBowlAndFillItWith(new EggsMixture());
+        }
+
     }
 }

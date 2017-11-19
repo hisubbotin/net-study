@@ -1,11 +1,8 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
 
-namespace CallMeMaybe
+namespace CallMeMaybeV1
 {
-    public struct Maybe<T> : IEnumerable<T>
+    public struct Maybe<T>
     {
         /*
             Как ты думаешь, почему Maybe - структура?
@@ -46,28 +43,6 @@ namespace CallMeMaybe
             throw new NotImplementedException();
         }
 
-        #region IEnumerable<T> inerface implementation
-
-        /*
-            Здесь реализуй интерфейс IEnumerable<T>.
-            Про какой подводный камень нужно помнить, когда объекты Maybe<T> используются как объекты типа IEnumerable?
-        */
-
-        /// <inheritdoc />
-        public IEnumerator<T> GetEnumerator()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <inheritdoc />
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
-        #endregion
-
-
         #region Optional useful methods
 
         public static explicit operator T(Maybe<T> maybe)
@@ -78,19 +53,15 @@ namespace CallMeMaybe
         public T GetValueOrDefault() => throw new NotImplementedException();
         public T GetValueOrDefault(T defaultValue) => throw new NotImplementedException();
 
-        //public Maybe<TResult> Select<TResult>(Func<T, TResult> map)
-        //{
-        //    throw new NotImplementedException();
-        //}
-        //public Maybe<TResult> Select<TResult>(Func<T, Maybe<TResult>> map)
-        //{
-        //    throw new NotImplementedException();
-        //}
-        public Maybe<TResult> SelectOrElse<TResult>(Func<T, TResult> map, Func<TResult> elseMap)
+        public Maybe<TResult> Select<TResult>(Func<T, TResult> map)
         {
             throw new NotImplementedException();
         }
-        public Maybe<TResult> SelectOrElse<TResult>(Func<T, Maybe<TResult>> map, Func<Maybe<TResult>> elseMap)
+        public Maybe<TResult> Select<TResult>(Func<T, Maybe<TResult>> map)
+        {
+            throw new NotImplementedException();
+        }
+        public TResult SelectOrElse<TResult>(Func<T, TResult> map, Func<TResult> elseMap)
         {
             throw new NotImplementedException();
         }
@@ -104,44 +75,15 @@ namespace CallMeMaybe
             throw new NotImplementedException();
         }
 
-        public Maybe<TResult> OrElse<TResult>(Func<TResult> elseMap)
+        public TResult OrElse<TResult>(Func<TResult> elseMap)
         {
             throw new NotImplementedException();
         }
-        public void OrElse(Action elseAction)
+        public void OrElseDo(Action elseAction)
         {
             throw new NotImplementedException();
         }
-
-        //public Maybe<TResult> SelectMany<T2, TResult>(Func<T, Maybe<T2>> otherSelector, Func<T, T2, TResult> resultSelector)
-        //{
-        //    throw new NotImplementedException();
-        //}
 
         #endregion
-    }
-
-    public static class MaybeExtensions
-    {
-        public static Maybe<T> ToMaybe<T>(this T value)
-        {
-            return value;
-        }
-        public static Maybe<T> ToMaybe<T>(this T? value)
-            where T : struct
-        {
-            return value ?? Maybe<T>.Nothing;
-        }
-        public static Maybe<T> ToMaybe<T>(this IEnumerable<T> seq)
-        {
-            using (var iter = seq.GetEnumerator())
-            {
-                return iter.MoveNext() ? iter.Current : Maybe<T>.Nothing;
-            }
-        }
-        public static Maybe<T> Unwrap<T>(this Maybe<Maybe<T>> m)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

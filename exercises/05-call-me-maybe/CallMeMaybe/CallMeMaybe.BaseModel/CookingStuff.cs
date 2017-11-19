@@ -3,20 +3,20 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 
-namespace CallMeMaybe
+namespace CallMeMaybe.BaseModel
 {
     #region Ingredients
 
-    internal struct WholeWheatFlour { }
-    internal struct AllPurposeFlour { }
-    internal struct Water { }
-    internal struct VegetableOil { }
-    internal struct PumpkinPieSpice { }
-    internal struct BakingSoda { }
-    internal struct Salt { }
-    internal struct PumpkingPieFilling { }
-    internal struct WhiteSugar { }
-    internal struct Egg { }
+    public struct WholeWheatFlour { }
+    public struct AllPurposeFlour { }
+    public struct Water { }
+    public struct VegetableOil { }
+    public struct PumpkinPieSpice { }
+    public struct BakingSoda { }
+    public struct Salt { }
+    public struct PumpkingPieFilling { }
+    public struct WhiteSugar { }
+    public struct Egg { }
 
     #endregion
 
@@ -127,8 +127,8 @@ namespace CallMeMaybe
 
     #region Intermediate cooking ingredients
 
-    internal struct FlourMixture { }
-    internal struct EggsMixture { }
+    public struct FlourMixture { }
+    public struct EggsMixture { }
 
     #endregion
 
@@ -138,7 +138,7 @@ namespace CallMeMaybe
     /// Я запекаемый в.
     /// </summary>
     /// <typeparam name="TBaked">А это, во что оно превращается при запекании.</typeparam>
-    internal interface IBakeableTo<out TBaked>
+    public interface IBakeableTo<out TBaked>
         where TBaked: IBaked
     {
         TBaked Bake(TimeSpan duration, decimal degreesCelsius);
@@ -147,7 +147,7 @@ namespace CallMeMaybe
     /// <summary>
     /// Я запекшийся.
     /// </summary>
-    internal interface IBaked
+    public interface IBaked
     {
         void SmellMe();
         void BiteMe();
@@ -158,7 +158,7 @@ namespace CallMeMaybe
     /// <summary>
     /// Формочка для выпечки маффинов, наполненная тыквенно-масляной жижей.
     /// </summary>
-    internal class PumpkinBatterCup : IBakeableTo<PumpkinMuffin>
+    public class PumpkinBatterCup : IBakeableTo<PumpkinMuffin>
     {
         public PumpkinMuffin Bake(TimeSpan duration, decimal degreesCelsius)
         {
@@ -194,7 +194,7 @@ namespace CallMeMaybe
     /// <summary>
     /// Духовка.
     /// </summary>
-    internal class Oven
+    public class Oven
     {
         public decimal DegreesCelsius { get; protected set; }
 
