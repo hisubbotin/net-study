@@ -37,7 +37,7 @@ namespace CallMeMaybe.V1
         public static implicit operator Maybe<T>(T value)
         {
             /*
-                По смыслу это фабрика объектов данного типа.
+                По смыслу это фабрика объектов данного типа (ну или по модному монадный конструктор).
                 Т.к. это оператор неявного приведения, позволяет не засорять код кастами.
             */
             throw new NotImplementedException();
@@ -57,7 +57,7 @@ namespace CallMeMaybe.V1
         {
             throw new NotImplementedException();
         }
-        public Maybe<TResult> Select<TResult>(Func<T, Maybe<TResult>> map)
+        public Maybe<TResult> Select<TResult>(Func<T, Maybe<TResult>> maybeMap)
         {
             throw new NotImplementedException();
         }

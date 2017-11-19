@@ -1,4 +1,4 @@
-﻿namespace CallMeMaybe.Final
+﻿namespace CallMeMaybe
 {
     public static class MaybeExtensions
     {

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace CallMeMaybe.V2
 {
@@ -6,18 +7,26 @@ namespace CallMeMaybe.V2
     {
         public static Maybe<T> ToMaybe<T>(this T value)
         {
-            return value;
+            // скопируй из предыдущего шага
+            throw new NotImplementedException();
         }
         public static Maybe<T> ToMaybe<T>(this T? value)
             where T : struct
         {
-            return value ?? Maybe<T>.Nothing;
+            // скопируй из предыдущего шага
+            throw new NotImplementedException();
         }
+
         public static Maybe<T> ToMaybe<T>(this IEnumerable<T> seq)
         {
             using (var iter = seq.GetEnumerator())
             {
-                return iter.MoveNext() ? iter.Current : Maybe<T>.Nothing;
+                /*
+                    изначально iter никуда не указывает - попытка обращения к iter.Current вызовет исключение
+                    само же итерирование производится с помощью метода .Next().
+                    Обрати внимание на его сигнатуру.
+                */
+                throw new NotImplementedException();
             }
         }
     }

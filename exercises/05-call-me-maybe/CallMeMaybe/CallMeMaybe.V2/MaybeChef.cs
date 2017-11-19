@@ -29,6 +29,8 @@ namespace CallMeMaybe.V2
                 from pumpkinMuffins in oven.Bake<PumpkinBatterCup, PumpkinMuffin>(backingDish, TimeSpan.FromMinutes(30)).ToMaybe()
                 select pumpkinMuffins.Cups;
 
+            // !!!: result имеет тип IEnumerable<IImmutableList<PumpkinMuffin>>
+
             // нужно явно вернуться из IEnumerable в Maybe - для этого и нужен соответствующий экстеншн.
             return result.ToMaybe().GetValueOrDefault();
         }
@@ -48,14 +50,22 @@ namespace CallMeMaybe.V2
             return new PumpkinBatterCup();
         }
 
+        private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
+        {
+            // здесь сделай сам, пожалуйста
+            throw new NotImplementedException();
+        }
+
         private Maybe<BowlOf<EggsMixture>> MakeEggsMixture()
         {
             /*
                 Выглядит чуть лучше и писать несколько удобнее.
-                Если бы было ветвление логики, то пришлось бы разбивать на куски и миксовать с вызовом методов
-                Select/SelectOrElse/Do/DoOrElse.
+                Если бы было ветвление логики, то пришлось бы разбивать на куски и миксовать с вызовом методов-аналогов
+                Select/SelectOrElse/Do/DoOrElse из первой части задания.
 
-                Основной же минус - мы работаем с IEnumerable и на выходе тоже IEnumerable, что как бы не очень.
+                Основной же минус - мы работаем с IEnumerable и на выходе тоже IEnumerable, что как бы не очень:
+                    - нарушается семантика кода. Мы должны работать в терминах монады Maybe, а не последовательностей
+                    - кое-что еще. Что? Подсказка: проблема в работе с объектами как объектами некоторого интерфейса
             */
             var result =
                 from pumpkinPieFilling in _cookingTable.FindCansOf<PumpkingPieFilling>(1m).ToMaybe()
@@ -66,14 +76,10 @@ namespace CallMeMaybe.V2
                 from eggsMixture in _cookingTable.FindBowlAndFillItWith(new EggsMixture()).ToMaybe()
                 select eggsMixture;
 
+            // !!!: result имеет тип IEnumerable<BowlOf<EggsMixture>>
+
             // нужно явно вернуться из IEnumerable в Maybe - для этого и нужен соответствующий экстеншн.
             return result.ToMaybe();
-        }
-
-        private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
-        {
-            // здесь сделай сам, пожалуйста
-            throw new NotImplementedException();
         }
     }
 }

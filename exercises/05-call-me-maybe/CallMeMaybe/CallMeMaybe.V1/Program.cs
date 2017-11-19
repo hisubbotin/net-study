@@ -10,8 +10,8 @@ namespace CallMeMaybe.V1
         {
             Console.WriteLine("Hello World!");
 
-            Maybe<List<int>> x = null;
-            Console.WriteLine(x);
+            Maybe<List<int>> listOfInt = null;
+            Console.WriteLine(listOfInt);
 
             var nullDtMaybe = ((DateTime?) null).ToMaybe();
             var maybeDt = DateTime.Now.ToMaybe();

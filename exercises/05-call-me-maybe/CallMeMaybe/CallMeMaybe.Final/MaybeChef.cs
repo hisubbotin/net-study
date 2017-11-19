@@ -48,7 +48,7 @@ namespace CallMeMaybe.Final
         private Maybe<BowlOf<EggsMixture>> MakeEggsMixture()
         {
             /*
-                Теперь мы оперируем объектами типа Maybe<T> - 
+                Теперь мы оперируем только объектами типа Maybe<T> - 
                 больше никаких непонятных преобразований в IEnumerable и обратно :)
             */
             return 

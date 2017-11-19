@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CallMeMaybe.Final
+namespace CallMeMaybe
 {
     public struct Maybe<T>
     {
@@ -35,12 +35,17 @@ namespace CallMeMaybe.Final
             // обеспечит поддержку одинарного from
             throw new NotImplementedException();
         }
-        public Maybe<TResult> Select<TResult>(Func<T, Maybe<TResult>> map)
+        public Maybe<TResult> Select<TResult>(Func<T, Maybe<TResult>> maybeMap)
         {
             // обеспечит поддержку одинарного from
             throw new NotImplementedException();
         }
         public Maybe<TResult> SelectMany<T2, TResult>(Func<T, Maybe<T2>> otherSelector, Func<T, T2, TResult> resultSelector)
+        {
+            // обеспечит поддержку цепочки from
+            throw new NotImplementedException();
+        }
+        public Maybe<TResult> SelectMany<T2, TResult>(Func<T, Maybe<T2>> otherSelector, Func<T, T2, Maybe<TResult>> maybeResultSelector)
         {
             // обеспечит поддержку цепочки from
             throw new NotImplementedException();

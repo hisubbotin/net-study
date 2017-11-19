@@ -41,6 +41,11 @@ namespace CallMeMaybe.V1
             return new PumpkinBatterCup();
         }
 
+        private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
+        {
+            // здесь сделай сам, пожалуйста
+            throw new NotImplementedException();
+        }
         private Maybe<BowlOf<EggsMixture>> MakeEggsMixture()
         {
             // как видишь, так можно, но чет не очень удобно - получается огромная вложенная блямба селектов
@@ -52,12 +57,6 @@ namespace CallMeMaybe.V1
                 .Select(water => _cookingTable.FindSome<Egg>(4m).ToMaybe()
                 .Select(eggs => _cookingTable.FindBowlAndFillItWith(new EggsMixture()).ToMaybe()
                 )))));
-        }
-
-        private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
-        {
-            // здесь сделай сам, пожалуйста
-            throw new NotImplementedException();
         }
     }
 }
