@@ -117,7 +117,6 @@ Tags: string, char, unicode, regex, unicode categories.
 
 Ниже еще не готово
 
-
 ## 08. String building benchmark
 
 String.Join, string.+=, StringBuilder.
