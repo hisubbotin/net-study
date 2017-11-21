@@ -169,17 +169,35 @@ if (filter.Type != CredentialType.Undefined)
 
 if (! string.IsNullOrEmpty(filter.Credential))
     users = users.Where(c => c.Credential == filter.Credential);
+
+users = users.Skip(10).Take(6);
+users = users.ToList();             // Реальное выполнение только здесь
 ```
 
 <div style="page-break-after: always;"></div>
 
 ## Стандартный и Query Expressions синтакис запросов
 
-Помимо вызова Extension методов можно использоть Query Expressions синтаксис, который отдаленно напоминает tsql
+- Помимо вызова Extension методов можно использоть Query Expressions синтаксис, который отдаленно напоминает tsql
+- Используется для более наглядного написания join'ов
+
+Inner join:
 
 ```cs
 from l in db.Licenses
 join il in db.InstanceLicenses on l.Id equals il.LicenseId
 where il.InstanceId == instanceId
 select l
+```
+
+left outer join [SOF](http://stackoverflow.com/questions/267488/linq-to-sql-multiple-left-outer-joins?rq=1):
+
+```cs
+var userQuery =
+    from user in context.GetTable<User>()
+    from email in context.GetTable<UserEmail>().Where(x => x.EmailId == userProfile.EmailId).DefaultIfEmpty()
+    where userProfile.UserId == userId
+    select new { User = user, Email = email};
+
+var result = userQuery.SingleOrDefault();
 ```
