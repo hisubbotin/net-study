@@ -1,5 +1,7 @@
 ﻿using System;
+using System.ComponentModel;
 using NodaTime;
+using NodaTime.Extensions;
 using NodaTime.TimeZones;
 
 namespace AdventureTime
@@ -124,8 +126,7 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            var today = new DateTime();
-            return (int) (today.AddMonths(3) - today).TotalMinutes;
+            throw new NotSupportedException();
         }
 
         #region Adventure time saga
@@ -280,8 +281,8 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            var p1b = person1Birthday.ToUniversalTime();
-            var p2b = person2Birthday.ToUniversalTime();
+            var p1b = person1Birthday.ToLocalDateTime();
+            var p2b = person2Birthday.ToLocalDateTime();
             return (p1b.Day == p2b.Day && p1b.Month == p2b.Month);
         }
     }
