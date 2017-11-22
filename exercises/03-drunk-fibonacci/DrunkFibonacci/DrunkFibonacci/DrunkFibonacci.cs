@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DrunkFibonacci
 {
@@ -11,8 +12,7 @@ namespace DrunkFibonacci
         /// <param name="len">Длина массива</param>
         public static int[] CreateIntArray(int len)
         {
-            // на создание массивов заданной длины
-            throw new NotImplementedException();
+            return new int[len];
         }
 
         /// <summary>
@@ -23,8 +23,17 @@ namespace DrunkFibonacci
         /// <param name="step">Шаг прогрессии.</param>
         public static void FillIntArray(int[] arr, int seed, int step)
         {
-            // на задание значений массива
-            throw new NotImplementedException();
+            for (var i = 0; i < arr.Length; ++i)
+            {
+                if (i == 0)
+                {
+                    arr[i] = seed;
+                }
+                else
+                {
+                    arr[i] = arr[i - 1] + step;
+                }
+            }
         }
 
         /// <summary>
@@ -33,8 +42,7 @@ namespace DrunkFibonacci
         /// <returns></returns>
         public static int[] GetFirstFiveFibonacci()
         {
-            // на создание массива с инициализацией
-            throw new NotImplementedException();
+            return new int[] {1, 1, 2, 3, 5};
         }
 
         /// <summary>
@@ -49,7 +57,28 @@ namespace DrunkFibonacci
 
                 Задача на ленивую генерацию последовательностей.
             */
-            throw new NotImplementedException();
+            var a = new System.Random(42);
+            for (;;)
+            {
+                yield return a.Next();
+            }
+        }
+
+        private static int makeFunny(int number, int position, int random)
+        {
+            if (position % 6 == 0)
+            {
+                return -1;
+            }
+            if (position % 6 == 4)
+            {
+                number = 300;
+            }
+            if ((random & 42) != 0)
+            {
+                return number ^ 42;
+            }
+            return number;
         }
 
         /// <summary>
@@ -67,7 +96,22 @@ namespace DrunkFibonacci
                     из последовательности GetDeterministicRandomSequence и проверяешь, есть ли у числа Y единичные биты числа 42.
                 При вычислении сложения переполнение типа разрешено и всячески поощряется.
             */
-            throw new NotImplementedException();
+            int grandPrev = 1;
+            int prev = 1;
+            yield return 1;
+            yield return 1;
+            int position = 2;
+            foreach (var random in GetDeterministicRandomSequence())
+            {
+                prev = grandPrev + prev;
+                grandPrev = prev - grandPrev;
+                position += 1;
+                int temp = makeFunny(prev, position, random);
+                if (temp > 0)
+                {
+                    yield return temp;
+                }
+            }
         }
 
         /// <summary>
@@ -77,8 +121,7 @@ namespace DrunkFibonacci
         /// <param name="cnt">Длина отрезка.</param>
         public static int GetMaxOnRange(int from, int cnt)
         {
-            // научишься пропускать и брать фиксированную часть последовательности, агрегировать. Максимум есть среди готовых функций агрегации.
-            throw new NotImplementedException();
+            return DrunkFibonacci.GetDrunkFibonacci().Take(from + cnt).TakeLast(cnt).Max();
         }
 
         /// <summary>
