@@ -8,7 +8,10 @@
 
 1. Primitive Types: 10.10
 1. Adventure Time: 24.10
+1. Drunk Fibonacci: 28.11
 1. Boring Vector: 02.11
+1. Call Me Maybe: 05.12
+1. Wubba Lubba Dub Dub: 05.12
 
 ## КЛ
 
