@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.Emit;
 
 namespace DrunkFibonacci
 {
@@ -121,7 +122,7 @@ namespace DrunkFibonacci
         /// <param name="cnt">Длина отрезка.</param>
         public static int GetMaxOnRange(int from, int cnt)
         {
-            return DrunkFibonacci.GetDrunkFibonacci().Take(from + cnt).TakeLast(cnt).Max();
+            return GetDrunkFibonacci().Skip(from).Take(cnt).Max();
         }
 
         /// <summary>
@@ -130,8 +131,7 @@ namespace DrunkFibonacci
         /// <param name="from">Индекс начала поиска отрезка. Нумерация с единицы.</param>
         public static List<int> GetNextNegativeRange(int from = 1)
         {
-            // научишься пропускать и брать по условию, превращать в список (см. ToList).
-            throw new NotImplementedException();
+            return GetDrunkFibonacci().Take(from).SkipWhile((x) => (x >= 0)).TakeWhile((x) => (x < 0)).ToList();
         }
 
         /// <summary>
@@ -140,7 +140,7 @@ namespace DrunkFibonacci
         public static IEnumerable<int> GetXoredWithLaggedItself()
         {
             // узнаешь о существовании функции Zip.
-            throw new NotImplementedException();
+            return GetDrunkFibonacci().Zip(GetDrunkFibonacci().Skip(42), (a, b) => a ^ b);
         }
 
         /// <summary>
@@ -149,7 +149,20 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
-            throw new NotImplementedException();
+
+            for (int i = 0;; i++)
+            {
+                yield return GetDrunkFibonacci().Skip(i * 16).Take(16).ToArray();
+            }
+            
+            
+            /*
+            Только для конечных размеров
+            return GetDrunkFibonacci()
+                .Select(((number, i) => (number:number, i:i)))
+                .GroupBy((tuple => tuple.i / 16), (tuple => tuple.number), (i, ints) => ints.ToArray());
+            */
+            
         }
 
         /// <summary>
