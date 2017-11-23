@@ -1,7 +1,5 @@
 ﻿using System;
-using System.ComponentModel;
 using NodaTime;
-using NodaTime.Extensions;
 using NodaTime.TimeZones;
 
 namespace AdventureTime
@@ -281,9 +279,11 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            var p1b = person1Birthday.ToLocalDateTime();
-            var p2b = person2Birthday.ToLocalDateTime();
-            return (p1b.Day == p2b.Day && p1b.Month == p2b.Month);
+            if (person1Birthday.Kind != DateTimeKind.Unspecified || person2Birthday.Kind != DateTimeKind.Unspecified)
+            {
+                throw new NotSupportedException();
+            }
+            return (person1Birthday.Day == person2Birthday.Day && person1Birthday.Month == person2Birthday.Month);
         }
     }
 }
