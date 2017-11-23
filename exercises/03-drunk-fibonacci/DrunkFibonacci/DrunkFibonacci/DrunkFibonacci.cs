@@ -154,15 +154,14 @@ namespace DrunkFibonacci
             {
                 yield return GetDrunkFibonacci().Skip(i * 16).Take(16).ToArray();
             }
-            
-            
+
+
             /*
             Только для конечных размеров
             return GetDrunkFibonacci()
                 .Select(((number, i) => (number:number, i:i)))
                 .GroupBy((tuple => tuple.i / 16), (tuple => tuple.number), (i, ints) => ints.ToArray());
             */
-            
         }
 
         /// <summary>
@@ -178,7 +177,7 @@ namespace DrunkFibonacci
                 Вообще говоря, SelectMany умеет много чего и мегаполезна.
                 Она в какой-то степени эквивалентна оператору `bind` над монадами (в данном случае над монадами последовательностей).
             */
-            throw new NotImplementedException();
+            return GetInChunks().SelectMany((ints => ints.OrderBy((i => i)).Take(3)));
         }
 
         /// <summary>
@@ -212,7 +211,9 @@ namespace DrunkFibonacci
 
                 Итого научишься группировать и создавать на их основе словарь (см. ToDictionary).
             */
-            throw new NotImplementedException();
+            return GetDrunkFibonacci().Take(10000)
+                .GroupBy((i => i % 8), (i => i), ((i, ints) => (mod:i, array:ints)))
+                .ToDictionary((tuple => tuple.mod),(tuple => tuple.array.Distinct().Count()));
         }
     }
 }
