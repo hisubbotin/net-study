@@ -24,16 +24,10 @@ namespace DrunkFibonacci
         /// <param name="step">Шаг прогрессии.</param>
         public static void FillIntArray(int[] arr, int seed, int step)
         {
-            for (var i = 0; i < arr.Length; ++i)
+            arr[0] = seed;
+            for (var i = 1; i < arr.Length; ++i)
             {
-                if (i == 0)
-                {
-                    arr[i] = seed;
-                }
-                else
-                {
-                    arr[i] = arr[i - 1] + step;
-                }
+                arr[i] = arr[i - 1] + step;
             }
         }
 
@@ -65,11 +59,11 @@ namespace DrunkFibonacci
             }
         }
 
-        private static int makeFunny(int number, int position, int random)
+        private static Nullable<int> makeFunny(int number, int position, int random)
         {
             if (position % 6 == 0)
             {
-                return -1;
+                return null;
             }
             if (position % 6 == 4)
             {
@@ -106,11 +100,11 @@ namespace DrunkFibonacci
             {
                 prev = grandPrev + prev;
                 grandPrev = prev - grandPrev;
-                position += 1;
-                int temp = makeFunny(prev, position, random);
-                if (temp > 0)
+                ++position;
+                int? temp = makeFunny(prev, position, random);
+                if (temp != null)
                 {
-                    yield return temp;
+                    yield return temp.Value;
                 }
             }
         }
@@ -131,7 +125,7 @@ namespace DrunkFibonacci
         /// <param name="from">Индекс начала поиска отрезка. Нумерация с единицы.</param>
         public static List<int> GetNextNegativeRange(int from = 1)
         {
-            return GetDrunkFibonacci().Take(from).SkipWhile((x) => (x >= 0)).TakeWhile((x) => (x < 0)).ToList();
+            return GetDrunkFibonacci().Skip(from).SkipWhile((x) => (x >= 0)).TakeWhile((x) => (x < 0)).ToList();
         }
 
         /// <summary>
@@ -213,7 +207,7 @@ namespace DrunkFibonacci
             */
             return GetDrunkFibonacci().Take(10000)
                 .GroupBy((i => i % 8), (i => i), ((i, ints) => (mod:i, array:ints)))
-                .ToDictionary((tuple => tuple.mod),(tuple => tuple.array.Distinct().Count()));
+                .ToDictionary((tuple => tuple.mod), (tuple => tuple.array.Distinct().Count()));
         }
     }
 }
