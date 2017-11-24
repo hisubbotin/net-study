@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace WubbaLubbaDubDub
 {
@@ -21,7 +23,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            return line.Split();
+            return new Regex("\\w").Matches(line).Select((match => match.Groups[0].Value)).ToArray();
         }
 
         /// <summary>
