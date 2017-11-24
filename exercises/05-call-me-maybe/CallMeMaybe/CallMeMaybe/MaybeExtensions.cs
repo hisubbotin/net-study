@@ -6,8 +6,8 @@
         {
             return value;
         }
-        public static Maybe<T> ToMaybe<T>(this T? value)
-            where T : struct
+
+        public static Maybe<T> ToMaybe<T>(this T? value) where T : struct
         {
             return value ?? Maybe<T>.Nothing;
         }

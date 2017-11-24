@@ -4,7 +4,7 @@ using CallMeMaybe.BaseModel;
 
 namespace CallMeMaybe.Final
 {
-    public class MaybeChef: IOneRecipeChef
+    public class MaybeChef : IOneRecipeChef
     {
         private readonly CookingTable _cookingTable;
 
@@ -24,13 +24,15 @@ namespace CallMeMaybe.Final
                 from flourMixture in MakeFlourMixture()
                 from eggsMixture in MakeEggsMixture()
                 from backingDish in PrepareBackingDish(flourMixture, eggsMixture)
-                from pumpkinMuffins in oven.Bake<PumpkinBatterCup, PumpkinMuffin>(backingDish, TimeSpan.FromMinutes(30)).ToMaybe()
+                from pumpkinMuffins in oven.Bake<PumpkinBatterCup, PumpkinMuffin>(backingDish, TimeSpan.FromMinutes(30))
+                    .ToMaybe()
                 select pumpkinMuffins.Cups;
 
             return result.GetValueOrDefault();
         }
 
-        private Maybe<BakingDish<PumpkinBatterCup>> PrepareBackingDish(BowlOf<FlourMixture> flourMixture, BowlOf<EggsMixture> eggsMixture)
+        private Maybe<BakingDish<PumpkinBatterCup>> PrepareBackingDish(BowlOf<FlourMixture> flourMixture,
+            BowlOf<EggsMixture> eggsMixture)
         {
             var pumpkinBatterCups = ImmutableList.CreateBuilder<PumpkinBatterCup>();
             for (var i = 0; i < 24; i++)
@@ -40,7 +42,8 @@ namespace CallMeMaybe.Final
             return _cookingTable.FindBakingDish(pumpkinBatterCups.ToImmutable()).ToMaybe();
         }
 
-        private PumpkinBatterCup FillPumpkinBatterCup(BowlOf<FlourMixture> flourMixture, BowlOf<EggsMixture> eggsMixture)
+        private PumpkinBatterCup FillPumpkinBatterCup(BowlOf<FlourMixture> flourMixture,
+            BowlOf<EggsMixture> eggsMixture)
         {
             return new PumpkinBatterCup();
         }
@@ -51,7 +54,7 @@ namespace CallMeMaybe.Final
                 Теперь мы оперируем только объектами типа Maybe<T> - 
                 больше никаких непонятных преобразований в IEnumerable и обратно :)
             */
-            return 
+            return
                 from pumpkinPieFilling in _cookingTable.FindCansOf<PumpkingPieFilling>(1m).ToMaybe()
                 from sugar in _cookingTable.FindCupsOf<WhiteSugar>(3m).ToMaybe()
                 from oil in _cookingTable.FindCupsOf<VegetableOil>(0.5m).ToMaybe()
@@ -63,8 +66,14 @@ namespace CallMeMaybe.Final
 
         private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
         {
-            // здесь сделай сам, пожалуйста
-            throw new NotImplementedException();
+            return
+                from wholeWheatFlour in _cookingTable.FindCupsOf<WholeWheatFlour>(3.5m).ToMaybe()
+                from allPurposeFlour in _cookingTable.FindCupsOf<AllPurposeFlour>(3.5m).ToMaybe()
+                from pumpkinPieSpice in _cookingTable.FindTeaspoonsOf<PumpkinPieSpice>(5m).ToMaybe()
+                from bakingSoda in _cookingTable.FindTeaspoonsOf<BakingSoda>(2m).ToMaybe()
+                from salt in _cookingTable.FindTeaspoonsOf<Salt>(1.5m).ToMaybe()
+                from flourMixture in _cookingTable.FindBowlAndFillItWith(new FlourMixture()).ToMaybe()
+                select flourMixture;
         }
     }
 }
