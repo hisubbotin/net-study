@@ -86,7 +86,7 @@ namespace CallMeMaybe
             throw new NotImplementedException();
         }
 
-        public Maybe<TResult> OrElse<TResult>(Func<TResult> elseMap)
+        public T OrElse(Func<T> elseMap)
         {
             throw new NotImplementedException();
         }
