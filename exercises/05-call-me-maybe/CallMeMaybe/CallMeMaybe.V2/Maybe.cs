@@ -11,7 +11,9 @@ namespace CallMeMaybe.V2
         public bool HasValue { get; }
 
         private readonly T _value;
-        public T Value => HasValue ? _value : throw new InvalidOperationException($"{typeof(Maybe<T>)} doesn't have value.");
+
+        public T Value =>
+            HasValue ? _value : throw new InvalidOperationException($"{typeof(Maybe<T>)} doesn't have value.");
 
         private Maybe(T value)
         {
@@ -27,7 +29,7 @@ namespace CallMeMaybe.V2
 
         public static implicit operator Maybe<T>(T value)
         {
-            throw new NotImplementedException();
+            return value != null ? new Maybe<T>(value) : Nothing;
         }
 
         #region IEnumerable<T> inerface implementation
@@ -40,7 +42,11 @@ namespace CallMeMaybe.V2
         /// <inheritdoc />
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            if (!HasValue)
+            {
+                yield break;
+            }
+            yield return _value;
         }
 
         /// <inheritdoc />
@@ -54,8 +60,8 @@ namespace CallMeMaybe.V2
 
         #region Optional useful methods
 
-        public T GetValueOrDefault() => throw new NotImplementedException();
-        public T GetValueOrDefault(T defaultValue) => throw new NotImplementedException();
+        public T GetValueOrDefault() => HasValue ? _value : default(T);
+        public T GetValueOrDefault(T defaultValue) => HasValue ? _value : defaultValue;
 
         #endregion
     }
