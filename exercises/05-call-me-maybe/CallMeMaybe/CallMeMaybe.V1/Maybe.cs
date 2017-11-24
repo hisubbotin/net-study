@@ -90,7 +90,7 @@ namespace CallMeMaybe.V1
             }
         }
 
-        public Maybe<TResult> OrElse<TResult>(Func<TResult> elseMap)
+        public T OrElse(Func<T> elseMap)
         {
             return HasValue ? Maybe<TResult>.Nothing : elseMap();
         }
