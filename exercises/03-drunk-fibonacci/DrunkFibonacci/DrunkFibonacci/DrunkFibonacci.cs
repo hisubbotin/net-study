@@ -147,8 +147,8 @@ namespace DrunkFibonacci
         {
             // ни чему особо не научишься, просто интересная задачка :)
 
-            
-            for (var a = GetDrunkFibonacci();;a = a.Skip(16))
+
+            for (var a = GetDrunkFibonacci();; a = a.Skip(16))
             {
                 yield return a.Take(16).ToArray();
             }
