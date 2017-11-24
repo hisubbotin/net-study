@@ -68,11 +68,7 @@ namespace CallMeMaybe
         public T GetValueOrDefault() => throw new NotImplementedException();
         public T GetValueOrDefault(T defaultValue) => throw new NotImplementedException();
 
-        public Maybe<TResult> SelectOrElse<TResult>(Func<T, TResult> map, Func<TResult> elseMap)
-        {
-            throw new NotImplementedException();
-        }
-        public Maybe<TResult> SelectOrElse<TResult>(Func<T, Maybe<TResult>> map, Func<Maybe<TResult>> elseMap)
+        public TResult SelectOrElse<TResult>(Func<T, TResult> map, Func<TResult> elseMap)
         {
             throw new NotImplementedException();
         }
@@ -86,7 +82,7 @@ namespace CallMeMaybe
             throw new NotImplementedException();
         }
 
-        public Maybe<TResult> OrElse<TResult>(Func<TResult> elseMap)
+        public T OrElse(Func<T> elseMap)
         {
             throw new NotImplementedException();
         }
