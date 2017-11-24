@@ -56,8 +56,7 @@ namespace DrunkFibonacci
 
                 Задача на ленивую генерацию последовательностей.
             */
-            var a = new System.Random(42);
-            for (;;)
+            for (var a = new System.Random(42);;)
             {
                 yield return a.Next();
             }
@@ -148,11 +147,10 @@ namespace DrunkFibonacci
         {
             // ни чему особо не научишься, просто интересная задачка :)
 
-            var a = GetDrunkFibonacci();
-            for (;;)
+            
+            for (var a = GetDrunkFibonacci();;a = a.Skip(16))
             {
                 yield return a.Take(16).ToArray();
-                a = a.Skip(16);
             }
 
 
