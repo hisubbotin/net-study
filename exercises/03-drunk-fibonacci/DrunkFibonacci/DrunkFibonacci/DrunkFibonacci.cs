@@ -24,6 +24,10 @@ namespace DrunkFibonacci
         /// <param name="step">Шаг прогрессии.</param>
         public static void FillIntArray(int[] arr, int seed, int step)
         {
+            if (arr == null || arr.Length == 0)
+            {
+                return;
+            }
             arr[0] = seed;
             for (var i = 1; i < arr.Length; ++i)
             {
@@ -144,9 +148,11 @@ namespace DrunkFibonacci
         {
             // ни чему особо не научишься, просто интересная задачка :)
 
-            for (int i = 0;; i++)
+            var a = GetDrunkFibonacci();
+            for (;;)
             {
-                yield return GetDrunkFibonacci().Skip(i * 16).Take(16).ToArray();
+                yield return a.Take(16).ToArray();
+                a = a.Skip(16);
             }
 
 
