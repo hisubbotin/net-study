@@ -94,11 +94,6 @@ namespace CallMeMaybe
             return HasValue ? map(_value) : elseMap();
         }
 
-        public Maybe<TResult> SelectOrElse<TResult>(Func<T, Maybe<TResult>> map, Func<Maybe<TResult>> elseMap)
-        {
-            return HasValue ? map(_value) : elseMap();
-        }
-
         public void Do(Action<T> doAction)
         {
             if (HasValue)
