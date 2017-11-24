@@ -11,7 +11,7 @@ namespace CallMeMaybe.V1
 
         public static Maybe<T> ToMaybe<T>(this T? value) where T : struct
         {
-            return value.HasValue ? value.Value : Maybe<T>.Nothing;
+            return value ?? Maybe<T>.Nothing;
         }
     }
 }
