@@ -56,7 +56,7 @@ namespace BoringVector
         /// </summary>
         internal static double GetAngleBetween(this Vector v, Vector u)
         {
-            if (v.IsZero() || v.IsZero())
+            if (v.IsZero() || u.IsZero())
             {
                 return 0;
             }
