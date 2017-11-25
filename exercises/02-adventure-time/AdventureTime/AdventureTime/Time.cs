@@ -51,7 +51,7 @@ namespace AdventureTime
                 Ну и на будущее запомни этот прекрасный строковый формат представления времени - он твой бро!
                 Название запоминать не нужно, просто помни, что для передачи значения в виде строки, выбирать лучше инвариантные относительно сериализации/десериализации форматы.
             */
-            return dt.ToString("G");
+            return dt.ToString("o");
         }
 
         /// <summary>
@@ -102,7 +102,7 @@ namespace AdventureTime
                 Ну а здесь воспользуйся сложением с TimeSpan. Обрати внимание, что помимо конструктора, у класса есть набор полезных статических методов-фабрик.
                 Обрати внимание, что у TimeSpan нет статических методов FromMonth, FromYear. Как думаешь, почему?
             */
-            return (dt + TimeSpan.FromSeconds(10));
+            return dt + TimeSpan.FromSeconds(10);
         }
 
         /// <summary>
@@ -147,9 +147,9 @@ namespace AdventureTime
                 Держи, заготовочку для копипасты:
                     - 2010, 3, 28, 2, 15, 0
             */
-            DateTimeOffset dest = new DateTimeOffset(2010, 3, 28, 2, 15, 0, new TimeSpan(3, 0, 0));
-            DateTimeOffset sour = new DateTimeOffset(2010, 3, 28, 2, 15, 0, new TimeSpan(0, 0, 0));
-            return (int)(dest - sour).TotalMinutes;
+            DateTimeOffset dst = new DateTimeOffset(2010, 3, 28, 2, 15, 0, new TimeSpan(3, 0, 0));
+            DateTimeOffset srs = new DateTimeOffset(2010, 3, 28, 2, 15, 0, new TimeSpan(0, 0, 0));
+            return (int)(dst - srs).TotalMinutes;
         }
 
         /// <summary>
@@ -167,9 +167,9 @@ namespace AdventureTime
                     - 2010, 3, 28, 3, 15, 0
                     - 2010, 3, 28, 1, 15, 0
             */
-            DateTimeOffset dest = new DateTimeOffset(2010, 3, 28, 3, 15, 0, new TimeSpan(3, 0, 0));
-            DateTimeOffset sour = new DateTimeOffset(2010, 3, 28, 1, 15, 0, new TimeSpan(0, 0, 0));
-            return (int)(dest - sour).TotalMinutes;
+            DateTimeOffset dst = new DateTimeOffset(2010, 3, 28, 3, 15, 0, new TimeSpan(3, 0, 0));
+            DateTimeOffset src = new DateTimeOffset(2010, 3, 28, 1, 15, 0, new TimeSpan(0, 0, 0));
+            return (int)(dst - src).TotalMinutes;
         }
 
         /// <summary>
@@ -184,9 +184,9 @@ namespace AdventureTime
                 На самом деле смещения таковы: Лондон +1 (BST - British Summer Time), Москва +4 (MSD - Moscow Daylight Time).
                 Давай теперь учтем правильное смещение. Я понимаю, что это очевидно, что результат не изменится, но тебе же не сложно скопипастить и просто поменять смещения?
             */
-            DateTimeOffset dest = new DateTimeOffset(2010, 3, 28, 3, 15, 0, new TimeSpan(4, 0, 0));
-            DateTimeOffset sour = new DateTimeOffset(2010, 3, 28, 1, 15, 0, new TimeSpan(1, 0, 0));
-            return (int)(dest - sour).TotalMinutes;
+            DateTimeOffset dst = new DateTimeOffset(2010, 3, 28, 3, 15, 0, new TimeSpan(4, 0, 0));
+            DateTimeOffset src = new DateTimeOffset(2010, 3, 28, 1, 15, 0, new TimeSpan(1, 0, 0));
+            return (int)(dst - src).TotalMinutes;
         }
 
         // GetGenderSwappedAdventureTimeDurationInMinutes_ver1_FeelsSmarter опустим, там то же самое
@@ -210,9 +210,9 @@ namespace AdventureTime
             */
             const string moscowZoneId = "Russian Standard Time";
             const string londonZoneId = "GMT Standard Time";
-            DateTimeOffset dest = GetZonedTime(new DateTime(2010, 3, 28, 2, 15, 0), TimeZoneInfo.FindSystemTimeZoneById(moscowZoneId).Id);
-            DateTimeOffset sour = GetZonedTime(new DateTime(2010, 3, 28, 2, 15, 0), TimeZoneInfo.FindSystemTimeZoneById(londonZoneId).Id);
-            return (int)(dest - sour).TotalMinutes;
+            DateTimeOffset dst = GetZonedTime(new DateTime(2010, 3, 28, 2, 15, 0), moscowZoneId);
+            DateTimeOffset src = GetZonedTime(new DateTime(2010, 3, 28, 2, 15, 0), londonZoneId);
+            return (int)(dst - src).TotalMinutes;
         }
 
         /// <summary>
@@ -225,9 +225,9 @@ namespace AdventureTime
             */
             const string moscowZoneId = "Russian Standard Time";
             const string londonZoneId = "GMT Standard Time";
-            DateTimeOffset dest = GetZonedTime(new DateTime(2010, 3, 28, 3, 15, 0), TimeZoneInfo.FindSystemTimeZoneById(moscowZoneId).Id);
-            DateTimeOffset sour = GetZonedTime(new DateTime(2010, 3, 28, 1, 15, 0), TimeZoneInfo.FindSystemTimeZoneById(londonZoneId).Id);
-            return (int)(dest - sour).TotalMinutes;
+            DateTimeOffset dst = GetZonedTime(new DateTime(2010, 3, 28, 3, 15, 0), moscowZoneId);
+            DateTimeOffset src = GetZonedTime(new DateTime(2010, 3, 28, 1, 15, 0), londonZoneId);
+            return (int)(dst - src).TotalMinutes;
         }
 
         private static DateTimeOffset GetZonedTime(DateTime localTime, string timeZoneId)
@@ -286,9 +286,7 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            return person1Birthday.Day.Equals(person2Birthday.Day) &&
-                person1Birthday.Month.Equals(person2Birthday.Month) &&
-                person1Birthday.Year.Equals(person2Birthday.Year);
+            return person1Birthday.Date == person2Birthday.Date;
         }
     }
 }
