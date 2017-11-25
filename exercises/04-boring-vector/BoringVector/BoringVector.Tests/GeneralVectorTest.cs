@@ -6,12 +6,12 @@ namespace BoringVector.Tests
 {
     public class GeneralVectorTest
     {
-        static void AssertDoubleAreEqual(double a, double b)
+        private static void AssertDoubleAreEqual(double a, double b)
         {
             Assert.True(Math.Abs(a - b) < 1e-6);
         }
 
-        static void AssertVectorsAreEqual(Vector v, Vector u)
+        private static void AssertVectorsAreEqual(Vector v, Vector u)
         {
             AssertDoubleAreEqual(v.X, u.X);
             AssertDoubleAreEqual(v.Y, u.Y);
@@ -28,121 +28,152 @@ namespace BoringVector.Tests
             Assert.Equal((new Vector(x, y)).SquareLength(), squareLength);
         }
         
-        internal static IEnumerable<object[]> GetVectorPairs()
+        /// <summary>
+        /// <see cref="Vector"/> v, 
+        /// <see cref="Vector"/> u, 
+        /// <see cref="Vector"/> u + v
+        /// </summary>
+        private static IEnumerable<object[]> GetTestDataFor_Add()
         {
-            yield return new object[] { new Vector(1.5, -1.5), new Vector(-1.5, 1.5), new Vector(0, 0)};
-            yield return new object[] { new Vector(0, 100), new Vector(-1.5, 1.5), new Vector(-1.5, 101.5)};
-            yield return new object[] { new Vector(1, 1), new Vector(0, 0), new Vector(1, 1)};
+            return new[]
+            {
+                new object[] {new Vector(1.5, -1.5), new Vector(-1.5, 1.5), new Vector(0, 0)},
+                new object[] {new Vector(0, 100), new Vector(-1.5, 1.5), new Vector(-1.5, 101.5)},
+                new object[] {new Vector(1, 1), new Vector(0, 0), new Vector(1, 1)}
+            };
         }
         
         [Theory]
-        [MemberData(nameof(GetVectorPairs))]
+        [MemberData(nameof(GetTestDataFor_Add))]
         internal void Test_Add(Vector v, Vector u, Vector sum)
         {
              AssertVectorsAreEqual(v.Add(u), sum);   
         }
         
-        internal static IEnumerable<object[]> GetVectorDouble_ScaledVector()
+        /// <summary>
+        /// <see cref="Vector"/> v, 
+        /// <see cref="double"/> k, 
+        /// <see cref="Vector"/> v * k
+        /// </summary>
+        private static IEnumerable<object[]> GetTestDataFor_Scale()
         {
-            yield return new object[]
+            return new[]
             {
-                new Vector(1.5, -1.5),
-                2,
-                new Vector(3, -3)
-            };
-            yield return new object[]
-            { 
-                new Vector(42, -0.0001),
-                0,
-                new Vector(0, 0)
-                
-            };
-            yield return new object[]
-            {
-                new Vector(9, -7),
-                -1,
-                new Vector(-9, 7)
-            };
-            yield return new object[]
-            {
-                new Vector(0, 0),
-                9000,
-                new Vector(0, 0)
+                new object[]
+                {
+                    new Vector(1.5, -1.5), 
+                    2, 
+                    new Vector(3, -3)
+                },
+                new object[]
+                {
+                    new Vector(42, -0.0001), 
+                    0, 
+                    new Vector(0, 0)
+                },
+                new object[]
+                {
+                    new Vector(9, -7), 
+                    -1, 
+                    new Vector(-9, 7)
+                },
+                new object[]
+                {
+                    new Vector(0, 0), 
+                    9000, 
+                    new Vector(0, 0)
+                }
             };
         }
         
         [Theory]
-        [MemberData(nameof(GetVectorDouble_ScaledVector))]
+        [MemberData(nameof(GetTestDataFor_Scale))]
         internal void Test_Scale(Vector v, double scale, Vector scaled)
         {
             AssertVectorsAreEqual(v.Scale(scale), scaled);
         }
         
-        internal static IEnumerable<object[]> GetVectorVector_DotProduct()
+        /// <summary>
+        /// <see cref="Vector"/> v, 
+        /// <see cref="Vector"/> u, 
+        /// <see cref="double"/> v.DotProduct(u)
+        /// </summary>
+        private static IEnumerable<object[]> GetTestDataFor_DotProduct()
         {
-            yield return new object[]
+            return new[]
             {
-                new Vector(1.5, -1.5),
-                new Vector(2, -1),
-                4.5
-            };
-            yield return new object[]
-            { 
-                new Vector(42, -0.0001),
-                new Vector(0, 0),
-                0
-            };
-            yield return new object[]
-            {
-                new Vector(2, -3),
-                new Vector(-2, 3),
-                -13
-            };
-            yield return new object[]
-            {
-                new Vector(0, 1),
-                new Vector(1, 0),
-                0
+                new object[]
+                {
+                    new Vector(1.5, -1.5),
+                    new Vector(2, -1),
+                    4.5
+                },
+                new object[]
+                {
+                    new Vector(42, -0.0001),
+                    new Vector(0, 0),
+                    0
+                },
+                new object[]
+                {
+                    new Vector(2, -3),
+                    new Vector(-2, 3),
+                    -13
+                },
+                new object[]
+                {
+                    new Vector(0, 1),
+                    new Vector(1, 0),
+                    0
+                }
             };
         }
         
         [Theory]
-        [MemberData(nameof(GetVectorVector_DotProduct))]
+        [MemberData(nameof(GetTestDataFor_DotProduct))]
         internal void Test_DotProduct(Vector v, Vector u, double dotProduct)
         {
             AssertDoubleAreEqual(v.DotProduct(u), dotProduct);
         }
         
-        internal static IEnumerable<object[]> GetVectorVector_CrossProduct()
+        /// <summary>
+        /// <see cref="Vector"/> v, 
+        /// <see cref="Vector"/> u, 
+        /// <see cref="double"/> v.CrossProduct(u)
+        /// </summary>
+        private static IEnumerable<object[]> GetTestDataFor_CrossProduct()
         {
-            yield return new object[]
+            return new[]
             {
-                new Vector(1.5, -1.5),
-                new Vector(2, -1),
-                1.5
-            };
-            yield return new object[]
-            { 
-                new Vector(42, -0.0001),
-                new Vector(0, 0),
-                0
-            };
-            yield return new object[]
-            {
-                new Vector(2, -3),
-                new Vector(2, 3),
-                12
-            };
-            yield return new object[]
-            {
-                new Vector(0, 1),
-                new Vector(1, 0),
-                -1
+                new object[]
+                {
+                    new Vector(1.5, -1.5),
+                    new Vector(2, -1),
+                    1.5
+                },
+                new object[]
+                {
+                    new Vector(42, -0.0001),
+                    new Vector(0, 0),
+                    0
+                },
+                new object[]
+                {
+                    new Vector(2, -3),
+                    new Vector(2, 3),
+                    12
+                },
+                new object[]
+                {
+                    new Vector(0, 1),
+                    new Vector(1, 0),
+                    -1
+                }
             };
         }
         
         [Theory]
-        [MemberData(nameof(GetVectorVector_CrossProduct))]
+        [MemberData(nameof(GetTestDataFor_CrossProduct))]
         internal void Test_CrossProduct(Vector v, Vector u, double crossProduct)
         {
             AssertDoubleAreEqual(v.CrossProduct(u), crossProduct);
@@ -151,7 +182,7 @@ namespace BoringVector.Tests
         [Fact]
         internal void Test_DevideByZero()
         {
-            Vector devisionResult = new Vector(7, -9) / 0;
+            var devisionResult = new Vector(7, -9) / 0;
             Assert.Equal(devisionResult.X, double.PositiveInfinity);
             Assert.Equal(devisionResult.Y, double.NegativeInfinity);
         }
