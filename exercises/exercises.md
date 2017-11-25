@@ -11,8 +11,7 @@
   - [03. Go home, Fibonacci, you're drunk](#03-go-home-fibonacci-youre-drunk)
   - [04. Boring vector](#04-boring-vector)
   - [05. Here's my `T` value so call me `Maybe<T>`](#05-heres-my-t-value-so-call-me-maybet)
-  - [06. The primitive types strikes back](#06-the-primitive-types-strikes-back)
-  - [07. The beginning of Broken Telephone](#07-the-beginning-of-broken-telephone)
+  - [06. Wubba Lubba Dub Dub](#06-wubba-lubba-dub-dub)
   - [08. String building benchmark](#08-string-building-benchmark)
   - [09. Broken Telephone. Dark knight](#09-broken-telephone-dark-knight)
   - [10. Reflection](#10-reflection)
@@ -87,29 +86,36 @@ Tags: struct, operator overloading, extension methods, xml documentation comment
 
 Инструкция лежит в [04-boring-vector/04-boring-vector.md](04-boring-vector/04-boring-vector.md).
 
+## 05. Here's my `T` value so call me `Maybe<T>`
+
+Tags: generics, extension methods, lambdas, LINQ-query syntax, maybe monad.
+
+В данном задании вы познакомитесь с:
+
+- обобщенными типами-контейнерами на примере реализации монады _maybe_,
+- обобщенными методами-расширениями с ограничениями на применяемые типы,
+- анонимными-функциями (aka лямбды) и типами, в т.ч. обобщенными,
+- техникой добавления поддержки синтаксиса LINQ-запросов.
+
+Инструкция лежит в [05-call-me-maybe/05-call-me-maybe.md](05-call-me-maybe/05-call-me-maybe.md).
+
+## 06. Wubba Lubba Dub Dub
+
+Tags: string, char, unicode, regex, unicode categories.
+
+В данном задании вы поиграетесь с текстами и познакомитесь с:
+
+- предикатами для определения категорий Юникода,
+- поддержкой регулярных выражений в .Net.
+
+Инструкция лежит в [06-wubba-lubba-dub-dub/06-wubba-lubba-dub-dub.md](06-wubba-lubba-dub-dub/06-wubba-lubba-dub-dub.md).
+
 ---
 ---
 ---
 ---
 
 Ниже еще не готово
-
-
-
-## 05. Here's my `T` value so call me `Maybe<T>`
-
-Generics, extension methods.
-
-## 06. The primitive types strikes back
-
-- Culture info with primitive types,
-- Enum.HasFlag benchmark
-
-Enums, flag enums, boxing overhead.
-
-## 07. The beginning of Broken Telephone
-
-String modifiers, unicode categories.
 
 ## 08. String building benchmark
 
