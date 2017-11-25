@@ -122,14 +122,16 @@ namespace AdventureTime
             return (int) (dt2.ToUniversalTime() - dt1.ToUniversalTime()).TotalHours;
         }
 
+        // FIXME: необходимо уточнить требования, так как три месяца могут быть различными и соответственно содержать различное количество минут.
         /// <summary>
         /// Возвращает количество минут во временном промежутке, равном трем месяцам.
         /// </summary>
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            var dt = new DateTime();
-            return (int) (dt.AddMonths(3) - dt).TotalMinutes;
+            // Проблему с этим методом уже разбирали. 
+            // Даже если я не догадался уточнить условие или кинуть исключение, то комментирий все же нужно было написать. 
+            throw new NotSupportedException();
         }
 
         #region Adventure time saga
@@ -295,11 +297,36 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            var person1BirthdayUtc = person1Birthday.ToUniversalTime();
-            var person2BirthdayUtc = person2Birthday.ToUniversalTime();
+            // easy-way - не наш вариант)
+//            throw new NotSupportedException();
+            
+            // Тоже активно обсуждаемый вопрос. 
+            // Так как вопрос с датами для меня все-равно непрозрачен, приведу соответсвующие комментиарии.
+            // Реализуем логику сравнения дат паспортов, то есть локальное время места рождения.
+            // Kind == Utc у любого из двух нас не устроит, поскольку "паспортная" локальная дата будет неизвестна.
+            // Kind == Local тоже никак не позволит узнать нужную дату, если она из другой зоны.
+            // Kind == Unspecified дата как есть без намеков на временные зоны и все такое, поэтому подходит.
+            
+            // Насколько я понимаю, важна природа получаемых DateTime, поскольку если взять Unspecified и поменять ему кайнд на Локал, то ничего не изменится кроме самого поля Кайнд (будет известно, что нужно считать эту дату в локальной зоне)
+            // это будет все тот же набор чисел, а мы все так же сможем взять день, месяц и проч.
+            
+            // Дополнительно: так как сравниваем даты, то логично требовать, чтобы время было нулевое.
+            // Мне кажется это уже от конкретной задачи зависит. Такая проверка поможет убедиться, что все коректно 
+            // (например, веб-вервис присылает даты рождений обязательно с нулевым временем, а после получения оно может быть случайно приведено к локальному и дата изменится)
+//            if (person1Birthday.TimeOfDay != TimeSpan.Zero
+//                || person2Birthday.TimeOfDay != TimeSpan.Zero)
+//            {
+//                throw new InvalidOperationException("TimeOfDay should be zero");
+//            }
 
-            return person1BirthdayUtc.Month == person2BirthdayUtc.Month 
-                   && person1BirthdayUtc.Day == person2BirthdayUtc.Day;
+            if (person1Birthday.Kind != DateTimeKind.Unspecified
+                || person2Birthday.Kind != DateTimeKind.Unspecified)
+            {
+                throw new NotSupportedException("Kind should be DateTimeKind.Unspecified, otherwise birthdays cannot be compared");
+            }
+
+            return person1Birthday.Month == person2Birthday.Month 
+                   && person1Birthday.Day == person2Birthday.Day;
         }
     }
 }
