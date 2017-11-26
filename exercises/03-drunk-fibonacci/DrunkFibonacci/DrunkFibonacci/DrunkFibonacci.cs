@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DrunkFibonacci
 {
@@ -12,7 +14,7 @@ namespace DrunkFibonacci
         public static int[] CreateIntArray(int len)
         {
             // на создание массивов заданной длины
-            throw new NotImplementedException();
+            return new List<int>(len).ToArray();
         }
 
         /// <summary>
@@ -24,7 +26,10 @@ namespace DrunkFibonacci
         public static void FillIntArray(int[] arr, int seed, int step)
         {
             // на задание значений массива
-            throw new NotImplementedException();
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr.SetValue(i, seed + step * i);
+            }           
         }
 
         /// <summary>
@@ -34,8 +39,9 @@ namespace DrunkFibonacci
         public static int[] GetFirstFiveFibonacci()
         {
             // на создание массива с инициализацией
-            throw new NotImplementedException();
+            return new int[5] { 1, 1, 2, 3, 5 };
         }
+
 
         /// <summary>
         /// Возвращает последовательность случайных чисел, которая сгенерирована на основе некоторого постоянного определителя.
@@ -49,7 +55,11 @@ namespace DrunkFibonacci
 
                 Задача на ленивую генерацию последовательностей.
             */
-            throw new NotImplementedException();
+            var generator = new Random(0);
+            for (; ; )
+            {
+                yield return generator.Next();
+            }
         }
 
         /// <summary>
@@ -67,7 +77,41 @@ namespace DrunkFibonacci
                     из последовательности GetDeterministicRandomSequence и проверяешь, есть ли у числа Y единичные биты числа 42.
                 При вычислении сложения переполнение типа разрешено и всячески поощряется.
             */
-            throw new NotImplementedException();
+            // Фишка с занулением битов влияет только на вывод или еще на подсчет?
+            // Буду считать, что подсчет стандартный, если нужно все-таки учитывать при подсчете, то это делается в одну строчку
+            var times = 0;
+            var curr = 1;
+            var prev = 1;
+            foreach (int i in GetDeterministicRandomSequence())
+            {
+                times++;
+                if (times <= 2)
+                {
+                    yield return 1;
+                }
+                else
+                {
+                    var next = curr + prev;
+                    prev = curr;
+                    curr = next;
+                    if (times % 6 == 0)
+                    {
+                        continue;
+                        //yield return 0; 
+                    }
+                    else if (times % 6 == 4)
+                    {
+                        yield return 300;
+                    }
+                    else
+                    {
+                        // При инверсии число становится отрицательным, поэтому перед пересечением возмем отрицание
+                        // curr ^= -~(42 & i) Если нужно учитывать при подсчете
+                        yield return next ^ -~(42 & i);
+                        //yield return next;
+                    }
+                }                
+            }
         }
 
         /// <summary>
@@ -78,7 +122,7 @@ namespace DrunkFibonacci
         public static int GetMaxOnRange(int from, int cnt)
         {
             // научишься пропускать и брать фиксированную часть последовательности, агрегировать. Максимум есть среди готовых функций агрегации.
-            throw new NotImplementedException();
+            return GetDrunkFibonacci().Skip(from).Take(cnt).Max();            
         }
 
         /// <summary>
@@ -88,7 +132,7 @@ namespace DrunkFibonacci
         public static List<int> GetNextNegativeRange(int from = 1)
         {
             // научишься пропускать и брать по условию, превращать в список (см. ToList).
-            throw new NotImplementedException();
+            return GetDrunkFibonacci().Skip(from).SkipWhile(x => x > 0).TakeWhile(x => x <= 0).ToList();
         }
 
         /// <summary>
@@ -97,7 +141,7 @@ namespace DrunkFibonacci
         public static IEnumerable<int> GetXoredWithLaggedItself()
         {
             // узнаешь о существовании функции Zip.
-            throw new NotImplementedException();
+            return GetDrunkFibonacci().Zip(GetDrunkFibonacci().Skip(42), (x,y) => x ^ y );
         }
 
         /// <summary>
@@ -107,6 +151,14 @@ namespace DrunkFibonacci
         {
             // ни чему особо не научишься, просто интересная задачка :)
             throw new NotImplementedException();
+            // В интернетах http://www.benramey.com/2012/07/27/group-list-into-sub-lists-by-index/ делают так
+            return GetDrunkFibonacci().Select((x, i) => new { Index = i, Value = x })
+                 .GroupBy(obj => obj.Index / 16) // Если заменить GroupBy на ToLookup, тоже не работает
+                 .Select(obj => obj.Select(v => v.Value).ToArray());
+            
+            // Но в нашем случае оно не работает: зацикливается на GroupBy итерируясь по посл-ти, которая бесконечна
+            // С фиксированным контейнером оно должно работать
+            // Как сделать по-нормальному без GroupBy я не придумал            
         }
 
         /// <summary>
@@ -123,6 +175,8 @@ namespace DrunkFibonacci
                 Она в какой-то степени эквивалентна оператору `bind` над монадами (в данном случае над монадами последовательностей).
             */
             throw new NotImplementedException();
+            // Т.к. GetInChunks не работает, не могу проверь работает ли, но я бы сделал так:
+            return GetInChunks().SelectMany(X => X.OrderBy(x => x).Take(3));
         }
 
         /// <summary>
@@ -156,7 +210,9 @@ namespace DrunkFibonacci
 
                 Итого научишься группировать и создавать на их основе словарь (см. ToDictionary).
             */
-            throw new NotImplementedException();
+            return GetDrunkFibonacci().Take(10000).GroupBy(x => Math.Abs(x % 8)).
+                Select((x, i) => (i, x.Aggregate(0, (res, j) => res + 1) )). 
+                ToDictionary(obj => obj.Item1, obj => obj.Item2 );
         }
     }
 }
