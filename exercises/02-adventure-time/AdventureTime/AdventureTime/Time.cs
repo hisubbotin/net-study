@@ -123,7 +123,7 @@ namespace AdventureTime
                 2) Проверь, учитывается ли Kind объектов при арифметических операциях.
                 3) Подумай, почему возвращаемое значение может отличаться от действительности.
             */
-            return dt2.Subtract(dt1).Hours;
+            return dt2.ToUniversalTime().Subtract(dt1.ToUniversalTime()).Hours;
         }
 
         /// <summary>
@@ -133,11 +133,11 @@ namespace AdventureTime
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
             /*
-             * Эмм... В каких трех месяцах? Оно ж меняется?
-             * Написал в ближайших трех месяцах - формальное условие выполняется.
+             * После длительного обсуждения было принято использовать март, апрель и май 2010-го года.
+             * Источник обсуждения здесь:
+             * https://github.com/hisubbotin/net-study/pull/67#discussion_r148765711
              */
-            DateTime now = DateTime.Now;
-            return now.AddMonths(3).Subtract(now).Minutes;
+            return new DateTime(2010, 6, 1).Subtract(new DateTime(2010, 3, 1)).Minutes;
         }
 
         #region Adventure time saga
