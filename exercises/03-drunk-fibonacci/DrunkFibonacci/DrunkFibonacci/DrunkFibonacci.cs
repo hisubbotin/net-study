@@ -149,16 +149,20 @@ namespace DrunkFibonacci
         /// </summary>
         public static IEnumerable<int[]> GetInChunks()
         {
-            // ни чему особо не научишься, просто интересная задачка :)
-            throw new NotImplementedException();
+            // ни чему особо не научишься, просто интересная задачка :)           
             // В интернетах http://www.benramey.com/2012/07/27/group-list-into-sub-lists-by-index/ делают так
-            return GetDrunkFibonacci().Select((x, i) => new { Index = i, Value = x })
-                 .GroupBy(obj => obj.Index / 16) // Если заменить GroupBy на ToLookup, тоже не работает
-                 .Select(obj => obj.Select(v => v.Value).ToArray());
-            
+            //return GetDrunkFibonacci().Select((x, i) => new { Index = i, Value = x })
+            //     .GroupBy(obj => obj.Index / 16) // Если заменить GroupBy на ToLookup, тоже не работает
+            //     .Select(obj => obj.Select(v => v.Value).ToArray());
             // Но в нашем случае оно не работает: зацикливается на GroupBy итерируясь по посл-ти, которая бесконечна
             // С фиксированным контейнером оно должно работать
-            // Как сделать по-нормальному без GroupBy я не придумал            
+            // Поэтому сделаем не очень красиво
+            var fib = GetDrunkFibonacci();
+            for (; ; )
+            {
+                yield return fib.Take(16).ToArray();
+                fib = fib.Skip(16);
+            }                   
         }
 
         /// <summary>
@@ -173,10 +177,8 @@ namespace DrunkFibonacci
 
                 Вообще говоря, SelectMany умеет много чего и мегаполезна.
                 Она в какой-то степени эквивалентна оператору `bind` над монадами (в данном случае над монадами последовательностей).
-            */
-            throw new NotImplementedException();
-            // Т.к. GetInChunks не работает, не могу проверь работает ли, но я бы сделал так:
-            return GetInChunks().SelectMany(X => X.OrderBy(x => x).Take(3));
+            */           
+            return GetInChunks().SelectMany(X => X.OrderBy(x => Math.Abs(x)).Take(3));
         }
 
         /// <summary>
