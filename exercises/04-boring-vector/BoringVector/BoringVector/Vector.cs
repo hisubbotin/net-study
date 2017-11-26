@@ -45,41 +45,37 @@ namespace BoringVector
             return Math.Sqrt(SquareLength());
         }
         /// <summary>
-        /// Добавляет к вектору другой вектор v.
+        /// Вычисляет сумму векторов.
         /// </summary>
         /// <param name="v">Объект <see cref="Vector"/>, задающий вектор, который мы хотим прибавить.</param>
         /// <returns>Объект <see cref="Vector"/> результат добавления.</returns>
         public Vector Add(Vector v)
         {
-            X += v.X;
-            Y += v.Y;
-            return this;
+            return new Vector(X + v.X, Y + v.Y);
         }
         /// <summary>
         /// Умножает вектор на скаляр k.
         /// </summary>
-        /// <param name="k">Объект <see cref="double"/>, задающий скаляр, на который мы хотим домножить вектор.</param>
+        /// <param name="k">Объект <see cref="double"/>, задающий скаляр, на который домножается вектор.</param>
         /// <returns>Объект <see cref="Vector"/> результат умножения.</returns>
         public Vector Scale(double k)
         {
-            X *= k;
-            Y *= k;
-            return this;
+            return new Vector(k*X, k*Y);
         }
         /// <summary>
         /// Вычисляет скалярное произведение векторов.
         /// </summary>
-        /// <param name="v">Объект <see cref="Vector"/>, задающий вектор, на который мы хотим домножить.</param>
+        /// <param name="v">Объект <see cref="Vector"/>, задающий второй множитель в скалярном произведении.</param>
         /// <returns>Объект <see cref="double"/> результат умножения.</returns>
         public double DotProduct(Vector v)
         {
             return X * v.X + Y * v.Y;
         }
         /// <summary>
-        /// Вычисляет длину векторного произведения.
+        /// Вычисляет ориентированную площадь параллелограмма, натянутого на заданные векторы.
         /// </summary>
-        /// <param name="v">Объект <see cref="Vector"/>, задающий вектор, на который мы хотим домножить.</param>
-        /// <returns>Объект <see cref="Vector"/> результат умножения.</returns>
+        /// <param name="v">Объект <see cref="Vector"/>, задающий второй множитель в векторном произведении.</param>
+        /// <returns>Объект <see cref="double"/> ориентированная площадь.</returns>
         public double CrossProduct(Vector v)
         {
             return X * v.Y - Y * v.X;
@@ -151,7 +147,7 @@ namespace BoringVector
         /// </summary>
         public static Vector operator /(Vector v, double k)
         {
-            return v.Scale(1 / k);
+            return v.Scale(1/k);
         }
 
         #endregion
