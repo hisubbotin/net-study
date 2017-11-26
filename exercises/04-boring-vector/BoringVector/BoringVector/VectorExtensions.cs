@@ -13,7 +13,7 @@ namespace BoringVector
     /// <summary>
     /// Отношение между двумя векторами("общий случай", параллельны, перпендикулярны)
     /// </summary>
-    internal enum EVectorRelation
+    internal enum VectorRelation
     {
         General,
         Parallel,
@@ -26,18 +26,18 @@ namespace BoringVector
     internal static class VectorHelper
     {
         /// <summary>
-        /// Константа точности
+        /// Точность
         /// </summary>
         private const double Eps = 1e-6;
         
         /// <summary>
-        /// Проверяет, является ли вектор нулевым с точностью Eps
+        /// Проверяет, является ли вектор нулевым с точностью <see cref="Eps"/>
         /// </summary>
         /// <param name="v">Проверяемый объект <see cref="Vector"/></param>
         /// <returns>true, если вектор нулевой, иначе false</returns>
         public static bool IsZero(this Vector v)
         {
-            return v.X < Eps && v.Y < Eps;
+            return Math.Abs(v.X) < Eps && Math.Abs(v.Y) < Eps;
         }
         
         /// <summary>
@@ -69,16 +69,16 @@ namespace BoringVector
         /// </summary>
         /// <param name="v">Объект <see cref="Vector"/></param>
         /// <param name="u">Объект <see cref="Vector"/></param>
-        /// <returns>Объект перечисления <see cref="EVectorRelation"/> - отношение между векторами</returns>
-        public static EVectorRelation VectorRelation(this Vector v, Vector u)
+        /// <returns>Объект перечисления <see cref="VectorRelation"/> - отношение между векторами</returns>
+        public static VectorRelation GetRelation(this Vector v, Vector u)
         {
-            if (v.DotProduct(u) < Eps)
-                return EVectorRelation.Orthogonal;
+            if (Math.Abs(v.DotProduct(u)) < Eps)
+                return VectorRelation.Orthogonal;
 
-            if (v.CrossProduct(u) < Eps)
-                return EVectorRelation.Parallel;
+            if (Math.Abs(v.CrossProduct(u)) < Eps)
+                return VectorRelation.Parallel;
 
-            return EVectorRelation.General;
+            return VectorRelation.General;
         }
     }
 }
