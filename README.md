@@ -58,7 +58,7 @@
 - 10 [LINQ](course/10-linq.md#linq)
   - Отложенные и неотложенные запросы
   - Стандартный и Query Expressions синтакис запросов
-- 11 Обработка ошибок
+- 11 [Обработка ошибок](course/11-exceptions.md)
   - Exception
   - throw / try / catch / finally
   - Debug / Trace
@@ -68,12 +68,12 @@
   - Thread / Threadpool
   - TPL. Класс Task, Continuation, Cancellation
   - async / await, SyncronizationContext
+- [Сериализация данных](course/13-serialization.md)
+  - JSON
+  - XML
 
 ---
 
-- Сериализация данных
-  - JSON
-  - XML
 - Ввод / вывод
   - Потоки
   - Чтение и запись текстовой информации
