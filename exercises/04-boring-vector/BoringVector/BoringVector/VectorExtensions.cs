@@ -46,7 +46,7 @@ namespace BoringVector
         /// </summary>
         /// <param name="v">Вектор</param>
         /// <returns>Является ли вектор нулевым</returns>
-        public static bool IsZero(Vector v)
+        public static bool IsZero(this Vector v)
         {
             return v.SquareLength() < epsilon;
         }
@@ -56,19 +56,19 @@ namespace BoringVector
         /// </summary>
         /// <param name="v">Вектор</param>
         /// <returns>Вектор с тем же направлением, но еденичной длины</returns>
-        public static Vector Normalize(Vector v)
+        public static Vector Normalize(this Vector v)
         {
-            double length = v.SquareLength();
+            double length = Math.Sqrt(v.SquareLength());
             return new Vector(v.X / length, v.Y / length);
         }
 
         /// <summary>
-        /// Вернуть угол между векторами в радианах
+        /// Угол между векторами в радианах
         /// </summary>
         /// <param name="v">Первый вектор</param>
         /// <param name="u">Второй вектор</param>
         /// <returns>Угол в радианах</returns>
-        public static double GetAngleBetween(Vector v, Vector u)
+        public static double GetAngleBetween(this Vector v,  Vector u)
         {
             if (IsZero(v) || IsZero(u))
             {
@@ -76,17 +76,17 @@ namespace BoringVector
             }
             else
             {
-                return Math.Acos(v.DotProduct(u) / (v.SquareLength() * u.SquareLength()));
+                return Math.Acos(v.DotProduct(u) / (v.Length() * u.Length()));
             }
         }
 
         /// <summary>
-        /// Получить отношение между векторами
+        /// Отношение между векторами
         /// </summary>
         /// <param name="v">Первый вектор</param>
         /// <param name="u">Второй вектор</param>
         /// <returns>Отношение между векторами</returns>
-        public static VectorRelation GetRelation(Vector v, Vector u)
+        public static VectorRelation GetRelation(this Vector v, Vector u)
         {
             double angleBetween = GetAngleBetween(v, u);
             if (IsZero(angleBetween))

@@ -31,26 +31,38 @@ namespace BoringVector
         /// <summary>
         /// Координаты вектора
         /// </summary>
-        public double X, Y;
+        public double X { get; set; }
+        public double Y { get; set; }
 
         /// <summary>
         /// Конструктор вектора от двух вещественных чисел
         /// </summary>
         /// <param name="X">X-координата</param>
         /// <param name="Y">Y-координата</param>
-        public Vector(double X, double Y)
+        public Vector(double x, double y)
         {
-            this.X = X;
-            this.Y = Y;
+            X = x;
+            Y = y;
+        }
+
+        /// <summary>
+        /// Квадрат длины вектора
+        /// </summary>
+        /// <returns>Квадрат длины вектора</returns>
+        public double SquareLength()
+        {
+            // Допустим, название метода переводится как квадрат длины
+            return X*X + Y*Y;
         }
 
         /// <summary>
         /// Длина вектора
         /// </summary>
         /// <returns>Длину вектора</returns>
-        public double SquareLength()
+        public double Length()
         {
-            return Math.Sqrt(Math.Pow(X, 2.0) + Math.Pow(Y, 2.0));
+            // Введу отдельно длину, т.к. она используется в формулах
+            return Math.Sqrt(this.SquareLength());
         }
 
         // Предположу, что в методах, возвращающих вектор, текущий объект не должен изменяться, а возвращать новый. Типа чистые функции.
@@ -167,7 +179,7 @@ namespace BoringVector
         /// <returns>Вектор деления</returns>
         public static Vector operator /(Vector v, double k)
         {
-            return new Vector(v.X / k, v.Y / k);
+            return v.Scale(k);
         }
 
         /// <summary>

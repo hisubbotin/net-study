@@ -6,8 +6,8 @@ namespace BoringVector.Tests
     public class VectorTests
     {
         [Theory]
-        [InlineData(3.0, 4.0, 5.0)]
-        [InlineData(6.0, 8.0, 10.0)]
+        [InlineData(3.0, 4.0, 25.0)]
+        [InlineData(6.0, 8.0, 100.0)]
         public void Test_SquareLength(double x, double y, double expected)
         {
             Vector vec = new Vector(x, y);
