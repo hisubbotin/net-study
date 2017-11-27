@@ -20,11 +20,11 @@ namespace BoringVector
     internal static class VectorExtensions
     {
 
-        private const double epsilon = 1e-6;
+        private const double Epsilon = 1e-6;
 
         public static bool IsZero(this Vector v)
         {
-            return v.SquareLength() < epsilon * epsilon;
+            return v.SquareLength() < Epsilon * Epsilon;
         }
 
         public static Vector Normalize(this Vector v)
@@ -43,11 +43,11 @@ namespace BoringVector
 
         public static VectorRelation GetRelation(this Vector a, Vector b)
         {
-            if (a.CrossProduct(b) < epsilon)
+            if (Math.Abs(a.CrossProduct(b)) < Epsilon)
             {
                 return VectorRelation.Parallel;
             }
-            if (a.DotProduct(b) < epsilon)
+            if (Math.Abs(a.DotProduct(b)) < Epsilon)
             {
                 return VectorRelation.Orthogonal;
             }

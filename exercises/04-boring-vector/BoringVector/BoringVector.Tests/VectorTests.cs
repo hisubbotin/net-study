@@ -13,6 +13,14 @@ namespace BoringVector.Tests
         }
 
         [Theory]
+        [InlineData(0, 1)]
+        [InlineData(0.3, -4.6)]
+        public void Test_VectorLength(double x, double y)
+        {
+            Assert.Equal(new Vector(x, y).SquareLength(), x * x + y * y, 10);
+        }
+
+        [Theory]
         [InlineData(0, 0, 0)]
         [InlineData(0, 0, 5)]
         [InlineData(0, 1, 2)]
@@ -20,7 +28,6 @@ namespace BoringVector.Tests
         public void Test_VectorScale(double x, double y, double mul)
         {
             Vector first = new Vector(x, y);
-            Assert.Equal(first.SquareLength(), x * x + y * y, 10);
             Vector result = first.Scale(mul);
             Assert.Equal(first.SquareLength() * mul * mul, result.SquareLength(), 10);
             Assert.Equal(result.X, x * mul, 10);
@@ -32,7 +39,7 @@ namespace BoringVector.Tests
         [InlineData(0, 0, 1, 0)]
         [InlineData(0.3, 0.6, 1.2, -0.2)]
         [InlineData(0, 0, -2, 4)]
-        public void Test_VectorBinary(double x1, double x2, double y1, double y2)
+        public void Test_VectorBinaryOperations(double x1, double x2, double y1, double y2)
         {
             Vector a = new Vector(x1, y1);
             Vector b = new Vector(x2, y2);

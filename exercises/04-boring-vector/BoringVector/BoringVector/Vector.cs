@@ -13,13 +13,13 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
-        public readonly double X;
-        public readonly double Y;
+        public double X { get;}
+        public double Y { get; }
 
-        public Vector(double X, double Y)
+        public Vector(double x, double y)
         {
-            this.X = X;
-            this.Y = Y;
+            this.X = x;
+            this.Y = y;
         }
 
 
