@@ -20,6 +20,8 @@
     - [Null conditional operator](#null-conditional-operator)
   - [Контроль переполнения](#Контроль-переполнения)
   - [Приведение типов](#Приведение-типов)
+  - [switch](#switch)
+  - [Pattern Matching](#pattern-matching)
   - [Ссылочные и значимые типы](#Ссылочные-и-значимые-типы)
     - [Stack & Heap](#stack--heap)
     - [Referenced VS Value types](#referenced-vs-value-types)
@@ -94,9 +96,7 @@ var button = new Abbyy.Shared.Controls.Button();
 | System.Int64  | **long**  | 8 byte | signed `± 9 223 372 036 854 775 807`          |
 | System.UInt64 | ulong     | 8 byte | unsigned  `0` до `18 446 744 073 709 551 615` |
 
-Не рекомендуется использовать sbyte / uint / ushort / ulong как не CLS совместимые.
-
-Помимо этого:
+Не рекомендуется использовать sbyte / uint / ushort / ulong, как не CLS совместимые.
 
 - Многие стандартные методы возвращают обычные типы (получится дополнительная конвертация).
 - Если не хватает размера, то увеличение в 2 раза не решает проблему.
@@ -272,8 +272,6 @@ x = x + y;
 x += y; // Записи эквиваленты
  ```
 
- Не используйте такие операторы, они ухудшают читаемость кода
-
 <div style="page-break-after: always;"></div>
 
 ### Логические операторы
@@ -437,17 +435,90 @@ bool b2 = a is int; // false
 
 По факту CLR приходится 2 раза производить проверку типов при использовании `is`. Поэтому сделали:
 
-**_AS_** - проверяет совместимость и если можно, то приводит к заданному типу и возвращает его. Иначе возвращает null
+**_AS_** - проверяет совместимость и если можно, то приводит к заданному типу и возвращает его. Иначе возвращает `null`
+
+- Ипользуется только со ссылочными / Nullable типами (потому что иначе null не присвоить)
+- По факту отличается от явного приведения только тем, что не генерит исключение
 
 ```cs
-decimal a = o as decimal;
+MyClass a = o as MyClass;
 if (a != null)
 {
-// Используем a внутри инструкции if
+    // Используем a
 }
 ```
 
-Отличается от явного приведения только тем, что не генерит исключение.
+<div style="page-break-after: always;"></div>
+
+## switch
+
+- Обязательно должен использоваться `break`, `goto case`, `return` или `throw` при условии
+- Нельзя просто так выполнить два условия сразу
+
+```cs
+int value = 1;
+switch (value)
+{
+    case 1:
+        Console.WriteLine("case 1");
+        goto case 3; // переход к case 3
+    case 2:
+        Console.WriteLine("case 2");
+        break;
+    case 3:
+        Console.WriteLine("case 3");
+        break;
+    default:
+        Console.WriteLine("default");
+        break;
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+## Pattern Matching
+
+[Patterns](https://blogs.msdn.microsoft.com/dotnet/2016/08/24/whats-new-in-csharp-7-0/) (C# 7.0):
+
+- const
+- type
+- var - всегда успешен
+
+```cs
+public static void IsPattern(object o)
+{
+    if (o is null) Console.WriteLine("Const pattern");
+    if (o is int i) Console.WriteLine($"Type, int = {i}");
+    if (o is Person p) Console.WriteLine($"Type, person: {p.FirstName}");
+    if (o is var x) Console.WriteLine($"var pattern, type {x?.GetType()?.Name}");
+```
+
+<div style="page-break-after: always;"></div>
+
+- В switch можно использовать любой тип
+- В case можно использовать паттерны и дополнительные условия
+- Порядок важен
+- дефолт всегда выполнится последним (независимо от места)
+
+```cs
+switch(shape)
+{
+    case Circle c:
+        WriteLine($"circle with radius {c.Radius}");
+        break;
+    case Rectangle s when (s.Length == s.Height):
+        WriteLine($"{s.Length} x {s.Height} square");
+        break;
+    case Rectangle r:
+        WriteLine($"{r.Length} x {r.Height} rectangle");
+        break;
+    default:
+        WriteLine("<unknown shape>");
+        break;
+    case null:
+        throw new ArgumentNullException(nameof(shape));
+}
+```
 
 <div style="page-break-after: always;"></div>
 
