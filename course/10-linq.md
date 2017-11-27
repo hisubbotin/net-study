@@ -184,6 +184,34 @@ users = users.ToList();             // Реальное выполнение т�
 
 <div style="page-break-after: always;"></div>
 
+Подробно как выполняются отложенные запросы:
+
+```cs
+void Main()
+{
+    var query = GetInts().Skip(5);
+
+    Console.WriteLine("== First iteration:");
+    Console.WriteLine(string.Join(",", query.Take(3).ToList()));
+
+    Console.WriteLine("== Second iteration:");
+    // вот здесь он по новой создаст автомат и прогенерирует заново
+    Console.WriteLine(string.Join(",", query.Take(3).ToList()));
+}
+
+private IEnumerable<int> GetInts()
+{
+    var i = 0;
+    while (true)
+    {
+        Console.WriteLine($"yield return {i}");
+        yield return i++;
+    }
+}
+```
+
+<div style="page-break-after: always;"></div>
+
 ## Стандартный и Query Expressions синтакис запросов
 
 - Помимо вызова Extension методов можно использоть Query Expressions синтаксис, который отдаленно напоминает tsql
@@ -198,6 +226,8 @@ where il.InstanceId == instanceId
 select l
 ```
 
+<div style="page-break-after: always;"></div>
+
 left outer join [SOF](http://stackoverflow.com/questions/267488/linq-to-sql-multiple-left-outer-joins?rq=1):
 
 ```cs
@@ -208,4 +238,26 @@ var userQuery =
     select new { User = user, Email = email};
 
 var result = userQuery.SingleOrDefault();
+```
+
+<div style="page-break-after: always;"></div>
+
+multiple group by [SOF](https://stackoverflow.com/questions/5231845/c-sharp-linq-group-by-on-multiple-columns)
+
+```cs
+var consolidated =
+    from x in elementList
+    group x by new
+    {
+        x.Type,
+        x.Key,
+        x.Value,
+    } into gcs
+    select new
+    {
+        Type = gcs.Key.Type,
+        Key = gcs.Key.Key,
+        Value = gcs.Key.Value,
+        List = gcs.ToList(),
+    };
 ```
