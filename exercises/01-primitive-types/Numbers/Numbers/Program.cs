@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
-
 [assembly: InternalsVisibleTo("Numbers.Tests")]
 
 /*
@@ -17,7 +16,16 @@ namespace Numbers
         private static void Main()
         {
             // твои бро: Console.WriteLine и Console.ReadLine
-
+            Console.WriteLine(Integers.HalfIntMaxValue());
+            Console.WriteLine(Integers.CubeWithoutOverflowCheck(Integers.HalfIntMaxValue()));
+            Console.WriteLine(Integers.ToString(8087));
+            Console.WriteLine(Integers.Parse("80907"));
+            Console.WriteLine(Integers.TenTimes(876));
+            Console.WriteLine(Integers.ToHexString(255));
+            Console.WriteLine(FloatNumbers.GetNaN());
+            Console.WriteLine(2.1 / 2.3);
+            Console.WriteLine(FloatNumbers.Compare(2.1 / 2.3, 4.2 / (2.3 * 2.0))); // выдает 0
+                
             Console.WriteLine("Hello World!");
         }
     }
