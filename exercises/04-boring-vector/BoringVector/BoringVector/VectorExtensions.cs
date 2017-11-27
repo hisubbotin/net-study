@@ -30,7 +30,7 @@ namespace BoringVector
         /// <returns>Результат<see cref="bool"/> сравнения вектора<see cref="Vector"/> с нулём.</returns>
         public static bool IsZero(this Vector v)
         {
-            return Math.Abs(v.Length()) < EPS;
+            return v.Length() < EPS;
         }
 
         /// <summary>
