@@ -86,32 +86,37 @@ namespace DrunkFibonacci
              */
             int last = 1;
             int preLast = 1;
-            IEnumerator<int> randomInt = GetDeterministicRandomSequence().GetEnumerator();
-            for (int i = 0; true; ++i)
+            using (IEnumerator<int> randomInt = GetDeterministicRandomSequence().GetEnumerator())
             {
-                randomInt.MoveNext();
-                if (i < 2)
+                for (int i = 0; true; ++i)
                 {
-                    yield return 1;
-                }
-                int current;
-                if ((i + 2) % 6 == 0)
-                {
-                    current = 300;
+                    randomInt.MoveNext();
+                    if (i < 2)
+                    {
+                        yield return 1;
+                    }
+                    int current;
+                    if (i % 6 == 4)
+                    {
+                        current = 300;
+                    }
+                    else
+                    {
+                        unchecked
+                        {
+                            current = last + preLast;
+                        }
+                    }
                     if ((randomInt.Current & 42) != 0)
                     {
                         current = current & (~42);
                     }
-                }
-                else unchecked
-                {
-                    current = last + preLast;
-                }
-                preLast = last;
-                last = current;
-                if (i % 6 != 0)
-                {
-                    yield return current;
+                    preLast = last;
+                    last = current;
+                    if (i % 6 != 0)
+                    {
+                        yield return current;
+                    }
                 }
             }
         }
@@ -161,16 +166,18 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
-            IEnumerator<int> number = GetDrunkFibonacci().GetEnumerator();
-            while (true)
+            using (IEnumerator<int> number = GetDrunkFibonacci().GetEnumerator())
             {
-                int[] chunk = new int[16];
-                for (int i = 0; i < chunk.Length; ++i)
+                while (true)
                 {
-                    number.MoveNext();
-                    chunk[i] = number.Current;
+                    int[] chunk = new int[16];
+                    for (int i = 0; i < chunk.Length; ++i)
+                    {
+                        number.MoveNext();
+                        chunk[i] = number.Current;
+                    }
+                    yield return chunk;
                 }
-                yield return chunk;
             }
         }
 
