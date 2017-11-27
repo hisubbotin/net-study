@@ -108,8 +108,41 @@ internal static int Compare(double firstNumber, double secondNumber, double prec
 - Про факт и теори
 - Плохие входные данные в тестах. Ни у кого не была использована ни одна константа `double`.
 - В идеале только один ассерт на тест и при чем простой.
+- желательно проверять с результатом, а не якобы правильным вычислением результата `Assert.Equal(v.SquareLength(), x * x + y * y);` - проще ошибиться или не заметить переполнение.
+- [InlineData(0, 0, 5, 5, 5)] // not working -- its correct
 
 ### Vector.ToString()
 
 "(" + X.ToString() + "; " + Y.ToString() + ")";
 
+### Static vs static readonly vs const
+
+## 03. Drunk Fibonacci
+
+### IEnumerable
+
+- Skip и Take - это не перемотка времени :)
+
+### Переполнение типа
+
+> При вычислении сложения переполнение типа разрешено и всячески поощряется.
+
+### Скобки в лямбдах
+
+Откуда и зачем
+
+### Итерация с помощью IEnumerator\<int>
+
+```cs
+IEnumerator<int> number = GetDrunkFibonacci().GetEnumerator();
+while (true)
+{
+    int[] chunk = new int[16];
+    for (int i = 0; i < chunk.Length; ++i)
+    {
+        number.MoveNext();
+        chunk[i] = number.Current;
+    }
+    yield return chunk;
+}
+```
