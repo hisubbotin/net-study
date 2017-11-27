@@ -104,7 +104,8 @@ for (int i = 0; i < jagged.Length; i++)
 
 - `if { } else {}`
 - `switch`
-- ternarny operator
+- ternary operator
+<!-- rofl -->
 
 <div style="page-break-after: always;"></div>
 
