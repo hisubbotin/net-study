@@ -28,12 +28,19 @@
 
 ## Methods
 
+Отложенные выборки:
+
 - Select: определяет проекцию выбранных значений
 - Where: определяет фильтр выборки
 - OrderBy: упорядочивает элементы по возрастанию
 - OrderByDescending: упорядочивает элементы по убыванию
+- Reverse: располагает элементы в обратном порядке
+- Distinct: удаляет дублирующиеся элементы из коллекции
+- `Take`, `Skip`, `TakeWhile`, `SkipWhile` - пейджинг в выборке
 
 <div style="page-break-after: always;"></div>
+
+Отложенные объединения и группировки:
 
 - Join: соединяет две коллекции по определенному признаку
 - GroupBy: группирует элементы по ключу
@@ -46,16 +53,17 @@
 
 <div style="page-break-after: always;"></div>
 
-- Reverse: располагает элементы в обратном порядке
+Неотложенные:
+
 - All: определяет, все ли элементы коллекции удовлятворяют определенному условию
 - Any: определяет, удовлетворяет хотя бы один элемент коллекции определенному условию
 - Contains: определяет, содержит ли коллекция определенный элемент
-- Distinct: удаляет дублирующиеся элементы из коллекции
 - `Count` - количество элементов коллекции, которые удовлетворяют определенному условию
 - `Sum`, `Average`, `Min`, `Max` - арифметические вычисления
-- `Take`, `Skip`, `TakeWhile`, `SkipWhile` - пейджинг в выборке
 
 <div style="page-break-after: always;"></div>
+
+Немедленная выборка конкретного элемента:
 
 - First: выбирает первый элемент коллекции
 - FirstOrDefault: выбирает первый элемент коллекции или возвращает значение по умолчанию
@@ -169,17 +177,87 @@ if (filter.Type != CredentialType.Undefined)
 
 if (! string.IsNullOrEmpty(filter.Credential))
     users = users.Where(c => c.Credential == filter.Credential);
+
+users = users.Skip(10).Take(6);
+users = users.ToList();             // Реальное выполнение только здесь
+```
+
+<div style="page-break-after: always;"></div>
+
+Подробно как выполняются отложенные запросы:
+
+```cs
+void Main()
+{
+    var query = GetInts().Skip(5);
+
+    Console.WriteLine("== First iteration:");
+    Console.WriteLine(string.Join(",", query.Take(3).ToList()));
+
+    Console.WriteLine("== Second iteration:");
+    // вот здесь он по новой создаст автомат и прогенерирует заново
+    Console.WriteLine(string.Join(",", query.Take(3).ToList()));
+}
+
+private IEnumerable<int> GetInts()
+{
+    var i = 0;
+    while (true)
+    {
+        Console.WriteLine($"yield return {i}");
+        yield return i++;
+    }
+}
 ```
 
 <div style="page-break-after: always;"></div>
 
 ## Стандартный и Query Expressions синтакис запросов
 
-Помимо вызова Extension методов можно использоть Query Expressions синтаксис, который отдаленно напоминает tsql
+- Помимо вызова Extension методов можно использоть Query Expressions синтаксис, который отдаленно напоминает tsql
+- Используется для более наглядного написания join'ов
+
+Inner join:
 
 ```cs
 from l in db.Licenses
 join il in db.InstanceLicenses on l.Id equals il.LicenseId
 where il.InstanceId == instanceId
 select l
+```
+
+<div style="page-break-after: always;"></div>
+
+left outer join [SOF](http://stackoverflow.com/questions/267488/linq-to-sql-multiple-left-outer-joins?rq=1):
+
+```cs
+var userQuery =
+    from user in context.GetTable<User>()
+    from email in context.GetTable<UserEmail>().Where(x => x.EmailId == userProfile.EmailId).DefaultIfEmpty()
+    where userProfile.UserId == userId
+    select new { User = user, Email = email};
+
+var result = userQuery.SingleOrDefault();
+```
+
+<div style="page-break-after: always;"></div>
+
+multiple group by [SOF](https://stackoverflow.com/questions/5231845/c-sharp-linq-group-by-on-multiple-columns)
+
+```cs
+var consolidated =
+    from x in elementList
+    group x by new
+    {
+        x.Type,
+        x.Key,
+        x.Value,
+    } into gcs
+    select new
+    {
+        Type = gcs.Key.Type,
+        Key = gcs.Key.Key,
+        Value = gcs.Key.Value,
+        List = gcs.ToList(),
+    };
 ```

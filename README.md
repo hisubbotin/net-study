@@ -8,12 +8,12 @@
 
 ---
 
-- 1 [.NET](course/1-net.md#net)
+- 1 [.NET](course/01-net.md#net)
   - .NET Framework, CLR
   - .NET Core, .NET Standard
   - IDE
   - Nuget
-- 2 [Types](course/2-types.md#overview)
+- 2 [Types](course/02-types.md#overview)
   - Namespaces
   - Primitive types: Integers, Float numbers, etc
   - Операторы: Арифметические, поразрядные, операторы с присваиванием, логические операторы, Тернарный, null-операторы
@@ -23,11 +23,11 @@
   - Ссылочные и значимые типы
     - Размещение в стеке и куче
     - `System.Object`
-- 3 [Value types](course/3-value-types.md#value-types)
+- 3 [Value types](course/03-value-types.md#value-types)
   - `struct`
   - `Nullable`, `Guid`, `DateTime`, `DateTimeOffset`
   - `enum`
-- 4 [Classes](course/4-classes.md#classes)
+- 4 [Classes](course/04-classes.md#classes)
   - Members, properties, constructors, methods
   - Модификаторы доступа
   - `static`, `readonly`, `const`
@@ -36,44 +36,44 @@
   - Перегрузка операторов и преобразований типов
   - Extension methods
   - Аттрибуты
-- 5 [GC](course/5-gc.md#gc)
+- 5 [GC](course/05-gc.md#gc)
   - Сборка мусора
   - Финализаторы
   - Внешние ресурсы, `Dispose`, `IDisposable` pattern
-- 6 [Generic](course/6-generic.md#generic)
+- 6 [Generic](course/06-generic.md#generic)
   - Generic
     - Generic methods, classes, interfaces, delegates
     - Open / Closed constructed types
     - Ограничения обобщений
     - Ковариантность и контрвариантность
   - `Tuple`, `ValueTuple`, Deconstructors
-- 7 [Strings](course/7-strings.md#strings)
+- 7 [Strings](course/07-strings.md#strings)
   - `char`, `string`, `StringBuilder`, Encoding
-- 8 [Collections](course/8-collections.md#collections)
+- 8 [Collections](course/08-collections.md#collections)
   - Control flow: `for`, `foreach`, `IEnumerable`, `yield`
   - Collections: `Array`, `List<T>`, `Dictionary<TKey,TValue>`, `SortedList`, `SortedDictionary`, `HashSet`, etc
   - Равенство: `Equals`, `GetHashCode`, `IEquatable<T>`, `IEqualityComparer<T>`, `IComparable<T>`
-- 9 [Delegates](course/9-delegates.md#delegates)
+- 9 [Delegates](course/09-delegates.md#delegates)
   - Delegates, Generic delegates, Events, Lambdas, Closures
 - 10 [LINQ](course/10-linq.md#linq)
   - Отложенные и неотложенные запросы
   - Стандартный и Query Expressions синтакис запросов
-- 11 Обработка ошибок
+- 11 [Обработка ошибок](course/11-exceptions.md)
   - Exception
   - throw / try / catch / finally
   - Debug / Trace
-- 12 Многопоточность и ассинхронность
+- 12 [Многопоточность и ассинхронность](course/12-multithreading.md)
+  - Thread / Threadpool / Cancellation
+  - TPL, Task, Continuation
+  - async / await, SyncronizationContext
   - Проблемы многопоточности
   - Примитивы синхронизации
-  - Thread / Threadpool
-  - TPL. Класс Task, Continuation, Cancellation
-  - async / await, SyncronizationContext
+- [Сериализация данных](course/13-serialization.md)
+  - JSON
+  - XML
 
 ---
 
-- Сериализация данных
-  - JSON
-  - XML
 - Ввод / вывод
   - Потоки
   - Чтение и запись текстовой информации
