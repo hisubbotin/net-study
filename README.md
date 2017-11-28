@@ -62,12 +62,12 @@
   - Exception
   - throw / try / catch / finally
   - Debug / Trace
-- 12 Многопоточность и ассинхронность
+- 12 [Многопоточность и ассинхронность](course/12-multithreading.md)
+  - Thread / Threadpool / Cancellation
+  - TPL, Task, Continuation
+  - async / await, SyncronizationContext
   - Проблемы многопоточности
   - Примитивы синхронизации
-  - Thread / Threadpool
-  - TPL. Класс Task, Continuation, Cancellation
-  - async / await, SyncronizationContext
 - [Сериализация данных](course/13-serialization.md)
   - JSON
   - XML
