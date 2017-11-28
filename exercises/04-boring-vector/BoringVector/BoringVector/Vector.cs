@@ -10,13 +10,13 @@ namespace BoringVector
     internal struct Vector
     {
         /// <summary>
-        /// Координата x.
+        /// Возвращает координату x.
         /// </summary>
-        public double X { get; set; }
+        public double X { get; }
         /// <summary>
-        /// Координата y.
+        /// Возвращает координату y.
         /// </summary>
-        public double Y { get; set; }
+        public double Y { get; }
 
         /// <summary>
         /// Инициализирует новую структуру <see cref="Vector"/>.
@@ -45,21 +45,21 @@ namespace BoringVector
         /// <summary>
         /// Возвращает вектор, умноженный на коэффициент <paramref name="k"/>.
         /// </summary>
-        /// <param name="k">Коэффициент, на который домножаем данный вектор.</param>
+        /// <param name="k">Коэффициент, на который домножается данный вектор.</param>
         /// <returns>Вектор, умноженный на коэффициент <paramref name="k"/>.</returns>
         public Vector Scale(double k) => new Vector(k * X, k * Y);
 
         /// <summary>
         /// Возвращает скалярное произведение векторов.
         /// </summary>
-        /// <param name="v">Объект типа <see cref="Vector"/>, на который умножаем.</param>
+        /// <param name="v">Объект типа <see cref="Vector"/>, на который умножается вектор.</param>
         /// <returns>Величина типа <see cref="double"/> - скалярное произведение данного вектора и <paramref name="v"/>.</returns>
         public double DotProduct(Vector v) => X * v.X + Y * v.Y;
 
         /// <summary>
         /// Возвращает векторное произведение.
         /// </summary>
-        /// <param name="v">Объект типа <see cref="Vector"/>, на который умножаем.</param>
+        /// <param name="v">Объект типа <see cref="Vector"/>, на который умножается данный вектор.</param>
         /// <returns>Величина типа <see cref="double"/> - площадь параллелограмма, образованного данным веткором и <paramref name="v"/>.</returns>
         public double CrossProduct(Vector v) => X * v.Y - v.X * Y;
 
@@ -67,7 +67,7 @@ namespace BoringVector
         /// Возвращает строковое представление вектора.
         /// </summary>
         /// <returns>Строковое представление в формате (x, y).</returns>
-        public override string ToString() => String.Format("({0}, {1})", X, Y);
+        public override string ToString() => String.Format($"({X}; {Y})");
 
         #region operators
    

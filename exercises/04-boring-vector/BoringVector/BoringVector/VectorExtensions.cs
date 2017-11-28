@@ -27,10 +27,10 @@ namespace BoringVector
         public static bool IsZero(this Vector v) => Math.Abs(v.X) < EPS && Math.Abs(v.Y) < EPS;
 
         /// <summary>
-        /// Возвращает норму вектора.
+        /// Возвращает длину вектора.
         /// </summary>
         /// <param name="v">Объект типа <see cref="Vector"/>.</param>
-        /// <returns>Норма вектора.</returns>
+        /// <returns>Длина вектора.</returns>
         public static double Length(this Vector v) => Math.Sqrt(v.SquareLength());
 
         /// <summary>
