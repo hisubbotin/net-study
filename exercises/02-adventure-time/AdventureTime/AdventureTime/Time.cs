@@ -44,7 +44,7 @@ namespace AdventureTime
         /// <returns>Строковое представление времени в формате ISO 8601.</returns>
         public static string ToRoundTripFormatString(DateTime dt)
         {
-            return dt.ToString(CultureInfo.InvariantCulture);
+            return dt.ToString("o");
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace AdventureTime
         /// <returns>Объект <see cref="DateTime"/>.</returns>
         public static DateTime ParseFromRoundTripFormat(string dtStr)
         {
-            return DateTime.Parse(dtStr, CultureInfo.InvariantCulture);
+            return DateTime.Parse(dtStr, null, DateTimeStyles.RoundtripKind);
         }
 
         /// <summary>
@@ -93,13 +93,14 @@ namespace AdventureTime
         /// <returns>Полное количество часов заданного временного отрезка.</returns>
         public static int GetHoursBetween(DateTime dt1, DateTime dt2)
         {
-            var ts = dt1 - dt2;
+            var ts = dt1.ToUniversalTime() - dt2.ToUniversalTime();
             return (int)ts.TotalHours;
         }
 
         /// <summary>
         /// Возвращает количество минут во временном промежутке, равном трем месяцам.
         /// </summary>
+        [System.Obsolete]
         public static int GetTotalMinutesInThreeMonths()
         {
             var now = DateTime.Now;
@@ -236,7 +237,7 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            return person1Birthday.ToString("dd.MM") == person2Birthday.ToString("dd.MM");
+            return person1Birthday.ToUniversalTime().DayOfYear == person2Birthday.ToUniversalTime().DayOfYear;
         }
     }
 }
