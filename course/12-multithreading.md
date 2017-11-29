@@ -4,10 +4,13 @@
 
 - [Multithreading](#multithreading)
   - [Thread](#thread)
+    - [`System.Threading.Thread`](#systemthreadingthread)
   - [Thread Pool](#thread-pool)
-    - [Cancellation Token](#cancellation-token)
+    - [ExecutionContext](#executioncontext)
+    - [Cancellation](#cancellation)
   - [TPL](#tpl)
     - [Класс Task](#класс-task)
+      - [Continuation](#continuation)
     - [async / await](#async--await)
     - [SyncronizationContext](#syncronizationcontext)
 
@@ -17,7 +20,7 @@
 
 ## Thread
 
-- Thread
+- Thread в винде:
   - Объект ядра потока (thread kernel object). контекст потока, набор регистров процессора ~ 1KB
   - Блок окружения потока (Thread Environment Block, TEB). 4KB, содержит заголовок цепочки обработки исключений, локальное хранилище данных для потока и некоторые структуры данных, используемые интерфейсом графических устройств (GDI) и графикой OpenGL.
   - Стек пользовательского режима (user-mode stack). По умолчанию на каждый стек Windows выделяет 1 Мбайт памяти.
@@ -25,27 +28,29 @@
 
 <div style="page-break-after: always;"></div>
 
-- `System.Threading.Thread` - соответствует потоку в ОС
-- Самый низкоуровневый объект для работы с потоками
+### `System.Threading.Thread`
+
+- `Thread` - соответствует потоку в ОС
+- Самый низкоуровневый объект в C# для работы с потоками
 - Запрещен в приложениях для windows store
 
 ```cs
 public static void Main()
 {
     Console.WriteLine("Main thread");
-    Thread dedicatedThread = new Thread(ComputeBoundOp);
+    Thread dedicatedThread = new Thread(Compute);
     dedicatedThread.Start(5);
     Console.WriteLine("Main thread: Doing other work");
-    Thread.Sleep(2000); // Имитация другой работы (10 секунд)
+    Thread.Sleep(2000);     // Имитация другой работы
     dedicatedThread.Join(); // Ожидание завершения потока
     Console.WriteLine("Main thread: ending");
 }
 
 // Передаем делегат ParameterizedThreadStart в конструктор Thread
-private static void ComputeBoundOp(Object state)
+private static void Compute(Object state)
 {
-    Console.WriteLine("In ComputeBoundOp: state={0}", state);
-    Thread.Sleep(1000); // Имитация другой работы (1 секунда)
+    Console.WriteLine("Compute: state={0}", state);
+    Thread.Sleep(1000);
 }
 ```
 
@@ -71,7 +76,8 @@ private static void ComputeBoundOp(Object state)
 dedicatedThread.Priority = ThreadPriority.AboveNormal;
 ```
 
-- Columns - Process priority
+- Табличка, как связаны C# приоритеты потоков, приоритеты процессов в винде с реальными приоритетами потоков в ОС
+- Левая колонка - приоритеты потоков в c#, Заголовки колонок - Process priority
 - 17+ - драйвера устройств
 
 | CLR Priority  | Idle | Below Normal | Normal | Above Normal | High | Realtime |
@@ -104,8 +110,8 @@ public static void Main()
     t.IsBackground = true;
     t.Start();
 
-    // Активный поток - приложение будет работать около 10 секунд
-    // IsBackground = true - немедленно прекратит работу
+    // Активный поток (IsBackground = false) - приложение будет работать около 10 секунд
+    // Фоновый поток (IsBackground = true) - немедленно прекратит работу
     // В LINQPad5 работает криво, в студии работает нормально :)
     Console.WriteLine("Returning from Main");
 }
@@ -120,20 +126,25 @@ private static void Worker()
 
 ## Thread Pool
 
+- Создавать потоки руками - очень низкоуровневый подход
 - CLR умеет управлять собственным пулом потоков, чтобы не плодить лишние потоки
-- На каждый объект CLR создается свой пул потоков, которые используют все AppDomain
-- Пулл потоков динамически определяет количество реальных потоков, которые необходимы приложению
+- На каждый объект CLR создается свой пул потоков, который используют все AppDomain
+- Пулл потоков динамически определяет количество реальных потоков, которые необходимы приложению и сам добавляет / удаляет потоки в зависимости от того, какие задачи ставит приложение
 
 ```cs
-ThreadPool
+public static class ThreadPool
+{
+    static Boolean QueueUserWorkItem(WaitCallback callBack);
+    static Boolean QueueUserWorkItem(WaitCallback callBack, Object state);
 
-static Boolean QueueUserWorkItem(WaitCallback callBack);
-static Boolean QueueUserWorkItem(WaitCallback callBack, Object state);
-
-delegate void WaitCallback(Object state);
+    delegate void WaitCallback(Object state);
+    ...
+}
 ```
 
 <div style="page-break-after: always;"></div>
+
+Базовый пример:
 
 ```cs
 public static void Main()
@@ -156,6 +167,8 @@ private static void Compute(Object state)
 
 <div style="page-break-after: always;"></div>
 
+### ExecutionContext
+
 Не лишним будет упомянуть, что есть контекст выполнения потока:
 
 - Параметры безопасности, Principal
@@ -177,17 +190,21 @@ public sealed class ExecutionContext : IDisposable, ISerializable
 
 <div style="page-break-after: always;"></div>
 
-### Cancellation Token
+### Cancellation
 
-- стандартный паттерн отмены операций
-- [скоординированная отмена](https://docs.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads) (оба класса должны поддерживать явно отмену)
+- В C# используется стандартный паттерн отмены операций [скоординированная отмена](https://docs.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads) - оба класса должны явно поддерживать отмену
+- `CancellationTokenSource` - специальный класс для управления токеном и непосредственно отменой операции
 
 ```cs
 public sealed class CancellationTokenSource : IDisposable
 {
     public CancellationTokenSource();
     public Boolean IsCancellationRequested { get; }
+
+    // Токен, который передается в параллельный поток, считывая его свойства, поток может реагировать на отмену и прекращать действие
     public CancellationToken Token { get; }
+
+    // Отменить операцию!
     public void Cancel(); // Вызывает Cancel с аргументом false
     public void Cancel(Boolean throwOnFirstException);
     ...
@@ -196,23 +213,28 @@ public sealed class CancellationTokenSource : IDisposable
 
 <div style="page-break-after: always;"></div>
 
-- `None` - не хотим отменять, не связан ни с каким CancellationTokenSource
+- `CancellationToken` - класс, который передается в параллельный поток и по-которому можно понять, отменили задачу или еще нет.
 
 ```cs
 public struct CancellationToken // Значимый тип
 {
+    // Статическое поле, используется, когда мы не хотим отменять метод, но он поддерживает прием CancellationToken - передаем ему CancellationToken.None
     public static CancellationToken None { get; }
-    Boolean IsCancellationRequested { get; } // Вызывается операциями, не связанными с Task
-    public void ThrowIfCancellationRequested(); // Вызван операциями, связанными с Task
-    public WaitHandle WaitHandle { get; } // WaitHandle устанавливается при отмене CancellationTokenSource
 
-    public Boolean CanBeCanceled { get; } // Редко используется
-    public CancellationTokenRegistration Register(Action<Object> callback, Object state, Boolean useSynchronizationContext); 
-    // Более простые варианты перегрузки не показаны, Члены GetHashCode, Equals, == и != не показаны
+    // Непосредственные методы для реагирования на отмену
+    Boolean IsCancellationRequested { get; }
+    public void ThrowIfCancellationRequested();
+
+    // Позволяет регистрировать дополнительные делегаты на событие отмены
+    public CancellationTokenRegistration Register(Action<Object> callback, Object state, Boolean useSynchronizationContext);
+
+    // опущены другие методы, более простые перегрузки Register, GetHashCode, Equals, == и != и прочее
 }
 ```
 
 <div style="page-break-after: always;"></div>
+
+Пример использования `CancellationTokenSource` и `CancellationToken`:
 
 ```cs
 public static void Main()
@@ -245,6 +267,8 @@ private static void Count(CancellationToken token, Int32 countTo)
 ```
 
 <div style="page-break-after: always;"></div>
+
+Пример регистрации дополнительных событий на отмену действия:
 
 ```cs
 public static void Main()
@@ -280,6 +304,8 @@ class CancelableObject
 
 <div style="page-break-after: always;"></div>
 
+Несколько `CancellationTokenSource` можно объединить в один и обрабатывать несколько причин отмены сразу:
+
 ```cs
 var cts1 = new CancellationTokenSource();
 cts1.Token.Register(() => Console.WriteLine("cts1 canceled"));
@@ -296,6 +322,8 @@ Console.WriteLine("cts1 canceled={0}, cts2 canceled={1}, linkedCts={2}",
 ```
 
 <div style="page-break-after: always;"></div>
+
+Есть стандартные методы, для отмены операций по Тайм-ауту:
 
 ```cs
 public sealed class CancellationTokenSource : IDisposable
@@ -315,10 +343,11 @@ public sealed class CancellationTokenSource : IDisposable
 
 ### Класс Task
 
-- с ThreadPool есть глобальные проблемы
-  - возврат результатов из потока.
+- с ThreadPool есть глобальные проблемы:
+  - возврат результатов из потока
   - как узнать о завершении операции
 - Упрощенно: `Task` - типизированная обертка над пуллом потоков с кучей удобных методов
+- Напоминаю, что все Task - берутся из пула и фоновые
 
 ```cs
 ThreadPool.QueueUserWorkItem(ComputeBoundOp, 5);
@@ -330,6 +359,8 @@ Task.Run(() => ComputeBoundOp(5));
 
 <div style="page-break-after: always;"></div>
 
+Простейший пример создания задачи:
+
 ```cs
 Task taskA = Task.Run( () => Console.WriteLine("Hello from thread '{0}'.", Thread.CurrentThread.ManagedThreadId ));
 
@@ -337,27 +368,32 @@ Console.WriteLine("Hello from thread '{0}'.", Thread.CurrentThread.ManagedThread
 taskA.Wait();
 ```
 
-`Task<TResult>`
+Есть типизированная версия `Task<TResult>` для возвращения конретного результата:
 
 ```cs
-// Создание задания Task (оно пока не выполняется)
+// Создание задания Task (автоматически оно пока не выполняется)
 Task<Int32> t = new Task<Int32>(n => Sum((Int32)n), 1000000000);
 
 t.Start();  // Можно начать выполнение задания через некоторое время
 
 t.Wait();   // Можно ожидать завершения задания в явном виде
-            // ПРИМЕЧАНИЕ. Существует перегруженная версия, принимающая тайм-аут/CancellationToken
+            // !!!!!! Существует перегруженная версия, принимающая тайм-аут/CancellationToken
 
 Console.WriteLine("The Sum is: " + t.Result); // Получение результата (свойство Result вызывает метод Wait)
 ```
 
 <div style="page-break-after: always;"></div>
 
-- `.Wait` - если метод еще не начал выполняться - может выполнять его прямо в текущем потоке, что потенциально может приводить к дедлокам
-- Исключения, сделанные в методах задачи сохраняются в отедльную коллекцию и при вызове `.Wait` / `.Result` возвращаются исходному коду в виде AggregateException, которая будет содержать коллекцию со всеми исключениями
-- Если не вызвать wait / result, то об ошибке и не узнать
+- `.Result`
+  - Автоматически внутри вызывает метод `.Wait()`
+- `.Wait()`
+  - если метод еще не начал выполняться - может выполнять его прямо в текущем потоке, что потенциально может приводить к дедлокам
+- Исключения, сделанные в методах задачи, сохраняются в отдельную коллекцию и при вызове `.Wait()` / `.Result` возвращаются исходному коду в виде `AggregateException`, который будет содержать коллекцию со всеми исключениями
+  - Если не вызвать wait / result, то основной поток не узнает об ошибке
 
 <div style="page-break-after: always;"></div>
+
+Пример, когда мы запускаем несколько задач и ждем, пока завершатся все:
 
 ```cs
 Task[] tasks = new Task[3]
@@ -377,9 +413,10 @@ Console.WriteLine("End");
 
 <div style="page-break-after: always;"></div>
 
-`ContinueWith`
+#### Continuation
 
-- Возвращает `Task`, который частенько не используется
+- `ContinueWith` - позволяет сразу настроить продолжение действия, вместо блокирования текущего потока
+- возвращает `Task`, который частенько не используется
 
 ```cs
 public static void Main()
@@ -390,7 +427,7 @@ public static void Main()
     Task task4 = task2.ContinueWith((Task t) => { Console.WriteLine($"current: {Task.CurrentId}"); });
 
     task1.Start();
-    task1.Wait();
+    task1.Wait(); // Будет ждать только task1, а не всю цепочку!
     Console.WriteLine("After task1 wait");
     Thread.Sleep(5000);
     Console.WriteLine("End");
@@ -405,6 +442,8 @@ static void Display(Task t)
 
 <div style="page-break-after: always;"></div>
 
+Пример отмены задания с выбрасыванием исключения и обработкой такой ситуации в основном коде:
+
 ```cs
 public static void Main()
 {
@@ -416,13 +455,13 @@ public static void Main()
     cts.Cancel(); // кстати задача уже может быть завершена
     try
     {
-        // В случае отмены задания метод Result генерирует исключение AggregateException
+        // В случае отмены задания именно метод Result генерирует исключение AggregateException
         Console.WriteLine("The sum is: " + t.Result);
     }
     catch (AggregateException x)
     {
-        // Считаем обработанными все объекты OperationCanceledException, 
-        // все остальные исключения попадают в новый объект AggregateException, состоящий только из необработанных исключений, который заново будет выкинут
+        // Пометить все OperationCanceledException ошибки, как обработанные,
+        // остальные записать в новый объект AggregateException, выбросить его заново, если он не пуст
         x.Handle(e => e is OperationCanceledException);
 
         Console.WriteLine("Sum was canceled");  // Строка выполняется, если все исключения уже обработаны
