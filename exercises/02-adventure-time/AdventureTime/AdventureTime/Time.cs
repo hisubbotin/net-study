@@ -127,7 +127,7 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            return (int)(DateTime.Today.AddMonths(3) - DateTime.Today).TotalMinutes;
+            throw new NotSupportedException();
         }
 
         #region Adventure time saga
