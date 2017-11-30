@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("BoringVector.Tests")]
+
 
 namespace BoringVector
 {
@@ -7,56 +11,132 @@ namespace BoringVector
     /*
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
-
+    /// <summary>
+    /// Представляет вектор в двумерном пространстве.
+    /// Задается пар парой вещественных координат <see cref="X"/>, <see cref="Y"/>.
+    /// </summary>
     internal struct Vector
     {
-        /*
-            Vector задается парой вещественных координат X и Y.
-        */
+        
+        public double X { get; }
+        public double Y { get; }
+        
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
 
-
-        /*
-            На месте заглушек добавь реализацию базовых методов вектора:
-                - квадрат длины
-                - сумма векторов
-                - умножение на коэффициент
-                - скалярное произведение
-                - векторное произведение (= площадь параллелограмма)
-        */
-
+        /// <summary>
+        /// Возвращает квадрат длины вектора.
+        /// </summary>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+        
+        /// <summary>
+        /// Возвращает вектор, равный сумме этого вектора и вектора <see cref="v"/>.
+        /// </summary>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
+        
+        /// <summary>
+        /// Возвращает вектор, равный результату умноженный этого вектора на число <see cref="k"/>.
+        /// </summary>
+        /// <param name="k">Вещественное число, на которое осуществляется умножение.</param>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(k * X, k * Y);
         }
+        
+        /// <summary>
+        /// Возвращает результат скалярного произведения этого вектора на вектор <see cref="v"/>.
+        /// </summary>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+        
+        /// <summary>
+        /// Возвращает результат векторного произведения этого вектора на вектор <see cref="v"/>.
+        /// </summary>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
 
-        /*
-            Переопредели ниже метод ToString - пусть выводит (X; Y)
-        */
+        public override string ToString()
+        {
+            return $"({X}; {Y})";
+        }
 
         #region operators
+        
 
-        /*
-            Реализуй также следущие операторы (Vector v, u и double k):
-                - v + u, v - u
-                - k * v, v * k, v / k
-                - +v, -v
-        */
+        /// <summary>
+        /// Складывает два вектора.
+        /// </summary>
+        /// <returns><see cref="Vector"/>, равный сумме векторов <see cref="u"/> и <see cref="v"/>.</returns>
+        public static Vector operator + (Vector v, Vector u)
+        {
+            return v.Add(u);
+        }
+
+        /// <summary>
+        /// Вычитает из вектора <see cref="v"/> вектор <see cref="u"/>.
+        /// </summary>
+        /// <returns><see cref="Vector"/>, равный разности векторов <see cref="u"/> и <see cref="v"/>.</returns>
+        public static Vector operator - (Vector v, Vector u)
+        {
+            return new Vector(v.X - u.X, v.Y - u.Y);
+        }
+        
+        /// <summary>
+        /// Умножает вектор <see cref="v"/> на вещественное число <see cref="k"/>.
+        /// </summary>
+        /// <returns><see cref="Vector"/>, равный результату умножения.</returns>
+        public static Vector operator * (double k, Vector v)
+        {
+            return v.Scale(k);
+        }
+        
+        /// <summary>
+        /// Умножает вектор <see cref="v"/> на вещественное число <see cref="k"/>.
+        /// </summary>
+        /// <returns><see cref="Vector"/>, равный результату умножения.</returns>
+        public static Vector operator * (Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+        
+        /// <summary>
+        /// Умножает вектор <see cref="v"/> на 1 / <see cref="k"/>.
+        /// </summary>
+        /// <returns><see cref="Vector"/>, равный результату умножения на 1 / <see cref="k"/>.</returns>
+        public static Vector operator / (Vector v, double k)
+        {
+            // (±X; ±Y) / 0 => (±Inf, ±Inf)
+            return v.Scale(1.0 / k);
+        }
+        
+        /// <summary>
+        /// Возвращает <see cref="v"/> без изменений. 
+        /// </summary>
+        public static Vector operator + (Vector v)
+        {
+            return v;
+        }
+
+        /// <summary>
+        /// Возвращает вектор, противоположный <see cref="v"/>.
+        /// </summary>
+        public static Vector operator - (Vector v)
+        {
+            return -1.0 * v;
+        }
 
         #endregion
     }
