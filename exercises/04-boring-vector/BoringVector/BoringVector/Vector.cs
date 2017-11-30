@@ -1,5 +1,6 @@
 ﻿using System;
 
+
 namespace BoringVector
 {
     #region 1. Структура Vector
@@ -18,22 +19,32 @@ namespace BoringVector
         /// <summary>
         /// Первая координата X.
         /// </summary>
-        public double x { get; set; }
+        public double X { get; }
 
         /// <summary>
         /// Вторая координата Y.
         /// </summary>
-        public double y { get; set; }
+        public double Y { get; }
+
+        public static double eps = 1e-6;
+
+        /// <summary>
+        /// Эпсилон для вектора.
+        /// </summary>
+        public double Eps {
+            get { return eps; }
+            set { if (value > 0) eps = value; }
+        }
 
         /// <summary>
         /// Базовый контруктор.
         /// </summary>
-        /// <param name="_x">Координата x.</param>
-        /// <param name="_y">Координата y.</param>
-        public Vector(double _x, double _y)
+        /// <param name="x">Координата x.</param>
+        /// <param name="y">Координата y.</param>
+        public Vector(double x, double y, double eps = 1e-6)
         {
-            x = _x;
-            y = _y;
+            X = x;
+            Y = y;
         }
 
         /*
@@ -50,7 +61,7 @@ namespace BoringVector
         /// <returns>Квадрат длины вектора<see cref="double"/>.</returns>
         public double SquareLength()
         {
-            return x * x + y * y;
+            return X * X + Y * Y;
         }
 
         /// <summary>
@@ -60,7 +71,7 @@ namespace BoringVector
         /// <returns>Результурующий после сложения вектор <see cref="Vector"/>.</returns>
         public Vector Add(Vector v)
         {
-            return new Vector(x + v.x, y + v.y);
+            return new Vector(X + v.X, Y + v.Y);
         }
 
         /// <summary>
@@ -70,7 +81,7 @@ namespace BoringVector
         /// <returns>Vector</returns>
         public Vector Scale(double k)
         {
-            return new Vector(x * k, y * k);
+            return new Vector(X * k, Y * k);
         }
 
         /// <summary>
@@ -80,7 +91,7 @@ namespace BoringVector
         /// <returns>double</returns>
         public double DotProduct(Vector v)
         {
-            return x * v.x + y * v.y;
+            return X * v.X + Y * v.Y;
         }
 
         /// <summary>
@@ -90,7 +101,7 @@ namespace BoringVector
         /// <returns>double</returns>
         public double CrossProduct(Vector v)
         {
-            return x * v.y - y * v.x;
+            return X * v.Y - Y * v.X;
         }
 
         /*
@@ -98,7 +109,7 @@ namespace BoringVector
         */
         public override string ToString()
         {
-            return "(" + x.ToString() + "; " + y.ToString() + ")";
+            return string.Format("({0}; {1})", X, Y);
         }
 
         #region operators

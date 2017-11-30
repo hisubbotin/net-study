@@ -12,13 +12,13 @@ namespace BoringVector
 
     public enum VectorRelation
     {
-        General = 0,
+        General,
         Parallel,
         Orthogonal
     };
 
     /// <summary>
-    /// Класс с методами расширяющий структуру Vector.
+    /// Класс с методами, расширяющий структуру Vector.
     /// </summary>
     internal static class VectorExtensions
     {
@@ -30,7 +30,7 @@ namespace BoringVector
         /// <returns>Результат<see cref="bool"/> вектора.</returns>
         public static bool IsZero(this Vector v)
         {
-            return (Math.Abs(v.x) < 1e-6 && Math.Abs(v.y) < 1e-6);
+            return (Math.Abs(v.X) < Vector.eps && Math.Abs(v.Y) < Vector.eps);
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace BoringVector
         {
             if (!IsZero(v1) && !IsZero(v2))
             {
-                return Math.Acos(v2.DotProduct(v1) / (Math.Sqrt(v1.SquareLength()) * Math.Sqrt(v2.SquareLength())));
+                return Math.Acos(v2.DotProduct(v1) / (Math.Sqrt(v1.SquareLength() * v2.SquareLength())));
             }
             else
             {
@@ -70,11 +70,11 @@ namespace BoringVector
         public static VectorRelation GetRelation(this Vector v1, Vector v2)
         {
             double angle = v1.GetAngleBetween(v2);
-            if (v1.CrossProduct(v2) < 1e-6)
+            if (v1.CrossProduct(v2) < Vector.eps)
             {
                 return VectorRelation.Parallel;
             }
-            else if (v1.DotProduct(v2) < 1e-6)
+            else if (v1.DotProduct(v2) < Vector.eps)
             {
                 return VectorRelation.Orthogonal;
             }
