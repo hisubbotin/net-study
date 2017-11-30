@@ -1,5 +1,30 @@
 # Распространенные ошибки и вещи, на которые стоит обратить внимание
 
+<!-- TOC -->
+
+- [Распространенные ошибки и вещи, на которые стоит обратить внимание](#распространенные-ошибки-и-вещи-на-которые-стоит-обратить-внимание)
+  - [01. Primitive Types](#01-primitive-types)
+    - [TryParse + throw standard exception](#tryparse--throw-standard-exception)
+    - [Compare floats with default epsilon](#compare-floats-with-default-epsilon)
+  - [02. Adventure Time!](#02-adventure-time)
+    - [AreEqualBirthdays](#areequalbirthdays)
+    - [GetTotalMinutesInThreeMonths](#gettotalminutesinthreemonths)
+  - [04. Boring Vector](#04-boring-vector)
+    - [Unit tests](#unit-tests)
+      - [xUnit: Fact & Theory](#xunit-fact--theory)
+      - [Test naming styles](#test-naming-styles)
+      - [Common mistakes](#common-mistakes)
+    - [Comments style](#comments-style)
+    - [Vector.ToString()](#vectortostring)
+    - [Static vs static readonly vs const](#static-vs-static-readonly-vs-const)
+    - [Mutable structs](#mutable-structs)
+  - [03. Drunk Fibonacci](#03-drunk-fibonacci)
+    - [IEnumerable](#ienumerable)
+    - [Переполнение типа](#переполнение-типа)
+    - [Итерация с помощью IEnumerator\<int>](#итерация-с-помощью-ienumerator\int)
+
+<!-- /TOC -->
+
 ## 01. Primitive Types
 
 ### TryParse + throw standard exception
@@ -142,7 +167,7 @@ _Осторожно, цитата вырвана из контекста! ;)_
 
 #### Test naming styles
 
-В отличие от названий обычных методов, названия тестовых методов обычно видят не в IDE, а в отчете работы системы прогона тестов. Например, у вас настроены автопрогон тестов после каждого билда, и отчет о проваленных тестах которого потом приходят по почте, в slack и т.п. В общем, обычно названия тестов видны там, где нет под рукой исходников - в таком случае на первый план выходит возможность быстро и однозначно из названия теста понять, что конкретно он тестирует.
+В отличие от названий обычных методов, названия тестовых методов обычно видят не в IDE, а в отчете работы системы прогона тестов. Например, у вас настроен автопрогон тестов после каждого билда, и отчет о проваленных тестах потом приходит по почте, в slack и т.п. В таком случае скорее всего под рукой исходников у вас не окажется, а значит на первый план выходит возможность быстро и однозначно из названия теста понять, что конкретно он тестирует.
 
 Давай посмотрим, как можно было бы именовать тесты:
 
@@ -170,10 +195,11 @@ _Осторожно, цитата вырвана из контекста! ;)_
     - `Normalize_NonZeroVector_Returns_VectorWithLengthEqualsOne`
     - `IntParse_NonDigitalString_Throws_FormatException`
 
-- GivenWhenThen-style (GWT) - `Given_<начальное состояние>_When_<операция>_Then_<ожидаемый результат>`:
+- еще популярен стиль GivenWhenThen-style (GWT) - `Given_<начальное состояние>_When_<сценарий>_Then_<ожидаемый результат>`:
 
-    `Given_ZeroVector_When_CallNormalize_Then_GetZeroVector`
-    `Given_NonDigitalString_When_CallIntParse_Then_FormatExceptionIsThrown` (_возможно слишком "говорливый" стиль именования, больше подходит для "behavior tests"_)
+    - `Given_ZeroVector_When_CallNormalize_Then_GetZeroVector`
+    - `Given_NonDigitalString_When_CallIntParse_Then_FormatExceptionIsThrown`
+    - _возможно слишком "говорливый" стиль именования, больше подходит для "behavior tests", где желательно писать максимально естественным языком_
 
 Основные советы:
 
@@ -184,51 +210,81 @@ _Осторожно, цитата вырвана из контекста! ;)_
 
 Просто общие моменты:
 
-- тестируй следование контракту, не правильность текущей реализации (т.е. будто ты не знаешь реализацию).
-- твоя задача сломать тестируемый кусок, а не подтвердить, что он якобы без багов. В домашках во входных данных я не увидел ни одной стандартной константы `double` ;)
-- лучше 0 тестов, чем много плохих.
-- много похожих вариаций входных данных - бессмысленно. Каждый набор входных данных должен покрывать какое-то семейство входных данных.
-- один тест - проверка одного контракта.
-- правильно работающая система должна проходить код. _Ира, вот так не нужно делать:_
+- _Тестируй следование контракту, не правильность текущей реализации (т.е. будто не знаешь реализацию)._
+
+  Не знаю, сталкаивались ли вы с этим, но я несколько раз на собеседованиях после реализации требуемого кусочка кода буквально через секунду после просьбы "а давайте теперь напишем к вашему методу тесты" находил ошибку в своем коде - достаточно было поменять в голове роль и мыслить в ключе "как сломать этот метод". Отсюда следующий пункт.
+
+- _Твоя задача сломать тестируемый кусок, а не подтвердить, что он якобы без багов._
+
+  В домашках во входных данных я не увидел ни одной стандартной константы `double` ;) В том виде, в котором вы их сдавали, тесты выглядели больше как попытка убедить себя в правильности вашей реализации.
+
+- _Лучше 0 тестов, чем много плохих._
+
+  Любые тесты нужно писать, а потом поддерживать. И это довольно трудоемкое (и зачастую скучное) занятие.
+
+- _Много вариаций похожих входных данных не имеет смысла._
+
+  Каждый набор входных данных должен покрывать какое-то семейство входных данных.
+
+- _Один тест - проверка одного контракта._
+
+  Проще писать, проще читать, проще менять, проще локализовать проблему.
+
+- _Правильно работающая система должна проходить тесты._
+
+  Ира, вот так делать неправильно:
 
   `[InlineData(0, 0, 5, 5, 5)] // not working -- its correct`
 
-- проверяй с результатом, а не якобы правильным вычислением результата:
+  Иначе, как после прогона тестов автоматически понять, что реализация удовлетворяет заданным контрактам.
 
-  `Assert.Equal(v.SquareLength(), x * x + y * y);` - так проще ошибиться или не заметить переполнение.
+- _Сравнивай с ожидаемым значением результата, а не якобы правильным вычислением результата._
+
+  В вычислении проще ошибиться. Здесь, например, можно не заметить переполнение:
+
+  `Assert.Equal(v.IntegerSquareLength(), x * x + y * y);`.
 
 - `Assert.Equal` имеет перегрузку `void (double x, double y, int precision)` - для сравнения вещественных чисел лучше пользоваться ей.
 
 ### Comments style
 
-Если ты посмотришь комментарии в стандартной библиотеке, то увидишь, что у типов, интерфейсов, перечислений, свойств и методов (т.е. по-моему у всего комментируемого) комментарий как бы отвечает на вопрос "что оно делает?" и тем самым начинаются с глагола:
+Если ты посмотришь комментарии в стандартной библиотеке, то увидишь, что у типов, интерфейсов, перечислений, свойств и методов (т.е. по-моему у всего комментируемого) комментарий как бы отвечает на вопрос "что оно делает?" и тем самым начинается с глагола:
 
 - свойство `DateTime.Now` (обрати внимание, из комментария понятно, что оно read-only):
-> Gets a System.DateTime object that is set to the current date and time on this computer, expressed as the local time.
+  > Gets a System.DateTime object that is set to the current date and time on this computer, expressed as the local time.
+
 - а вот изменяемое свойство `this[int index]` интерфейса `IList<T>`:
-> Gets or sets the element at the specified index.
+  > Gets or sets the element at the specified index.
+
 - публичное поле `DBNull.Value`:
-> Represents the sole instance of the System.DBNull class.
+  > Represents the sole instance of the System.DBNull class.
+
 - класс `Array`:
-> Provides methods for creating, manipulating, searching, and sorting arrays, thereby serving as the base class for all arrays in the common language runtime.
+  > Provides methods for creating, manipulating, searching, and sorting arrays, thereby serving as the base class for all arrays in the common language runtime.
+
 - класс атрибута `SerializableAttribute`:
-> Indicates that a class can be serialized. This class cannot be inherited.
+  > Indicates that a class can be serialized. This class cannot be inherited.
+
 - интерфейс `IDisposable`:
-> Provides a mechanism for releasing unmanaged resources.
+  > Provides a mechanism for releasing unmanaged resources.
+
 - перечисление `GCCollectionMode`:
-> Specifies the behavior for a forced garbage collection.
+  > Specifies the behavior for a forced garbage collection.
 
-Единственное исключение из правил, которое я знаю, это классы исключений. Самые базовые типы исключений (их самих никогда не выбрасывают) обычно имеют комментарии в соответствии со стилем выше, а вот классы "выбрасываемых" исключений почти всегда имеют уже вид `The exception that is thrown when ...`. Сравни:
+Единственное исключение из правил, которое я знаю, это классы исключений. Базовые типы исключений, которых самих по себе никогда не выбрасывают, похоже, имеют комментарии в соответствии со стилем выше, а вот классы "выбрасываемых" исключений почти всегда имеют вид `The exception that is thrown when ...`. Сравни:
 
-- `Exception`:
-> Represents errors that occur during application execution.
-- `StackOverflowException`:
-> The exception that is thrown when the execution stack overflows because it contains too many nested method calls. This class cannot be inherited.
+- `Exception` (это самый базовый класс исключений):
+  > Represents errors that occur during application execution.
+
+- `StackOverflowException` (исключение, которое названо в честь того-самого-сайта - его обычно выбрасывает мозг программиста после того, как не может найти на том-самом-сайте решение своей проблемы, и приходится читать кучу сложных статей, блогов и документации) :
+  > The exception that is thrown when the execution stack overflows because it contains too many nested method calls. This class cannot be inherited.
 
 Если ты посмотришь мои комментарии в первых лабах, то заметишь, что я стараюсь следовать этим гайдлайнам. Кроме типов :( Я, честно говоря, сам до текущего момента не обращал внимание, что и к ним комменты начинаются с глагола, и писал всегда ответ на вопрос "что это?", начиная с существительного.
 
-Тебе я тоже предлагаю им следовать. Ну или следовать другим гайдлайнам, которые тебе больше по душе. Главное, чтобы стиль был достаточно консистентным на протяжении всего твоего кода, а сами комментарии были хорошими: понятными, короткими и ёмкими.
+Тебе я тоже предлагаю следовать приведенному стилю. Ну или следовать другим гайдлайнам, которые тебе больше по душе. Главное, чтобы стиль был достаточно консистентным на протяжении всего твоего кода, а сами комментарии были хорошими: понятными, короткими и ёмкими.
 
+ниже не готово
+___
 Примеры:
 
 - Вектор, на который необходимо домножить
@@ -238,6 +294,9 @@ _Осторожно, цитата вырвана из контекста! ;)_
 
 Про `GetAngleBetween` - Acos
 Комментарии к значениям перечисления.
+
+ниже пункты не закончены
+___
 
 ### Vector.ToString()
 
@@ -342,10 +401,6 @@ Console.WriteLine(w);       // (5, 5)
 ### Переполнение типа
 
 > При вычислении сложения переполнение типа разрешено и всячески поощряется.
-
-### Скобки в лямбдах
-
-Откуда и зачем
 
 ### Итерация с помощью IEnumerator\<int>
 
