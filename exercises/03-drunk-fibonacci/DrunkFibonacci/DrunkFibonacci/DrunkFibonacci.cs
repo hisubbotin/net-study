@@ -82,6 +82,8 @@ namespace DrunkFibonacci
             int prev = 1;
             int prevprev = 1;
 
+
+
             foreach (var el in GetDeterministicRandomSequence())
             {
                 counter++;
@@ -94,9 +96,15 @@ namespace DrunkFibonacci
 
                 if (counter % 6 == 0)
                 {
-                    continue;
+                    unchecked
+                    {
+                        var u = prev;
+                        prev = prev + prevprev;
+                        prevprev = u;
+                        continue;
+                    }
                 }
-                else if ((counter - 4) % 6 == 0)
+                else if (counter % 6 == 4)
                 {
                     preanswer = 300;
                 }
@@ -108,9 +116,13 @@ namespace DrunkFibonacci
                 {
                     preanswer = preanswer ^ 42;
                 }
-                var t = prev;
-                prev = prev + prevprev;
-                prevprev = t;
+                unchecked
+                {
+                    var t = prev;
+                    prev = prev + prevprev;
+                    prevprev = t;
+                }
+                // Console.WriteLine($"{counter}");
                 yield return preanswer;
             }
         }
@@ -150,12 +162,20 @@ namespace DrunkFibonacci
         /// </summary>
         public static IEnumerable<int[]> GetInChunks()
         {
-            // ни чему особо не научишься, просто интересная задачка :)
-            IEnumerable<int> query = GetDrunkFibonacci();
             while (true)
             {
-                yield return query.Take(16).ToArray();
-                query = query.Skip(16);
+                var chunk = new int[16];
+                int counter = 0;
+                foreach (int el in GetDrunkFibonacci())
+                {
+                    chunk[counter] = el;
+                    counter += 1;
+                    if (counter == 16)
+                    {
+                        counter = 0;
+                        yield return chunk;
+                    }
+                }
             }
         }
 
@@ -208,8 +228,8 @@ namespace DrunkFibonacci
             */
             return GetDrunkFibonacci()
                 .Take(10000)
-                .GroupBy((i => i % 8), (i => i), ((i, group) => (cls: i, arr: group)))
-                .ToDictionary((tuple => tuple.cls), (tuple => tuple.arr.Distinct().Count()));
+                .GroupBy(i => i % 8)
+                .ToDictionary(tuple => tuple.Key, tuple => tuple.ToList().Distinct().Count());
         }
     }
 }
