@@ -6,12 +6,12 @@ namespace BoringVector.Tests
     public class Tests
     {
         [Theory]
-        [InlineData(3, 4, 25)]
-        [InlineData(0, -10, 100)]
-        [InlineData(2e-10, 9, 81)]
-        public void Test_SquareLength(double X, double Y, double result)
+        [InlineData(3, 4, 25, 5)]
+        [InlineData(0, -10, 100, 5)]
+        [InlineData(2e-10, 9, 81, 5)]
+        public void Test_SquareLength(double X, double Y, double result, int precision)
         {
-            Assert.Equal(new Vector(X, Y).SquareLength(), result);
+            Assert.Equal(new Vector(X, Y).SquareLength(), result, precision);
         }
 
         [Theory]

@@ -27,12 +27,12 @@ namespace BoringVector
         /// <summary>
         /// Координата X.
         /// </summary>
-        public double X { get; set; }
+        public double X { get; }
 
         /// <summary>
         /// Координата Y.
         /// </summary>
-        public double Y { get; set; }
+        public double Y { get; }
 
         /// <summary>
         /// Конструктор вектора.
@@ -90,7 +90,7 @@ namespace BoringVector
         /// <returns>Результат скалярного произведения <see cref="double"/>.</returns>
         public double DotProduct(Vector v)
         {
-            return (X * v.X + Y * v.Y);
+            return X * v.X + Y * v.Y;
         }
 
         /// <summary>
@@ -113,7 +113,7 @@ namespace BoringVector
         /// <returns>Строковое <see cref="string"/>представление объекта вектора<see cref="Vector"/>.</returns>
         public override string ToString()
         {
-            return "(" + X.ToString() + "; " + Y.ToString() + ")";
+            return $"({X}; {Y})";
         }
 
         #region operators

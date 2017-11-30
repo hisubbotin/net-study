@@ -22,7 +22,7 @@ namespace BoringVector
     /// </summary>
     internal static class VectorExtensions
     {
-
+        private const double Epsilon = 1e-6;
         /// <summary>
         /// Проверяет, является ли вектор нулевым.
         /// </summary>
@@ -30,7 +30,7 @@ namespace BoringVector
         /// <returns>Результат проверки<see cref="bool"/> вектора.</returns>
         public static bool IsZero(this Vector v)
         {
-            return (Math.Abs(v.X) < 1e-6 && Math.Abs(v.Y) < 1e-6);
+            return (Math.Abs(v.X) < Epsilon && Math.Abs(v.Y) < Epsilon);
         }
 
         /// <summary>
@@ -69,12 +69,11 @@ namespace BoringVector
         /// <returns>Отношение между векторами, объект перечисления<see cref="VectorRelation"/>.</returns>
         public static VectorRelation GetRelation(this Vector v1, Vector v2)
         {
-            double angle = v1.GetAngleBetween(v2);
-            if (v1.CrossProduct(v2) < 1e-6)
+            if (v1.CrossProduct(v2) < Epsilon)
             {
                 return VectorRelation.Parallel;
             }
-            else if (v1.DotProduct(v2) < 1e-6)
+            else if (v1.DotProduct(v2) < Epsilon)
             {
                 return VectorRelation.Orthogonal;
             }
