@@ -13,8 +13,8 @@ namespace BoringVector
         /// <summary>
         /// X и Y - координаты вектора <see cref="double"/>
         /// </summary>
-        public double X { get; private set; }
-        public double Y { get; private set; }
+        public double X { get; }
+        public double Y { get; }
 
         /// <summary>
         /// Конструктор класса <see cref="Vector"/>
