@@ -18,7 +18,7 @@ namespace BoringVector.Tests
         [InlineData(68, 285, 293)]
         public void Test_SquareLength(double x, double y, double length)
         {
-            Assert.True(Math.Abs(Math.Abs(new Vector(x, y).SquareLength() - length * length)) < TOLERANCE);
+            Assert.True(Math.Abs(new Vector(x, y).SquareLength() - length * length) < TOLERANCE);
         }
 
         [Fact]
@@ -54,6 +54,27 @@ namespace BoringVector.Tests
             var b = new Vector(3, 4);
             var c = a.CrossProduct(b);
             Assert.True(Math.Abs(c - (-2)) < TOLERANCE);
+        }
+
+        [Fact]
+        public void Test_Immutability()
+        {
+            var a = new Vector(1, 2);
+            var b = new Vector(3, 4);
+            var c = b;
+            
+            var d = c + b;
+            d = a * 10;
+            d = 6 * c;
+            
+            Assert.Equal(a.X, 1);
+            Assert.Equal(a.Y, 2);
+
+            Assert.Equal(b.X, 3);
+            Assert.Equal(b.Y, 4);
+
+            Assert.Equal(c.X, 3);
+            Assert.Equal(c.Y, 4);
         }
     }
 }

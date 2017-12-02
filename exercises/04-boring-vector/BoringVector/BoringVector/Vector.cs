@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Dynamic;
 
 namespace BoringVector
 {
     #region 1. Структура Vector
 
     /// <summary>
-    /// Класс для работы с точками в плоскости.
+    /// Класс для работы с точками на плоскости.
     /// </summary>
     public struct Vector
     {
@@ -13,7 +14,8 @@ namespace BoringVector
             Vector задается парой вещественных координат X и Y.
         */
 
-        public double X, Y;
+        public double X { get; }
+        public double Y { get; }
 
 
         public Vector(double x, double y)
@@ -52,9 +54,7 @@ namespace BoringVector
         /// </summary>
         public Vector Add(Vector v)
         {
-            X += v.X;
-            Y += v.Y;
-            return this;
+            return new Vector(X + v.X, Y + v.Y);
         }
 
         /// <summary>
@@ -63,9 +63,7 @@ namespace BoringVector
         /// <param name="k">Число <see cref="double"/>, во сколько раз увеличить.</param>
         public Vector Scale(double k)
         {
-            X *= k;
-            Y *= k;
-            return this;
+            return new Vector(X * k, Y * k);
         }
 
         /// <summary>
