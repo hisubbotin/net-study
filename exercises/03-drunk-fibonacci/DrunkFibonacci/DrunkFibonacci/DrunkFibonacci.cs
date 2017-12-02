@@ -81,12 +81,14 @@ namespace DrunkFibonacci
             int counter = 0;
             int prev = 1;
             int prevprev = 1;
-
+            bool flag = true;
 
 
             foreach (var el in GetDeterministicRandomSequence())
             {
                 counter++;
+                flag = true;
+                
                 var preanswer = 0;
 
                 if (counter <= 2)
@@ -96,13 +98,7 @@ namespace DrunkFibonacci
 
                 if (counter % 6 == 0)
                 {
-                    unchecked
-                    {
-                        var u = prev;
-                        prev = prev + prevprev;
-                        prevprev = u;
-                        continue;
-                    }
+                    flag = false;
                 }
                 else if (counter % 6 == 4)
                 {
@@ -110,20 +106,20 @@ namespace DrunkFibonacci
                 }
                 else
                 {
-                    preanswer = prev + prevprev;
+                    preanswer = unchecked(prev + prevprev);
                 }
                 if ((el & 42) != 0)
                 {
                     preanswer = preanswer ^ 42;
                 }
-                unchecked
+                var t = prev;
+                prev = unchecked(prev + prevprev);
+                prevprev = t;
+                if (flag)
                 {
-                    var t = prev;
-                    prev = prev + prevprev;
-                    prevprev = t;
+                    // Console.WriteLine($"{preanswer}");
+                    yield return preanswer;
                 }
-                // Console.WriteLine($"{counter}");
-                yield return preanswer;
             }
         }
 
@@ -162,19 +158,16 @@ namespace DrunkFibonacci
         /// </summary>
         public static IEnumerable<int[]> GetInChunks()
         {
-            while (true)
+            var chunk = new int[16];
+            int counter = 0;
+            foreach (int el in GetDrunkFibonacci())
             {
-                var chunk = new int[16];
-                int counter = 0;
-                foreach (int el in GetDrunkFibonacci())
+                chunk[counter] = el;
+                counter += 1;
+                if (counter == 16)
                 {
-                    chunk[counter] = el;
-                    counter += 1;
-                    if (counter == 16)
-                    {
-                        counter = 0;
-                        yield return chunk;
-                    }
+                    counter = 0;
+                    yield return chunk;
                 }
             }
         }
@@ -229,7 +222,7 @@ namespace DrunkFibonacci
             return GetDrunkFibonacci()
                 .Take(10000)
                 .GroupBy(i => i % 8)
-                .ToDictionary(tuple => tuple.Key, tuple => tuple.ToList().Distinct().Count());
+                .ToDictionary(els => els.Key, els => els.ToList().Distinct().Count());
         }
     }
 }
