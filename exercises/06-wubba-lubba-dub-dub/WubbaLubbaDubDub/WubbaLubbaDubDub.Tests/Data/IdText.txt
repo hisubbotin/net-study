@@ -1,0 +1,14 @@
+RegExr v3.0 was created by gskinner.com, and is proudly hosted by Media Temple. 
+
+Edit the Expression & Text to see matches. Roll over matches or the expression for details. PCRE & Javascript flavors of RegEx are supported.
+//  sdfsdf F0AE:00A0
+s
+/* . sdf . sdf*/
+
+F0BE:01A0 // 4038984096
+The side bar includes a Cheatsheet, full Reference, and Help. You can also Save & Share your 
+/*expressions with the Community, and mark Favourites.
+F0AE:00A0
+*/
+
+Explore results with the TF0AE:00A1ools below. Replace & List output custom results. Details lists capture groups. Explain describes your expression in plain english. // 4037935265
