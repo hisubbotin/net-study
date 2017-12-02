@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reflection.Emit;
 
 namespace DrunkFibonacci
 {
@@ -62,7 +60,7 @@ namespace DrunkFibonacci
             }
         }
 
-        private static Nullable<int> makeFunny(int number, int position, int random)
+        private static int? makeFunny(int number, int position, int random)
         {
             if (position % 6 == 0)
             {
@@ -72,9 +70,9 @@ namespace DrunkFibonacci
             {
                 number = 300;
             }
-            if ((random & 42) != 0)
+            if ((random & 42) == 42)
             {
-                return number ^ 42;
+                return number - (42 & number);
             }
             return number;
         }
@@ -101,8 +99,11 @@ namespace DrunkFibonacci
             int position = 2;
             foreach (var random in GetDeterministicRandomSequence())
             {
-                prev = grandPrev + prev;
-                grandPrev = prev - grandPrev;
+                unchecked
+                {
+                    prev = grandPrev + prev;
+                    grandPrev = prev - grandPrev;
+                }
                 ++position;
                 int? temp = makeFunny(prev, position, random);
                 if (temp != null)
@@ -128,7 +129,7 @@ namespace DrunkFibonacci
         /// <param name="from">Индекс начала поиска отрезка. Нумерация с единицы.</param>
         public static List<int> GetNextNegativeRange(int from = 1)
         {
-            return GetDrunkFibonacci().Skip(from).SkipWhile((x) => (x >= 0)).TakeWhile((x) => (x < 0)).ToList();
+            return GetDrunkFibonacci().Skip(from).SkipWhile(x => x >= 0).TakeWhile(x => x < 0).ToList();
         }
 
         /// <summary>
@@ -147,10 +148,16 @@ namespace DrunkFibonacci
         {
             // ни чему особо не научишься, просто интересная задачка :)
 
-
-            for (var a = GetDrunkFibonacci();; a = a.Skip(16))
+            var result = new int[16];
+            var a = GetDrunkFibonacci().GetEnumerator();
+            for (var i = 0; a.MoveNext(); ++i)
             {
-                yield return a.Take(16).ToArray();
+                if (i == 16)
+                {
+                    yield return result;
+                    i = 0;
+                }
+                result[i] = a.Current;
             }
 
 
@@ -175,7 +182,7 @@ namespace DrunkFibonacci
                 Вообще говоря, SelectMany умеет много чего и мегаполезна.
                 Она в какой-то степени эквивалентна оператору `bind` над монадами (в данном случае над монадами последовательностей).
             */
-            return GetInChunks().SelectMany((ints => ints.OrderBy((i => i)).Take(3)));
+            return GetInChunks().SelectMany(ints => ints.OrderBy(i => i).Take(3));
         }
 
         /// <summary>
@@ -210,7 +217,7 @@ namespace DrunkFibonacci
                 Итого научишься группировать и создавать на их основе словарь (см. ToDictionary).
             */
             return GetDrunkFibonacci().Take(10000)
-                .GroupBy((i => i % 8), (i => i), ((i, ints) => (mod:i, array:ints)))
+                .GroupBy(i => i % 8, i => i, (i, ints) => (mod:i, array:ints))
                 .ToDictionary((tuple => tuple.mod), (tuple => tuple.array.Distinct().Count()));
         }
     }
