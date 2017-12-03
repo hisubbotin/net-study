@@ -2,8 +2,14 @@
 {
     public static class MaybeExtensions
     {
-        /*
-            здесь мог бы быть твой код
-        */
+        public static Maybe<T> ToMaybe<T>(this T value)
+        {
+            return value;
+        }
+        
+        public static Maybe<T> ToMaybe<T>(this T? nullable) where T : struct
+        {
+            return nullable ?? Maybe<T>.Nothing;
+        }
     }
 }
