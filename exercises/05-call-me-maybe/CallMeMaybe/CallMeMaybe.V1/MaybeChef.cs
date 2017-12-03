@@ -43,8 +43,15 @@ namespace CallMeMaybe.V1
 
         private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
         {
-            // здесь сделай сам, пожалуйста
-            throw new NotImplementedException();
+            // Выглядит в несравнимо хуже, чем в NaiveCheif
+            // Ужасно рили, способ сделать простую логику очень сложной
+            return _cookingTable.FindCupsOf<WholeWheatFlour>(3.5m).ToMaybe()
+                .Select(wholeWheatFlour => _cookingTable.FindCupsOf<AllPurposeFlour>(3.5m).ToMaybe()
+                    .Select(allPurposeFlour => _cookingTable.FindTeaspoonsOf<PumpkinPieSpice>(5m).ToMaybe()
+                        .Select(pumpkinPieSpice => _cookingTable.FindTeaspoonsOf<BakingSoda>(2m).ToMaybe()
+                            .Select(soda => _cookingTable.FindTeaspoonsOf<Salt>(1.5m).ToMaybe()
+                                .Select(salt => _cookingTable.FindBowlAndFillItWith(new FlourMixture()).ToMaybe()
+                                )))));
         }
         private Maybe<BowlOf<EggsMixture>> MakeEggsMixture()
         {
