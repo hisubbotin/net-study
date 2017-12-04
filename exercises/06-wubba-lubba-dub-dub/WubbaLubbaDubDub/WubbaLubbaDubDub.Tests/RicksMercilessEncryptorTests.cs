@@ -71,7 +71,7 @@ namespace WubbaLubbaDubDub.Tests
         }
 
         [Theory]
-        [InlineData("// comment \r\n/* comment */ FFFF:0000\r\nABCD:0899", new[] { 4294901760L, 2882341017L })]
+        [InlineData("// comment \r\n/* com\r\nment */ FFFF:0000\r\nABCD:0899", new[] { 4294901760L, 2882341017L })]
         public void TestGetUsedObjects(string text, long[] result)
         {
             Assert.Equal(result, text.GetUsedObjects());
