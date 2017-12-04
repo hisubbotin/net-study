@@ -29,6 +29,7 @@ namespace CallMeMaybe.V2
             var maybeChef = new MaybeChef(cookingTable);
             muffins = maybeChef.CookPumpkinMuffins();
             Console.WriteLine(muffins.Count);
+            Console.ReadKey();
         }
 
         private static void TestSingleFrom<T>(Maybe<T> m)
