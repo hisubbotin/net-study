@@ -14,7 +14,8 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
-        public readonly double X, Y;
+        public double X { get; }
+        public double Y { get; }
 
         public Vector(double x, double y)
         {
