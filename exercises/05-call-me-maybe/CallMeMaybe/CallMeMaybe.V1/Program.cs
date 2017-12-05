@@ -30,6 +30,7 @@ namespace CallMeMaybe.V1
             var maybeChef = new MaybeChef(cookingTable);
             muffins = maybeChef.CookPumpkinMuffins();
             Console.WriteLine(muffins.Count);
+            Console.ReadLine();
         }
 
         private static void TestSelectChain(Maybe<DateTime> maybeDt1, Maybe<DateTime> maybeDt2)
