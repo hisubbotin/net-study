@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("BoringVector.Tests2")]
 namespace BoringVector
 {
     #region 1. Структура Vector
@@ -8,12 +10,19 @@ namespace BoringVector
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
 
-    internal struct Vector
+    public struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        public double X { get; }
+        public double Y { get; }
 
+        public Vector(double _X, double _Y)
+        {
+            X = _X;
+            Y = _Y;
+        }
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -24,31 +33,70 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        /// <summary>
+        /// Квадрат длины вектора
+        /// </summary>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+
+        /// <summary>
+        /// Сумма векторов
+        /// </summary>
+        /// <param name="v">Вектор, который нужно добавить к this</param>
+        /// <returns>Новый объект типа <see cref="Vector"/>, который является суммой this и v</returns>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
+
+        /// <summary>
+        /// Умножение вектора на коэффицент
+        /// </summary>
+        /// <param name="k">Коэффициент, на который производится умножение</param>
+        /// <returns>Новый объект типа <see cref="Vector"/>, который является вектором this, умноженным на коэффициент</returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(X * k, Y * k);
         }
+
+        /// <summary>
+        /// Скалярное произведение
+        /// </summary>
+        /// <param name="v">Вектор, с которым вычисляется скалярное произведение</param>
+        /// <returns>Число являющееся скалярным произведением this и v </returns>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+
+        /// <summary>
+        /// Векторное произведение
+        /// </summary>
+        /// <param name="v">Вектор, с которым вычисляется векторное произведение</param>
+        /// <returns>Число, являющееся векторным произведением this и v</returns>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
+        }
+
+        /// <summary>
+        /// Вычисляет длину вектора
+        /// </summary>
+        /// <returns>Число, являющееся длиной вектора this</returns>
+        public double Length()
+        {
+            return Math.Sqrt(SquareLength());
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
-
+        public override string ToString()
+        {
+            return "(" + X.ToString() + "; " + Y.ToString() + ")";
+        }
         #region operators
 
         /*
@@ -57,6 +105,38 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+
+        // А зачем нужен оператор +v? :)
+
+        public static Vector operator -(Vector v)
+        {
+            return v.Scale(-1);
+        }
+
+        public static Vector operator +(Vector v1, Vector v2)
+        {
+            return v1.Add(v2);
+        }
+
+        public static Vector operator -(Vector v1, Vector v2)
+        {
+            return v1.Add(-v2);
+        }
+
+        public static Vector operator *(double k, Vector v)
+        {
+            return v.Scale(k);
+        }
+
+        public static Vector operator *(Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+
+        public static Vector operator /(Vector v, double k)
+        {
+            return v.Scale(1 / k);
+        }
 
         #endregion
     }
