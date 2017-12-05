@@ -42,7 +42,7 @@ namespace WubbaLubbaDubDub.Tests
         [InlineData("It was a bad day", "bad", "wonderful", "It was a wonderful day")]
         public void Test_Replace(string s, string old, string @new, string result)
         {
-            Assert.Equal(result, s.Replace(old, @new));
+            Assert.Equal(result, RicksMercilessEncryptor.Replace(s, old, @new));
         }
 
         [Theory]
