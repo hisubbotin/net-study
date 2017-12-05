@@ -52,7 +52,7 @@ namespace WubbaLubbaDubDub.Tests
         )]
         public void Test_Replace(string line, string old, string replaceWith, string result)
         {
-            Assert.Equal(result, line.Replace(old, replaceWith));
+            Assert.Equal(result, RicksMercilessEncryptor.Replace(line, old, replaceWith));
         }
 
         [Theory]
