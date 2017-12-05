@@ -44,7 +44,7 @@ namespace CallMeMaybe.V1
                 По смыслу это фабрика объектов данного типа (ну или по модному монадный конструктор).
                 Т.к. это оператор неявного приведения, позволяет не засорять код кастами.
             */
-            return value != null ? new Maybe<T>(value) : Nothing ;
+            return value != null ? new Maybe<T>(value) : Nothing;
         }
 
         #region Optional useful methods
