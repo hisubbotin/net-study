@@ -19,7 +19,7 @@ namespace CallMeMaybe.V1
         {
             var oven = new Oven();
             oven.Heat(166);
-
+            
             return MakeFlourMixture()
                 .Select(flourMixture => MakeEggsMixture().Select(eggsMixture => PrepareBackingDish(flourMixture, eggsMixture)))
                 .Select(backingDish => oven.Bake<PumpkinBatterCup, PumpkinMuffin>(backingDish, TimeSpan.FromMinutes(30)).ToMaybe())
@@ -43,8 +43,18 @@ namespace CallMeMaybe.V1
 
         private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
         {
-            // здесь сделай сам, пожалуйста
-            throw new NotImplementedException();
+            var wholeWheatFlour = _cookingTable.FindCupsOf<WholeWheatFlour>(3.5m);
+            var allPurposeFlour = _cookingTable.FindCupsOf<AllPurposeFlour>(3.5m);
+            var pumpkinPieSpice = _cookingTable.FindTeaspoonsOf<PumpkinPieSpice>(5m);
+            var bakingSoda = _cookingTable.FindTeaspoonsOf<BakingSoda>(2m);
+            var salt = _cookingTable.FindTeaspoonsOf<Salt>(1.5m);
+
+            if (wholeWheatFlour == null || allPurposeFlour == null || pumpkinPieSpice == null || bakingSoda == null
+                || salt == null)
+            {
+                return Maybe<BowlOf<FlourMixture>>.Nothing;
+            }
+            return _cookingTable.FindBowlAndFillItWith(new FlourMixture()).Value;
         }
         private Maybe<BowlOf<EggsMixture>> MakeEggsMixture()
         {
