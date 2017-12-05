@@ -2,6 +2,10 @@
 {
     public static class MaybeExtensions
     {
+        /*
+         * Сюда даже не пришлось копировать. Вероятно, автор задачи просто
+         * забыл заменить на throw new NotImplementedException()
+         */
         public static Maybe<T> ToMaybe<T>(this T value)
         {
             return value;

@@ -44,7 +44,8 @@ namespace CallMeMaybe.V1
         private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
         {
             // здесь сделай сам, пожалуйста
-            throw new NotImplementedException();
+            // Это.. Я не повар, можно использовать алхимию и получать все из ничего?
+            return _cookingTable.FindBowlAndFillItWith(new FlourMixture()).ToMaybe();
         }
         private Maybe<BowlOf<EggsMixture>> MakeEggsMixture()
         {
