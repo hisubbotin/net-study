@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Text.RegularExpressions;
+using System.Linq;
+using System.Text;
 
 namespace WubbaLubbaDubDub
 {
@@ -12,7 +15,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToLines(this string text)
         {
             // У строки есть специальный метод. Давай здесь без регулярок
-            throw new NotImplementedException();
+            return text.Split('\n');
         }
 
         /// <summary>
@@ -21,7 +24,8 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            throw new NotImplementedException();
+            string pattern = @"\.\s*|\s+|\!\s*|\?\s*";
+            return Regex.Split(line, pattern).Where(x => x.Length > 0).ToArray();
         }
 
         /// <summary>
@@ -31,7 +35,7 @@ namespace WubbaLubbaDubDub
         public static string GetLeftHalf(this string s)
         {
             // у строки есть метод получения подстроки
-            throw new NotImplementedException();
+            return s.Substring(0 , s.Length / 2);
         }
 
         /// <summary>
@@ -40,7 +44,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetRightHalf(this string s)
         {
-            throw new NotImplementedException();
+            return s.Substring(s.Length / 2);
         }
 
         /// <summary>
@@ -49,7 +53,7 @@ namespace WubbaLubbaDubDub
         public static string Replace(this string s, string old, string @new)
         {
             // и такой метод у строки, очевидно, тоже есть
-            throw new NotImplementedException();
+            return s.Replace(old, @new);
         }
 
         /// <summary>
@@ -65,7 +69,8 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            throw new NotImplementedException();
+            return s.Select(c => ((int)c).ToString("X4")).
+                Aggregate("", (x, y) => x + "u" + y);           
         }
 
         /// <summary>
@@ -77,7 +82,7 @@ namespace WubbaLubbaDubDub
                 Собрать строку из последовательности строк можно несколькими способами.
                 Один из низ - статический метод Concat. Но ты можешь выбрать любой.
             */
-            throw new NotImplementedException();
+            return s.Reverse().Aggregate("",(string x, char y) => x + y);
         }
 
         /// <summary>
@@ -90,7 +95,9 @@ namespace WubbaLubbaDubDub
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            throw new NotImplementedException();
+            return s.Select(c => char.IsLower(c) ? char.ToUpper(c) :
+                char.IsUpper(c) ? char.ToLower(c) : c).
+                Aggregate("", (string x, char y) => x + y);
         }
 
         /// <summary>
@@ -99,7 +106,8 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            throw new NotImplementedException();
+            return s.Select(c => (char)(c + 1)).
+                Aggregate("", (string x, char y) => x + y);
         }
 
 
@@ -111,13 +119,30 @@ namespace WubbaLubbaDubDub
         /// Текст <see cref="text"/> так же содержит строчные (//) и блоковые (/**/) комментарии, которые нужно игнорировать.
         /// Т.е. в комментариях идентификаторы объектов искать не нужно. И, кстати, блоковые комментарии могут быть многострочными.
         /// </summary>
-        public static IImmutableList<long> GetUsedObjects(this string text)
+        public static IEnumerable<long> GetUsedObjects(this string text)
         {
+
             /*
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
+            // 1. Удаляем однострочные комментарии
+            string result = Regex.Replace(text, "//.*", " ");
+            // 2. Преобразуем текст в одну строку, убираем \n
+            result = result.Replace('\n', ' ');
+            // 3. Убираем многострочные комментарии
+            result = Regex.Replace(result, @"/\*.*\*/", " ");
+            // 4. Находим нужные идентификаторы
+            var matches = Regex.Matches(result, @"¶(\w{4}):(\w{4})¶");
+            HashSet<long> hashSet = new HashSet<long>();
+            foreach (Match match in matches)
+            {
+                var a = match.Groups[1].Value + match.Groups[2].Value;
+                byte[] toBytes = Encoding.ASCII.GetBytes(a);
+                long toLong = BitConverter.ToInt64(toBytes, 0);
+                hashSet.Add(toLong);
+            }
+            return hashSet;           
         }
 
         #endregion
