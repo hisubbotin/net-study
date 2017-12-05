@@ -102,7 +102,7 @@ namespace WubbaLubbaDubDub
         public static IImmutableList<long> GetUsedObjects(this string text)
         {
             var id = new Regex("[0-9A-Fa-f]{4}:[0-9A-Fa-f]{4}");
-            var comment = new Regex(@"(//.*)|(/\*((?!(\*/)).|\n|\r)*\*/)");
+            var comment = new Regex(@"//.*|/\*((?!(\*/)).|\n|\r)*\*/");
 
             return comment.Split(text)
                 .SelectMany(txt => id.Matches(txt).Select(match => match.Groups[0].Value))
