@@ -18,14 +18,14 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
-        public double X { get; set; }
-        public double Y { get; set; }
+        public double X { get; }
+        public double Y { get; }
 
         /// <summary>
         /// Конструктор вектора, принимающий его координаты
         /// </summary>
-        /// <param name="x">Первая координата вектора, <see cref="double"/></param>
-        /// <param name="y">Вторая координата вектора, <see cref="double"/></param>
+        /// <param name="x">Первая координата вектора</param>
+        /// <param name="y">Вторая координата вектора</param>
         public Vector(double x, double y)
         {
             X = x;
@@ -47,7 +47,7 @@ namespace BoringVector
         /// <returns>Длина вектора (норма в евклидовом пространстве), <see cref="double"/></returns>
         public double SquareLength()
         {
-            return Math.Sqrt(X * X + Y * Y);
+            return X * X + Y * Y;
         }
 
         /// <summary>
@@ -99,7 +99,7 @@ namespace BoringVector
         /// <returns>Координаты вектора, <see cref="string"/></returns>
         public override string ToString()
         {
-            return "(" + X + "; " + Y + ")";
+            return $"({X}; {Y})";
         }
 
         #region operators
@@ -114,11 +114,11 @@ namespace BoringVector
         /// <summary>
         /// Оператор унарного плюса
         /// </summary>
-        /// <param name="v">Вектор, к которому необходмо применить оператор, <see cref="Vector"/></param>
+        /// <param name="v">Вектор, к которому необходимо применить оператор, <see cref="Vector"/></param>
         /// <returns>Вектор, равный данному, <see cref="Vector"/></returns>
         public static Vector operator +(Vector v)
         {
-            return new Vector(v.X, v.Y);
+            return v;
         }
 
         /// <summary>

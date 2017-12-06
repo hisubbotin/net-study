@@ -10,7 +10,7 @@ namespace BoringVector.Tests
         public void TestVectorSquareLength(double x, double y, double result)
         {
             var v = new Vector(x, y);
-            Assert.Equal(v.SquareLength(), result);
+            Assert.Equal(v.SquareLength(), result, 7);
         }
 
         [Theory]

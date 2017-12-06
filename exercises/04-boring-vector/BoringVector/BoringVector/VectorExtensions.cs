@@ -33,27 +33,36 @@ namespace BoringVector
         /// <returns>Нормированный вектор, <see cref="Vector"/></returns>
         public static Vector Normalize(Vector v)
         {
-            return new Vector(v.X / v.SquareLength(), v.Y / v.SquareLength());
+            return v / Math.Sqrt(v.SquareLength());
         }
 
         /// <summary>
-        /// Возвращает угол между двумя векторами в радианах
+        /// Возвращает угол между двумя векторами в радианах в отрезке [0, pi]
         /// </summary>
         /// <param name="v1">Первый вектор, <see cref="Vector"/></param>
         /// <param name="v2">Второй вектор, <see cref="Vector"/></param>
-        /// <returns>Угол между двумя векторами в радианах, <see cref="double"/></returns>
+        /// <returns>Угол между двумя векторами в радианах в отрезке [0, pi], <see cref="double"/></returns>
         public static double GetAngleBetween(Vector v1, Vector v2)
         {
             return Math.Acos(v1.CrossProduct(v2));
         }
 
         /// <summary>
-        /// Возможные отношения между двумя векторами ("общий случай", параллельны, перпендикулярны)
+        /// Возможные отношения между двумя векторами
         /// </summary>
         public enum VectorRelation
         {
+            /// <summary>
+            /// "Общий случай"
+            /// </summary>
             General,
+            /// <summary>
+            /// Векторы параллельны
+            /// </summary>
             Parallel,
+            /// <summary>
+            /// Векторы перпендикулярны
+            /// </summary>
             Orthogonal
         }
 
