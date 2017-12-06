@@ -637,6 +637,7 @@ public static void Main()
 - Создавать отдельный элемент Unknown / None / Default = 0 в enumе
 - Пользоваться методом `Enum.IsDefined` для проверки валиднсти значения enum
 - Не создавать элементы enum "на будущее"
+- Вообще enum в C# выглядит глобально [поломанным](https://codeblog.jonskeet.uk/2009/09/10/generic-constraints-for-enums-and-delegates/), можно пробовать использовать сторонние реализации, например, [EnumNet](https://github.com/TylerBrinkley/Enums.NET)
 
 <div style="page-break-after: always;"></div>
 
