@@ -27,7 +27,7 @@ namespace CallMeMaybe.V1
         /// Как думаешь, почему я скрыл конструктор?
         /// Не хочется кидать исключение, если придет null?
         /// </summary>
-        private Maybe(T value) : this()
+        private Maybe(T value)
         {
             _value = value;
             HasValue = true;
