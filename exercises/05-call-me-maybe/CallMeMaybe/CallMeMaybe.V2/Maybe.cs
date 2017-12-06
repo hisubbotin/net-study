@@ -20,42 +20,36 @@ namespace CallMeMaybe.V2
         }
 
         /// <inheritdoc />
-        public override string ToString()
-        {
-            return HasValue ? _value.ToString() : "null";
-        }
+        public override string ToString() => HasValue ? _value.ToString() : "null";
 
-        public static implicit operator Maybe<T>(T value)
-        {
-            throw new NotImplementedException();
-        }
+        public static implicit operator Maybe<T>(T value) => value != null ? new Maybe<T>(value) : Nothing;
 
-        #region IEnumerable<T> inerface implementation
+        #region IEnumerable<T> interface implementation
 
         /*
             Здесь реализуй интерфейс IEnumerable<T>.
             Про какой подводный камень нужно помнить, когда объекты Maybe<T> используются как объекты типа IEnumerable?
+            не знаю :(
         */
 
         /// <inheritdoc />
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            if (HasValue) {
+                yield return _value;
+            }
         }
 
         /// <inheritdoc />
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
         #endregion
 
 
         #region Optional useful methods
 
-        public T GetValueOrDefault() => throw new NotImplementedException();
-        public T GetValueOrDefault(T defaultValue) => throw new NotImplementedException();
+        public T GetValueOrDefault() => HasValue ? _value : default(T);
+        public T GetValueOrDefault(T defaultValue) => HasValue ? _value : defaultValue;
 
         #endregion
     }
