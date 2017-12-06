@@ -25,7 +25,7 @@ namespace CallMeMaybe
 
         public static implicit operator Maybe<T>(T value)
         {
-            throw new NotImplementedException();
+            return value != null ? new Maybe<T>(value) : Nothing;
         }
 
         #region LINQ syntax providers
@@ -33,27 +33,27 @@ namespace CallMeMaybe
         public Maybe<TResult> Select<TResult>(Func<T, TResult> map)
         {
             // обеспечит поддержку одинарного from
-            throw new NotImplementedException();
+            return HasValue ? map(Value) : Maybe<TResult>.Nothing;
         }
         public Maybe<TResult> Select<TResult>(Func<T, Maybe<TResult>> maybeMap)
         {
             // обеспечит поддержку одинарного from
-            throw new NotImplementedException();
+            return HasValue ? maybeMap(Value) : Maybe<TResult>.Nothing;
         }
         public Maybe<TResult> SelectMany<T2, TResult>(Func<T, Maybe<T2>> otherSelector, Func<T, T2, TResult> resultSelector)
         {
             // обеспечит поддержку цепочки from
-            throw new NotImplementedException();
+            return HasValue ? otherSelector(Value).HasValue ? resultSelector(Value, otherSelector(Value).Value) : Maybe<TResult>.Nothing : Maybe<TResult>.Nothing;
         }
         public Maybe<TResult> SelectMany<T2, TResult>(Func<T, Maybe<T2>> otherSelector, Func<T, T2, Maybe<TResult>> maybeResultSelector)
         {
             // обеспечит поддержку цепочки from
-            throw new NotImplementedException();
+            return HasValue ? otherSelector(Value).HasValue ? maybeResultSelector(Value, otherSelector(Value).Value) : Maybe<TResult>.Nothing : Maybe<TResult>.Nothing;
         }
         public Maybe<T> Where(Predicate<T> predicate)
         {
             // обеспечит поддержку кляузы where
-            throw new NotImplementedException();
+            return HasValue ? predicate(Value) ? Value : Nothing : Nothing; 
         }
 
         #endregion
@@ -62,35 +62,47 @@ namespace CallMeMaybe
 
         public static explicit operator T(Maybe<T> maybe)
         {
-            throw new NotImplementedException();
+            return maybe._value;
         }
 
-        public T GetValueOrDefault() => throw new NotImplementedException();
-        public T GetValueOrDefault(T defaultValue) => throw new NotImplementedException();
+        public T GetValueOrDefault() => Value;
+        public T GetValueOrDefault(T defaultValue) => HasValue ? Value : defaultValue;
 
         public TResult SelectOrElse<TResult>(Func<T, TResult> map, Func<TResult> elseMap)
         {
-            throw new NotImplementedException();
+            return HasValue ? map(Value) : elseMap();
         }
 
         public void Do(Action<T> doAction)
         {
-            throw new NotImplementedException();
+            if (HasValue)
+            {
+                doAction(Value);
+            }
         }
         public void DoOrElse(Action<T> doAction, Action elseAction)
         {
-            throw new NotImplementedException();
+            if (HasValue)
+            {
+                doAction(Value);
+            }
+            else
+            {
+                elseAction();
+            }
         }
 
         public T OrElse(Func<T> elseMap)
         {
-            throw new NotImplementedException();
+            return (!HasValue) ? elseMap() : Value;
         }
-        public void OrElse(Action elseAction)
+        public void OrElseDo(Action elseAction)
         {
-            throw new NotImplementedException();
+            if (!HasValue)
+            {
+                elseAction();
+            }
         }
-
         #endregion
     }
 }
