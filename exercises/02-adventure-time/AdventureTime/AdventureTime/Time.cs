@@ -128,7 +128,8 @@ namespace AdventureTime
                 2) Проверь, учитывается ли Kind объектов при арифметических операциях.
                 3) Подумай, почему возвращаемое значение может отличаться от действительности.
             */
-            return (int) (dt2 - dt1).TotalHours;
+             
+            return (int) (dt2.ToUniversalTime() - dt1.ToUniversalTime()).TotalHours;
         }
 
         /// <summary>
@@ -137,8 +138,7 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            var time = new DateTime();
-            return (int)(time.AddMonths(3) - time).TotalMinutes;
+            return (int)(DateTime.Now.AddMonths(3) - DateTime.Now).TotalMinutes;
         }
 
         #region Adventure time saga
@@ -343,9 +343,10 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            return person1Birthday.Day == person2Birthday.Day &&
-                    person1Birthday.Month == person2Birthday.Month &&
-                    person1Birthday.Year == person2Birthday.Year;
+            person1Birthday = person1Birthday.ToUniversalTime();
+            person2Birthday = person2Birthday.ToUniversalTime();
+            return person1Birthday.Day == person2Birthday.Day && 
+                                  person1Birthday.Month == person2Birthday.Month;
         }
     }
 }
