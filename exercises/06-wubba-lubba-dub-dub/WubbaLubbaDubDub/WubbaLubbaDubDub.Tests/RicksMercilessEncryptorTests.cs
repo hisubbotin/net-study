@@ -6,7 +6,7 @@ namespace WubbaLubbaDubDub.Tests
     public class RicksMercilessEncryptorTests
     {
         [Theory]
-        [InlineData("a\na\na\na\na\n")]
+        [InlineData("a\na\na\na\na")]
         public void Test_SplitToLines(string text)
         {
             Assert.Equal(5, text.SplitToLines().Length);
@@ -55,7 +55,7 @@ namespace WubbaLubbaDubDub.Tests
         }
 
         [Theory]
-        [InlineData("Unity", "\u0055\u006E\u0069\u0074\u0079")]
+        [InlineData("Unity", @"\u0055\u006E\u0069\u0074\u0079")]
         public void Test_CharToCodes(string line, string res)
         {
             Assert.Equal(res, line.CharsToCodes());
@@ -83,13 +83,12 @@ namespace WubbaLubbaDubDub.Tests
         }
 
         [Theory]
-        [InlineData("Dimension C-0000:0089 is one of the many universes /*in the " +
-                    "multiverse*/ and the universe where the mainstream Rick and Morty " +
-                    "//are often identified as coming from 0000:0089.", 
-                    new long[] {137L})]
-        public void Test_GetUsedObjects(string line, long[] res)
+        [InlineData("Dimension C-0000:0089 is one of the many universes /*in the \n" +
+                    "multiverse 0000:0089*/ and the universe where the mainstream Rick and Morty \n" +
+                    "//are often identified as coming from 0000:0089.")]
+        public void Test_GetUsedObjects(string line)
         {
-            Assert.Equal(res, line.GetUsedObjects());
+            Assert.Equal(new long[] {137L}, line.GetUsedObjects());
         }
     }
 }
