@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Text.RegularExpressions;
 
 namespace WubbaLubbaDubDub
 {
@@ -12,7 +14,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToLines(this string text)
         {
             // У строки есть специальный метод. Давай здесь без регулярок
-            throw new NotImplementedException();
+            return text.Split('\n');
         }
 
         /// <summary>
@@ -21,7 +23,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            throw new NotImplementedException();
+            return Regex.Split(line, "\\w+");
         }
 
         /// <summary>
@@ -31,7 +33,7 @@ namespace WubbaLubbaDubDub
         public static string GetLeftHalf(this string s)
         {
             // у строки есть метод получения подстроки
-            throw new NotImplementedException();
+            return s.Substring(s.Length / 2);
         }
 
         /// <summary>
@@ -40,7 +42,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetRightHalf(this string s)
         {
-            throw new NotImplementedException();
+            return s.Substring(s.Length / 2);
         }
 
         /// <summary>
@@ -49,7 +51,7 @@ namespace WubbaLubbaDubDub
         public static string Replace(this string s, string old, string @new)
         {
             // и такой метод у строки, очевидно, тоже есть
-            throw new NotImplementedException();
+            return s.Replace(old, @new);
         }
 
         /// <summary>
@@ -65,7 +67,10 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            throw new NotImplementedException();
+
+            return s.Select(c => string.Concat(s, Convert.ToByte((int) char.GetNumericValue(c))
+                                               .ToString()))
+                    .ToString();
         }
 
         /// <summary>
@@ -77,7 +82,7 @@ namespace WubbaLubbaDubDub
                 Собрать строку из последовательности строк можно несколькими способами.
                 Один из низ - статический метод Concat. Но ты можешь выбрать любой.
             */
-            throw new NotImplementedException();
+            return s.Reverse().ToString();
         }
 
         /// <summary>
@@ -90,7 +95,7 @@ namespace WubbaLubbaDubDub
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            throw new NotImplementedException();
+            return s.Select(c => char.IsLower(c) ? char.ToUpper(c) : char.ToLower(c)).ToString();
         }
 
         /// <summary>
@@ -99,7 +104,8 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            throw new NotImplementedException();
+            return s.Select(c => char.ConvertFromUtf32((int)char.GetNumericValue(c) + 1))
+                    .ToString();
         }
 
 
@@ -117,7 +123,14 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
+
+            return new Regex(@"\/\/.*\n|\/\*(.|\n)*\*\/")
+                .Split(text)
+                .SelectMany(s => new Regex("[0-9A-F]{4}:[0-9A-F]{4}")
+                            .Matches(s)
+                            .Select(match => match.Groups[0].Value))
+                .Select(s => Convert.ToInt64(s.Replace(":", string.Empty), 16))
+                .ToImmutableList();
         }
 
         #endregion
