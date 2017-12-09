@@ -16,12 +16,12 @@ namespace BoringVector
         /// <summary>
         /// первая вещественная координата вектора
         /// </summary>
-        public double x;
+        public double x { get; }
 
         /// <summary>
         /// вторая вещественная координата вектора
         /// </summary>
-        public double y;
+        public double y { get; }
 
         public Vector(double x_val, double y_val) 
         {
@@ -52,9 +52,7 @@ namespace BoringVector
         /// <param name="v">вектор для добавления</param>
         public Vector Add(Vector v)
         {
-            x += v.x;
-            y += v.y;
-            return this;
+            return new Vector(x + v.x, y + v.y);
         }
 
         /// <summary>
@@ -63,9 +61,7 @@ namespace BoringVector
         /// <param name="k">коэф для умножения</param>
         public Vector Scale(double k)
         {
-            x *= k;
-            y *= k;
-            return this;
+            return new Vector(x*k, y*k);
         }
 
         /// <summary>
