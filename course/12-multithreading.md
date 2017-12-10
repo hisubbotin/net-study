@@ -489,6 +489,22 @@ private static Int32 Sum(CancellationToken ct, int n)
 
 ### async / await
 
-[async Main](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-7-1)
+Links:
+
+- [C# Asynchronous programming](https://docs.microsoft.com/en-us/dotnet/csharp/async)
+- [MSDN: Асинхронное программирование с использованием ключевых слов Async и Await (C#)](https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/concepts/async/)
+- [MSDN: Asynchronous Programming - Async Performance: Understanding the Costs of Async and Await (By Stephen Toub | October 2011)](https://msdn.microsoft.com/en-us/magazine/hh456402.aspx)
+- [Habrahabr: async C#](https://habrahabr.ru/post/107498/)
+- [Habrahabr: Использование async и await в C# — лучшие практики](https://habrahabr.ru/post/162353/)
+
+- [Teplyakov: Dissecting async](https://blogs.msdn.microsoft.com/seteplia/2017/11/30/dissecting-the-async-methods-in-c/)
+- [Joseph Albahari (Teplyakov translate)](http://www.albahari.com/threading/part5.aspx)
+  - [3 - Thread, Cancellation, Lazy](http://sergeyteplyakov.blogspot.ru/2010/08/c-3.html)
+  - [4 - Barrier, Locks](http://sergeyteplyakov.blogspot.ru/2010/08/c-4.html)
+  - [5.1 PLINQ](http://sergeyteplyakov.blogspot.ru/2010/09/51.html)
+  - [5.2 Parallel, TPL, Task, Параллельные коллекции, SpinLock и SpinWait](http://sergeyteplyakov.blogspot.ru/2010/09/52.html)
+
+- [SOF: What is the difference between asynchronous programming and multithreading?](https://stackoverflow.com/questions/34680985/what-is-the-difference-between-asynchronous-programming-and-multithreading)
+- [SOF:Asynchronous vs synchronous execution, what does it really mean?](https://stackoverflow.com/questions/748175/asynchronous-vs-synchronous-execution-what-does-it-really-mean?rq=1)
 
 ### SyncronizationContext
