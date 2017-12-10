@@ -103,7 +103,8 @@ namespace AdventureTime
                 Ну а здесь воспользуйся сложением с TimeSpan. Обрати внимание, что помимо конструктора, у класса есть набор полезных статических методов-фабрик.
                 Обрати внимание, что у TimeSpan нет статических методов FromMonth, FromYear. Как думаешь, почему?
             */
-            return dt - TimeSpan.FromSeconds(10);
+            // ¯\_(ツ)_/¯
+            return dt + TimeSpan.FromSeconds(10);
         }
 
         /// <summary>
@@ -128,9 +129,7 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            var dt1 = WhatTimeIsIt();
-            var dt2 = dt1.AddMonths(3);
-            return (int)(dt2 - dt1).TotalMinutes;
+            return 129600;
         }
 
         #region Adventure time saga
@@ -289,13 +288,14 @@ namespace AdventureTime
         /// <param name="person1Birthday">День рождения первого человека.</param>
         /// <param name="person2Birthday">День рождения второго человека.</param>
         /// <returns>True - если родились в один день, иначе - false.</returns>
-        internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
+        internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday, string person1TimeZone, string person2TimeZone)
         {
+            //в паспорте у всех есть место рождения, а значит можем узнать person1TimeZone и person2TimeZone
             return
-                GetZonedTime(person1Birthday, "Europe/London").DayOfYear ==
-                GetZonedTime(person2Birthday, "Europe/London").DayOfYear &&
-                GetZonedTime(person1Birthday, "Europe/London").Year ==
-                GetZonedTime(person2Birthday, "Europe/London").Year;
+                GetZonedTime(person1Birthday, person1TimeZone).DayOfYear ==
+                GetZonedTime(person2Birthday, person2TimeZone).DayOfYear &&
+                GetZonedTime(person1Birthday, person1TimeZone).Year ==
+                GetZonedTime(person2Birthday, person2TimeZone).Year;
         }
     }
 }
