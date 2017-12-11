@@ -148,6 +148,8 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
+            
+            // Это получилось настолько безумно, что я пока оставлю так. (Если попросите, переделаю нормально)
             var pairs = GetDrunkFibonacci().Zip(GetDrunkFibonacci().Skip(1), (x, y) => new List<int> {x, y})
                 .Where(((ints, i) => i % 2 == 0));
             Func<IEnumerable<IEnumerable<int>>, IEnumerable<IEnumerable<int>>> concat = (x) => 
