@@ -105,7 +105,7 @@ namespace AdventureTime
                 Ну а здесь воспользуйся сложением с TimeSpan. Обрати внимание, что помимо конструктора, у класса есть набор полезных статических методов-фабрик.
                 Обрати внимание, что у TimeSpan нет статических методов FromMonth, FromYear. Как думаешь, почему?
             */
-            return dt - TimeSpan.FromSeconds(10);
+            return dt + TimeSpan.FromSeconds(10);
         }
 
         /// <summary>
@@ -133,9 +133,7 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            var dt1 = WhatTimeIsIt();
-            var dt2 = dt1.AddMonths(3);
-            return (int)Math.Floor(Math.Abs((dt2 - dt1).TotalMinutes + 0.0001));
+            throw new NotSupportedException("Task is not correct");
         }
 
         #region Adventure time saga
@@ -297,10 +295,14 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            return GetZonedTime(person1Birthday, "Europe/London").DayOfYear == 
-                       GetZonedTime(person2Birthday, "Europe/London").DayOfYear && 
-                   GetZonedTime(person1Birthday, "Europe/London").Year == 
-                       GetZonedTime(person2Birthday, "Europe/London").Year;
+            if (person1Birthday.Kind == DateTimeKind.Unspecified &&
+                person2Birthday.Kind == DateTimeKind.Unspecified &&
+                person1Birthday.TimeOfDay == TimeSpan.Zero && 
+                person2Birthday.TimeOfDay == TimeSpan.Zero)
+            {
+                return person1Birthday.Equals(person2Birthday);
+            }
+            throw new NotSupportedException("Not supported date format");
         }
     }
 }
