@@ -5,13 +5,15 @@ namespace BoringVector
 {
     /*
         Здесь тебе нужно написать класс с методами-расширениями структуры Vector:
-            - IsZero: проверяет, является ли вектор нулевым, т.е. его координаты близки к нулю (в эпсилон окрестности). За эпсилон здесь и далее берем 1e-6.
+            - IsZero: проверяет, является ли вектор нулевым, т.е. его координаты близки к нулю (в эпсилон окрестности). За эпсилон здесь и далее берем precision.
             - Normalize: нормализует вектор
             - GetAngleBetween: возвращает угол между двумя векторами в радианах. Примечание: нулевой вектор сонаправлен любому другому.
             - GetRelation: возвращает значение перечесления VectorRelation(General, Parallel, Orthogonal) - отношение между двумя векторами("общий случай", параллельны, перпендикулярны). Перечисление задавать тоже тебе)
     */
-    public static class VectorExt
+    public static class VectorExtensions
     {
+        public static double precision = 1e-10;
+        
         public enum VectorRelation
         {
             General,
@@ -22,7 +24,7 @@ namespace BoringVector
         
         public static bool IsZero(this Vector v)
         {
-            return Math.Abs(v.X) < 1e-6 && Math.Abs(v.Y) < 1e-6;
+            return Math.Abs(v.X) < precision && Math.Abs(v.Y) < precision;
         }
 
         public static Vector Normalize(this Vector v)
@@ -36,18 +38,19 @@ namespace BoringVector
             {
                 return 0;
             }
-            return Math.Asin(v.CrossProduct(u) / Math.Sqrt(v.SquareLength()) / Math.Sqrt(u.SquareLength()));
+            double vLength = Math.Sqrt(v.SquareLength());
+            double uLength = Math.Sqrt(u.SquareLength());
+            return Math.Asin(v.CrossProduct(u) / vLength / uLength);
         }
 
         public static VectorRelation GetRelation(this Vector v, Vector u)
         {
-            double angle = v.GetAngleBetween(u);
-            if (Math.Abs(angle) < 1e-6)
+            if (Math.Abs(v.GetAngleBetween(u)) < precision)
             {
                 return VectorRelation.Parallel;
             }
 
-            if (Math.Abs(v.DotProduct(u)) < 1e-6)
+            if (Math.Abs(v.DotProduct(u)) < precision)
             {
                 return VectorRelation.Orthogonal;
             }

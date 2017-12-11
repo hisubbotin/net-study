@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 
 
-[assembly: InternalsVisibleTo("BoringVector.Tests")]
 namespace BoringVector
 {
     #region 1. Структура Vector
@@ -24,11 +23,11 @@ namespace BoringVector
         /// <summary>
         /// X координата  <see cref="Vector"/> .
         /// </summary>
-        public double X { get; set; }
+        public double X { get; }
         /// <summary>
         /// Y координата <see cref="Vector"/>
         /// </summary>
-        public double Y { get; set; }
+        public double Y { get; }
 
         /// <summary>
         /// Конструктор по двум координатам <see cref="Vector"/>.
@@ -109,7 +108,7 @@ namespace BoringVector
         /// <returns>string в формате (X, Y)</returns>
         public override string ToString()
         {
-            return string.Format("({0}, {1})", X.ToString(), Y.ToString());
+            return string.Format("({0}; {1})", X.ToString(), Y.ToString());
         }
 
         #region operators
