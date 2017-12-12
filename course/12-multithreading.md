@@ -489,22 +489,284 @@ private static Int32 Sum(CancellationToken ct, int n)
 
 ### async / await
 
+- Проблемы чистых Task
+  - `.Result` блокирует поток, что не хорошо.
+  - Писать реальный код с `ContinueWith` очень сложно и код получается тяжелый. Пример [msdn](https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/chaining-tasks-by-using-continuation-tasks)
+
+<div style="page-break-after: always;"></div>
+
+Если совсем упрощенно:
+
+```cs
+Factory.StartNew(() => DoSomeAsyncWork())
+    .ContinueWith(
+        (antecedent) =>
+        {
+            DoSomeWorkAfter();
+        },
+        TaskScheduler.FromCurrentSynchronizationContext());
+```
+
+Заменяется:
+
+```cs
+await DoSomeAsyncWork();
+DoSomeWorkAfter();
+```
+
+<div style="page-break-after: always;"></div>
+
+- Ключевое слово `async`
+  - Включает в методе поддержку await
+  - Изменяет как обрабатывается результат
+  - Не создает отдельных потоков или любой другой магии
+- Ключевое слово `await`
+  - Что-то в духе `asynchronous wait`
+  - Некоторый унарный оператор, который принимает асинхронную операцию
+  - Откладывает остаток метода до завершения операции, если она еще не выполнена
+  - То есть метод ставится на паузу (что-то похожее на yielding) до завершения операции
+  - Поток не блокируется
+
+```cs
+public async Task DoSomethingAsync()
+{
+  // In the Real World, we would actually do something...
+  // For this example, we're just going to (asynchronously) wait 100ms.
+  await Task.Delay(100);
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+async Task<int> AccessTheWebAsync()
+{
+    HttpClient client = new HttpClient();
+
+    // GetStringAsync returns a Task<string>. That means that when you await the
+    // task you'll get a string (urlContents).
+    Task<string> getStringTask = client.GetStringAsync("http://msdn.microsoft.com");
+
+    // You can do work here that doesn't rely on the string from GetStringAsync.
+    DoIndependentWork();
+
+    // The await operator suspends AccessTheWebAsync.
+    //  - AccessTheWebAsync can't continue until getStringTask is complete.
+    //  - Meanwhile, control returns to the caller of AccessTheWebAsync.
+    //  - Control resumes here when getStringTask is complete.
+    //  - The await operator then retrieves the string result from getStringTask.
+    string urlContents = await getStringTask;
+
+    return urlContents.Length;
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+public async Task NewStuffAsync()
+{
+  // Use await and have fun with the new stuff.
+  await ...
+}
+
+public Task MyOldTaskParallelLibraryCode()
+{
+  // Note that this is not an async method, so we can't use await in here.
+  ...
+}
+
+public async Task ComposeAsync()
+{
+  // We can await Tasks, regardless of where they come from.
+  await NewStuffAsync();
+  await MyOldTaskParallelLibraryCode();
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+- Что может возвращать `async` метод
+  - `Task<T>`
+  - `Task`
+  - void
+
+Всегда лучше возвращать Task вместо void, который используется в очень специфичных сценариях типа EventHandler / `static async void MainAsync()`
+
+```cs
+public async Task<int> CalculateAnswer()
+{
+  await Task.Delay(100); // (Probably should be longer...)
+
+  return 42; // Return a type of "int", not "Task<int>"
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+| Before | After | Comments
+|-|-|-|
+| `task.Wait` | `await task` | Wait/await for a task to complete
+| `task.Result` | `await task` | Get the result of a completed task
+| `Task.WaitAny` | `await Task.WhenAny` | Wait/await for one of a collection of tasks to complete
+| `Task.WaitAll` | `await Task.WhenAll` | Wait/await for every one of a collection of tasks to complete
+| `Thread.Sleep` | `await Task.Delay` | Wait/await for a period of time
+| Task constructor | `Task.Run` or `TaskFactory.StartNew` | Create a code-based task
+
+<div style="page-break-after: always;"></div>
+
+Context
+
+```cs
+// WinForms example (it works exactly the same for WPF).
+private async void DownloadFileButton_Click(object sender, EventArgs e)
+{
+  // Since we asynchronously wait, the UI thread is not blocked by the file download.
+  await DownloadFileAsync(fileNameTextBox.Text);
+
+  // Since we resume on the UI context, we can directly access UI elements.
+  resultTextBox.Text = "File downloaded!";
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+private async Task DownloadFileAsync(string fileName)
+{
+  // Use HttpClient or whatever to download the file contents.
+  var fileContents = await DownloadFileContentsAsync(fileName).ConfigureAwait(false);
+
+  // Note that because of the ConfigureAwait(false), we are not on the original context here.
+  // Instead, we're running on the thread pool.
+
+  // Write the file contents out to a disk file.
+  await WriteToDiskAsync(fileName, fileContents).ConfigureAwait(false);
+  // The second call to ConfigureAwait(false) is not *required*, but it is Good Practice.
+}
+
+// WinForms example (it works exactly the same for WPF).
+private async void DownloadFileButton_Click(object sender, EventArgs e)
+{
+  // Since we asynchronously wait, the UI thread is not blocked by the file download.
+  await DownloadFileAsync(fileNameTextBox.Text);
+
+  // Since we resume on the UI context, we can directly access UI elements.
+  resultTextBox.Text = "File downloaded!";
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+- В .NET Core контекста нет
+  - Вся информация, которая раньше хранилась в контексте, теперь передается через DI
+- В .NET Framework контекст есть
+  - Если нам не нужен контекс смело везде фигачим `.ConfigureAwait(false)`
+- Если .NET Standard библиотека предполагает широкое использование (в том числе на .NET Framework), лучше `.ConfigureAwait(false)` везде, где это возможно.
+
+<div style="page-break-after: always;"></div>
+
+```cs
+public async Task DoOperationsConcurrentlyAsync()
+{
+  Task[] tasks = new Task[3];
+  tasks[0] = DoOperation0Async();
+  tasks[1] = DoOperation1Async();
+  tasks[2] = DoOperation2Async();
+
+  // At this point, all three tasks are running at the same time.
+
+  // Now, we await them all.
+  await Task.WhenAll(tasks);
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+public async Task<int> GetFirstToRespondAsync()
+{
+  // Call two web services; take the first response.
+  Task<int>[] tasks = new[] { WebService1Async(), WebService2Async() };
+
+  // Await for the first one to respond.
+  Task<int> firstTask = await Task.WhenAny(tasks);
+
+  // Return the result.
+  return await firstTask;
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+await someObject;
+```
+
+```cs
+private class FooAsyncStateMachine : IAsyncStateMachine
+{
+    // Member fields for preserving “locals” and other necessary state
+    int $state;
+    TaskAwaiter $awaiter;
+    …
+    public void MoveNext()
+    {
+        // Jump table to get back to the right statement upon resumption
+        switch (this.$state)
+        {
+            …
+            case 2: goto Label2;
+            …
+        }
+        …
+        // Expansion of “await someObject;”
+        this.$awaiter = someObject.GetAwaiter();
+        if (!this.$awaiter.IsCompleted)
+        {
+            this.$state = 2;
+            this.$awaiter.OnCompleted(MoveNext);
+            return;
+            Label2:
+        }
+        this.$awaiter.GetResult();
+        …
+    }
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+- `await` нельзя:
+  - в property getter/setter
+  - inside lock/synclock
+  - inside catch/finally
+  - some other situations
+- `await someTask;` vs `someTask.Wait;`
+- `task.Result` vs `task.GetAwaiter().GetResult()`
+  - сами значения в позитивном сценарии абсолютно идентичны
+  - при ошибке `.Result` - AggregationException, `GetResult` - конкретную ошибку
+
+<div style="page-break-after: always;"></div>
+
 Links:
 
-- [C# Asynchronous programming](https://docs.microsoft.com/en-us/dotnet/csharp/async)
-- [MSDN: Асинхронное программирование с использованием ключевых слов Async и Await (C#)](https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/concepts/async/)
-- [MSDN: Asynchronous Programming - Async Performance: Understanding the Costs of Async and Await (By Stephen Toub | October 2011)](https://msdn.microsoft.com/en-us/magazine/hh456402.aspx)
-- [Habrahabr: async C#](https://habrahabr.ru/post/107498/)
-- [Habrahabr: Использование async и await в C# — лучшие практики](https://habrahabr.ru/post/162353/)
-
-- [Teplyakov: Dissecting async](https://blogs.msdn.microsoft.com/seteplia/2017/11/30/dissecting-the-async-methods-in-c/)
+- async
+  - [C# Asynchronous programming](https://docs.microsoft.com/en-us/dotnet/csharp/async)
+  - [MSDN: Асинхронное программирование с использованием ключевых слов Async и Await (C#)](https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/concepts/async/)
+  - [Async and await (Stephen Cleary)](https://blog.stephencleary.com/2012/02/async-and-await.html)
+  - [MSDN: Asynchronous Programming - Async Performance: Understanding the Costs of Async and Await (By Stephen Toub | October 2011)](https://msdn.microsoft.com/en-us/magazine/hh456402.aspx)
+  - [Teplyakov: Dissecting async](https://blogs.msdn.microsoft.com/seteplia/2017/11/30/dissecting-the-async-methods-in-c/)
+  - [Jon skeet: тонна мыслей и примеров про async, которые тяжело осмыслить](https://codeblog.jonskeet.uk/category/eduasync/)
+- habr
+  - [Habrahabr: async C#](https://habrahabr.ru/post/107498/)
+  - [Habrahabr: Использование async и await в C# — лучшие практики](https://habrahabr.ru/post/162353/)
 - [Joseph Albahari (Teplyakov translate)](http://www.albahari.com/threading/part5.aspx)
   - [3 - Thread, Cancellation, Lazy](http://sergeyteplyakov.blogspot.ru/2010/08/c-3.html)
   - [4 - Barrier, Locks](http://sergeyteplyakov.blogspot.ru/2010/08/c-4.html)
   - [5.1 PLINQ](http://sergeyteplyakov.blogspot.ru/2010/09/51.html)
   - [5.2 Parallel, TPL, Task, Параллельные коллекции, SpinLock и SpinWait](http://sergeyteplyakov.blogspot.ru/2010/09/52.html)
-
-- [SOF: What is the difference between asynchronous programming and multithreading?](https://stackoverflow.com/questions/34680985/what-is-the-difference-between-asynchronous-programming-and-multithreading)
-- [SOF:Asynchronous vs synchronous execution, what does it really mean?](https://stackoverflow.com/questions/748175/asynchronous-vs-synchronous-execution-what-does-it-really-mean?rq=1)
-
-### SyncronizationContext
+- SOF
+  - [SOF: What is the difference between asynchronous programming and multithreading?](https://stackoverflow.com/questions/34680985/what-is-the-difference-between-asynchronous-programming-and-multithreading)
+  - [SOF:Asynchronous vs synchronous execution, what does it really mean?](https://stackoverflow.com/questions/748175/asynchronous-vs-synchronous-execution-what-does-it-really-mean?rq=1)
+  - [difference-between-await-and-continuewith, good example continue with problem](https://stackoverflow.com/questions/18965200/difference-between-await-and-continuewith?noredirect=1&lq=1)
