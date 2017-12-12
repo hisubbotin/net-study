@@ -91,7 +91,7 @@ namespace DrunkFibonacci
                 }
                 else
                 {
-                    var next = curr + prev;
+                    var next = unchecked(curr + prev);
                     prev = curr;
                     curr = next;
                     if (times % 6 == 0)
@@ -157,12 +157,28 @@ namespace DrunkFibonacci
             // Но в нашем случае оно не работает: зацикливается на GroupBy итерируясь по посл-ти, которая бесконечна
             // С фиксированным контейнером оно должно работать
             // Поэтому сделаем не очень красиво
-            var fib = GetDrunkFibonacci();
-            for (; ; )
+
+            //var fib = GetDrunkFibonacci();
+            //for (; ; )
+            //{
+            //    yield return fib.Take(16).ToArray();
+            //    fib = fib.Skip(16);
+            //}     
+
+            // Попробуем все-таки сделать через foreach
+            List<int> chunk = new List<int>();
+            foreach (var i in GetDrunkFibonacci())
             {
-                yield return fib.Take(16).ToArray();
-                fib = fib.Skip(16);
-            }                   
+                if (chunk.Count < 16)
+                {
+                    chunk.Add(i);
+                } else
+                {
+                    yield return chunk.ToArray();
+                    chunk.Clear();
+                }
+
+            }
         }
 
         /// <summary>
