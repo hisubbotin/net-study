@@ -100,11 +100,11 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static IImmutableList<long> GetUsedObjects(this string text)
         {
-            var idRegex = new Regex("[0-9A-Z]{4}:[0-9A-Z]{4}");
-            var commentRegex = new Regex(@"(//((?!\*/).)*)(?!\*/)[^\r\n]|(/\*[\w\W]*\*/)");
-            return commentRegex.Split(text)
-                .SelectMany(s => idRegex.Matches(s)
-                    .Select(m => m.Groups[0].Value))
+            return new Regex(@"\/\/.*(\n|\Z)|\/\*(.|\n)*\*\/")
+                .Split(text)
+                .SelectMany(s => new Regex("[0-9A-F]{4}:[0-9A-F]{4}")
+                    .Matches(s)
+                    .Select(match => match.Groups[0].Value))
                 .Select(s => Convert.ToInt64(s.Replace(":", String.Empty), 16))
                 .ToImmutableList();
         }
