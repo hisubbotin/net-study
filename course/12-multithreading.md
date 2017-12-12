@@ -755,6 +755,8 @@ Links:
   - [C# Asynchronous programming](https://docs.microsoft.com/en-us/dotnet/csharp/async)
   - [MSDN: Асинхронное программирование с использованием ключевых слов Async и Await (C#)](https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/concepts/async/)
   - [Async and await (Stephen Cleary)](https://blog.stephencleary.com/2012/02/async-and-await.html)
+  - [Async/Await - Best Practices in Asynchronous Programming (Stephen Cleary)](https://msdn.microsoft.com/en-us/magazine/jj991977.aspx)
+  - [Async/Await FAQ](https://blogs.msdn.microsoft.com/pfxteam/2012/04/12/asyncawait-faq/)
   - [MSDN: Asynchronous Programming - Async Performance: Understanding the Costs of Async and Await (By Stephen Toub | October 2011)](https://msdn.microsoft.com/en-us/magazine/hh456402.aspx)
   - [Teplyakov: Dissecting async](https://blogs.msdn.microsoft.com/seteplia/2017/11/30/dissecting-the-async-methods-in-c/)
   - [Jon skeet: тонна мыслей и примеров про async, которые тяжело осмыслить](https://codeblog.jonskeet.uk/category/eduasync/)
