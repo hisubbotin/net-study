@@ -16,7 +16,8 @@ namespace Numbers
         internal static bool IsNaN(double d)
         {
             // Подсказка: по аналогии с константами типа int, у типа double тоже есть свой набор констант.
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return Double.IsNaN(d);
         }
 
         /// <summary>
@@ -28,20 +29,33 @@ namespace Numbers
                 Необходимо вернуть значение, не используя непосредственно саму константу.
                 Для этого подумай, какой смысл в себе несет эта константа и где бы она могла стать результатом операции или вычисления функции.
             */
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return 0.0 / 0.0;
         }
 
         /// <summary>
         /// Возвращает результат сравнения двух вещественнозначных чисел.
         /// </summary>
         /// <returns>-1 - первое меньше второго, 0 - значения равны, 1 - первое больше второго.</returns>
-        internal static int Compare(/* дополни сигнатуру метода как считаешь правильным */)
+        internal static int Compare(double a, double b)
         {
             /*
                 Подумай, почему это задание дано в части про вещественнозначные числа. И почему не дана полная сигнатура метода.
                 Если сходу идей нет, перестань искать подвох и просто реализуй дословно. Теперь еще раз посмотри на код и подумай в чем может быть проблема, сколько должно быть аргументов.
             */
-            throw new NotImplementedException();
+            // Скоре всего нужно добавить эпсилон, с которым сравнивать дельту для проверки равенста. 
+            // Но вроде и так рыботатет, см. пример в Program.cs
+            double delta = a - b;
+            if ( delta > 0.0 )
+            {
+                return 1;
+            } else if (delta < 0.0 ){
+                return -1;
+            } else
+            {
+                return 0;
+            }
+            //throw new NotImplementedException();
         }
 
         // и все?!! О_о
