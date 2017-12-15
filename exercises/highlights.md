@@ -18,6 +18,7 @@
     - [Vector.ToString()](#vectortostring)
     - [Static vs static readonly vs const](#static-vs-static-readonly-vs-const)
     - [Mutable structs](#mutable-structs)
+      - [!!! Переделать !!!](#-переделать-)
     - [Immutable types, field and properties](#immutable-types-field-and-properties)
       - [Что такое поля и что такое свойства](#что-такое-поля-и-что-такое-свойства)
       - [Авто-свойства](#авто-свойства)
@@ -26,6 +27,8 @@
     - [IEnumerable](#ienumerable)
     - [Переполнение типа](#переполнение-типа)
     - [Итерация с помощью IEnumerator\<int>](#итерация-с-помощью-ienumerator\int)
+  - [05. Call Me Maybe](#05-call-me-maybe)
+  - [06. Wubba Lubba Dub Dub](#06-wubba-lubba-dub-dub)
 
 <!-- /TOC -->
 
@@ -132,7 +135,7 @@ internal static int Compare(double firstNumber, double secondNumber, double prec
 
 ### GetTotalMinutesInThreeMonths
 
-__TL;DR__ Мораль задачи - относиться критически к заданиям. Вообще ко всему.
+__TL;DR__ Мораль задачи - относиться критически к заданиям. Вообще ко всему. В качестве решения хотелось увидеть отсутствие решения - `throw new NotImplementedException` - и соответствующие комментарии.
 
 Петр Гежес как-то сказал (и я с ним не согласен):
 
@@ -304,21 +307,39 @@ ___
 
 ### Vector.ToString()
 
-Сравни:
+Все примеры ниже дают один и тот же результат. Сравни их и подумай, какой когда удобнее.
 
 ```cs
+// ака interpolated string (предваряются знаком доллара).
 return $"({x}; {y})";
 ```
 
 ```cs
+// строка формата тоже короткая, но легко запутаться в индексах аргументов
 return string.Format("({0}; {1})", x, y);
 ```
+
+```cs
+return "(" + x + "; " + y + ")";
+```
+
+или то же самое, но длиннее
 
 ```cs
 return "(" + x.ToString() + "; " + y.ToString() + ")";
 ```
 
+и самый дерзкий вариант
+
+```cs
+return new StringBuilder("(").Append(x).Append("; ").Append(y).Append(")").ToString();
+```
+
 ### Static vs static readonly vs const
+
+Преамбула: разговор про то, как задать числовую константу `Epsilon` для обозначения точности сравнения вещественных чисел.
+
+Проблема: не все явно указывали её константность.
 
 Данная переменная изменяема, а по смыслу она константа. Для значимых типов так и пишут
 
@@ -327,7 +348,7 @@ return "(" + x.ToString() + "; " + y.ToString() + ")";
 Ссылочные типы константами не сделаешь кроме:
 
 - типа `string`:
-    ```cs 
+    ```cs
     const string s = "abc";
     ```
 - инициализации null'ом, т.е. для любого ссылочного типа константа может быть только пустая:
@@ -338,6 +359,8 @@ return "(" + x.ToString() + "; " + y.ToString() + ")";
 Поэтому для ссылочных типов самый близкий аналог констант это `static readonly`.
 
 ### Mutable structs
+
+#### !!! Переделать !!!
 
 Представь себе такой код:
 
@@ -556,7 +579,11 @@ public int X { get; }
 
 > При вычислении сложения переполнение типа разрешено и всячески поощряется.
 
+Не все выражали данную просьбу явно в коде.
+
 ### Итерация с помощью IEnumerator\<int>
+
+В данном коде
 
 ```cs
 IEnumerator<int> number = GetDrunkFibonacci().GetEnumerator();
@@ -570,4 +597,60 @@ while (true)
     }
     yield return chunk;
 }
+```
+
+правильнее заменить явное итерирование по последовательности циклом `foreach`.
+
+## 05. Call Me Maybe
+
+Вопросы:
+
+1. Почему Maybe - структура?
+
+    - не может быть `null`, что резко снижает количество лишних проверок
+
+1. Зачем может быть нужно такое выделенное значение? Сколько по факту будет экземпляров данного объекта?
+
+    ```cs
+    public static readonly Maybe<T> Nothing = new Maybe<T>();
+    ```
+
+    - семантически пустая Maybe явно выделяется, поэтому логично задать соответствующее значение явно. В конкретном случае Maybe как структуры, это исключительно только вопрос семантики:
+
+    ```cs
+    //что понятнее?
+
+    return new Maybe<MyClass>();
+    //или
+    return Maybe<MyClass>.Nothing;
+    ```
+
+    - самих экземпляров переменной `Maybe<T>.Nothing` будет по одному на каждый используемый тип `T`.
+
+    - а еще это значение стоило бы задать не полем, а `readonly`-свойством:
+
+    ```cs
+    public static Maybe<T> Nothing { get; } = new Maybe<T>();
+    ```
+
+1. Почему конструктор, принимающий значение, скрыт?
+
+    ```cs
+    private Maybe(T value)
+    {
+        _value = value;
+        HasValue = true;
+    }
+    ```
+
+    - ремарка: конструктор без параметров у структур неявно существует всегда и открыт. Закрыть его невозможно.
+    - чтобы значение `value` точно было не-`null`, я скрыл конструктор и сделал фабрику объектов Maybe в операторе неявного приведения. Явное приведение методами `.ToMaybe()` само экземпляры не создает, а пользуется фабрикой.
+
+## 06. Wubba Lubba Dub Dub
+
+1. В c# есть так называемые `verbatim string`, которые начинаются с @ и позволяют не писать backslash дважды:
+
+```cs
+var sadPath = "c:\\petr\\ustal\\ot\\vashikh\\slashey";
+var happyPath = @"c:\petr\feels\lyoubovno\i\prelstivo";
 ```
