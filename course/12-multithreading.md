@@ -4,10 +4,13 @@
 
 - [Multithreading](#multithreading)
   - [Thread](#thread)
+    - [`System.Threading.Thread`](#systemthreadingthread)
   - [Thread Pool](#thread-pool)
-    - [Cancellation Token](#cancellation-token)
+    - [ExecutionContext](#executioncontext)
+    - [Cancellation](#cancellation)
   - [TPL](#tpl)
     - [Класс Task](#класс-task)
+      - [Continuation](#continuation)
     - [async / await](#async--await)
     - [SyncronizationContext](#syncronizationcontext)
 
@@ -17,7 +20,7 @@
 
 ## Thread
 
-- Thread
+- Thread в винде:
   - Объект ядра потока (thread kernel object). контекст потока, набор регистров процессора ~ 1KB
   - Блок окружения потока (Thread Environment Block, TEB). 4KB, содержит заголовок цепочки обработки исключений, локальное хранилище данных для потока и некоторые структуры данных, используемые интерфейсом графических устройств (GDI) и графикой OpenGL.
   - Стек пользовательского режима (user-mode stack). По умолчанию на каждый стек Windows выделяет 1 Мбайт памяти.
@@ -25,27 +28,29 @@
 
 <div style="page-break-after: always;"></div>
 
-- `System.Threading.Thread` - соответствует потоку в ОС
-- Самый низкоуровневый объект для работы с потоками
+### `System.Threading.Thread`
+
+- `Thread` - соответствует потоку в ОС
+- Самый низкоуровневый объект в C# для работы с потоками
 - Запрещен в приложениях для windows store
 
 ```cs
 public static void Main()
 {
     Console.WriteLine("Main thread");
-    Thread dedicatedThread = new Thread(ComputeBoundOp);
+    Thread dedicatedThread = new Thread(Compute);
     dedicatedThread.Start(5);
     Console.WriteLine("Main thread: Doing other work");
-    Thread.Sleep(2000); // Имитация другой работы (10 секунд)
+    Thread.Sleep(2000);     // Имитация другой работы
     dedicatedThread.Join(); // Ожидание завершения потока
     Console.WriteLine("Main thread: ending");
 }
 
 // Передаем делегат ParameterizedThreadStart в конструктор Thread
-private static void ComputeBoundOp(Object state)
+private static void Compute(Object state)
 {
-    Console.WriteLine("In ComputeBoundOp: state={0}", state);
-    Thread.Sleep(1000); // Имитация другой работы (1 секунда)
+    Console.WriteLine("Compute: state={0}", state);
+    Thread.Sleep(1000);
 }
 ```
 
@@ -71,7 +76,8 @@ private static void ComputeBoundOp(Object state)
 dedicatedThread.Priority = ThreadPriority.AboveNormal;
 ```
 
-- Columns - Process priority
+- Табличка, как связаны C# приоритеты потоков, приоритеты процессов в винде с реальными приоритетами потоков в ОС
+- Левая колонка - приоритеты потоков в c#, Заголовки колонок - Process priority
 - 17+ - драйвера устройств
 
 | CLR Priority  | Idle | Below Normal | Normal | Above Normal | High | Realtime |
@@ -104,8 +110,8 @@ public static void Main()
     t.IsBackground = true;
     t.Start();
 
-    // Активный поток - приложение будет работать около 10 секунд
-    // IsBackground = true - немедленно прекратит работу
+    // Активный поток (IsBackground = false) - приложение будет работать около 10 секунд
+    // Фоновый поток (IsBackground = true) - немедленно прекратит работу
     // В LINQPad5 работает криво, в студии работает нормально :)
     Console.WriteLine("Returning from Main");
 }
@@ -120,20 +126,25 @@ private static void Worker()
 
 ## Thread Pool
 
+- Создавать потоки руками - очень низкоуровневый подход
 - CLR умеет управлять собственным пулом потоков, чтобы не плодить лишние потоки
-- На каждый объект CLR создается свой пул потоков, которые используют все AppDomain
-- Пулл потоков динамически определяет количество реальных потоков, которые необходимы приложению
+- На каждый объект CLR создается свой пул потоков, который используют все AppDomain
+- Пулл потоков динамически определяет количество реальных потоков, которые необходимы приложению и сам добавляет / удаляет потоки в зависимости от того, какие задачи ставит приложение
 
 ```cs
-ThreadPool
+public static class ThreadPool
+{
+    static Boolean QueueUserWorkItem(WaitCallback callBack);
+    static Boolean QueueUserWorkItem(WaitCallback callBack, Object state);
 
-static Boolean QueueUserWorkItem(WaitCallback callBack);
-static Boolean QueueUserWorkItem(WaitCallback callBack, Object state);
-
-delegate void WaitCallback(Object state);
+    delegate void WaitCallback(Object state);
+    ...
+}
 ```
 
 <div style="page-break-after: always;"></div>
+
+Базовый пример:
 
 ```cs
 public static void Main()
@@ -156,6 +167,8 @@ private static void Compute(Object state)
 
 <div style="page-break-after: always;"></div>
 
+### ExecutionContext
+
 Не лишним будет упомянуть, что есть контекст выполнения потока:
 
 - Параметры безопасности, Principal
@@ -177,17 +190,21 @@ public sealed class ExecutionContext : IDisposable, ISerializable
 
 <div style="page-break-after: always;"></div>
 
-### Cancellation Token
+### Cancellation
 
-- стандартный паттерн отмены операций
-- [скоординированная отмена](https://docs.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads) (оба класса должны поддерживать явно отмену)
+- В C# используется стандартный паттерн отмены операций [скоординированная отмена](https://docs.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads) - оба класса должны явно поддерживать отмену
+- `CancellationTokenSource` - специальный класс для управления токеном и непосредственно отменой операции
 
 ```cs
 public sealed class CancellationTokenSource : IDisposable
 {
     public CancellationTokenSource();
     public Boolean IsCancellationRequested { get; }
+
+    // Токен, который передается в параллельный поток, считывая его свойства, поток может реагировать на отмену и прекращать действие
     public CancellationToken Token { get; }
+
+    // Отменить операцию!
     public void Cancel(); // Вызывает Cancel с аргументом false
     public void Cancel(Boolean throwOnFirstException);
     ...
@@ -196,23 +213,28 @@ public sealed class CancellationTokenSource : IDisposable
 
 <div style="page-break-after: always;"></div>
 
-- `None` - не хотим отменять, не связан ни с каким CancellationTokenSource
+- `CancellationToken` - класс, который передается в параллельный поток и по-которому можно понять, отменили задачу или еще нет.
 
 ```cs
 public struct CancellationToken // Значимый тип
 {
+    // Статическое поле, используется, когда мы не хотим отменять метод, но он поддерживает прием CancellationToken - передаем ему CancellationToken.None
     public static CancellationToken None { get; }
-    Boolean IsCancellationRequested { get; } // Вызывается операциями, не связанными с Task
-    public void ThrowIfCancellationRequested(); // Вызван операциями, связанными с Task
-    public WaitHandle WaitHandle { get; } // WaitHandle устанавливается при отмене CancellationTokenSource
 
-    public Boolean CanBeCanceled { get; } // Редко используется
-    public CancellationTokenRegistration Register(Action<Object> callback, Object state, Boolean useSynchronizationContext); 
-    // Более простые варианты перегрузки не показаны, Члены GetHashCode, Equals, == и != не показаны
+    // Непосредственные методы для реагирования на отмену
+    Boolean IsCancellationRequested { get; }
+    public void ThrowIfCancellationRequested();
+
+    // Позволяет регистрировать дополнительные делегаты на событие отмены
+    public CancellationTokenRegistration Register(Action<Object> callback, Object state, Boolean useSynchronizationContext);
+
+    // опущены другие методы, более простые перегрузки Register, GetHashCode, Equals, == и != и прочее
 }
 ```
 
 <div style="page-break-after: always;"></div>
+
+Пример использования `CancellationTokenSource` и `CancellationToken`:
 
 ```cs
 public static void Main()
@@ -245,6 +267,8 @@ private static void Count(CancellationToken token, Int32 countTo)
 ```
 
 <div style="page-break-after: always;"></div>
+
+Пример регистрации дополнительных событий на отмену действия:
 
 ```cs
 public static void Main()
@@ -280,6 +304,8 @@ class CancelableObject
 
 <div style="page-break-after: always;"></div>
 
+Несколько `CancellationTokenSource` можно объединить в один и обрабатывать несколько причин отмены сразу:
+
 ```cs
 var cts1 = new CancellationTokenSource();
 cts1.Token.Register(() => Console.WriteLine("cts1 canceled"));
@@ -296,6 +322,8 @@ Console.WriteLine("cts1 canceled={0}, cts2 canceled={1}, linkedCts={2}",
 ```
 
 <div style="page-break-after: always;"></div>
+
+Есть стандартные методы, для отмены операций по Тайм-ауту:
 
 ```cs
 public sealed class CancellationTokenSource : IDisposable
@@ -315,10 +343,11 @@ public sealed class CancellationTokenSource : IDisposable
 
 ### Класс Task
 
-- с ThreadPool есть глобальные проблемы
-  - возврат результатов из потока.
+- с ThreadPool есть глобальные проблемы:
+  - возврат результатов из потока
   - как узнать о завершении операции
 - Упрощенно: `Task` - типизированная обертка над пуллом потоков с кучей удобных методов
+- Напоминаю, что все Task - берутся из пула и фоновые
 
 ```cs
 ThreadPool.QueueUserWorkItem(ComputeBoundOp, 5);
@@ -330,6 +359,8 @@ Task.Run(() => ComputeBoundOp(5));
 
 <div style="page-break-after: always;"></div>
 
+Простейший пример создания задачи:
+
 ```cs
 Task taskA = Task.Run( () => Console.WriteLine("Hello from thread '{0}'.", Thread.CurrentThread.ManagedThreadId ));
 
@@ -337,27 +368,32 @@ Console.WriteLine("Hello from thread '{0}'.", Thread.CurrentThread.ManagedThread
 taskA.Wait();
 ```
 
-`Task<TResult>`
+Есть типизированная версия `Task<TResult>` для возвращения конретного результата:
 
 ```cs
-// Создание задания Task (оно пока не выполняется)
+// Создание задания Task (автоматически оно пока не выполняется)
 Task<Int32> t = new Task<Int32>(n => Sum((Int32)n), 1000000000);
 
 t.Start();  // Можно начать выполнение задания через некоторое время
 
 t.Wait();   // Можно ожидать завершения задания в явном виде
-            // ПРИМЕЧАНИЕ. Существует перегруженная версия, принимающая тайм-аут/CancellationToken
+            // !!!!!! Существует перегруженная версия, принимающая тайм-аут/CancellationToken
 
 Console.WriteLine("The Sum is: " + t.Result); // Получение результата (свойство Result вызывает метод Wait)
 ```
 
 <div style="page-break-after: always;"></div>
 
-- `.Wait` - если метод еще не начал выполняться - может выполнять его прямо в текущем потоке, что потенциально может приводить к дедлокам
-- Исключения, сделанные в методах задачи сохраняются в отедльную коллекцию и при вызове `.Wait` / `.Result` возвращаются исходному коду в виде AggregateException, которая будет содержать коллекцию со всеми исключениями
-- Если не вызвать wait / result, то об ошибке и не узнать
+- `.Result`
+  - Автоматически внутри вызывает метод `.Wait()`
+- `.Wait()`
+  - если метод еще не начал выполняться - может выполнять его прямо в текущем потоке, что потенциально может приводить к дедлокам
+- Исключения, сделанные в методах задачи, сохраняются в отдельную коллекцию и при вызове `.Wait()` / `.Result` возвращаются исходному коду в виде `AggregateException`, который будет содержать коллекцию со всеми исключениями
+  - Если не вызвать wait / result, то основной поток не узнает об ошибке
 
 <div style="page-break-after: always;"></div>
+
+Пример, когда мы запускаем несколько задач и ждем, пока завершатся все:
 
 ```cs
 Task[] tasks = new Task[3]
@@ -377,9 +413,10 @@ Console.WriteLine("End");
 
 <div style="page-break-after: always;"></div>
 
-`ContinueWith`
+#### Continuation
 
-- Возвращает `Task`, который частенько не используется
+- `ContinueWith` - позволяет сразу настроить продолжение действия, вместо блокирования текущего потока
+- возвращает `Task`, который частенько не используется
 
 ```cs
 public static void Main()
@@ -390,7 +427,7 @@ public static void Main()
     Task task4 = task2.ContinueWith((Task t) => { Console.WriteLine($"current: {Task.CurrentId}"); });
 
     task1.Start();
-    task1.Wait();
+    task1.Wait(); // Будет ждать только task1, а не всю цепочку!
     Console.WriteLine("After task1 wait");
     Thread.Sleep(5000);
     Console.WriteLine("End");
@@ -405,6 +442,8 @@ static void Display(Task t)
 
 <div style="page-break-after: always;"></div>
 
+Пример отмены задания с выбрасыванием исключения и обработкой такой ситуации в основном коде:
+
 ```cs
 public static void Main()
 {
@@ -416,13 +455,13 @@ public static void Main()
     cts.Cancel(); // кстати задача уже может быть завершена
     try
     {
-        // В случае отмены задания метод Result генерирует исключение AggregateException
+        // В случае отмены задания именно метод Result генерирует исключение AggregateException
         Console.WriteLine("The sum is: " + t.Result);
     }
     catch (AggregateException x)
     {
-        // Считаем обработанными все объекты OperationCanceledException, 
-        // все остальные исключения попадают в новый объект AggregateException, состоящий только из необработанных исключений, который заново будет выкинут
+        // Пометить все OperationCanceledException ошибки, как обработанные,
+        // остальные записать в новый объект AggregateException, выбросить его заново, если он не пуст
         x.Handle(e => e is OperationCanceledException);
 
         Console.WriteLine("Sum was canceled");  // Строка выполняется, если все исключения уже обработаны
@@ -450,6 +489,286 @@ private static Int32 Sum(CancellationToken ct, int n)
 
 ### async / await
 
-[async Main](https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-7-1)
+- Проблемы чистых Task
+  - `.Result` блокирует поток, что не хорошо.
+  - Писать реальный код с `ContinueWith` очень сложно и код получается тяжелый. Пример [msdn](https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/chaining-tasks-by-using-continuation-tasks)
 
-### SyncronizationContext
+<div style="page-break-after: always;"></div>
+
+Если совсем упрощенно:
+
+```cs
+Factory.StartNew(() => DoSomeAsyncWork())
+    .ContinueWith(
+        (antecedent) =>
+        {
+            DoSomeWorkAfter();
+        },
+        TaskScheduler.FromCurrentSynchronizationContext());
+```
+
+Заменяется:
+
+```cs
+await DoSomeAsyncWork();
+DoSomeWorkAfter();
+```
+
+<div style="page-break-after: always;"></div>
+
+- Ключевое слово `async`
+  - Включает в методе поддержку await
+  - Изменяет как обрабатывается результат
+  - Не создает отдельных потоков или любой другой магии
+- Ключевое слово `await`
+  - Что-то в духе `asynchronous wait`
+  - Некоторый унарный оператор, который принимает асинхронную операцию
+  - Откладывает остаток метода до завершения операции, если она еще не выполнена
+  - То есть метод ставится на паузу (что-то похожее на yielding) до завершения операции
+  - Поток не блокируется
+
+```cs
+public async Task DoSomethingAsync()
+{
+  // In the Real World, we would actually do something...
+  // For this example, we're just going to (asynchronously) wait 100ms.
+  await Task.Delay(100);
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+async Task<int> AccessTheWebAsync()
+{
+    HttpClient client = new HttpClient();
+
+    // GetStringAsync returns a Task<string>. That means that when you await the
+    // task you'll get a string (urlContents).
+    Task<string> getStringTask = client.GetStringAsync("http://msdn.microsoft.com");
+
+    // You can do work here that doesn't rely on the string from GetStringAsync.
+    DoIndependentWork();
+
+    // The await operator suspends AccessTheWebAsync.
+    //  - AccessTheWebAsync can't continue until getStringTask is complete.
+    //  - Meanwhile, control returns to the caller of AccessTheWebAsync.
+    //  - Control resumes here when getStringTask is complete.
+    //  - The await operator then retrieves the string result from getStringTask.
+    string urlContents = await getStringTask;
+
+    return urlContents.Length;
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+public async Task NewStuffAsync()
+{
+  // Use await and have fun with the new stuff.
+  await ...
+}
+
+public Task MyOldTaskParallelLibraryCode()
+{
+  // Note that this is not an async method, so we can't use await in here.
+  ...
+}
+
+public async Task ComposeAsync()
+{
+  // We can await Tasks, regardless of where they come from.
+  await NewStuffAsync();
+  await MyOldTaskParallelLibraryCode();
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+- Что может возвращать `async` метод
+  - `Task<T>`
+  - `Task`
+  - void
+
+Всегда лучше возвращать Task вместо void, который используется в очень специфичных сценариях типа EventHandler / `static async void MainAsync()`
+
+```cs
+public async Task<int> CalculateAnswer()
+{
+  await Task.Delay(100); // (Probably should be longer...)
+
+  return 42; // Return a type of "int", not "Task<int>"
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+| Before | After | Comments
+|-|-|-|
+| `task.Wait` | `await task` | Wait/await for a task to complete
+| `task.Result` | `await task` | Get the result of a completed task
+| `Task.WaitAny` | `await Task.WhenAny` | Wait/await for one of a collection of tasks to complete
+| `Task.WaitAll` | `await Task.WhenAll` | Wait/await for every one of a collection of tasks to complete
+| `Thread.Sleep` | `await Task.Delay` | Wait/await for a period of time
+| Task constructor | `Task.Run` or `TaskFactory.StartNew` | Create a code-based task
+
+<div style="page-break-after: always;"></div>
+
+Context
+
+```cs
+// WinForms example (it works exactly the same for WPF).
+private async void DownloadFileButton_Click(object sender, EventArgs e)
+{
+  // Since we asynchronously wait, the UI thread is not blocked by the file download.
+  await DownloadFileAsync(fileNameTextBox.Text);
+
+  // Since we resume on the UI context, we can directly access UI elements.
+  resultTextBox.Text = "File downloaded!";
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+private async Task DownloadFileAsync(string fileName)
+{
+  // Use HttpClient or whatever to download the file contents.
+  var fileContents = await DownloadFileContentsAsync(fileName).ConfigureAwait(false);
+
+  // Note that because of the ConfigureAwait(false), we are not on the original context here.
+  // Instead, we're running on the thread pool.
+
+  // Write the file contents out to a disk file.
+  await WriteToDiskAsync(fileName, fileContents).ConfigureAwait(false);
+  // The second call to ConfigureAwait(false) is not *required*, but it is Good Practice.
+}
+
+// WinForms example (it works exactly the same for WPF).
+private async void DownloadFileButton_Click(object sender, EventArgs e)
+{
+  // Since we asynchronously wait, the UI thread is not blocked by the file download.
+  await DownloadFileAsync(fileNameTextBox.Text);
+
+  // Since we resume on the UI context, we can directly access UI elements.
+  resultTextBox.Text = "File downloaded!";
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+- В .NET Core контекста нет
+  - Вся информация, которая раньше хранилась в контексте, теперь передается через DI
+- В .NET Framework контекст есть
+  - Если нам не нужен контекс смело везде фигачим `.ConfigureAwait(false)`
+- Если .NET Standard библиотека предполагает широкое использование (в том числе на .NET Framework), лучше `.ConfigureAwait(false)` везде, где это возможно.
+
+<div style="page-break-after: always;"></div>
+
+```cs
+public async Task DoOperationsConcurrentlyAsync()
+{
+  Task[] tasks = new Task[3];
+  tasks[0] = DoOperation0Async();
+  tasks[1] = DoOperation1Async();
+  tasks[2] = DoOperation2Async();
+
+  // At this point, all three tasks are running at the same time.
+
+  // Now, we await them all.
+  await Task.WhenAll(tasks);
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+public async Task<int> GetFirstToRespondAsync()
+{
+  // Call two web services; take the first response.
+  Task<int>[] tasks = new[] { WebService1Async(), WebService2Async() };
+
+  // Await for the first one to respond.
+  Task<int> firstTask = await Task.WhenAny(tasks);
+
+  // Return the result.
+  return await firstTask;
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+await someObject;
+```
+
+```cs
+private class FooAsyncStateMachine : IAsyncStateMachine
+{
+    // Member fields for preserving “locals” and other necessary state
+    int $state;
+    TaskAwaiter $awaiter;
+    …
+    public void MoveNext()
+    {
+        // Jump table to get back to the right statement upon resumption
+        switch (this.$state)
+        {
+            …
+            case 2: goto Label2;
+            …
+        }
+        …
+        // Expansion of “await someObject;”
+        this.$awaiter = someObject.GetAwaiter();
+        if (!this.$awaiter.IsCompleted)
+        {
+            this.$state = 2;
+            this.$awaiter.OnCompleted(MoveNext);
+            return;
+            Label2:
+        }
+        this.$awaiter.GetResult();
+        …
+    }
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+- `await` нельзя:
+  - в property getter/setter
+  - inside lock/synclock
+  - inside catch/finally
+  - some other situations
+- `await someTask;` vs `someTask.Wait;`
+- `task.Result` vs `task.GetAwaiter().GetResult()`
+  - сами значения в позитивном сценарии абсолютно идентичны
+  - при ошибке `.Result` - AggregationException, `GetResult` - конкретную ошибку
+
+<div style="page-break-after: always;"></div>
+
+Links:
+
+- async
+  - [C# Asynchronous programming](https://docs.microsoft.com/en-us/dotnet/csharp/async)
+  - [MSDN: Асинхронное программирование с использованием ключевых слов Async и Await (C#)](https://docs.microsoft.com/ru-ru/dotnet/csharp/programming-guide/concepts/async/)
+  - [Async and await (Stephen Cleary)](https://blog.stephencleary.com/2012/02/async-and-await.html)
+  - [Async/Await - Best Practices in Asynchronous Programming (Stephen Cleary)](https://msdn.microsoft.com/en-us/magazine/jj991977.aspx)
+  - [Async/Await FAQ](https://blogs.msdn.microsoft.com/pfxteam/2012/04/12/asyncawait-faq/)
+  - [MSDN: Asynchronous Programming - Async Performance: Understanding the Costs of Async and Await (By Stephen Toub | October 2011)](https://msdn.microsoft.com/en-us/magazine/hh456402.aspx)
+  - [Teplyakov: Dissecting async](https://blogs.msdn.microsoft.com/seteplia/2017/11/30/dissecting-the-async-methods-in-c/)
+  - [Jon skeet: тонна мыслей и примеров про async, которые тяжело осмыслить](https://codeblog.jonskeet.uk/category/eduasync/)
+- habr
+  - [Habrahabr: async C#](https://habrahabr.ru/post/107498/)
+  - [Habrahabr: Использование async и await в C# — лучшие практики](https://habrahabr.ru/post/162353/)
+- [Joseph Albahari (Teplyakov translate)](http://www.albahari.com/threading/part5.aspx)
+  - [3 - Thread, Cancellation, Lazy](http://sergeyteplyakov.blogspot.ru/2010/08/c-3.html)
+  - [4 - Barrier, Locks](http://sergeyteplyakov.blogspot.ru/2010/08/c-4.html)
+  - [5.1 PLINQ](http://sergeyteplyakov.blogspot.ru/2010/09/51.html)
+  - [5.2 Parallel, TPL, Task, Параллельные коллекции, SpinLock и SpinWait](http://sergeyteplyakov.blogspot.ru/2010/09/52.html)
+- SOF
+  - [SOF: What is the difference between asynchronous programming and multithreading?](https://stackoverflow.com/questions/34680985/what-is-the-difference-between-asynchronous-programming-and-multithreading)
+  - [SOF:Asynchronous vs synchronous execution, what does it really mean?](https://stackoverflow.com/questions/748175/asynchronous-vs-synchronous-execution-what-does-it-really-mean?rq=1)
+  - [difference-between-await-and-continuewith, good example continue with problem](https://stackoverflow.com/questions/18965200/difference-between-await-and-continuewith?noredirect=1&lq=1)

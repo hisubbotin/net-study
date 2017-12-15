@@ -4,7 +4,7 @@
 
 - [Classes](#classes)
   - [Members](#members)
-  - [Модификаторы доступа](#Модификаторы-доступа)
+  - [Модификаторы доступа](#access-modifiers)
   - [Конструкторы](#Конструкторы)
   - [Methods](#methods)
     - [Local functions (TODO)](#local-functions-todo)
@@ -51,9 +51,9 @@ internal class SomeType
 
 <div style="page-break-after: always;"></div>
 
-## Модификаторы доступа
+## Access Modifiers
 
-Определяют видимость элемента
+Модификаторы доступа определяют видимость элемента [MSDN](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/access-modifiers)
 
 - `public` - доступен в любых сборках
 - `internal` - только в текущей сборке
@@ -63,9 +63,26 @@ internal class SomeType
 
 Можно определить сборку [дружественной](https://msdn.microsoft.com/en-us/library/0tke9fxk(v=vs.100).aspx), чтобы internal можно было использовать в другой сборке.
 
-- По-умолчанию, если не указать будет private
+- По-умолчанию, если не указать, будет private.
+- Рекомендуется всегда явно указывать!
 - Проверку доступа производит как базовый компилятор, так и JIT компилятор
 - При наследовании от базового класса CLR позволяет снижать, но не повышать ограничения доступа к члену.
+
+<div style="page-break-after: always;"></div>
+
+Насущный вопрос, если объявить класс `internal`, то с какой областью видимости объявлять методы/объекты в нём? `private` / `internal`.
+
+- ! clr автоматически урежет права для экземплярных методов до уровня класса
+  - исключения составляют `public` методы реализации интерфейсов или override методов публичного базового класса
+- распространенная практика: задавать область видимость на уровне класса, а методы объявлять всегда `public`. Это [дискуссионный момент](https://stackoverflow.com/questions/9302236/why-use-a-public-method-in-an-internal-class), основной аргумент "за":
+  - видимость для класса и его методов определяется в одном месте и это проще
+
+```cs
+internal static class Helper
+{
+    public static string Test() { return "Test"; }
+}
+```
 
 <div style="page-break-after: always;"></div>
 
