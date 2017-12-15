@@ -13,6 +13,11 @@ namespace BoringVector.Tests
             return Math.Abs(a - b) < EPS;
         }
 
+        private static bool equals(Vector a, Vector b, double eps=EPS)
+        {
+            return equals(a.X, b.X, eps) && equals(a.Y, b.Y, eps);
+        }
+
         [Theory]
         [InlineData(0, 0, 0)]
         [InlineData(3, 4, 5)]
@@ -29,8 +34,7 @@ namespace BoringVector.Tests
         public void TestAdd(double x1, double y1, double x2, double y2, double x, double y)
         {
             Vector res = new Vector(x1, y1).Add(new Vector(x2, y2));
-            Assert.True(equals(res.X, x));
-            Assert.True(equals(res.Y, y));
+            Assert.True(equals(res, new Vector(x, y)));
         }
 
         [Theory]
@@ -38,8 +42,7 @@ namespace BoringVector.Tests
         public void TestScale(double x0, double y0, double k, double x, double y)
         {
             Vector res = new Vector(x0, y0).Scale(k);
-            Assert.True(equals(res.X, x));
-            Assert.True(equals(res.Y, y));
+            Assert.True(equals(res, new Vector(x, y));
         }
 
         [Theory]
