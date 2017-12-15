@@ -1,20 +1,28 @@
 ﻿using System;
+using System.Dynamic;
 
 namespace BoringVector
 {
     #region 1. Структура Vector
 
-    /*
-        Реализуй структуру Vector - см. комментарии внутри нее.
-    */
-
-    internal struct Vector
+    /// <summary>
+    /// Класс для работы с точками на плоскости.
+    /// </summary>
+    public struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
 
+        public double X { get; }
+        public double Y { get; }
 
+
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
                 - квадрат длины
@@ -24,30 +32,61 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+
+        /// <summary>
+        /// Возвращает квадрат длины вектора.
+        /// </summary>
         public double SquareLength()
         {
-            throw new NotImplementedException();
-        }
-        public Vector Add(Vector v)
-        {
-            throw new NotImplementedException();
-        }
-        public Vector Scale(double k)
-        {
-            throw new NotImplementedException();
-        }
-        public double DotProduct(Vector v)
-        {
-            throw new NotImplementedException();
-        }
-        public double CrossProduct(Vector v)
-        {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
 
-        /*
-            Переопредели ниже метод ToString - пусть выводит (X; Y)
-        */
+        /// <summary>
+        /// Возвращает длину вектора.
+        /// </summary>
+        public double Length()
+        {
+            return Math.Sqrt(SquareLength());
+        }
+
+        /// <summary>
+        /// Векторно добавляет другой вектор.
+        /// </summary>
+        public Vector Add(Vector v)
+        {
+            return new Vector(X + v.X, Y + v.Y);
+        }
+
+        /// <summary>
+        /// Увеличивет вектор в k раз.
+        /// </summary>
+        /// <param name="k">Число <see cref="double"/>, во сколько раз увеличить.</param>
+        public Vector Scale(double k)
+        {
+            return new Vector(X * k, Y * k);
+        }
+
+        /// <summary>
+        /// Скалярно умножить на другой вектор.
+        /// </summary>
+        public double DotProduct(Vector v)
+        {
+            return X * v.X + Y * v.Y;
+        }
+
+        /// <summary>
+        /// Скалярно умножить на другой вектор.
+        /// </summary>
+        public double CrossProduct(Vector v)
+        {
+            return X * v.Y - Y * v.X;
+        }
+
+
+        public override string ToString()
+        {
+            return $"({X}; {Y})";
+        }
 
         #region operators
 
@@ -57,6 +96,62 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+
+        /// <summary>
+        /// Ничего не делает с вектором.
+        /// </summary>
+        public static Vector operator +(Vector right)
+        {
+            return right;
+        }
+
+        /// <summary>
+        /// Переворачивает вектор.
+        /// </summary>
+        public static Vector operator -(Vector right)
+        {
+            return right.Scale(-1);
+        }
+
+        /// <summary>
+        /// Удобная обертка над Add.
+        /// </summary>
+        public static Vector operator +(Vector left, Vector right)
+        {
+            return left.Add(right);
+        }
+
+        /// <summary>
+        /// Удобная обертка над Add.
+        /// </summary>
+        public static Vector operator -(Vector left, Vector right)
+        {
+            return right.Scale(-1).Add(left);
+        }
+
+        /// <summary>
+        /// Удобная обертка над Scale.
+        /// </summary>
+        public static Vector operator *(double left, Vector right)
+        {
+            return right.Scale(left);
+        }
+
+        /// <summary>
+        /// Удобная обертка над Scale.
+        /// </summary>
+        public static Vector operator *(Vector left, double right)
+        {
+            return left.Scale(right);
+        }
+
+        /// <summary>
+        /// Удобная обертка над Scale.
+        /// </summary>
+        public static Vector operator /(Vector left, double right)
+        {
+            return left.Scale(1 / right);
+        }
 
         #endregion
     }
