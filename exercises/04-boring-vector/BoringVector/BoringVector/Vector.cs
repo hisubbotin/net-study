@@ -13,6 +13,14 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        public double X { get;}
+        public double Y { get; }
+
+        public Vector(double x, double y)
+        {
+            this.X = x;
+            this.Y = y;
+        }
 
 
         /*
@@ -26,28 +34,32 @@ namespace BoringVector
 
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(X * k, Y * k);
         }
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+        public override string ToString()
+        {
+            return "(" + X + "; " + Y + ")";
+        }
 
         #region operators
 
@@ -57,6 +69,31 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+
+        public static Vector operator+ (Vector a, Vector b)
+        {
+            return a.Add(b);
+        }
+
+        public static Vector operator- (Vector a, Vector b)
+        {
+            return a.Add(b.Scale(-1));
+        }
+
+        /*
+         * Эмм. А что должен возвращать оператор*? Скалярное или векторное произведение?
+         * Собственно, это яркий пример того, почему переопределение операторов даже в векторе - зло.
+         */
+
+        public static Vector operator- (Vector v)
+        {
+            return v.Scale(-1);
+        }
+
+        public static Vector operator+ (Vector v)
+        {
+            return v;
+        }
 
         #endregion
     }
