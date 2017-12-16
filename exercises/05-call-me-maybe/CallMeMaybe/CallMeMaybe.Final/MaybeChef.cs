@@ -45,6 +45,18 @@ namespace CallMeMaybe.Final
             return new PumpkinBatterCup();
         }
 
+        private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
+        {
+            return
+                from wholeWheatFlour in _cookingTable.FindCupsOf<WholeWheatFlour>(3.5m).ToMaybe()
+                from allPurposeFlour in _cookingTable.FindCupsOf<AllPurposeFlour>(3.5m).ToMaybe()
+                from pumpkinPieSpice in _cookingTable.FindTeaspoonsOf<PumpkinPieSpice>(5m).ToMaybe()
+                from soda in _cookingTable.FindTeaspoonsOf<BakingSoda>(2m).ToMaybe()
+                from salt in _cookingTable.FindTeaspoonsOf<Salt>(1.5m).ToMaybe()
+                from flourMixture in _cookingTable.FindBowlAndFillItWith(new FlourMixture()).ToMaybe()
+                select flourMixture;
+        }
+
         private Maybe<BowlOf<EggsMixture>> MakeEggsMixture()
         {
             /*
@@ -59,12 +71,6 @@ namespace CallMeMaybe.Final
                 from eggs in _cookingTable.FindSome<Egg>(4m).ToMaybe()
                 from eggsMixture in _cookingTable.FindBowlAndFillItWith(new EggsMixture()).ToMaybe()
                 select eggsMixture;
-        }
-
-        private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
-        {
-            // здесь сделай сам, пожалуйста
-            throw new NotImplementedException();
         }
     }
 }

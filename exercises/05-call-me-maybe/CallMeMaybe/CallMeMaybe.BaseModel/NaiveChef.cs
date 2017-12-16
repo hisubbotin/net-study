@@ -69,7 +69,10 @@ namespace CallMeMaybe.BaseModel
             var bakingSoda = _cookingTable.FindTeaspoonsOf<BakingSoda>(2m);
             var salt = _cookingTable.FindTeaspoonsOf<Salt>(1.5m);
 
-            if (wholeWheatFlour == null || allPurposeFlour == null || pumpkinPieSpice == null || bakingSoda == null
+            if (wholeWheatFlour == null 
+                || allPurposeFlour == null 
+                || pumpkinPieSpice == null 
+                || bakingSoda == null
                 || salt == null)
             {
                 return null;
