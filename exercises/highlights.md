@@ -29,6 +29,7 @@
     - [Итерация с помощью IEnumerator\<int>](#итерация-с-помощью-ienumerator\int)
     - [Перезатирание буффера под чанки](#перезатирание-буффера-под-чанки)
     - [Зануление битов числа 42](#зануление-битов-числа-42)
+    - [Группировка](#группировка)
   - [05. Call Me Maybe](#05-call-me-maybe)
   - [06. Wubba Lubba Dub Dub](#06-wubba-lubba-dub-dub)
 
@@ -692,6 +693,26 @@ foreach (int el in GetDrunkFibonacci())
 Вспомни таблицу истинности `XOR` и подумай, почему это ошибка.
 
 Правильный ответ: `x = x & ~42;`
+
+### Группировка
+
+Часть решений имело лишние усложнения вроде такого:
+
+```cs
+GetDrunkFibonacci()
+    .Take(10000)
+    .GroupBy((i => Math.Abs(i % 8)), (i => i), ((i, grouped_by_deduct) => (field_key: i, field_arr: grouped_by_deduct)))
+    .ToDictionary((tuple => tuple.field_key), (tuple => tuple.field_arr.Distinct().Count()));
+```
+
+То же самое можно переписать проще:
+
+```cs
+GetDrunkFibonacci()
+    .Take(10000)
+    .GroupBy(i => Math.Abs(i % 8))  // каждая группа IGrouping<int> это объект IEnumerable<int> + свойство Key, по которому группируют
+    .ToDictionary(g => g.Key, g => g.Distinct().Count());
+```
 
 ## 05. Call Me Maybe
 
