@@ -7,6 +7,9 @@
 *.userosscache
 *.sln.docstates
 
+\exercises\02-adventure-time\AdventureTime\AdventureTime\Program.cs
+\exercises\02-adventure-time\AdventureTime\AdventureTime\Time.cs
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
