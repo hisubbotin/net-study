@@ -14,7 +14,7 @@ namespace DrunkFibonacci
         public static int[] CreateIntArray(int len)
         {
             // на создание массивов заданной длины
-            return new List<int>(len).ToArray();
+            return new int[len];
         }
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace DrunkFibonacci
             // на задание значений массива
             for (int i = 0; i < arr.Length; i++)
             {
-                arr.SetValue(i, seed + step * i);
+                arr[i] = seed + step * i;
             }           
         }
 
@@ -227,10 +227,10 @@ namespace DrunkFibonacci
                 Конкретно в этом задании более к месту будет выглядеть использование GroupBy. Но можешь ради интереса воспользоваться и ToLookup.
 
                 Итого научишься группировать и создавать на их основе словарь (см. ToDictionary).
-            */
+            */            
             return GetDrunkFibonacci().Take(10000).GroupBy(x => Math.Abs(x % 8)).
-                Select((x, i) => (i, x.Aggregate(0, (res, j) => res + 1) )). 
-                ToDictionary(obj => obj.Item1, obj => obj.Item2 );
+               Select((x, i) => (i, x.Count())).
+               ToDictionary(obj => obj.Item1, obj => obj.Item2);
         }
     }
 }
