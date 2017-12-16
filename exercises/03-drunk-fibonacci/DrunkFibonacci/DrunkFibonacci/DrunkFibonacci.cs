@@ -83,25 +83,26 @@ namespace DrunkFibonacci
                     из последовательности GetDeterministicRandomSequence и проверяешь, есть ли у числа Y единичные биты числа 42.
                 При вычислении сложения переполнение типа разрешено и всячески поощряется.
             */
-            var enumeratorOfRandomSequence = GetDeterministicRandomSequence().GetEnumerator();
-            for (var n = 0; true; ++n, enumeratorOfRandomSequence.MoveNext()) {
-                switch (n % 6)
-                {
-                    case 0: 
-                        continue;
-                    case 4:
-                        yield return 300;
-                        continue;
-                }
+            using (var enumeratorOfRandomSequence = GetDeterministicRandomSequence().GetEnumerator())
+            {
+                for (var n = 0; true; ++n, enumeratorOfRandomSequence.MoveNext()) {
+                    switch (n % 6)
+                    {
+                        case 0:
+                            continue;
+                        case 4:
+                            yield return 300;
+                            continue;
+                    }
 
-                var goldenRatio = (1 + Math.Sqrt(5)) / 2;
-                var nthFibonacciNumber = (long)((Math.Pow(goldenRatio, n) - Math.Pow(-goldenRatio, -n)) / Math.Sqrt(5));
-                if ((enumeratorOfRandomSequence.Current & 42) == 42)
-                {
-                    nthFibonacciNumber &= ~42;
-                }
+                    var goldenRatio = (1 + Math.Sqrt(5)) / 2;
+                    var nthFibonacciNumber = (long)((Math.Pow(goldenRatio, n) - Math.Pow(-goldenRatio, -n)) / Math.Sqrt(5));
+                    if ((enumeratorOfRandomSequence.Current & 42) == 42) {
+                        nthFibonacciNumber &= ~42;
+                    }
 
-                yield return nthFibonacciNumber;
+                    yield return nthFibonacciNumber;
+                }
             }
         }
 
@@ -113,12 +114,11 @@ namespace DrunkFibonacci
         public static long GetMaxOnRange(int from, int cnt)
         {
             // научишься пропускать и брать фиксированную часть последовательности, агрегировать. Максимум есть среди готовых функций агрегации.
-            if (from < 1 || cnt < 1)
-            {
+            if (from < 1 || cnt < 1) {
                 throw new ArgumentException("you're a dumbass");
             }
 
-            return GetDrunkFibonacci().Skip(from).Take(cnt).Max();
+            return GetDrunkFibonacci().Skip(from - 1).Take(cnt).Max();
         }
 
         /// <summary>
@@ -128,12 +128,11 @@ namespace DrunkFibonacci
         public static List<long> GetNextNegativeRange(int from = 1)
         {
             // научишься пропускать и брать по условию, превращать в список (см. ToList).
-            if (from < 1)
-            {
+            if (from < 1) {
                 throw new ArgumentException("Mistaaaaaaaaaaaake!");
             }
 
-            return GetDrunkFibonacci().Skip(from).SkipWhile(x => (x >= 0)).TakeWhile(x => (x < 0)).ToList();
+            return GetDrunkFibonacci().Skip(from - 1).SkipWhile(x => (x >= 0)).TakeWhile(x => (x < 0)).ToList();
         }
 
         /// <summary>
@@ -151,8 +150,7 @@ namespace DrunkFibonacci
         public static IEnumerable<long[]> GetInChunks()
         {
             // ничему особо не научишься, просто интересная задачка :)
-            for (var drunkFibonacciSequence = GetDrunkFibonacci(); true; drunkFibonacciSequence = drunkFibonacciSequence.Skip(16))
-            {
+            for (var drunkFibonacciSequence = GetDrunkFibonacci(); true; drunkFibonacciSequence = drunkFibonacciSequence.Skip(16)) {
                 yield return drunkFibonacciSequence.Take(16).ToArray();
             }
         }
