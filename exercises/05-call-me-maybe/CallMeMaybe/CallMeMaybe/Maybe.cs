@@ -46,8 +46,8 @@ namespace CallMeMaybe
             {
                 return Maybe<TResult>.Nothing;
             }
-            Maybe<T2> maybeInterm = otherSelector(_value);
-            return maybeInterm.HasValue ? resultSelector(_value, maybeInterm._value) : Maybe<TResult>.Nothing;
+            Maybe<T2> otherMaybe = otherSelector(_value);
+            return otherMaybe.HasValue ? resultSelector(_value, otherMaybe._value) : Maybe<TResult>.Nothing;
         }
         
         public Maybe<TResult> SelectMany<T2, TResult>(Func<T, Maybe<T2>> otherSelector, Func<T, T2, Maybe<TResult>> maybeResultSelector)
@@ -56,8 +56,8 @@ namespace CallMeMaybe
             {
                 return Maybe<TResult>.Nothing;
             }
-            Maybe<T2> maybeInterm = otherSelector(_value);
-            return maybeInterm.HasValue ? maybeResultSelector(_value, maybeInterm._value) : Maybe<TResult>.Nothing;
+            Maybe<T2> otherMaybe = otherSelector(_value);
+            return otherMaybe.HasValue ? maybeResultSelector(_value, otherMaybe._value) : Maybe<TResult>.Nothing;
         }
         
         public Maybe<T> Where(Predicate<T> predicate)
