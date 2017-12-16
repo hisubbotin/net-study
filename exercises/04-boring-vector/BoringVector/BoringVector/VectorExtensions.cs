@@ -57,12 +57,10 @@ namespace BoringVector
         /// <returns> Возвращает значение угла между векторами. </returns>
         public static double GetAngleBetween(Vector firstVector, Vector secondVector)
         {
-            if (firstVector.IsZero() || secondVector.IsZero())
-            {
+            if (firstVector.IsZero() || secondVector.IsZero()) {
                 return 0.0;
             }
-            else
-            {
+            else {
                 return Math.Acos(firstVector.DotProduct(secondVector) /
                                  Math.Sqrt(firstVector.SquareLength() * secondVector.SquareLength()));
             }
@@ -75,22 +73,23 @@ namespace BoringVector
         /// <returns> Возвращает значение из перечисления VectorRelation, соответствующее взаимному расположению векторов в пространстве. </returns>
         public static VectorRelation GetRelation(Vector firstVector, Vector secondVector)
         {
-            if (Math.Abs(firstVector.DotProduct(secondVector)) <= Precision)
-            {
+            if (Math.Abs(firstVector.DotProduct(secondVector)) <= Precision) {
                 return VectorRelation.Orthogonal;
             }
-            else if (Math.Abs(firstVector.CrossProduct(secondVector)) <= Precision)
-            {
+            else if (Math.Abs(firstVector.CrossProduct(secondVector)) <= Precision) {
                 return VectorRelation.Parallel;
             }
-            else
-            {
+            else {
                 return VectorRelation.General;
             }
         }
 
         /// <summary>
+        /// Магическая константа, данная свыше. </summary>
+        private const double _Precision = 1e-6;
+
+        /// <summary>
         /// Атрибут, отвечающий за точность вычислений. </summary>
-        public static double Precision { get; set; } = 1e-6;
+        public static double Precision { get; set; } = _Precision;
     }
 }
