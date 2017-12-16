@@ -96,7 +96,7 @@ namespace DrunkFibonacci
                     }
 
                     var goldenRatio = (1 + Math.Sqrt(5)) / 2;
-                    var nthFibonacciNumber = (long)((Math.Pow(goldenRatio, n) - Math.Pow(-goldenRatio, -n)) / Math.Sqrt(5));
+                    var nthFibonacciNumber = unchecked((long)((Math.Pow(goldenRatio, n) - Math.Pow(-goldenRatio, -n)) / Math.Sqrt(5) % Int64.MaxValue));
                     if ((enumeratorOfRandomSequence.Current & 42) == 42) {
                         nthFibonacciNumber &= ~42;
                     }
@@ -150,9 +150,16 @@ namespace DrunkFibonacci
         public static IEnumerable<long[]> GetInChunks()
         {
             // ничему особо не научишься, просто интересная задачка :)
-            for (var drunkFibonacciSequence = GetDrunkFibonacci(); true; drunkFibonacciSequence = drunkFibonacciSequence.Skip(16)) {
-                yield return drunkFibonacciSequence.Take(16).ToArray();
+            var batch = new List<long>(16);
+            var drunkFibonacciSequence = GetDrunkFibonacci();
+            foreach (var number in drunkFibonacciSequence) {
+                batch.Add(number);
+                if (batch.Count == 16) {
+                    yield return batch.ToArray();
+                    batch.Clear();
+                }
             }
+            // можно как-нибудь поэффективнее/побыстрее?
         }
 
         /// <summary>
@@ -168,7 +175,7 @@ namespace DrunkFibonacci
                 Вообще говоря, SelectMany умеет много чего и мегаполезна.
                 Она в какой-то степени эквивалентна оператору `bind` над монадами (в данном случае над монадами последовательностей).
             */
-            return GetInChunks().SelectMany(chunk => chunk.Select(Math.Abs).OrderBy(item => item).Take(3));
+            return GetInChunks().SelectMany(chunk => chunk.OrderBy(Math.Abs).Take(3));
         }
 
         /// <summary>
