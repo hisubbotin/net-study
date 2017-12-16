@@ -18,11 +18,11 @@ namespace BoringVector
         */
         /// <summary>
         /// Абсцисса вектора. </summary>
-        private double _x;
+        public double X { get; private set; }
 
         /// <summary>
         /// Ордината вектора. </summary>
-        private double _y;
+        public double Y { get; private set; }
 
         /// <summary>
         /// Параметризованный конструктор вектора. </summary>
@@ -30,24 +30,8 @@ namespace BoringVector
         /// <param name="y"> Ордината вектора. </param>
         public Vector(double x, double y)
         {
-            _x = x;
-            _y = y;
-        }
-
-        /// <summary>
-        /// Аксессоры абсциссы вектора. </summary>
-        public double X
-        {
-            get => _x;
-            set => _x = value;
-        }
-
-        /// <summary>
-        /// Аксессоры ординаты вектора. </summary>
-        public double Y
-        {
-            get => _y;
-            set => _y = value;
+            X = x;
+            Y = y;
         }
 
         /*
@@ -65,7 +49,7 @@ namespace BoringVector
         /// <returns> Возвращает значение квадрата длины вектора. </returns>
         public double SquareLength()
         {
-            return _x * _x + _y * _y;
+            return X * X + Y * Y;
         }
         // почему <returns></returns> не влияет на выводимую информацию о методе?
 
@@ -75,9 +59,7 @@ namespace BoringVector
         /// <returns> Возвращает объект измененного вектора. </returns>
         public Vector Add(Vector vector)
         {
-            _x += vector.X;
-            _y += vector.Y;
-            return this;
+            return new Vector(X + vector.X, Y + vector.Y);
         }
 
         /// <summary>
@@ -86,9 +68,7 @@ namespace BoringVector
         /// <returns> Возвращает объект измененного вектора. </returns>
         public Vector Scale(double k)
         {
-            _x *= k;
-            _y *= k;
-            return this;
+            return new Vector(X * k, Y * k);
         }
 
         /// <summary>
@@ -97,7 +77,7 @@ namespace BoringVector
         /// <returns> Возвращает значение скалярного произведения двух векторов. </returns>
         public double DotProduct(Vector vector)
         {
-            return _x * vector.X + _y * vector.Y;
+            return X * vector.X + Y * vector.Y;
         }
 
         /// <summary>
@@ -106,7 +86,7 @@ namespace BoringVector
         /// <returns> Возвращает значение векторного произведения двух векторов. </returns>
         public double CrossProduct(Vector vector)
         {
-            return _x * vector.Y - _y * vector.X;
+            return X * vector.Y - Y * vector.X;
             // http://mathworld.wolfram.com/CrossProduct.html
         }
 
@@ -120,7 +100,7 @@ namespace BoringVector
         /// <returns> Строка формата (X; Y), соответствующая координатам вектора. </returns>
         public override string ToString()
         {
-            return $"({_x}; {_y})";
+            return $"({X}; {Y})";
             // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/interpolated-strings
         }
 

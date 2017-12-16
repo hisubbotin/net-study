@@ -15,14 +15,15 @@ namespace BoringVector
     internal enum VectorRelation
     {
         /// <summary>
+        /// Свойство, отвечающее за неопределенное положение между векторами в пространстве. </summary>
+        General = 0,
+        /// <summary>
         /// Свойство, отвечающее за коллинеарность векторов. Значение равно 0, так как соответствует значению векторного произведения между коллинеарными векторами. </summary>
-        Parallel = 0,
+        Parallel = 1,
         /// <summary>
         /// Свойство, отвечающее за ортогональность векторов. Значение равно 0, так как соответствует значению скалярного произведения между ортогональными векторами. </summary>
-        Orthogonal = 0,
-        /// <summary>
-        /// Свойство, отвечающее за неопределенное положение между векторами в пространстве. </summary>
-        General
+        Orthogonal = 2,
+
     }
 
     /// <summary>
@@ -32,17 +33,12 @@ namespace BoringVector
     // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/extension-methods
     {
         /// <summary>
-        /// Статический конструктор атрибута точности вычислений. </summary>
-        static VectorExtensions() => _precision = 1e-6;
-        // https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/classes-and-structs/static-constructors
-
-        /// <summary>
         /// Проверяет с некоторой точностью, является ли текущий вектор нулевым. </summary>
         /// <param name="vector"> Объект текущего вектора. </param>
         /// <returns> Возвращает true, если текущий вектор является нулевым, false иначе. </returns>
         public static bool IsZero(this Vector vector)
         {
-            return (vector.SquareLength() <= _precision * _precision);
+            return (vector.SquareLength() <= Precision * Precision);
         }
 
         /// <summary>
@@ -79,11 +75,11 @@ namespace BoringVector
         /// <returns> Возвращает значение из перечисления VectorRelation, соответствующее взаимному расположению векторов в пространстве. </returns>
         public static VectorRelation GetRelation(Vector firstVector, Vector secondVector)
         {
-            if (Math.Abs(firstVector.DotProduct(secondVector)) <= _precision)
+            if (Math.Abs(firstVector.DotProduct(secondVector)) <= Precision)
             {
                 return VectorRelation.Orthogonal;
             }
-            else if (Math.Abs(firstVector.CrossProduct(secondVector)) <= _precision)
+            else if (Math.Abs(firstVector.CrossProduct(secondVector)) <= Precision)
             {
                 return VectorRelation.Parallel;
             }
@@ -94,16 +90,7 @@ namespace BoringVector
         }
 
         /// <summary>
-        /// Геттер атрибута, отвечающего за точность вычислений. </summary>
-        /// <returns> Текущее значение точности вычислений. </returns>
-        public static double GetPrecision() => _precision;
-        /// <summary>
-        /// Сеттер атрибута, отвечающего за точность вычислений. </summary>
-        /// <param name="value"> Присваиваемое значение. </param>
-        public static void SetPrecision(double value) => _precision = value;
-
-        /// <summary>
         /// Атрибут, отвечающий за точность вычислений. </summary>
-        private static double _precision;
+        public static double Precision { get; set; } = 1e-6;
     }
 }
