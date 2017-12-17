@@ -42,11 +42,10 @@ namespace CallMeMaybe.V2
         /// <inheritdoc />
         public IEnumerator<T> GetEnumerator()
         {
-            if (!HasValue)
+            if (HasValue)
             {
-                yield break;
+                yield return _value;
             }
-            yield return _value;
         }
 
         /// <inheritdoc />

@@ -57,7 +57,7 @@ namespace CallMeMaybe.V1
 
         public Maybe<TResult> Select<TResult>(Func<T, TResult> map)
         {
-            return HasValue ? new Maybe<TResult>(map(_value)) : Maybe<TResult>.Nothing;
+            return HasValue ? (Maybe<TResult>) map(_value) : Maybe<TResult>.Nothing;
         }
 
         public Maybe<TResult> Select<TResult>(Func<T, Maybe<TResult>> maybeMap)

@@ -70,11 +70,8 @@ namespace CallMeMaybe
 
         public Maybe<T> Where(Predicate<T> predicate)
         {
-            if (!HasValue || !predicate(_value))
-            {
-                return Nothing;
-            }
-            return _value;
+            return HasValue && predicate(_value) ? _value : Nothing;
+            
         }
 
         #endregion
