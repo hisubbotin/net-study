@@ -22,10 +22,9 @@ namespace BoringVector
         /// <returns>Ответ: является ли вектор нулевым или нет, <see cref="bool"/></returns>
         public static bool IsZero(Vector v, double eps = 1e-6)
         {
-            return v.X<eps && v.Y<eps;
+            return Math.Abs(v.X) < eps && Math.Abs(v.Y) < eps;
         }
-        ///_____________________________________________________________________________________
- 
+         
         /// <summary>
         /// Нормализует вектор
         /// </summary>
@@ -33,10 +32,11 @@ namespace BoringVector
         /// <returns>Нормированный вектор, <see cref="Vector"/></returns>
         public static Vector Normalize(Vector v)
         {
-            return new Vector(v.X / v.SquareLength(), v.Y / v.SquareLength());
+            // ну раз уж добавила эту функцию...
+            return v / v.Length();
         }
-        ///_______________________________________________________________________________________
- 
+
+         
         /// <summary>
         /// Высчитывает угол между двумя векторами (в радианах)
         /// </summary>
@@ -45,10 +45,16 @@ namespace BoringVector
         /// <returns>Угол между векторами в радианах, <see cref="double"/></returns>
         public static double GetAngleBetween(Vector v1, Vector v2)
         {
-            return Math.Acos(v1.CrossProduct(v2));
+            if (IsZero(v1) || IsZero(v2))
+            {
+                return 0;
+            }
+            else
+            {
+                return Math.Acos(v1.DotProduct(v2) / (v1.Length() * v2.Length()));
+            }
         }
-        ///______________________________________________________________________________________
-        
+                
         /// <summary>
         /// Возможные отношения между двумя векторами
         /// </summary>
@@ -58,8 +64,7 @@ namespace BoringVector
             Parallel, // параллельны
             Orthogonal // перпендикулярны
         }
-        ///________________________________________________________________________________________
-
+        
         /// <summary>
         /// Показывает отношение между двумя векторами
         /// </summary>
@@ -69,14 +74,14 @@ namespace BoringVector
         /// <returns>Ответ: как соотностся вектора <see cref="VectorRelation"/></returns>
         public static VectorRelation GetRelation(Vector v1, Vector v2, double eps = 1e-6)
         {
+            if (Math.Abs(GetAngleBetween(v1, v2)) < eps)
+            {
+                return VectorRelation.Parallel;
+            }
+            
             if (Math.Abs(GetAngleBetween(v1, v2) - Math.PI / 2) < eps)
             {
                 return VectorRelation.Orthogonal;
-            }
-
-            if (GetAngleBetween(v1, v2) < eps)
-            {
-                return VectorRelation.Parallel;
             }
 
             return VectorRelation.General;
