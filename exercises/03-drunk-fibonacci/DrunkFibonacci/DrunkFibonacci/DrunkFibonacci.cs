@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 
 namespace DrunkFibonacci
 {
@@ -86,27 +84,24 @@ namespace DrunkFibonacci
 
             using (var y = GetDeterministicRandomSequence().GetEnumerator())
             {
-                for (int i = 1; ; ++i)
+                for (int i = 1;; ++i)
                 {
-                    unchecked
+                    var next = unchecked(first + second);
+
+                    if (i % 6 == 4)
+                        next = 300;
+
+                    y.MoveNext();
+                    if ((y.Current & 42) == 42)
                     {
-                        var next = first + second;
-
-                        if (i % 6 == 4)
-                            next = 300;
-
-                        y.MoveNext();
-                        if ((y.Current & 42) == 42)
-                        {
-                            next &= ~42;
-                        }
-
-                        if (i % 6 != 0)
-                            yield return next;
-                    
-                        first = second;
-                        second = next;
+                        next &= ~42;
                     }
+
+                    if (i % 6 != 0)
+                        yield return next;
+
+                    first = second;
+                    second = next;
                 }
             }
         }
@@ -187,7 +182,7 @@ namespace DrunkFibonacci
             */
             return GetInChunks()
                 .SelectMany(chunk => chunk
-                    .OrderBy(x => x)
+                    .OrderBy(Math.Abs)
                     .Take(3)
                 );
         }
