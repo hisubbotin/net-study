@@ -39,13 +39,7 @@ namespace DrunkFibonacci
         public static int[] GetFirstFiveFibonacci()
         {
             // на создание массива с инициализацией
-            int[] sequence = new int[5];
-            sequence[0] = 1;
-            sequence[1] = 1;
-            for (int i = 2; i < sequence.Length; ++i)
-            {
-                sequence[i] = sequence[i - 1] + sequence[i - 2];
-            }
+            int[] sequence = { 1, 1, 2, 3, 5 };
             return sequence;
         }
 
@@ -97,7 +91,7 @@ namespace DrunkFibonacci
             yield return buzz(current);
             for (int i = 3; true; ++i)
             {
-                int next = last + current;
+                int next = unchecked(last + current);
                 last = current;
                 current = next;
                 if (i % 6 == 0)
@@ -120,7 +114,7 @@ namespace DrunkFibonacci
         public static int GetMaxOnRange(int from, int cnt)
         {
             // научишься пропускать и брать фиксированную часть последовательности, агрегировать. Максимум есть среди готовых функций агрегации.
-            return GetDrunkFibonacci().Skip(from - 1).Take(cnt).Max((x) => x);
+            return GetDrunkFibonacci().Skip(from - 1).Take(cnt).Max();
         }
 
         /// <summary>
@@ -172,7 +166,7 @@ namespace DrunkFibonacci
                 Вообще говоря, SelectMany умеет много чего и мегаполезна.
                 Она в какой-то степени эквивалентна оператору `bind` над монадами (в данном случае над монадами последовательностей).
             */
-            return GetInChunks().Select((x) => x.OrderBy((y) => y).Take(3)).SelectMany(x => x);
+            return GetInChunks().SelectMany((x) => x.OrderBy((y) => y).Take(3));
         }
 
         /// <summary>
@@ -206,7 +200,7 @@ namespace DrunkFibonacci
 
                 Итого научишься группировать и создавать на их основе словарь (см. ToDictionary).
             */
-            return GetDrunkFibonacci().Take(10000).GroupBy((x) => (x % 8 + 8) % 8).ToDictionary(x => x.Key, x => x.ToList().Count);
+            return GetDrunkFibonacci().Take(10000).GroupBy((x) => (x % 8 + 8) % 8).ToDictionary(x => x.Key, x => x.Count());
         }
     }
 }
