@@ -27,7 +27,7 @@ namespace CallMeMaybe.V2
 
         public static implicit operator Maybe<T>(T value)
         {
-            throw new NotImplementedException();
+            return value == null ? Nothing : new Maybe<T>(value);
         }
 
         #region IEnumerable<T> inerface implementation
@@ -40,7 +40,10 @@ namespace CallMeMaybe.V2
         /// <inheritdoc />
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            if (HasValue)
+            {
+                yield return _value;
+            }
         }
 
         /// <inheritdoc />
@@ -54,8 +57,8 @@ namespace CallMeMaybe.V2
 
         #region Optional useful methods
 
-        public T GetValueOrDefault() => throw new NotImplementedException();
-        public T GetValueOrDefault(T defaultValue) => throw new NotImplementedException();
+        public T GetValueOrDefault() => GetValueOrDefault(default(T));
+        public T GetValueOrDefault(T defaultValue) => HasValue ? _value : defaultValue;
 
         #endregion
     }
