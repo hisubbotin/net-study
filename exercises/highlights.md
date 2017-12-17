@@ -931,3 +931,5 @@ return string.Join(string.Empty, charSequence));
 // or the same by concat
 return string.Concat(charSequence);
 ```
+
+Оба этих варианта могут быть довольно сильно медленнее, что зачастую не принципиально.
