@@ -31,7 +31,9 @@
     - [Зануление битов числа 42](#зануление-битов-числа-42)
     - [Группировка](#группировка)
   - [05. Call Me Maybe](#05-call-me-maybe)
+    - [Ответы на вопросы в комментариях](#ответы-на-вопросы-в-комментариях)
     - [Небольшая ремарка про объекты-типы](#небольшая-ремарка-про-объекты-типы)
+    - [Метод Select](#метод-select)
   - [06. Wubba Lubba Dub Dub](#06-wubba-lubba-dub-dub)
 
 <!-- /TOC -->
@@ -717,7 +719,7 @@ GetDrunkFibonacci()
 
 ## 05. Call Me Maybe
 
-Вопросы:
+### Ответы на вопросы в комментариях
 
 1. Почему Maybe - структура?
 
@@ -830,6 +832,32 @@ IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, Func<TSour
 // таким образом всякий раз, когда аргументом параметра source передается
 // объект Maybe<T>, произойдет упаковка!
 ```
+
+### Метод Select
+
+Такой код ведет к ошибке:
+
+```cs
+public Maybe<TResult> Select<TResult>(Func<T, TResult> map)
+{
+    return HasValue ? new Maybe<TResult>(map(_value)) : Maybe<TResult>.Nothing;
+}
+```
+
+, если вызвать его так:
+
+```cs
+var res = 10
+    .ToMaybe()
+    .Select(_ => (object) null);
+
+Console.WriteLine($"HasValue: {res.HasValue}");       // true
+Console.WriteLine($"_value: {res.Value == null}");    // true
+```
+
+Конструктор должен использоваться только в операторе неявного приведения - он является настоящим "конструктором" объектов.
+
+Можно было бы продублировать логику в конструкторе, что не очень хорошо. С другой стороны можно было бы поставить явную проверку в конструкторе на `value != null`, что уже заметно лучше.
 
 ## 06. Wubba Lubba Dub Dub
 
