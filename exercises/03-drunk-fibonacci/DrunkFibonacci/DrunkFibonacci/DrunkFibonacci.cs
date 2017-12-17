@@ -110,7 +110,7 @@ namespace DrunkFibonacci
                 }
                 if ((el & 42) != 0)
                 {
-                    preanswer = preanswer ^ 42;
+                    preanswer = preanswer & ~42;
                 }
                 var t = prev;
                 prev = unchecked(prev + prevprev);
@@ -166,8 +166,9 @@ namespace DrunkFibonacci
                 counter += 1;
                 if (counter == 16)
                 {
-                    counter = 0;
                     yield return chunk;
+                    counter = 0;
+                    chunk = new int[16];
                 }
             }
         }
