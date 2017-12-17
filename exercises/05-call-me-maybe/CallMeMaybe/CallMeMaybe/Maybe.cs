@@ -25,70 +25,86 @@ namespace CallMeMaybe
 
         public static implicit operator Maybe<T>(T value)
         {
-            throw new NotImplementedException();
+            return value == null ? Nothing : new Maybe<T>(value);
         }
 
         #region LINQ syntax providers
 
         public Maybe<TResult> Select<TResult>(Func<T, TResult> map)
         {
-            // обеспечит поддержку одинарного from
-            throw new NotImplementedException();
+            return HasValue ? map(_value) : Maybe<TResult>.Nothing;
         }
         public Maybe<TResult> Select<TResult>(Func<T, Maybe<TResult>> maybeMap)
         {
-            // обеспечит поддержку одинарного from
-            throw new NotImplementedException();
+            return HasValue ? maybeMap(_value) : Maybe<TResult>.Nothing;
         }
+
         public Maybe<TResult> SelectMany<T2, TResult>(Func<T, Maybe<T2>> otherSelector, Func<T, T2, TResult> resultSelector)
         {
             // обеспечит поддержку цепочки from
-            throw new NotImplementedException();
+            Maybe<T2> interm = HasValue? otherSelector(_value) : Maybe<T2>.Nothing;
+            return interm.HasValue ? resultSelector(_value, interm._value) : Maybe<TResult>.Nothing;
         }
         public Maybe<TResult> SelectMany<T2, TResult>(Func<T, Maybe<T2>> otherSelector, Func<T, T2, Maybe<TResult>> maybeResultSelector)
         {
             // обеспечит поддержку цепочки from
-            throw new NotImplementedException();
+           return SelectMany(otherSelector, maybeResultSelector);
         }
         public Maybe<T> Where(Predicate<T> predicate)
         {
-            // обеспечит поддержку кляузы where
-            throw new NotImplementedException();
+            if (!HasValue || !predicate(_value))
+            {
+                return Nothing;
+            }
+            return this;
         }
 
         #endregion
 
         #region Optional useful methods
 
+        public T GetValueOrDefault() => Value;
+        public T GetValueOrDefault(T defaultValue) => HasValue ? _value : defaultValue;
+
         public static explicit operator T(Maybe<T> maybe)
         {
-            throw new NotImplementedException();
+            return maybe.Value;
         }
-
-        public T GetValueOrDefault() => throw new NotImplementedException();
-        public T GetValueOrDefault(T defaultValue) => throw new NotImplementedException();
 
         public TResult SelectOrElse<TResult>(Func<T, TResult> map, Func<TResult> elseMap)
         {
-            throw new NotImplementedException();
+            return HasValue ? map(_value) : elseMap();
         }
 
         public void Do(Action<T> doAction)
         {
-            throw new NotImplementedException();
+            if (HasValue)
+            {
+                doAction(_value);
+            }
         }
         public void DoOrElse(Action<T> doAction, Action elseAction)
         {
-            throw new NotImplementedException();
+            if (HasValue)
+            {
+                doAction(_value);
+            }
+            else
+            {
+                elseAction();
+            }
         }
 
         public T OrElse(Func<T> elseMap)
         {
-            throw new NotImplementedException();
+            return HasValue ? _value : elseMap();
         }
-        public void OrElse(Action elseAction)
+        public void OrElseDo(Action elseAction)
         {
-            throw new NotImplementedException();
+            if (!HasValue)
+            {
+                elseAction();
+            }
         }
 
         #endregion
