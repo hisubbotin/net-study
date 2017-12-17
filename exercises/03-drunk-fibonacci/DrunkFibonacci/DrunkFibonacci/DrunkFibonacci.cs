@@ -98,7 +98,7 @@ namespace DrunkFibonacci
                 }
                 if ((element & 42) != 0)
                 {
-                    output ^= 42;
+                    output = output & ~42;
                 }
                 if (elementCount % 6 == 4)
                 {
@@ -168,9 +168,19 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
-            for (var element = GetDrunkFibonacci();; element = element.Skip(16))
+            const int chunkSize = 16;
+            var chunk = new int[chunkSize];
+            var counter = 0;
+            foreach (var element in GetDrunkFibonacci())
             {
-                yield return element.Take(16).ToArray();
+                chunk[counter] = element;
+                ++counter;
+
+                if (counter != chunkSize) continue;
+
+                yield return chunk;
+                counter = 0;
+                chunk = new int[chunkSize];
             }
         }
 
