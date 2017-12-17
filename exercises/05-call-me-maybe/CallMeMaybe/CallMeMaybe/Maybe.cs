@@ -46,7 +46,7 @@ namespace CallMeMaybe
             if (HasValue)
             {
                 return otherSelector(_value).HasValue
-                    ? new Maybe<TResult>(resultSelector(_value, otherSelector(_value)._value))
+                    ? resultSelector(_value, otherSelector(_value)._value)
                     : Maybe<TResult>.Nothing;
             }
             return Maybe<TResult>.Nothing;
