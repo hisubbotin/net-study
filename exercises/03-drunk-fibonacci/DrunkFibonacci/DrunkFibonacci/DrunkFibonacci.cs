@@ -72,7 +72,7 @@ namespace DrunkFibonacci
             }
             if ((random & 42) == 42)
             {
-                return number - (42 & number);
+                return number & (~42);
             }
             return number;
         }
@@ -155,6 +155,7 @@ namespace DrunkFibonacci
                 if (i == 16)
                 {
                     yield return result;
+                    result = new int[16];
                     i = 0;
                 }
                 result[i] = a.Current;
