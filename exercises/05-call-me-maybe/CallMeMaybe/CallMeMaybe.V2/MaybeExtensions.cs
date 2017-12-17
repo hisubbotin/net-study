@@ -7,26 +7,20 @@ namespace CallMeMaybe.V2
     {
         public static Maybe<T> ToMaybe<T>(this T value)
         {
-            // скопируй из предыдущего шага
-            throw new NotImplementedException();
+            return value;
         }
-        public static Maybe<T> ToMaybe<T>(this T? value)
+        
+        public static Maybe<T> ToMaybe<T>(this T? nullable) 
             where T : struct
         {
-            // скопируй из предыдущего шага
-            throw new NotImplementedException();
+            return nullable ?? Maybe<T>.Nothing;
         }
 
         public static Maybe<T> ToMaybe<T>(this IEnumerable<T> seq)
         {
             using (var iter = seq.GetEnumerator())
             {
-                /*
-                    изначально iter никуда не указывает - попытка обращения к iter.Current вызовет исключение
-                    само же итерирование производится с помощью метода .Next().
-                    Обрати внимание на его сигнатуру.
-                */
-                throw new NotImplementedException();
+                return iter.MoveNext() ? iter.Current : Maybe<T>.Nothing;
             }
         }
     }

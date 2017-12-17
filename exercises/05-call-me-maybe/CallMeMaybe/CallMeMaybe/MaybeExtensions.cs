@@ -6,6 +6,7 @@
         {
             return value;
         }
+
         public static Maybe<T> ToMaybe<T>(this T? value)
             where T : struct
         {
