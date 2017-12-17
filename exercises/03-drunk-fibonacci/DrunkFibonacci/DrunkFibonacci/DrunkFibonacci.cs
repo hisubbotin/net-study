@@ -13,7 +13,6 @@ namespace DrunkFibonacci
         public static int[] CreateIntArray(int len)
         {
             return new int[len];
-            // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -26,8 +25,6 @@ namespace DrunkFibonacci
         {
             for (int i = 0; i < arr.Length; ++i)
                 arr[i] = step * i + seed;
-
-            // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -37,8 +34,6 @@ namespace DrunkFibonacci
         public static int[] GetFirstFiveFibonacci()
         {
             return new[] { 1, 1, 2, 3, 5 };
-
-            // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -57,9 +52,6 @@ namespace DrunkFibonacci
             Random rand = new Random(seed);
             while (true)
                 yield return rand.Next();
-
-
-            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -105,8 +97,6 @@ namespace DrunkFibonacci
 
                 yield return result;
             }
-
-            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -116,9 +106,7 @@ namespace DrunkFibonacci
         /// <param name="cnt">Длина отрезка.</param>
         public static int GetMaxOnRange(int from, int cnt)
         {
-            return GetDrunkFibonacci().Skip(from - 1).Take(cnt).Max((x) => x);
-
-            // throw new NotImplementedException();
+            return GetDrunkFibonacci().Skip(from - 1).Take(cnt).Max();
         }
 
         /// <summary>
@@ -128,8 +116,6 @@ namespace DrunkFibonacci
         public static List<int> GetNextNegativeRange(int from = 1)
         {
             return GetDrunkFibonacci().Skip(from).SkipWhile((x) => (x >= 0)).TakeWhile((x) => (x < 0)).ToList();
-
-            // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -138,7 +124,6 @@ namespace DrunkFibonacci
         public static IEnumerable<int> GetXoredWithLaggedItself()
         {
             return GetDrunkFibonacci().Zip(GetDrunkFibonacci().Skip(42), (a, b) => a ^ b);
-            // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -152,8 +137,6 @@ namespace DrunkFibonacci
                 var curDf = df.Skip(idx);
                 yield return curDf.Take(16).ToArray();
             }
-
-            // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -170,9 +153,7 @@ namespace DrunkFibonacci
                 Она в какой-то степени эквивалентна оператору `bind` над монадами (в данном случае над монадами последовательностей).
             */
 
-            return GetInChunks().SelectMany(chunk => chunk.Select(a => Math.Abs(a)).OrderBy(b => b)).Take(3);
-
-            // throw new NotImplementedException();
+            return GetInChunks().SelectMany((x) => x.OrderBy((y) => y).Take(3));
         }
 
         /// <summary>
@@ -208,8 +189,6 @@ namespace DrunkFibonacci
             */
 
             return GetDrunkFibonacci().Take(10000).GroupBy(el => el % 8).ToDictionary(g => g.Key, g => g.Count());
-
-            // throw new NotImplementedException();
         }
     }
 }
