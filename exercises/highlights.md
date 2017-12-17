@@ -35,6 +35,9 @@
     - [Небольшая ремарка про объекты-типы](#небольшая-ремарка-про-объекты-типы)
     - [Метод Select](#метод-select)
   - [06. Wubba Lubba Dub Dub](#06-wubba-lubba-dub-dub)
+    - [Verbatim strings](#verbatim-strings)
+    - [Split text to lines](#split-text-to-lines)
+    - [Construct `string` from `IEnumerable<char>`](#construct-string-from-ienumerablechar)
 
 <!-- /TOC -->
 
@@ -861,9 +864,72 @@ Console.WriteLine($"_value: {res.Value == null}");    // true
 
 ## 06. Wubba Lubba Dub Dub
 
-1. В c# есть так называемые `verbatim string`, которые начинаются с @ и позволяют не писать backslash дважды:
+### Verbatim strings
+
+В c# есть так называемые `verbatim string`, которые начинаются с @ и позволяют не писать backslash дважды:
 
 ```cs
 var sadPath = "c:\\petr\\ustal\\ot\\vashikh\\slashey";
 var happyPath = @"c:\petr\feels\lyoubovno\i\prelstivo";
 ```
+
+### Split text to lines
+
+В задании про разбиение текста на строки не все решили заморачиваться с тем, что на разных платформах принят разный формат перевода строки (см [wiki](https://en.wikipedia.org/wiki/Newline)). В целом, этого и не требовалось, но вот вариант, который учитывает все случаи:
+
+```cs
+input.Split(new[] {"\r\n", "\r", "\n"}, StringSplitOptions.None);
+```
+
+В таком случае мы не потеряем пустых строк в оригинальном тексте и правильно учтем все возможные варианты перевода строки. Обрати внимание, что `"\r\n"` идет на первом месте - это важно.
+
+В случае, когда необходимо разбить на строки текст очень большой длины `Split` может оказаться не очень удачным выбором (например, доп затраты по памяти). Тогда можно воспользоваться таким вариантом:
+
+```cs
+public static IEnumerable<string> SplitToLines(this string input)
+{
+    if (input == null)
+    {
+        yield break;
+    }
+
+    using (var reader = new System.IO.StringReader(input))
+    {
+        while (!reader.EndOfStream)
+        {
+            yield return reader.ReadLine();
+        }
+    }
+}
+```
+
+### Construct `string` from `IEnumerable<char>`
+
+Существует довольно много способов это сделать. Естественно, все они имеют свои плюсы и минусы, но наиболее предпочтимыми являются следующие:
+
+```cs
+// by string constructor
+return new string(charSequence.ToArray());
+
+// by string builder
+var sb = new StringBuilder();
+foreach (var c in charSequence)
+{
+    sb.Append(c);
+}
+return sb.ToString();
+```
+
+В большинстве случаев первый вариант окажется и достаточно коротким/читабельным, и достаточно быстрым. Более того, если `charSequence` имеет реальный тип `char[]`, то он будет максимально быстрым, т.к. в конструкторе строки есть соответствующая проверка и оптимизация на этот случай. В некоторых же случаях может оказаться более предпочтительным вариант со `StringBuilder`.
+
+Тем не менее, я видел следующий вариант, который очевидно хуже первого тем, что каждый символ приводится к строке, а потом конкатенируется:
+
+```cs
+// by join
+return string.Join(string.Empty, charSequence));
+
+// or the same by concat
+return string.Concat(charSequence);
+```
+
+Ну и в таком случае немного теряется семантика того, что последовательность символов сама по себе составляет строку - вместо этого мы рассматриваем каждый символ как независимые конкатенируемые строки.
