@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("BoringVector.Tests")]
 
 namespace BoringVector
 {
@@ -13,6 +16,14 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        public double X { get; }
+        public double Y { get; }
+
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
 
 
         /*
@@ -24,30 +35,57 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        /// <summary>
+        /// Возвращает квадрат длины.
+        /// </summary>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+
+        /// <summary>
+        /// Возвращает вектор, равный сумме векторов.
+        /// </summary>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
+
+        /// <summary>
+        /// Возвращает вектор, умноженный на коэффициент.
+        /// </summary>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(k * X, k * Y);
         }
+
+        /// <summary>
+        /// Возвращает скалярное произведение двух векторов.
+        /// </summary>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+
+        /// <summary>
+        /// Возвращает векторное произведение двух векторов.
+        /// </summary>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+        /// <summary>
+        /// Возвращает координаты вектора.
+        /// </summary>
+        public override string ToString()
+        {
+            return $"({X}; {Y})";
+        }
+
 
         #region operators
 
@@ -57,6 +95,63 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+
+        /// <summary>
+        /// Возвращает вектор, равный сумме двух векторов.
+        /// </summary>
+        public static Vector operator+ (Vector v1, Vector v2)
+        {
+            return v1.Add(v2);
+        }
+
+        /// <summary>
+        /// Возвращает вектор, равный разнице двух векторов.
+        /// </summary>
+        public static Vector operator- (Vector v1, Vector v2)
+        {
+            return v1.Add(v2.Scale(-1));
+        }
+
+        /// <summary>
+        /// Возвращает вектор, домноженный на число.
+        /// </summary>
+        public static Vector operator* (double k, Vector v)
+        {
+            return v.Scale(k);
+        }
+
+        /// <summary>
+        /// Возвращает вектор, домноженный на число.
+        /// </summary>
+        public static Vector operator* (Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+        
+        /// <summary>
+        /// Возвращает вектор, разделенный на число.
+        /// </summary>
+        public static Vector operator/ (Vector v, double k)
+        {
+            return v.Scale(1 / k);
+        }
+        
+        /// <summary>
+        /// Возвращает положительный вектор.
+        /// </summary>
+        public static Vector operator+ (Vector v)
+        {
+            return v;
+        }
+
+        /// <summary>
+        /// Возвращает отрицательный вектор.
+        /// </summary>
+        public static Vector operator- (Vector v)
+        {
+            return v.Scale(-1);
+        }
+
 
         #endregion
     }
