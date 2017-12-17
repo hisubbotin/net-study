@@ -88,32 +88,33 @@ namespace DrunkFibonacci
             int currentNum = second;
             foreach (var random in GetDeterministicRandomSequence())
             {
+                currentId += 1;
                 unchecked
                 {
-                    currentId += 1;
                     currentNum = currentNum + prevNum;
                     prevNum = currentNum - prevNum;
-
-                    int result = currentNum;
-
-                    // каждое 6е число забывает озвучить
-                    if (currentId % 6 == 0)
-                    {
-                        continue;
-                    }
-                    // каждое 6е, начиная с 4го выдаёт число 300
-                    if ((currentId - 4) % 6 == 0)
-                    {
-                        result = 300;
-                    }
-                    // у получившегося числа с некоторой вероятностью зануляет биты
-                    if ((random & 42) != 0)
-                    {
-                        result = result & (~42);
-                    }
-
-                    yield return result;
                 }
+
+
+                int result = currentNum;
+
+                // каждое 6е число забывает озвучить
+                if (currentId % 6 == 0)
+                {
+                    continue;
+                }
+                // каждое 6е, начиная с 4го выдаёт число 300
+                if ((currentId - 4) % 6 == 0)
+                {
+                    result = 300;
+                }
+                // у получившегося числа с некоторой вероятностью зануляет биты
+                if ((random & 42) != 0)
+                {
+                    result = result & (~42);
+                }
+
+                yield return result;
             }
         }
 
@@ -158,11 +159,20 @@ namespace DrunkFibonacci
         {
             // ни чему особо не научишься, просто интересная задачка :)
             var df = GetDrunkFibonacci();
-       
-            for (int idx = 0; ; idx += 16)
+            int idx = 0;
+            int[] chunk = new int[16];
+
+            foreach (var x in df)
             {
-                var curDf = df.Skip(idx);
-                yield return curDf.Take(16).ToArray();
+                chunk[idx] = x;
+                idx++;
+
+                if(idx == 16)
+                {
+                    yield return chunk;
+                    idx = 0;
+                    chunk = new int[16];
+                }
             }
         }
 
