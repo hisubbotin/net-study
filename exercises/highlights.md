@@ -738,12 +738,12 @@ GetDrunkFibonacci()
     return Maybe<MyClass>.Nothing;
     ```
 
-    - самих экземпляров переменной `Maybe<T>.Nothing` будет по одному на каждый используемый тип `T`.
+    - самих экземпляров переменной `Maybe<T>.Nothing` будет по одному на каждый используемый тип `T`, т.к. `Maybe<int>` и `Maybe<MyFooClass>` - два разных типа. См. [соответствующее обсуждение на SO](https://stackoverflow.com/questions/3037203/are-static-members-of-a-generic-class-tied-to-the-specific-instance).
 
     - а еще это значение стоило бы задать не полем, а `readonly`-свойством:
 
     ```cs
-    public static Maybe<T> Nothing { get; } = new Maybe<T>();
+    public static Maybe<T> Nothing { get; } = new Maybe<T>();   // кстати, если что, .net гарантирует thread-safety инициализации статических полей/свойств.
     ```
 
 1. Почему конструктор, принимающий значение, скрыт?
