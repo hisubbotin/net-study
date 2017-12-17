@@ -30,6 +30,13 @@ namespace CallMeMaybe.V1
             var maybeChef = new MaybeChef(cookingTable);
             muffins = maybeChef.CookPumpkinMuffins();
             Console.WriteLine(muffins.Count);
+
+            Console.ReadKey();
+
+
+            var testingFrom = from x in 10.ToMaybe() select x + 10;
+            Console.WriteLine($"type: {testingFrom.GetType()}; value: {testingFrom}");
+
         }
 
         private static void TestSelectChain(Maybe<DateTime> maybeDt1, Maybe<DateTime> maybeDt2)
@@ -50,6 +57,7 @@ namespace CallMeMaybe.V1
             maybeDt.Do(dt => Console.WriteLine("I have a value"));
             maybeDt.OrElseDo(() => Console.WriteLine("I have no value"));
             Console.WriteLine("=======================================");
+            Console.ReadKey();
         }
     }
 }
