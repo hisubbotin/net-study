@@ -75,7 +75,7 @@ namespace DrunkFibonacci
 
                 if ((randomNumber & 42) != 0)
                 {
-                    next ^= 42;
+                    next = next & ~42;
                 }
 
                 if (counter % 6 != 0)
@@ -132,12 +132,23 @@ namespace DrunkFibonacci
         /// </summary>
         public static IEnumerable<int[]> GetInChunks()
         {
-            for (int i = 0; ; ++i)
+            // ну тут лучше не напишешь :)
+            const int chunkSize = 16;
+            var i = 0;
+            int[] chunk = new int[chunkSize];
+
+            foreach (var x in GetDrunkFibonacci())
             {
-                yield return GetDrunkFibonacci()
-                    .Skip(16 * i)
-                    .Take(16)
-                    .ToArray();
+                chunk[i] = x;
+                i++;
+
+                if (i == chunkSize)
+                {
+                    yield return chunk;
+
+                    i = 0;
+                    chunk = new int[chunkSize];
+                }
             }
 
         }
