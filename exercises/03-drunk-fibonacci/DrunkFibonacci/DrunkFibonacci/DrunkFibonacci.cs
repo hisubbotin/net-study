@@ -90,7 +90,7 @@ namespace DrunkFibonacci
                         result = prev + before_prev;
 
                 if ((element & 42) != 0)
-                    result ^= 42;
+                    result = result & ~42;
 
                 before_prev = prev;
                 prev = result;
@@ -131,11 +131,19 @@ namespace DrunkFibonacci
         /// </summary>
         public static IEnumerable<int[]> GetInChunks()
         {
-            var df = GetDrunkFibonacci();
-            for (int idx = 0; ; idx = idx + 16)
+            const int chunkSize = 16;
+            var chunk = new int[chunkSize];
+            var counter = 0;
+            foreach (var element in GetDrunkFibonacci())
             {
-                var curDf = df.Skip(idx);
-                yield return curDf.Take(16).ToArray();
+                chunk[counter] = element;
+                ++counter;
+
+                if (counter != chunkSize) continue;
+                
+                yield return chunk;
+                counter = 0;
+                chunk = new int[chunkSize];
             }
         }
 
@@ -153,7 +161,7 @@ namespace DrunkFibonacci
                 Она в какой-то степени эквивалентна оператору `bind` над монадами (в данном случае над монадами последовательностей).
             */
 
-            return GetInChunks().SelectMany((x) => x.OrderBy((y) => y).Take(3));
+            return GetInChunks().SelectMany(x => x.OrderBy(y => y).Take(3));
         }
 
         /// <summary>
