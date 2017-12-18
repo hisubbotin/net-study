@@ -76,30 +76,33 @@ namespace DrunkFibonacci
                 При вычислении сложения переполнение типа разрешено и всячески поощряется.
             */
             int[] previous = new int[2] { 1, 1 };
-            IEnumerator < int > rand = GetDeterministicRandomSequence().GetEnumerator();
-            for (int step = 0; true; ++step)
+            using (IEnumerator<int> rand = GetDeterministicRandomSequence().GetEnumerator())
             {
-                rand.MoveNext();
-                int number = previous[step % 2];
-                previous[step % 2] = previous[0] + previous[1];
-                if (step < 2)
+                yield return 1;
+                yield return 1;
+
+                for (int step = 2; true; ++step)
                 {
-                    yield return 1;
+                    rand.MoveNext();
+                    int number = previous[step % 2];
+                    previous[step % 2] = previous[0] + previous[1];
+                    if (step % 6 == 0)
+                    {
+                        continue;
+                    }
+                    if (step % 6 == 4)
+                    {
+                        yield return 300;
+                    }                
+                    if ((rand.Current & 42) != 0)   
+                    {
+                        yield return number & (~42);
+                    }
+                    yield return number;
                 }
-                if (step % 6 == 0)
-                {
-                    continue;
-                }
-                if (step >= 6*4 && step % 6 == 0)
-                {
-                    yield return 300;
-                }                
-                if ((rand.Current & 42) != 0)   
-                {
-                    yield return number & (~42);
-                }
-                yield return number;
             }
+           
+            
         }
 
         /// <summary>
@@ -138,19 +141,18 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
-            int begin = 1;
-            int end = 16;
-            bool isFirst = true;
-            while(true)
+            using (IEnumerator<int> seq = GetDrunkFibonacci().GetEnumerator())
             {
-                if (isFirst)
+                while (true)
                 {
-                    isFirst = false;
-                    return GetDrunkFibonacci().Skip(begin).Take(end).ToList();
+                    var result = new int[16];
+                    for (int i = 0; i < 16; ++i)
+                    {
+                        seq.MoveNext();
+                        result[i] = seq.Current;
+                    }
+                    yield return result;
                 }
-                begin+=16;
-                end+=16;
-                return GetDrunkFibonacci().Skip(begin).Take(end).ToList();
             }
         }
 
@@ -167,7 +169,7 @@ namespace DrunkFibonacci
                 Вообще говоря, SelectMany умеет много чего и мегаполезна.
                 Она в какой-то степени эквивалентна оператору `bind` над монадами (в данном случае над монадами последовательностей).
             */
-            return GetInChunks().SelectMany(x => x.Select(y => Math.Abs(y)).OrderBy(y => y).Take(3));
+            return GetInChunks().SelectMany(x => x.OrderBy(Math.Abs).Take(3));
         }
 
         /// <summary>
