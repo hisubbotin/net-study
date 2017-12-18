@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -14,6 +13,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToLines(this string text)
         {
             // У строки есть специальный метод. Давай здесь без регулярок
+            // А виндовые переносы строк - зло
             return text.Split('\n');
         }
 
@@ -91,7 +91,7 @@ namespace WubbaLubbaDubDub
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            return string.Concat(s.Select(c => char.IsLower(c) ? char.ToLower(c) : char.ToUpper(c)));
+            return string.Concat(s.Select(c => char.IsLower(c) ? char.ToUpper(c) : char.ToLower(c)));
         }
 
         /// <summary>
@@ -100,7 +100,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            return string.Concat(s.Select(c => c + 1));
+            return string.Concat(s.Select(c => (char)(c + 1)));
         }
 
 
@@ -118,7 +118,15 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
+            var commentsExpr = new Regex("\\/\\/.*\\n|\\/\\*(.|\\n)*?\\*\\/");
+            var idExpr = new Regex("[0-9A-F]{4}:[0-9A-F]{4}");
+
+            return commentsExpr
+                .Split(text)
+                .SelectMany(str => idExpr
+                    .Matches(str)
+                    .Select(match => Convert.ToInt64(match.Value.Replace(":", ""), 16)))
+                .ToImmutableList();
         }
 
         #endregion
