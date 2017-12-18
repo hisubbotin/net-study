@@ -14,6 +14,14 @@ namespace BoringVector
             Vector задается парой вещественных координат X и Y.
         */
 
+        public double X { get; }
+        public double Y { get; }
+
+        public Vector(double x, double y)
+        {
+            this.X = x;
+            this.Y = y;
+        }
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -23,31 +31,62 @@ namespace BoringVector
                 - скалярное произведение
                 - векторное произведение (= площадь параллелограмма)
         */
-
+        /// <summary>
+        /// Квадрат длины вектора
+        /// </summary>
+        /// <returns>Квадрат длины вектора</returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return Math.Pow(X, 2) + Math.Pow(Y, 2);
         }
+        /// <summary>
+        /// Сложение векторов
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        /// <returns><see cref="Vector"/>Сумма векторов</returns>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
+        /// <summary>
+        /// Умножение на скаляр.
+        /// </summary>
+        /// <param name="k">Число</param>
+        /// <returns>Произведение вектора и числа</returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(X * k, Y * k);
         }
+        /// <summary>
+        /// Скалярное произведение.
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        /// <returns>Скалярное произведение векторов</returns>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+        /// <summary>
+        /// Векторне произведения.
+        /// </summary>
+        /// <param name="v"><see cref="Vector"/>Вектор</param>
+        /// <returns>Векторное произведение векторов</returns>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+        /// <summary>
+        /// Приведение вектора к строке
+        /// </summary>
+        /// <returns>Строка (X, Y)</returns>
+        public override string ToString()
+        {
+            return string.Format("({0}; {1})", X.ToString(), Y.ToString());
+        }
 
         #region operators
 
@@ -57,6 +96,80 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+                /// <summary>
+                /// Сложение векторов
+                /// </summary>
+                /// <param name="v"><see cref="Vector"/>Первый вектор</param>
+                /// <param name="u"><see cref="Vector"/>Второй вектор</param>
+                /// <returns><see cref="Vector"/> Сумма векторов </returns>
+                public static Vector operator+(Vector v, Vector u)
+                {
+                    return v.Add(u);
+                }
+
+                /// <summary>
+                /// Разница векторов
+                /// </summary>
+                /// <param name="v"><see cref="Vector"/>Первый вектор</param>
+                /// <param name="u"><see cref="Vector"/>Второй вектор</param>
+                /// <returns><see cref="Vector"/> Разность векторов</returns>
+                public static Vector operator-(Vector v, Vector u)
+                {
+                    return v.Add(-u);
+                }
+
+                /// <summary>
+                /// Положительный вектор
+                /// </summary>
+                /// <param name="v"><see cref="Vector"/>Вектор</param>
+                /// <returns><see cref="Vector"/>Тот же вектор</returns>
+                public static Vector operator+(Vector v)
+                {
+                    return v;
+                }
+
+                /// <summary>
+                /// Обратный вектор
+                /// </summary>
+                /// <param name="v"><see cref="Vector"/>Вектор</param>
+                /// <returns><see cref="Vector"/>Противоположный вектор</returns>
+                public static Vector operator-(Vector v)
+                {
+                    return new Vector(-v.X, -v.Y);
+                }
+
+                /// <summary>
+                /// Умножение скаляра на вектор
+                /// </summary>
+                /// <param name="k">Число</param>
+                /// <param name="u"><see cref="Vector"/>Вектор</param>
+                /// <returns><see cref="Vector"/>Произведение числа и вектора</returns>
+                public static Vector operator*(double k, Vector u)
+                {
+                    return u.Scale(k);
+                }
+
+                /// <summary>
+                /// Умножение вектора на скаляр
+                /// </summary>
+                /// <param name="v"><see cref="Vector"/>Вектор</param>
+                /// /// <param name="k">Число</param>
+                /// <returns><see cref="Vector"/>Произведения вектора и числа</returns>
+                public static Vector operator*(Vector v, double k)
+                {
+                    return v.Scale(k);
+                }
+
+                /// <summary>
+                /// Деление вектора на скаляр
+                /// </summary>
+                /// <param name="v"><see cref="Vector"/>Вектор</param>
+                /// /// <param name="k">Число</param>
+                /// <returns><see cref="Vector"/>Частное вектора и числа</returns>
+                public static Vector operator/(Vector v, double k)
+                {
+                    return v.Scale(1.0/k);
+                }
 
         #endregion
     }
@@ -90,13 +203,13 @@ namespace BoringVector
 
         Есть и хорошее в этом деле. Комментирование кода очень похоже на написание автотестов - оно позволяет взглянуть
         на задачу и ее решение немного с другой стороны. Например, если слова не вяжутся, и не получается написать простое и короткое
-        описание к методу или типу - это хороший сигнал, что он "с душком", и его стоит переделать/отрефакторить. 
+        описание к методу или типу - это хороший сигнал, что он "с душком", и его стоит переделать/отрефакторить.
         Я лично чаще пишу комментарии ближе к концу работы над задачей. Это позволяет мне еще раз просмотреть весь написанный код под
         слегка иным углом обзора и самому сделать первичный code review.
 
 
         Ты мог(-ла) заметить, что в предыдущих заданиях для комментариев я использовал немного необычный синтаксис:
-    
+
             /// <summary>
             /// Возвращает объект <see cref="DateTime"/> с заданными временем и значением <see cref="DateTime.Kind"/>.
             /// </summary>
