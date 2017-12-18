@@ -1,11 +1,14 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2006
+VisualStudioVersion = 15.0.27130.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WubbaLubbaDubDub", "WubbaLubbaDubDub\WubbaLubbaDubDub.csproj", "{0BEF817F-1BAA-4D48-BFB6-1148A0FDE484}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WubbaLubbaDubDub", "WubbaLubbaDubDub\WubbaLubbaDubDub.csproj", "{0BEF817F-1BAA-4D48-BFB6-1148A0FDE484}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WubbaLubbaDubDub.Tests", "WubbaLubbaDubDub.Tests\WubbaLubbaDubDub.Tests.csproj", "{A9C00A0A-D961-4A5E-BF74-96263B92CAB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WubbaLubbaDubDub.Tests", "WubbaLubbaDubDub.Tests\WubbaLubbaDubDub.Tests.csproj", "{A9C00A0A-D961-4A5E-BF74-96263B92CAB0}"
+	ProjectSection(ProjectDependencies) = postProject
+		{0BEF817F-1BAA-4D48-BFB6-1148A0FDE484} = {0BEF817F-1BAA-4D48-BFB6-1148A0FDE484}
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
