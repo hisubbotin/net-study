@@ -1,4 +1,4 @@
-using Xunit;
+п»їusing Xunit;
 
 namespace WubbaLubbaDubDub.Tests
 {
@@ -67,9 +67,9 @@ namespace WubbaLubbaDubDub.Tests
         [InlineData("nothing", "nothing", "something", "something")]
         [InlineData("something", "something", "", "")]
         [InlineData("something", "nothing", "anything", "something")]
-        [InlineData("Такого как Путин полного сил Такого как Путин чтобы не пил Такого как Путин чтоб не обижал Такого как Путин чтоб не убежал", 
-            "Путин", "Нэвэльный",
-            "Такого как Нэвэльный полного сил Такого как Нэвэльный чтобы не пил Такого как Нэвэльный чтоб не обижал Такого как Нэвэльный чтоб не убежал")]
+        [InlineData("РўР°РєРѕРіРѕ РєР°Рє РџСѓС‚РёРЅ РїРѕР»РЅРѕРіРѕ СЃРёР» РўР°РєРѕРіРѕ РєР°Рє РџСѓС‚РёРЅ С‡С‚РѕР±С‹ РЅРµ РїРёР» РўР°РєРѕРіРѕ РєР°Рє РџСѓС‚РёРЅ С‡С‚РѕР± РЅРµ РѕР±РёР¶Р°Р» РўР°РєРѕРіРѕ РєР°Рє РџСѓС‚РёРЅ С‡С‚РѕР± РЅРµ СѓР±РµР¶Р°Р»", 
+            "РџСѓС‚РёРЅ", "РќСЌРІСЌР»СЊРЅС‹Р№",
+            "РўР°РєРѕРіРѕ РєР°Рє РќСЌРІСЌР»СЊРЅС‹Р№ РїРѕР»РЅРѕРіРѕ СЃРёР» РўР°РєРѕРіРѕ РєР°Рє РќСЌРІСЌР»СЊРЅС‹Р№ С‡С‚РѕР±С‹ РЅРµ РїРёР» РўР°РєРѕРіРѕ РєР°Рє РќСЌРІСЌР»СЊРЅС‹Р№ С‡С‚РѕР± РЅРµ РѕР±РёР¶Р°Р» РўР°РєРѕРіРѕ РєР°Рє РќСЌРІСЌР»СЊРЅС‹Р№ С‡С‚РѕР± РЅРµ СѓР±РµР¶Р°Р»")]
         public void TestReplace(string line, string old, string @new, string result)
         {
             Assert.Equal(result, RicksMercilessEncryptor.Replace(line, old, @new));
@@ -78,7 +78,7 @@ namespace WubbaLubbaDubDub.Tests
 
         [Theory]
         [InlineData("", "")]
-        [InlineData("аргентинаманитнегра", "аргентинаманитнегра")]
+        [InlineData("Р°СЂРіРµРЅС‚РёРЅР°РјР°РЅРёС‚РЅРµРіСЂР°", "Р°СЂРіРµРЅС‚РёРЅР°РјР°РЅРёС‚РЅРµРіСЂР°")]
         [InlineData("123456789", "987654321")]
         [InlineData("String\nwithspecial", "laicepshtiw\ngnirtS")]
         public void TestGetReversed(string line, string result)
@@ -90,9 +90,9 @@ namespace WubbaLubbaDubDub.Tests
         [Theory]
         [InlineData("", "")]
         [InlineData("?!?!!!", "?!?!!!")]
-        [InlineData("это маленькие буквы", "ЭТО МАЛЕНЬКИЕ БУКВЫ")]
-        [InlineData("ЭТО КАПС", "это капс")]
-        [InlineData("ПрИвЕтИк КаК дЕлИшКи?", "пРиВеТиК кАк ДеЛиШкИ?")]
+        [InlineData("СЌС‚Рѕ РјР°Р»РµРЅСЊРєРёРµ Р±СѓРєРІС‹", "Р­РўРћ РњРђР›Р•РќР¬РљРР• Р‘РЈРљР’Р«")]
+        [InlineData("Р­РўРћ РљРђРџРЎ", "СЌС‚Рѕ РєР°РїСЃ")]
+        [InlineData("РџСЂРРІР•С‚РРє РљР°Рљ РґР•Р»РС€РљРё?", "РїР РёР’РµРўРёРљ РєРђРє Р”РµР›РёРЁРєР?")]
         public void TestInverseCase(string line, string result)
         {
             Assert.Equal(result, line.InverseCase());
@@ -103,7 +103,7 @@ namespace WubbaLubbaDubDub.Tests
         [InlineData("", "")]
         [InlineData("abcdABCD", "bcdeBCDE")]
         [InlineData("012345678", "123456789")]
-        [InlineData("абвгдЕЁЖЗИ", "бвгдеЖЂЗИЙ")]  // from А-Яа-я with love
+        [InlineData("Р°Р±РІРіРґР•РЃР–Р—Р", "Р±РІРіРґРµР–Р‚Р—РР™")]  // from Рђ-РЇР°-СЏ with love
         public void TestShiftInc(string line, string result)
         {
             Assert.Equal(result, line.ShiftInc());
