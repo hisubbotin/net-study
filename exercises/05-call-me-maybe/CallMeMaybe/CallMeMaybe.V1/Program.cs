@@ -18,8 +18,13 @@ namespace CallMeMaybe.V1
 
             TestDateTimeMaybe(nullDtMaybe);
             TestDateTimeMaybe(maybeDt);
-
-            TestSelectChain(nullDtMaybe, maybeDt);
+            try
+            {
+                TestSelectChain(nullDtMaybe, maybeDt);
+            } catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             TestSelectChain(DateTime.Today.AddDays(-1), DateTime.Now);
 
             var cookingTable = new CookingTable();
@@ -47,7 +52,13 @@ namespace CallMeMaybe.V1
             Console.WriteLine(maybeDt.ToString());
             Console.WriteLine(
                 maybeDt.SelectOrElse(dt => dt.Date == DateTime.Today ? "Today" : "Not today", () => "Don't know, man"));
-            maybeDt.Do(dt => Console.WriteLine("I have a value"));
+            try
+            {
+                maybeDt.Do(dt => Console.WriteLine("I have a value"));
+            } catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
             maybeDt.OrElseDo(() => Console.WriteLine("I have no value"));
             Console.WriteLine("=======================================");
         }
