@@ -82,29 +82,31 @@ namespace DrunkFibonacci
             /*Они нумеруются с 0, поэтому начиная с 4-ого - это на самом деле начиная с 5-ого, 
              * а ещё из-за этой операции с битами, частенько шутка за 300 превращается в шутку за 260 :( */
             int[] last_values = new int[2] { 1, 1 };
-            IEnumerator < int > rand = GetDeterministicRandomSequence().GetEnumerator();
-            for (int step = 0; true; ++step)
+            using (IEnumerator<int> rand = GetDeterministicRandomSequence().GetEnumerator())
             {
-                rand.MoveNext();
-                int ans = last_values[step % 2];
-                last_values[step % 2] = last_values[0] + last_values[1];
-                if (step < 2)
+                for (int step = 0; true; ++step)
                 {
-                    ans = 1;
+                    rand.MoveNext();
+                    int ans = last_values[step % 2];
+                    last_values[step % 2] = last_values[0] + last_values[1];
+                    if (step < 2)
+                    {
+                        ans = 1;
+                    }
+                    else if (step % 6 == 0)
+                    {
+                        continue;
+                    }
+                    else if ((step - 4) % 6 == 0)
+                    {
+                        ans = 300;
+                    }
+                    if ((rand.Current & 42) != 0)
+                    {
+                        ans = ans & (~42);
+                    }
+                    yield return ans;
                 }
-                else if (step % 6 == 0)
-                {
-                    continue;
-                }
-                else if ((step - 4) % 6 == 0)
-                {
-                    ans = 300;
-                }                
-                if ((rand.Current & 42) != 0)   
-                {
-                    ans = ans & (~42);
-                }
-                yield return ans;
             }
         }
 
@@ -144,11 +146,17 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
-            for (var fib_seq = GetDrunkFibonacci(); ; fib_seq = fib_seq.Skip(16))
+            var result = new int[16];
+            var a = GetDrunkFibonacci().GetEnumerator();
+            for (var i = 0; a.MoveNext(); ++i)
             {
+                if (i == 16)
                 {
-                    yield return fib_seq.Take(16).ToArray();
+                    yield return result;
+                    result = new int[16];
+                    i = 0;
                 }
+                result[i] = a.Current;
             }
         }
 
