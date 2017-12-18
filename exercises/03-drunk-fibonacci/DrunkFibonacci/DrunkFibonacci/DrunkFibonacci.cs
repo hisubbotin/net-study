@@ -82,8 +82,13 @@ namespace DrunkFibonacci
 
             var y = GetDeterministicRandomSequence().GetEnumerator();
 
-            for (int i = 1; ; ++i)
+            for (int i = 0; ; ++i)
             {
+                if (i < 2) {
+                    yield return 1;
+                    continue;
+                }
+
                 var next = unchecked(prev + cur);
 
                 if (i % 6 == 4)
