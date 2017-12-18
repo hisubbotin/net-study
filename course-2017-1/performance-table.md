@@ -15,42 +15,72 @@
 
 ## КЛ
 
-| ФИ \ Даты лекций| 01 | 02 | 03 | 04 | 05 | 06 | Sum |
-|-----------------|----|----|----|----|----|----|-----|
-| Аржаев Павел    |  1 |  1 |  1 |    |  1 |  1 |     |
-| Воропаев Павел  |  1 |  1 |    |  1 |  1 |    |     |
-| Гавенко Ирина   |  1 |    |  1 |    |    |    |     |
-| Гежес Петр      |  1 |  1 |  1 |  1 |  1 |    |     |
-| Денисова Элина  |  1 |  1 |    |    |  1 |  1 |     |
-| Деткова Юлия    |  1 |    |    |    |  1 |    |     |
-| Зверева Дарья   |  1 |  1 |    |  1 |  1 |  1 |     |
-| Латыпов Зуфар   |  1 |  1 |  1 |  1 |  1 |  1 |     |
-| Леонов Валентин |  1 |  1 |  1 | .5 |    |    |     |
-| Серенко Никита  |  1 |  1 |  1 |  1 |  1 |  1 |     |
-| Сопильняк Ольга |  1 |  1 |  1 |  1 |  1 |  1 |     |
-| Шишкин Евгений  |  1 |  1 |  1 |  1 |  1 |  1 |     |
-| Леонтьева Ксения|  1 |    |    |    |    |    |     |
+|     ФИ \ Даты лекций      | 01 | 02 | 03 | 04 | 05 | 06 | Sum |
+|---------------------------|----|----|----|----|----|----|-----|
+| [Аржаев Павел][01]        |  1 |  1 |  1 |  1 |  1 |  1 |  6  |
+| [Воропаев Павел][02]      |  1 |  1 |  1 |  1 |  1 |  1 |  6  |
+| [Гавенко Ирина][03]       |  1 |  0 |  1 |  * |    |  * |     |
+| [Гежес Петр][04]          |  1 |  1 |  1 |  1 |  1 | .5 | 5.5 |
+| [Денисова Элина][05]      |  1 |  1 |  1 | 0+ |  1 |  1 |  5  |
+| [Деткова Юлия][06]        |  1 |  * |  * |  * |  1 |    |     |
+| [Зверева Дарья][07]       |  1 |  1 |  * |  1 |  1 |  1 |     |
+| [Латыпов Зуфар][08]       |  1 |  1 |  1 |  1 |  1 |  1 |  6  |
+| [Леонов Валентин][09]     |  1 |  1 |  1 | .5 |  * |  * |     |
+| [Серенко Никита][10]      |  1 |  1 |  1 |  1 |  1 |  1 |  6  |
+| [Сопильняк Ольга][11]     |  1 |  1 |  1 |  1 |  1 |  1 |  6  |
+| [Шишкин Евгений][12]      |  1 |  1 |  1 |  1 |  1 |  1 |  6  |
+| [Леонтьева Ксения][13]    |  1 |  * |    |  * |  * |    |     |
 
 ## РИОТ
 
-| ФИ \ Даты лекций    | 01 | 02 | 03 | 04 | 05 | 06 | Sum |
-|---------------------|----|----|----|----|----|----|-----|
-| Вручтель Серафима   |  1 |  1 |  1 |  1 |  1 |  1 |     |
-| Данковцев Максим    |  1 |  1 |    |  1 |  1 |    |     |
-| Жарков Андрей       |  1 |  1 |    |  1 |  1 |  1 |     |
-| Козлов Семен        |  1 |  1 |    |  1 |  0 | .5 |     |
-| Пашментов Никита    |  1 |    |    |    |    |    |     |
-| Суханов Евгений     |    |    |    |    |    |    |     |
-| Тверитинова Евгения |  1 |  1 |    |  1 | .5 | .5 |     |
-| Трегубов Иван       |    |    |    |    |    |    |     |
-| Третьяк Николай     |  1 |    |  1 |    |  1 |  1 |     |
-| Упшинский Андрей    |  1 |  1 | .5 |  1 |  1 |    |     |
-| Холопов Игорь       |  1 |  1 |  1 |  1 |  1 |  1 |     |
+|     ФИ \ Даты лекций      | 01 | 02 | 03 | 04 | 05 | 06 | Sum |
+|---------------------------|----|----|----|----|----|----|-----|
+| [Вручтель Серафима][14]   |  1 |  1 |  1 |  1 |  1 |  1 |  6  |
+| [Данковцев Максим][15]    |  1 |  1 |  * |  1 |  1 |  0 |     |
+| [Жарков Андрей][16]       |  1 |  1 |  0 |  1 |  1 |  1 |  5  |
+| [Козлов Семен][17]        |  1 |  1 |  1 |  1 |  0 | .5 | 4.5 |
+| [Пашментов Никита][18]    |  1 |  * |    |  * |    |    |     |
+| [Суханов Евгений][19]     |    |    |    |    |    |    |     |
+| [Тверитинова Евгения][20] |  1 |  1 |  0 |  1 | .5 | .5 |  4  |
+| [Трегубов Иван][21]       |    |    |    |    |    |    |     |
+| [Третьяк Николай][22]     |  1 |  1 |  1 |  1 |  1 |  1 |  6  |
+| [Упшинский Андрей][23]    |  1 |  1 | .5 |  1 |  1 |  0 | 4.5 |
+| [Холопов Игорь][24]       |  1 |  1 |  1 |  1 |  1 |  1 |  6  |
 
 ## 5 курс
 
-| ФИ \ Даты лекций    | 01 | 02 | 03 | 04 | 05 | 06 | Sum |
-|---------------------|----|----|----|----|----|----|-----|
-| Корзун Владислав    |  1 |  1 |  1 |  1 |    |  1 |     |
-| Куликов Алексей     |    |    |    |    |    |    |     |
-| Кривчанский Николай |    |    |    |    |    |    |     |
+|     ФИ \ Даты лекций      | 01 | 02 | 03 | 04 | 05 | 06 | Sum |
+|---------------------------|----|----|----|----|----|----|-----|
+| [Корзун Владислав][25]    |  1 |  1 |  1 |  1 |  1 |  1 |  6  |
+| [Куликов Алексей][26]     |    |    |    |    |    |    |     |
+| [Кривчанский Николай][27] |  * |    |    |    |    |    |     |
+
+[01]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3APavelArzhaev
+[02]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Avoropz
+[03]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3AIrinaGavenko
+[04]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3APitovsky
+[05]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3AElinRin
+[06]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Akkvadrat289
+[07]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3ADariaZvereva
+[08]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Alazuka13
+[09]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Aafterein
+[10]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3ANikitaSerenko
+[11]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Asopilnyak
+[12]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3AIbirbyZh
+[13]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Aksenull
+
+[14]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3AVruchtel
+[15]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Amax-dankow
+[16]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Aandreyzharkov
+[17]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Asemyonkozlov
+[18]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Apashmentov96
+[19]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Afrystile
+[20]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Atveritinova
+[21]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Aiat7
+[22]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Andtretyak
+[23]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Aegiby
+[24]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3AIKholopov
+
+[25]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3ASdernal
+[26]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Aalexeyqu
+[27]: https://github.com/hisubbotin/net-study/pulls?q=is%3Apr+author%3Akrivchnik
