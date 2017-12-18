@@ -80,7 +80,7 @@ namespace DrunkFibonacci
             int prev = 1;
             int prevprev = 1;
 
-            foreach (var Y in GetDeterministicRandomSequence())
+            foreach (var y in GetDeterministicRandomSequence())
             {
                 int result;
                 counter++;
@@ -100,7 +100,7 @@ namespace DrunkFibonacci
                 {
                     result = prev + prevprev;
                 }
-                if ((Y & 42) != 0)
+                if ((y & 42) != 0)
                 {
                     result = result ^ 42;
                 }
@@ -146,11 +146,17 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
-            var drunkFibonacci = GetDrunkFibonacci();
-            while (true)
+            var block = new int[16];
+            var enumerator = GetDrunkFibonacci().GetEnumerator();
+            for (var i = 0; enumerator.MoveNext(); i++)
             {
-                yield return drunkFibonacci.Take(16).ToArray();
-                drunkFibonacci.Skip(16);
+                if (i == 16)
+                {
+                    yield return block;
+                    i = 0;
+                    block = new int[16];
+                }
+                block[i] = enumerator.Current;
             }
         }
 
@@ -201,7 +207,7 @@ namespace DrunkFibonacci
 
                 Итого научишься группировать и создавать на их основе словарь (см. ToDictionary).
             */
-            return GetDrunkFibonacci().Take(10000).GroupBy((x) => (x % 8 + 8) % 8).ToDictionary(x => x.Key, x => x.ToList().Count);
+            return GetDrunkFibonacci().Take(10000).GroupBy((x) => (x % 8 + 8) % 8).ToDictionary(x => x.Key, x => x.Count());
         }
     }
 }
