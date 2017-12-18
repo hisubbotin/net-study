@@ -26,7 +26,7 @@
   - [03. Drunk Fibonacci](#03-drunk-fibonacci)
     - [`IEnumerbale` Skip and Take problem](#ienumerbale-skip-and-take-problem)
     - [Type overflow](#type-overflow)
-    - [How to iterate with IEnumerator\<int>](#how-to-iterate-with-ienumerator\int)
+    - [How to iterate with `IEnumerator<int>`](#how-to-iterate-with-ienumeratorint)
     - [Buffer is shared between all chunks](#buffer-is-shared-between-all-chunks)
     - [Zeroing bits of 42](#zeroing-bits-of-42)
     - [Grouping](#grouping)
@@ -628,7 +628,7 @@ var materializedTake3 = take3.ToList();
 
 Не все выражали данную просьбу явно в коде. Вспомни первую лабу.
 
-### How to iterate with IEnumerator\<int>
+### How to iterate with `IEnumerator<int>`
 
 В данном коде
 
