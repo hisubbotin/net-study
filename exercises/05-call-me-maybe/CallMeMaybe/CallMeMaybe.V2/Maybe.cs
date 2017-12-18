@@ -44,10 +44,8 @@ namespace CallMeMaybe.V2
             if (HasValue)
             {
                 yield return _value;
-            } else
-            {
-                yield break;
-            }
+            } 
+            yield break;            
         }
 
         /// <inheritdoc />
@@ -61,7 +59,7 @@ namespace CallMeMaybe.V2
 
         #region Optional useful methods
 
-        public T GetValueOrDefault() => HasValue ? _value : Nothing._value;
+        public T GetValueOrDefault() => HasValue ? _value : default(T);
         public T GetValueOrDefault(T defaultValue) => HasValue ? _value : defaultValue;
 
         #endregion

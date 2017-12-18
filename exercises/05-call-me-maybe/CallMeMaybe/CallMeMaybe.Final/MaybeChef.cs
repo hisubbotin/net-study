@@ -63,18 +63,13 @@ namespace CallMeMaybe.Final
 
         private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
         {
-            var wholeWheatFlour = _cookingTable.FindCupsOf<WholeWheatFlour>(3.5m);
-            var allPurposeFlour = _cookingTable.FindCupsOf<AllPurposeFlour>(3.5m);
-            var pumpkinPieSpice = _cookingTable.FindTeaspoonsOf<PumpkinPieSpice>(5m);
-            var bakingSoda = _cookingTable.FindTeaspoonsOf<BakingSoda>(2m);
-            var salt = _cookingTable.FindTeaspoonsOf<Salt>(1.5m);
-
-            if (wholeWheatFlour == null || allPurposeFlour == null || pumpkinPieSpice == null || bakingSoda == null
-                || salt == null)
-            {
-                return Maybe<BowlOf<FlourMixture>>.Nothing;
-            }
-            return _cookingTable.FindBowlAndFillItWith(new FlourMixture()).Value;
+            return _cookingTable.ToMaybe().
+                Where(x => x.FindCupsOf<WholeWheatFlour>(3.5m).HasValue).
+                Where(x => x.FindCupsOf<AllPurposeFlour>(3.5m).HasValue).
+                Where(x => x.FindTeaspoonsOf<PumpkinPieSpice>(5m).HasValue).
+                Where(x => x.FindTeaspoonsOf<BakingSoda>(2m).HasValue).
+                Where(x => x.FindTeaspoonsOf<Salt>(1.5m).HasValue).
+                Select(x => x.FindBowlAndFillItWith(new FlourMixture()).Value);
         }
     }
 }

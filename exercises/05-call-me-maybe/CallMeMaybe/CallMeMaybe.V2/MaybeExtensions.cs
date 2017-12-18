@@ -27,15 +27,8 @@ namespace CallMeMaybe.V2
                     само же итерирование производится с помощью метода .Next().
                     Обрати внимание на его сигнатуру.
                 */
-                try
-                {
-                    iter.MoveNext();
-                } catch (InvalidOperationException)
-                {
-                    return Maybe<T>.Nothing;
-                }
-                return iter.Current;
-                  
+                return iter.MoveNext() ? iter.Current : Maybe<T>.Nothing;              
+
             }
         }
     }

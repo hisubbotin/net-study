@@ -14,7 +14,7 @@ namespace CallMeMaybe.V1
         /// Зачем может быть нужно такое выделенное значение?
         /// - Вместо null
         /// Сколько по факту будет экземпляров данного объекта?
-        /// - Один, он же статический
+        /// - Один на тип
         /// </summary>
         public static readonly Maybe<T> Nothing = new Maybe<T>();
 
@@ -55,7 +55,7 @@ namespace CallMeMaybe.V1
             return maybe.Value;
         }
 
-        public T GetValueOrDefault() => HasValue ? _value : Nothing._value;
+        public T GetValueOrDefault() => HasValue ? _value : default(T);
         public T GetValueOrDefault(T defaultValue) => HasValue ? _value : defaultValue;
 
         // Если нет значения, вернем Nothing
@@ -69,8 +69,7 @@ namespace CallMeMaybe.V1
         }
         public TResult SelectOrElse<TResult>(Func<T, TResult> map, Func<TResult> elseMap)
         {
-            var buffer = Select(map);
-            return buffer.HasValue ? buffer._value : elseMap();
+            return HasValue ? map(Value) : elseMap();
         }
 
         // Если нет значения, то не будем ничего делать, а не кидать исключение

@@ -51,19 +51,17 @@ namespace CallMeMaybe.V2
         }
 
         private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
-        {
-            var wholeWheatFlour = _cookingTable.FindCupsOf<WholeWheatFlour>(3.5m);
-            var allPurposeFlour = _cookingTable.FindCupsOf<AllPurposeFlour>(3.5m);
-            var pumpkinPieSpice = _cookingTable.FindTeaspoonsOf<PumpkinPieSpice>(5m);
-            var bakingSoda = _cookingTable.FindTeaspoonsOf<BakingSoda>(2m);
-            var salt = _cookingTable.FindTeaspoonsOf<Salt>(1.5m);
+        {   
+            var result =
+                from wholeWheatFlour in _cookingTable.FindCupsOf<WholeWheatFlour>(3.5m).ToMaybe()
+                from allPurposeFlour in _cookingTable.FindCupsOf<AllPurposeFlour>(3.5m).ToMaybe()
+                from pumpkinPieSpice in _cookingTable.FindTeaspoonsOf<PumpkinPieSpice>(5m).ToMaybe()
+                from bakingSoda in _cookingTable.FindTeaspoonsOf<BakingSoda>(2m).ToMaybe()
+                from salt in _cookingTable.FindTeaspoonsOf<Salt>(1.5m).ToMaybe()
+                from flourMixture in _cookingTable.FindBowlAndFillItWith(new FlourMixture()).ToMaybe()
+                select flourMixture;
 
-            if (wholeWheatFlour == null || allPurposeFlour == null || pumpkinPieSpice == null || bakingSoda == null
-                || salt == null)
-            {
-                return Maybe<BowlOf<FlourMixture>>.Nothing;
-            }
-            return _cookingTable.FindBowlAndFillItWith(new FlourMixture()).Value;
+            return result.ToMaybe();
         }
 
         private Maybe<BowlOf<EggsMixture>> MakeEggsMixture()

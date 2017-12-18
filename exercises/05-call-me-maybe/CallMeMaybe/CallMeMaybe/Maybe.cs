@@ -64,16 +64,15 @@ namespace CallMeMaybe
 
         public static explicit operator T(Maybe<T> maybe)
         {
-            return maybe.HasValue ? maybe.Value : Nothing._value;
+            return maybe.HasValue ? maybe.Value : default(T);
         }
 
-        public T GetValueOrDefault() => HasValue ? _value : Nothing._value;
+        public T GetValueOrDefault() => HasValue ? _value : default(T);
         public T GetValueOrDefault(T defaultValue) => HasValue ? _value : defaultValue;
 
         public TResult SelectOrElse<TResult>(Func<T, TResult> map, Func<TResult> elseMap)
         {
-            var buffer = Select(map);
-            return buffer.HasValue ? buffer._value : elseMap();
+            return HasValue ? map(Value) : elseMap();
         }
 
         public void Do(Action<T> doAction)
