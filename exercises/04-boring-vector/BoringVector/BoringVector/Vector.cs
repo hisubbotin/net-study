@@ -41,42 +41,42 @@ namespace BoringVector
         */
 
         /// <summary>
-        /// Квадрат длины вектора.
+        /// Возвращает квадрат длины вектора.
         /// </summary>
         public double SquareLength()
         {
             return X * X + Y * Y;
         }
         /// <summary>
-        /// Длина вектора.
+        /// Возвращает длину вектора.
         /// </summary>
         public double Length()
         {
             return Math.Sqrt(SquareLength());
         }
         /// <summary>
-        /// Cумма векторов.
+        /// Возвращает сумму векторов.
         /// </summary>
         public Vector Add(Vector v)
         {
             return new Vector(X + v.X, Y + v.Y);
         }
         /// <summary>
-        /// Умножение на коэффициент.
+        /// Возвращает вектор, умноженный на коэффициент.
         /// </summary>
         public Vector Scale(double k)
         {
             return new Vector(X * k, Y * k);
         }
         /// <summary>
-        /// Скалярное произведение.
+        /// Возвращает скалярное произведение векторов.
         /// </summary>
         public double DotProduct(Vector v)
         {
             return (X * v.X + Y * v.Y);
         }
         /// <summary>
-        /// Векторное произведение.
+        /// Возвращает векторное произведение векторов.
         /// </summary>
         public double CrossProduct(Vector v)
         {
