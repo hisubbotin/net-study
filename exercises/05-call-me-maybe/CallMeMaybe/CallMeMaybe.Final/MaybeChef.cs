@@ -4,7 +4,7 @@ using CallMeMaybe.BaseModel;
 
 namespace CallMeMaybe.Final
 {
-    public class MaybeChef: IOneRecipeChef
+    public class MaybeChef : IOneRecipeChef
     {
         private readonly CookingTable _cookingTable;
 
@@ -51,7 +51,7 @@ namespace CallMeMaybe.Final
                 Теперь мы оперируем только объектами типа Maybe<T> - 
                 больше никаких непонятных преобразований в IEnumerable и обратно :)
             */
-            return 
+            return
                 from pumpkinPieFilling in _cookingTable.FindCansOf<PumpkingPieFilling>(1m).ToMaybe()
                 from sugar in _cookingTable.FindCupsOf<WhiteSugar>(3m).ToMaybe()
                 from oil in _cookingTable.FindCupsOf<VegetableOil>(0.5m).ToMaybe()
@@ -64,7 +64,14 @@ namespace CallMeMaybe.Final
         private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
         {
             // здесь сделай сам, пожалуйста
-            throw new NotImplementedException();
+            return
+                from wholeWheatFlour in _cookingTable.FindCupsOf<WholeWheatFlour>(3.5m).ToMaybe()
+                from allPurposeFlour in _cookingTable.FindCupsOf<AllPurposeFlour>(3.5m).ToMaybe()
+                from pumpkinPieSpice in _cookingTable.FindTeaspoonsOf<PumpkinPieSpice>(5m).ToMaybe()
+                from bakingSoda in _cookingTable.FindTeaspoonsOf<BakingSoda>(2m).ToMaybe()
+                from salt in _cookingTable.FindTeaspoonsOf<Salt>(1.5m).ToMaybe()
+                from flourMixture in _cookingTable.FindBowlAndFillItWith(new FlourMixture()).ToMaybe()
+                select flourMixture;
         }
     }
 }
