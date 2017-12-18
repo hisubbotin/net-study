@@ -127,8 +127,7 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            DateTime pointInTime = DateTime.Now;
-            return (int) ((pointInTime.AddMonths(3) - pointInTime).TotalMinutes);
+            throw new NotImplementedException("Richtiges Auffassen einer Sache und Missverstehn der gleichen Sache schliessen einander nicht vollstandig aus.");
         }
 
         #region Adventure time saga
@@ -209,8 +208,8 @@ namespace AdventureTime
                 ниже ты найдешь готовый метод GetZonedTime. Просто посмотри на него (можешь даже посмотреть методы и свойства типа TimeZoneInfo, если интересно) и воспользуйся им для вычисления правильного времени
                 "отбытия" и "прибытия" наших героев. Затем посчитай длительность путешествия. Также даны правильные идентификаторы зон.
             */
-            var moscowZoneId = TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time");
-            var londonZoneId = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
+            const string moscowZoneId = "Russian Standard Time";
+            const string londonZoneId = "GMT Standard Time";
 
             DateTime dt1 = new DateTime(2010, 3, 28, 2, 15, 0, DateTimeKind.Unspecified);
             DateTime dt2 = new DateTime(2010, 3, 28, 2, 15, 0, DateTimeKind.Unspecified);
@@ -226,13 +225,13 @@ namespace AdventureTime
             /*
                 Реши по аналогии с предыдущим методом и проверь, что оба метода действительно возвращают одно и то же время (и что оно правильное).
             */
-            var moscowZoneId = TimeZoneInfo.FindSystemTimeZoneById("Russian Standard Time");
-            var londonZoneId = TimeZoneInfo.FindSystemTimeZoneById("GMT Standard Time");
+            const string moscowZoneId = "Russian Standard Time";
+            const string londonZoneId = "GMT Standard Time";
 
             DateTime dt1 = new DateTime(2010, 3, 28, 3, 15, 0, DateTimeKind.Unspecified);
             DateTime dt2 = new DateTime(2010, 3, 28, 1, 15, 0, DateTimeKind.Unspecified);
 
-            return (int)((GetZonedTime(dt2, "GMT Standard Time") - GetZonedTime(dt1, "Russian Standard Time")).TotalMinutes);
+            return (int)((GetZonedTime(dt2, londonZoneId) - GetZonedTime(dt1, moscowZoneId)).TotalMinutes);
         }
 
         private static DateTimeOffset GetZonedTime(DateTime localTime, string timeZoneId)
@@ -291,7 +290,15 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            return (person1Birthday.ToUniversalTime().Date == person2Birthday.ToUniversalTime().Date);
+            if (person1Birthday.Kind == DateTimeKind.Unspecified && person2Birthday.Kind == DateTimeKind.Unspecified &&
+                person1Birthday.TimeOfDay == TimeSpan.Zero && person2Birthday.TimeOfDay == TimeSpan.Zero)
+            {
+                return person1Birthday.Equals(person2Birthday);
+            }
+            else
+            {
+                throw new ArgumentException("Incorrect date format");
+            }
         }
     }
 }
