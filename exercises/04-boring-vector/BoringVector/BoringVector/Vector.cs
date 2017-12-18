@@ -10,7 +10,7 @@ namespace BoringVector
     */
 
     /// <summary>
-    /// Двумерный вектор.
+    /// Двумерный вектор, задается парой вещественных координат.
     /// </summary>
     public struct Vector
     {
@@ -88,7 +88,7 @@ namespace BoringVector
         */
         public override string ToString()
         {
-            return "(" + X.ToString() + "; " + Y.ToString() + ")";
+            return $"({X}; {Y})";
         }
 
         #region operators

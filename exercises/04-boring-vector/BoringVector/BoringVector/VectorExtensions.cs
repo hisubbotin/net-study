@@ -7,20 +7,23 @@ namespace BoringVector
             - IsZero: проверяет, является ли вектор нулевым, т.е. его координаты близки к нулю (в эпсилон окрестности). За эпсилон здесь и далее берем 1e-6.
             - Normalize: нормализует вектор
             - GetAngleBetween: возвращает угол между двумя векторами в радианах. Примечание: нулевой вектор сонаправлен любому другому.
-            - GetRelation: возвращает значение перечесления VectorRelation(General, Parallel, Orthogonal) - отношение между двумя векторами("общий случай", параллельны, перпендикулярны). Перечисление задавать тоже тебе)
+            - GetRelation: возвращает значение перечесления VectorExtensions(General, Parallel, Orthogonal) - отношение между двумя векторами("общий случай", параллельны, перпендикулярны). Перечисление задавать тоже тебе)
     */
     /// <summary>
     /// Тип отношения между двумя векторами.
     /// </summary>
-    public enum VectorRelation
+    public enum VectorExtensions
     {
+        ///<summary>Общий случай</summary>
         General,
+        ///<summary>Векторы параллельны</summary>
         Parallel,
+        ///<summary>Векторы перпендекулярны</summary>
         Orthogonal
     };
 
     /// <summary>
-    /// Класс с методами расширения.
+    /// Класс с методами расширения структуры Vector.
     /// </summary>
     public static class VectorHelper
     {
@@ -29,7 +32,7 @@ namespace BoringVector
         /// </summary>
         public static bool IsZero(this Vector v)
         {
-            return (v.X < 1E-6 || v.Y < 1E-6);
+            return v.Length() < 1E-6;
         }
         /// <summary>
         /// Нормализует вектор.
@@ -43,7 +46,7 @@ namespace BoringVector
         /// </summary>
         public static double GetAngleBetween(this Vector v1, Vector v2)
         {
-            if (v1.SquareLength() < 1E-6 || v2.SquareLength() < 1E-6)
+            if (v1.IsZero() || v2.IsZero())
             {
                 return 0;
             }
@@ -55,20 +58,20 @@ namespace BoringVector
         /// <summary>
         /// Возвращает отношение между двумя векторами.
         /// </summary>
-        public static VectorRelation GetRelation(this Vector v1, Vector v2)
+        public static VectorExtensions GetRelation(this Vector v1, Vector v2)
         {
             double angle = v1.GetAngleBetween(v2);
-            if (v1.CrossProduct(v2) < 1E-6)
+            if (Math.Abs(v1.CrossProduct(v2)) < 1E-6)
             {
-                return VectorRelation.Parallel;
+                return VectorExtensions.Parallel;
             }
             else if (v1.DotProduct(v2) < 1E-6)
             {
-                return VectorRelation.Orthogonal;
+                return VectorExtensions.Orthogonal;
             }
             else
             {
-                return VectorRelation.General;
+                return VectorExtensions.General;
             }
         }
     }
