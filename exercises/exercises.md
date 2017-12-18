@@ -35,6 +35,10 @@
 
 Гайд по тому, как и где делать задания, лежит [здесь](git-help.md).
 
+## Highlights
+
+Распространенные ошибки, вещи, на которые стоит обратить внимание, и просто вопросы, которые возникли в процессе работы с заданиями.
+
 ## 01. May the primitive types be with you
 
 Tags: primitive types, numbers, operations, checked/unchecked arithmetics, number formatting and parsing, console.

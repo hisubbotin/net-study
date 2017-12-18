@@ -4,7 +4,8 @@
 - Посещаемость [студентов](course-2017-1/attendance.md)
 - Список [заданий](exercises/exercises.md)
 - Таблица [успеваемости](course-2017-1/performance-table.md)
-- Гайд по воркфлоу в [git+github](exercises/git-help.md).
+- Гайд по воркфлоу в [git+github](exercises/git-help.md)
+- Exercises [highlights](exercises/highlights.md).
 
 ---
 
