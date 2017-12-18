@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Text;
 
 namespace WubbaLubbaDubDub
 {
@@ -12,7 +15,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToLines(this string text)
         {
             // У строки есть специальный метод. Давай здесь без регулярок
-            throw new NotImplementedException();
+            return text.Split(Environment.NewLine);
         }
 
         /// <summary>
@@ -21,7 +24,8 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            throw new NotImplementedException();
+            // Вот тут я осознал, насколько полезен @ в C#
+            return Regex.Split(line, @"[\s]+");
         }
 
         /// <summary>
@@ -31,7 +35,7 @@ namespace WubbaLubbaDubDub
         public static string GetLeftHalf(this string s)
         {
             // у строки есть метод получения подстроки
-            throw new NotImplementedException();
+            return s.Substring(0, s.Length / 2);
         }
 
         /// <summary>
@@ -40,7 +44,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetRightHalf(this string s)
         {
-            throw new NotImplementedException();
+            return s.Substring(s.Length / 2);
         }
 
         /// <summary>
@@ -49,14 +53,16 @@ namespace WubbaLubbaDubDub
         public static string Replace(this string s, string old, string @new)
         {
             // и такой метод у строки, очевидно, тоже есть
-            throw new NotImplementedException();
+            // еще полезный метод - узнал про @ у переменных
+            //(правда, здесь оно мне не нравится)
+            return s.Replace(old, @new);
         }
 
         /// <summary>
         /// Возвращает строку, у которой каждый символ заменен на \uFFFF,
         /// где FFFF - соответствующая шестнадцатиричная кодовая точка.
         /// </summary>
-        public static string CharsToCodes(this string s)
+        public static string CharsToCodes(this string str)
         {
             /*
                 Может быть удобным здесь же сначала написать локальную функцию
@@ -65,7 +71,11 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            throw new NotImplementedException();
+            // Жалко, что в LINQ нет стандартных джойнеров, иначе это выглядело бы красивее
+            return str.ToCharArray()
+                .Select(c => @"\u" + ((int)c).ToString("X4"))
+                .Aggregate(new StringBuilder(), (b, s) => b.Append(s))
+                .ToString();
         }
 
         /// <summary>
@@ -77,7 +87,7 @@ namespace WubbaLubbaDubDub
                 Собрать строку из последовательности строк можно несколькими способами.
                 Один из низ - статический метод Concat. Но ты можешь выбрать любой.
             */
-            throw new NotImplementedException();
+            return new String(s.ToCharArray().Reverse().ToArray());
         }
 
         /// <summary>
@@ -90,7 +100,9 @@ namespace WubbaLubbaDubDub
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            throw new NotImplementedException();
+            return new String(s.ToCharArray()
+                .Select(c => Char.IsLower(c) ? Char.ToUpper(c) : Char.ToLower(c))
+                .ToArray());
         }
 
         /// <summary>
@@ -99,7 +111,9 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            throw new NotImplementedException();
+            return new String(s.ToCharArray()
+                .Select(c => (char)(c + 1))
+                .ToArray());
         }
 
 
@@ -117,7 +131,15 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
+            // Зато LINQ поддерживает иммутабельные коллекции, это приятно
+            // Неочевидный момент с кодировками, от этого будет меняться результат
+            return Regex.Match(text, @"^((¶.{4}:.{4}¶)|(\/\/[^\n]*\n)|(\/\*[^*]*\*\/)|[^/¶]|(\/[^/*]))+$")
+                .Groups[2].Captures
+                .Select(c => c.Value)
+                .Select(s => s.Substring(6, 4) + s.Substring(1, 4))
+                .Select(s => Encoding.UTF8.GetBytes(s.ToCharArray()))
+                .Select(b => BitConverter.ToInt64(b, 0))
+                .ToImmutableList();
         }
 
         #endregion
