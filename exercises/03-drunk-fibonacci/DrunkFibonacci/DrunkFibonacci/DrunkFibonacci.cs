@@ -121,10 +121,22 @@ namespace DrunkFibonacci
         /// </summary>
         public static IEnumerable<int[]> GetInChunks()
         {
-            var s = GetDrunkFibonacci();
-            for (var pos = 0;; pos += 16)
+            const int chunkSize = 16;
+            var i = 0;
+            int[] chunk = new int[chunkSize];
+
+            foreach (var x in GetDrunkFibonacci())
             {
-                yield return s.Skip(pos).Take(16).ToArray();
+                chunk[i] = x;
+                i++;
+
+                if (i == chunkSize)
+                {
+                    yield return chunk;
+
+                    i = 0;
+                    chunk = new int[chunkSize];
+                }
             }
         }
 
