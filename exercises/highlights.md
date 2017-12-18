@@ -17,23 +17,23 @@
     - [Comments style](#comments-style)
     - [Vector.ToString()](#vectortostring)
     - [Static vs static readonly vs const](#static-vs-static-readonly-vs-const)
-    - [Mutable structs](#mutable-structs)
+    - [Mutable structs pitfalls](#mutable-structs-pitfalls)
       - [!!! Переделать !!!](#-переделать-)
     - [Immutable types, field and properties](#immutable-types-field-and-properties)
-      - [Что такое поля и что такое свойства](#что-такое-поля-и-что-такое-свойства)
-      - [Авто-свойства](#авто-свойства)
-      - [Неизменяемый объект](#неизменяемый-объект)
+      - [What are fields and properties](#what-are-fields-and-properties)
+      - [Auto-properties](#auto-properties)
+      - [How to implement immutability](#how-to-implement-immutability)
   - [03. Drunk Fibonacci](#03-drunk-fibonacci)
-    - [IEnumerable](#ienumerable)
-    - [Переполнение типа](#переполнение-типа)
-    - [Итерация с помощью IEnumerator\<int>](#итерация-с-помощью-ienumerator\int)
-    - [Перезатирание буффера под чанки](#перезатирание-буффера-под-чанки)
-    - [Зануление битов числа 42](#зануление-битов-числа-42)
-    - [Группировка](#группировка)
+    - [`IEnumerbale` Skip and Take problem](#ienumerbale-skip-and-take-problem)
+    - [Type overflow](#type-overflow)
+    - [How to iterate with IEnumerator\<int>](#how-to-iterate-with-ienumerator\int)
+    - [Buffer is shared between all chunks](#buffer-is-shared-between-all-chunks)
+    - [Zeroing bits of 42](#zeroing-bits-of-42)
+    - [Grouping](#grouping)
   - [05. Call Me Maybe](#05-call-me-maybe)
-    - [Ответы на вопросы в комментариях](#ответы-на-вопросы-в-комментариях)
-    - [Небольшая ремарка про объекты-типы](#небольшая-ремарка-про-объекты-типы)
-    - [Метод Select](#метод-select)
+    - [Answers to the questions from the comments](#answers-to-the-questions-from-the-comments)
+    - [Sidenote about `Type object pointers`](#sidenote-about-type-object-pointers)
+    - [Construct new object in `Select`](#construct-new-object-in-select)
   - [06. Wubba Lubba Dub Dub](#06-wubba-lubba-dub-dub)
     - [Verbatim strings](#verbatim-strings)
     - [Split text to lines](#split-text-to-lines)
@@ -367,7 +367,7 @@ return new StringBuilder("(").Append(x).Append("; ").Append(y).Append(")").ToStr
 
 Поэтому для ссылочных типов самый близкий аналог констант это `static readonly`.
 
-### Mutable structs
+### Mutable structs pitfalls
 
 #### !!! Переделать !!!
 
@@ -432,7 +432,7 @@ Console.WriteLine(w);       // (5, 5)
 
 Усаживайся поудобнее, впереди длинная история.
 
-#### Что такое поля и что такое свойства
+#### What are fields and properties
 
 Единственные реальные данные, которые содержат объекты классов или структур, это поля:
 
@@ -511,7 +511,7 @@ public int X
 
 ```
 
-#### Авто-свойства
+#### Auto-properties
 
 Дабы уменьшить страдания программистов через некоторое время в C# ввели так называемые авто-свойства (auto-properties), имеющих следующий синтаксис:
 
@@ -538,7 +538,7 @@ public int X
 }
 ```
 
-#### Неизменяемый объект
+#### How to implement immutability
 
 Давай теперь посмотрим, какие есть варианты задать координату X структуры (или класса) публичной и неизменяемой:
 
@@ -580,7 +580,7 @@ public int X { get; }
 
 ## 03. Drunk Fibonacci
 
-### IEnumerable
+### `IEnumerbale` Skip and Take problem
 
 Skip и Take - это не перемотка времени :)
 
@@ -622,13 +622,13 @@ var materializedTake3 = take3.ToList();
 
 Поэтому обычно, если нужно проитерировать одно и то же перечисление больше одного раза, наиболее безопасным и правильным вариантом является материализация последовательности в массив с последующими итерированиями по нему. Либо менять интерфейс и требовать на вход не `IEnumerable<>`, а что-то уже материализованное, например, `IReadOnlyList<>`, `IReadOnlyCollection<>`, `IList<>` и т.п.
 
-### Переполнение типа
+### Type overflow
 
 > При вычислении сложения переполнение типа разрешено и всячески поощряется.
 
 Не все выражали данную просьбу явно в коде. Вспомни первую лабу.
 
-### Итерация с помощью IEnumerator\<int>
+### How to iterate with IEnumerator\<int>
 
 В данном коде
 
@@ -668,7 +668,7 @@ foreach (var x in GetDrunkFibonacci())
 }
 ```
 
-### Перезатирание буффера под чанки
+### Buffer is shared between all chunks
 
 Довольно частая ошибка - пользоваться одним и тем же буффером под чанки:
 
@@ -690,7 +690,7 @@ foreach (int el in GetDrunkFibonacci())
 
 В данном случае используется один единственный объект буффера - мы возвращаем на него ссылку и следом начинаем его же перезатирать.
 
-### Зануление битов числа 42
+### Zeroing bits of 42
 
 > У получившегося числа с некоторой вероятностью зануляет биты, соответствующие числу 42 (т.е. те биты, которые в бинарном представлении числа 42 равны единице).
 
@@ -700,7 +700,7 @@ foreach (int el in GetDrunkFibonacci())
 
 Правильный ответ: `x = x & ~42;`
 
-### Группировка
+### Grouping
 
 Часть решений имело лишние усложнения вроде такого:
 
@@ -722,7 +722,7 @@ GetDrunkFibonacci()
 
 ## 05. Call Me Maybe
 
-### Ответы на вопросы в комментариях
+### Answers to the questions from the comments
 
 1. Почему Maybe - структура?
 
@@ -796,7 +796,7 @@ y.Foo();
 Здесь в примере мы теряем информацию о реальном типе объекта, статический тип `y` - `IFoo`. Но рантайму все же нужно знать реальный тип - где брать реализацию интерфейсного метода.
 ___
 
-### Небольшая ремарка про объекты-типы
+### Sidenote about `Type object pointers`
 
 Вспомни, что каждый объект ссылочного типа помимо своих данных хранит также указатель на объект-тип. То есть объект типа `List<int>` хранит указатель на объект типа `Type`, хранящий информацию о типе `List<int>`.
 
@@ -836,7 +836,7 @@ IEnumerable<TSource> Where<TSource>(this IEnumerable<TSource> source, Func<TSour
 // объект Maybe<T>, произойдет упаковка!
 ```
 
-### Метод Select
+### Construct new object in `Select`
 
 Такой код ведет к ошибке:
 
