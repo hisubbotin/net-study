@@ -7,7 +7,7 @@ namespace CallMeMaybe.Final
     {
         private static void Main()
         {
-            var nullDtMaybe = ((DateTime?) null).ToMaybe();
+            var nullDtMaybe = ((DateTime?)null).ToMaybe();
             var nowDtMaybe = DateTime.Now.ToMaybe();
 
             TestSingleFrom(nullDtMaybe);
