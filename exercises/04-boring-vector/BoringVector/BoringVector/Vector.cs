@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BoringVector
 {
@@ -8,12 +9,27 @@ namespace BoringVector
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
 
-    internal struct Vector
+    /// <summary>
+    /// Двумерный вектор, задается парой вещественных координат.
+    /// </summary>
+    public struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
-
+        /// <summary>
+        /// Координата X.
+        /// </summary>
+        public double X { get; set; }
+        /// <summary>
+        /// Координата Y.
+        /// </summary>
+        public double Y { get; set; }
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -24,30 +40,56 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        /// <summary>
+        /// Возвращает квадрат длины вектора.
+        /// </summary>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+        /// <summary>
+        /// Возвращает длину вектора.
+        /// </summary>
+        public double Length()
+        {
+            return Math.Sqrt(SquareLength());
+        }
+        /// <summary>
+        /// Возвращает сумму векторов.
+        /// </summary>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
+        /// <summary>
+        /// Возвращает вектор, умноженный на коэффициент.
+        /// </summary>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(X * k, Y * k);
         }
+        /// <summary>
+        /// Возвращает скалярное произведение векторов.
+        /// </summary>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return (X * v.X + Y * v.Y);
         }
+        /// <summary>
+        /// Возвращает векторное произведение векторов.
+        /// </summary>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+        public override string ToString()
+        {
+            return $"({X}; {Y})";
+        }
 
         #region operators
 
@@ -57,6 +99,34 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+        public static Vector operator +(Vector v)
+        {
+            return v;
+        }
+        public static Vector operator -(Vector v)
+        {
+            return v.Scale(-1);
+        }
+        public static Vector operator +(Vector v1, Vector v2)
+        {
+            return v1.Add(v2);
+        }
+        public static Vector operator -(Vector v1, Vector v2)
+        {
+            return v1.Add(v2.Scale(-1));
+        }
+        public static Vector operator *(Vector v1, double k)
+        {
+            return v1.Scale(k);
+        }
+        public static Vector operator *(double k, Vector v2)
+        {
+            return v2.Scale(k);
+        }
+        public static Vector operator /(Vector v, double k)
+        {
+            return v.Scale(1 / k);
+        }
 
         #endregion
     }
