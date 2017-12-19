@@ -6,6 +6,7 @@
 - Таблица [успеваемости](course-2017-1/performance-table.md)
 - Гайд по воркфлоу в [git+github](exercises/git-help.md)
 - Exercises [highlights](exercises/highlights.md).
+- Таблица с итоговыми [оценками](course-2017-1/result-table.md)
 
 ---
 
