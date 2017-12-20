@@ -57,5 +57,12 @@ namespace WubbaLubbaDubDub.Tests
          {
              Assert.Equal(result, line.ShiftInc());
          }
+
+        [Theory]
+        [InlineData("//InterestingText \n /* letters \n moreLetters KKPO:5151 \n */ BBBB:4444", new[] { 3149612100L })]
+        public void TestGetUsedObject(string someText, long[] answer)
+        {
+            Assert.Equal(answer, someText.GetUsedObjects());
+        }
     }
 }
