@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DrunkFibonacci
 {
@@ -11,8 +12,7 @@ namespace DrunkFibonacci
         /// <param name="len">Длина массива</param>
         public static int[] CreateIntArray(int len)
         {
-            // на создание массивов заданной длины
-            throw new NotImplementedException();
+            return new int[len];
         }
 
         /// <summary>
@@ -23,8 +23,16 @@ namespace DrunkFibonacci
         /// <param name="step">Шаг прогрессии.</param>
         public static void FillIntArray(int[] arr, int seed, int step)
         {
-            // на задание значений массива
-            throw new NotImplementedException();
+            if (arr == null)
+            {
+                return;
+            }
+            int value = seed;
+            for (int i = 0; i < arr.Length; i++)
+            {
+                arr[i] = value;
+                value += step;
+            }
         }
 
         /// <summary>
@@ -33,23 +41,33 @@ namespace DrunkFibonacci
         /// <returns></returns>
         public static int[] GetFirstFiveFibonacci()
         {
-            // на создание массива с инициализацией
-            throw new NotImplementedException();
+            return new[] {1, 1, 2, 3, 5};
         }
+
+        private static IEnumerable<int> GenerateFibonacci()
+        {
+            int current = 1;
+            int next = 1;
+            while (true)
+            {
+                yield return current;
+                int newNext = current + next;
+                current = next;
+                next = newNext;
+            }
+        }
+
 
         /// <summary>
         /// Возвращает последовательность случайных чисел, которая сгенерирована на основе некоторого постоянного определителя.
         /// </summary>
         public static IEnumerable<int> GetDeterministicRandomSequence()
         {
-            /*
-                Воспользуйся классом Random.
-                Для того, чтобы данный объект генерировал одну и ту же последовательность,
-                его следует инициализировать одной и той же константой (параметр конструктора seed).
-
-                Задача на ленивую генерацию последовательностей.
-            */
-            throw new NotImplementedException();
+            var random = new Random();
+            while (true)
+            {
+                yield return random.Next();
+            }
         }
 
         /// <summary>
@@ -57,17 +75,100 @@ namespace DrunkFibonacci
         /// </summary>
         public static IEnumerable<int> GetDrunkFibonacci()
         {
-            /*
-                Первые два значения: 1 и 1.
-                Каждое 6е число забывает озвучить (но учитывает при подсчете следующего).
-                Каждое 6е, начиная с 4го, вставляет очередную "шутку за 300": число 300.
-                У получившегося числа с некоторой вероятностью зануляет биты, 
-                соответствующие числу 42 (т.е. те биты, которые в бинарном представлении числа 42 равны единице).
-                    Вероятность считается так. На каждом i-ом этапе вычисления нового значения X последовательности берешь так же число Y
-                    из последовательности GetDeterministicRandomSequence и проверяешь, есть ли у числа Y единичные биты числа 42.
-                При вычислении сложения переполнение типа разрешено и всячески поощряется.
-            */
-            throw new NotImplementedException();
+            int current = 1;
+            int next = 1;
+
+            using (var greatRandom = GetDeterministicRandomSequence().GetEnumerator())
+            {
+                for (var i = 0;; i++)
+                {
+                    // Преобразуем очередное значение согласно drunk-правилам
+                    int? drunkCurrent = _applyDrunkRules(current, i, greatRandom.Current);
+                    if (drunkCurrent.HasValue)
+                    {
+                        yield return drunkCurrent.Value;
+                    }
+
+                    // Двигаемся дальше
+                    int newNext = unchecked (current + next);
+                    current = next;
+                    next = newNext;
+                    greatRandom.MoveNext();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Первые два значения: 1 и 1.
+        /// Каждое 6е число забывает озвучить (но учитывает при подсчете следующего).
+        /// Каждое 6е, начиная с 4го, вставляет очередную "шутку за 300": число 300.
+        /// 
+        /// У получившегося числа с некоторой вероятностью зануляет биты, 
+        /// соответствующие числу 42 (т.е. те биты, которые в бинарном представлении числа 42 равны единице).
+        /// </summary>
+        /// <param name="value">Очередное число</param>
+        /// <param name="index">Порядковый номер очередного числа</param>
+        /// <param name="greatRandom">Случайное число, по которому будут обнулятся биты результата</param>
+        /// <param name="goCrazyAt">Номер, начиная с которого применяются правила</param>
+        /// <param name="forgetAboutEach">Пропускаемые номера</param>
+        /// <param name="jokeAtEach">Номера, на которых применяется правило шутки</param>
+        /// <param name="startJokesFrom">Номер, начиная с которого применяется правило шутки</param>
+        /// <param name="jokeValue">Значение, выдаваемое согласно правилу шутки</param>
+        /// <param name="mask">Битовая маска, случайная подмаска которой будет обнуляться у результата применения предыдущий правил</param>
+        /// <returns>Результат применения drunk-правил</returns>
+        private static int? _applyDrunkRules(
+            int value,
+            int index,
+            int greatRandom,
+            int goCrazyAt = 3,
+            int forgetAboutEach = 6,
+            int jokeAtEach = 6,
+            int startJokesFrom = 4,
+            int jokeValue = 300,
+            int mask = 42)
+        {
+            int? result = value;
+
+            if (index < goCrazyAt)
+            {
+                // Первые два значения: 1 и 1.
+                return value;
+            }
+
+            if (index % forgetAboutEach == 0)
+            {
+                // Каждое 6е число забывает озвучить (но учитывает при подсчете следующего).
+                result = null;
+            }
+            else if (index > startJokesFrom && index % jokeAtEach == 0)
+            {
+                // Каждое 6е, начиная с 4го, вставляет очередную "шутку за 300": число 300.
+                // Если что, ДО 4-го нет 6-ых
+                result = jokeValue;
+            }
+
+            if (result == null)
+            {
+                return null;
+            }
+
+            // У получившегося числа с некоторой вероятностью зануляет биты, 
+            // соответствующие числу 42 (т.е. те биты, которые в бинарном представлении числа 42 равны единице).
+            return _nullifyRandomSubMask(result.Value, greatRandom, mask);
+        }
+
+        /// <summary>
+        /// Вероятность считается так. На каждом i-ом этапе вычисления нового значения X последовательности берешь так же число Y
+        /// из последовательности GetDeterministicRandomSequence и проверяешь, есть ли у числа Y единичные биты числа 42.
+        /// </summary>
+        /// <param name="value">Значние, определенные биты которого будут обнуляться</param>
+        /// <param name="greatRandom">Случайное число, по которому будут обнулятся биты результата</param>
+        /// <param name="mask">Битовая маска, случайныая подмаска которой будет обнуляться у результата применения предыдущий правил</param>
+        /// <returns>Результат обнуления битов <see cref="value"/> по случайной подмаске маски<see cref="mask"/></returns>
+        private static int _nullifyRandomSubMask(int value, int greatRandom, int mask)
+        {
+            int randomSubMask = mask & greatRandom;
+            return value & (~randomSubMask);
         }
 
         /// <summary>
@@ -77,8 +178,7 @@ namespace DrunkFibonacci
         /// <param name="cnt">Длина отрезка.</param>
         public static int GetMaxOnRange(int from, int cnt)
         {
-            // научишься пропускать и брать фиксированную часть последовательности, агрегировать. Максимум есть среди готовых функций агрегации.
-            throw new NotImplementedException();
+            return GetDrunkFibonacci().Skip(from).Take(cnt).Max();
         }
 
         /// <summary>
@@ -87,8 +187,10 @@ namespace DrunkFibonacci
         /// <param name="from">Индекс начала поиска отрезка. Нумерация с единицы.</param>
         public static List<int> GetNextNegativeRange(int from = 1)
         {
-            // научишься пропускать и брать по условию, превращать в список (см. ToList).
-            throw new NotImplementedException();
+            return GetDrunkFibonacci()
+                .SkipWhile(x => x < 0)
+                .TakeWhile(x => x < 0)
+                .ToList();
         }
 
         /// <summary>
@@ -96,8 +198,8 @@ namespace DrunkFibonacci
         /// </summary>
         public static IEnumerable<int> GetXoredWithLaggedItself()
         {
-            // узнаешь о существовании функции Zip.
-            throw new NotImplementedException();
+            var shifted = GenerateFibonacci().Skip(42);
+            return GetDrunkFibonacci().Zip(shifted, (a, b) => a ^ b);
         }
 
         /// <summary>
@@ -105,8 +207,20 @@ namespace DrunkFibonacci
         /// </summary>
         public static IEnumerable<int[]> GetInChunks()
         {
-            // ни чему особо не научишься, просто интересная задачка :)
-            throw new NotImplementedException();
+            const int bucketSize = 16;
+            int i = 0;
+            var bucket = new int[bucketSize];
+            foreach (var number in GetDrunkFibonacci())
+            {
+                if (i >= bucketSize)
+                {
+                    yield return bucket;
+                    bucket = new int[bucketSize];
+                    i = 0;
+                }
+                bucket[i] = number;
+                i++;
+            }
         }
 
         /// <summary>
@@ -122,7 +236,7 @@ namespace DrunkFibonacci
                 Вообще говоря, SelectMany умеет много чего и мегаполезна.
                 Она в какой-то степени эквивалентна оператору `bind` над монадами (в данном случае над монадами последовательностей).
             */
-            throw new NotImplementedException();
+            return GetInChunks().SelectMany(ints => ints.OrderBy(x => -Math.Abs(x)).Take(3));
         }
 
         /// <summary>
@@ -156,7 +270,10 @@ namespace DrunkFibonacci
 
                 Итого научишься группировать и создавать на их основе словарь (см. ToDictionary).
             */
-            throw new NotImplementedException();
+            return GetDrunkFibonacci()
+                .Take(10000)
+                .GroupBy(x => x % 8)
+                .ToDictionary(grouping => grouping.Key, grouping => grouping.Count());
         }
     }
 }
