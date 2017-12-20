@@ -41,7 +41,7 @@ namespace DrunkFibonacci
         /// <returns></returns>
         public static int[] GetFirstFiveFibonacci()
         {
-            return GenerateFibonacci().Take(5).ToArray();
+            return new[] {1, 1, 2, 3, 5};
         }
 
         private static IEnumerable<int> GenerateFibonacci()
@@ -208,19 +208,18 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             const int bucketSize = 16;
-            using (var items = GetDrunkFibonacci().GetEnumerator())
+            int i = 0;
+            var bucket = new int[bucketSize];
+            foreach (var number in GetDrunkFibonacci())
             {
-                while (true)
+                if (i >= bucketSize)
                 {
-                    var bucket = new int[bucketSize];
-                    // Последовательность бесконечная, поэтому всегда возвращается полный bucket
-                    for (int i = 0; i < bucketSize; i++)
-                    {
-                        items.MoveNext();
-                        bucket[i] = items.Current;
-                    }
                     yield return bucket;
+                    bucket = new int[bucketSize];
+                    i = 0;
                 }
+                bucket[i] = number;
+                i++;
             }
         }
 
@@ -274,15 +273,7 @@ namespace DrunkFibonacci
             return GetDrunkFibonacci()
                 .Take(10000)
                 .GroupBy(x => x % 8)
-                .Aggregate(new Dictionary<int, int>(), (ints, grouping) =>
-                {
-                    var count = grouping.Count();
-                    if (count > 0)
-                    {
-                        ints.Add(grouping.Key, count);
-                    }
-                    return ints;
-                });
+                .ToDictionary(grouping => grouping.Key, grouping => grouping.Count());
         }
     }
 }
