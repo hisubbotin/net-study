@@ -53,7 +53,16 @@ namespace CallMeMaybe.V2
         private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
         {
             // здесь сделай сам, пожалуйста
-            throw new NotImplementedException();
+            var result =
+                from wholeWheatFlour in _cookingTable.FindCupsOf<WholeWheatFlour>(3.5m).ToMaybe()
+                from allPurposeFlour in _cookingTable.FindCupsOf<AllPurposeFlour>(3.5m).ToMaybe()
+                from pumpkinPieSpice in _cookingTable.FindTeaspoonsOf<PumpkinPieSpice>(5m).ToMaybe()
+                from bakingSoda in _cookingTable.FindTeaspoonsOf<BakingSoda>(2m).ToMaybe()
+                from salt in _cookingTable.FindTeaspoonsOf<Salt>(1.5m).ToMaybe()
+                from flourMixture in _cookingTable.FindBowlAndFillItWith(new FlourMixture()).ToMaybe()
+                select flourMixture;
+
+            return result.ToMaybe();
         }
 
         private Maybe<BowlOf<EggsMixture>> MakeEggsMixture()
@@ -66,6 +75,7 @@ namespace CallMeMaybe.V2
                 Основной же минус - мы работаем с IEnumerable и на выходе тоже IEnumerable, что как бы не очень:
                     - нарушается семантика кода. Мы должны работать в терминах монады Maybe, а не последовательностей
                     - кое-что еще. Что? Подсказка: проблема в работе с объектами как объектами некоторого интерфейса
+                    Опять про боксинг?
             */
             var result =
                 from pumpkinPieFilling in _cookingTable.FindCansOf<PumpkingPieFilling>(1m).ToMaybe()
