@@ -47,8 +47,9 @@ namespace CallMeMaybe
         public Maybe<TResult> SelectMany<T2, TResult>(Func<T, Maybe<T2>> otherSelector, Func<T, T2, Maybe<TResult>> maybeResultSelector)
         {
             // обеспечит поддержку цепочки from
-            if (HasValue && otherSelector(_value).HasValue) {
-                return maybeResultSelector(_value, otherSelector(_value)._value);
+            var otherSelectorResult = otherSelector(_value);
+            if (HasValue && otherSelectorResult.HasValue) {
+                return maybeResultSelector(_value, otherSelectorResult._value);
             }
             else {
                 return Maybe<TResult>.Nothing;
@@ -76,9 +77,6 @@ namespace CallMeMaybe
             if (HasValue) {
                 doAction(_value);
             }
-            else {
-                throw new InvalidOperationException($"{typeof(Maybe<T>)} doesn't have value.");
-            }
         }
         public void DoOrElse(Action<T> doAction, Action elseAction)
         {
@@ -92,20 +90,12 @@ namespace CallMeMaybe
 
         public T OrElse(Func<T> elseMap)
         {
-            if (!HasValue) {
-                return elseMap();
-            }
-            else {
-                throw new InvalidOperationException($"{typeof(Maybe<T>)} does have a value.");
-            }
+            return HasValue ? _value : elseMap();
         }
         public void OrElseDo(Action elseAction)
         {
             if (!HasValue) {
                 elseAction();
-            }
-            else {
-                throw new InvalidOperationException($"{typeof(Maybe<T>)} does have a value.");
             }
         }
 

@@ -75,7 +75,7 @@ namespace CallMeMaybe.V2
                 Основной же минус - мы работаем с IEnumerable и на выходе тоже IEnumerable, что как бы не очень:
                     - нарушается семантика кода. Мы должны работать в терминах монады Maybe, а не последовательностей
                     - кое-что еще. Что? Подсказка: проблема в работе с объектами как объектами некоторого интерфейса
-                    не знаю, я устал :(
+                    Опять про боксинг?
             */
             var result =
                 from pumpkinPieFilling in _cookingTable.FindCansOf<PumpkingPieFilling>(1m).ToMaybe()

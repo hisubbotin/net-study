@@ -6,7 +6,7 @@ namespace CallMeMaybe.V1
     {
         /*
             Как ты думаешь, почему Maybe - структура?
-            Структура является типом значения (или значимым - как правильно?), следовательно, не может в null. То, что надо!
+            Структура является значимым типом, следовательно, не может в null. То, что надо!
         */
 
         /// <summary>
@@ -14,7 +14,7 @@ namespace CallMeMaybe.V1
         /// Соблюдаем копирайт на null.
         /// Суть Maybe в том, чтобы принимать какое-либо значение или не иметь его вовсе.
         /// Сколько по факту будет экземпляров данного объекта?
-        /// Шаблонные структуры/классы не делят своих статических членов, поэтому по одному на каждый используемый T.
+        /// Обобщенные структуры/классы не делят своих статических членов, поэтому по одному на каждый используемый T.
         /// </summary>
         public static readonly Maybe<T> Nothing = new Maybe<T>();
 
@@ -64,9 +64,6 @@ namespace CallMeMaybe.V1
             if (HasValue) {
                 doAction(_value);
             }
-            else {
-                throw new InvalidOperationException($"{typeof(Maybe<T>)} doesn't have value.");
-            }
         }
         
         public void DoOrElse(Action<T> doAction, Action elseAction)
@@ -81,21 +78,13 @@ namespace CallMeMaybe.V1
 
         public T OrElse(Func<T> elseMap)
         {
-            if (!HasValue) {
-                return elseMap();
-            }
-            else {
-                throw new InvalidOperationException($"{typeof(Maybe<T>)} does have a value.");
-            }
+            return HasValue ? _value : elseMap();
         }
 
         public void OrElseDo(Action elseAction)
         {
             if (!HasValue) {
                 elseAction();
-            }
-            else {
-                throw new InvalidOperationException($"{typeof(Maybe<T>)} does have a value.");
             }
         }
 
