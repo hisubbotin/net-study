@@ -139,7 +139,7 @@ namespace CallMeMaybe.BaseModel
     /// </summary>
     /// <typeparam name="TBaked">А это, во что оно превращается при запекании.</typeparam>
     public interface IBakeableTo<out TBaked>
-        where TBaked: IBaked
+        where TBaked : IBaked
     {
         TBaked Bake(TimeSpan duration, decimal degreesCelsius);
     }
@@ -170,7 +170,7 @@ namespace CallMeMaybe.BaseModel
     /// <summary>
     /// Бабушкина радость тыквенный маффин.
     /// </summary>
-    public class PumpkinMuffin: IBaked
+    public class PumpkinMuffin : IBaked
     {
         public void SmellMe() { }
         public void BiteMe() { }
@@ -211,8 +211,8 @@ namespace CallMeMaybe.BaseModel
         /// Запекает все, что есть в форме для выпечки, в течение указанного времени.
         /// </summary>
         public BakingDish<TBaked>? Bake<TRaw, TBaked>(BakingDish<TRaw> dish, TimeSpan duration)
-            where TBaked: IBaked
-            where TRaw: IBakeableTo<TBaked>
+            where TBaked : IBaked
+            where TRaw : IBakeableTo<TBaked>
         {
             // or null
             return new BakingDish<TBaked>(
