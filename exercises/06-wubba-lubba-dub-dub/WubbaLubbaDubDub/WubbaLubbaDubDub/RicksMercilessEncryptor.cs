@@ -119,9 +119,12 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
+            var idsRegex = new Regex("[0-9A-F]{4}:[0-9A-F]{4}");
+            var commentsRegex = new Regex("\\/\\/.*\\n|\\/\\*(.|\\n)*?\\*\\/");
+            return commentsRegex.Split(text).
+                SelectMany(s => idsRegex.Matches(s).Select(match => match.Groups[0].Value)).
+                Select(s => Convert.ToInt64(s.Replace(":", string.Empty), 16)).ToImmutableList();
         }
-        // TODO
 
         #endregion
     }

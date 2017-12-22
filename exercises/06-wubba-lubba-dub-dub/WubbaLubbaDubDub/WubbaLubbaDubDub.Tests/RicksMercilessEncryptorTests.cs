@@ -66,5 +66,12 @@ namespace WubbaLubbaDubDub.Tests
         {
             Assert.Equal(line.ShiftInc(), shiftedLine);
         }
+
+        [Theory]
+        [InlineData("//Well \n /* it's \n stolen AAAA:5555 \n */ BBBB:4444", new[] { 3149612100L })]
+        public void TestGetUsedObjects_ReturnsCorrectValue(string line, long[] ids)
+        {
+            Assert.Equal(line.GetUsedObjects(), ids);
+        }
     }
 }
