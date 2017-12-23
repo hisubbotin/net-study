@@ -144,7 +144,17 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
-            yield return GetDrunkFibonacci().Take(16).ToArray();
+            var fibonacci = GetDrunkFibonacci().GetEnumerator();
+            while (true)
+            {
+                var chunk = new int[16];
+                for (int i = 0; i < 16; ++i)
+                {
+                    fibonacci.MoveNext();
+                    chunk[i] = fibonacci.Current;
+                }
+                yield return chunk;
+            }
         }
 
         /// <summary>
@@ -194,7 +204,7 @@ namespace DrunkFibonacci
 
                 Итого научишься группировать и создавать на их основе словарь (см. ToDictionary).
             */
-            return GetDrunkFibonacci().Take(10000).GroupBy(item => item % 8).ToDictionary(item => item.Key, item => item.ToList().Count());
+            return GetDrunkFibonacci().Take(10000).GroupBy(item => item % 8).ToDictionary(item => item.Key, item => item.Count());
         }
     }
 }
