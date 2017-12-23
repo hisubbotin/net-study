@@ -54,7 +54,7 @@ namespace AdventureTime
                 Ну и на будущее запомни этот прекрасный строковый формат представления времени - он твой бро!
                 Название запоминать не нужно, просто помни, что для передачи значения в виде строки, выбирать лучше инвариантные относительно сериализации/десериализации форматы.
             */
-            return dt.ToString("F");
+            return dt.ToString("O");
             //throw new NotImplementedException();
         }
 
@@ -127,8 +127,8 @@ namespace AdventureTime
                 2) Проверь, учитывается ли Kind объектов при арифметических операциях.
                 3) Подумай, почему возвращаемое значение может отличаться от действительности.
             */
-            TimeSpan interval = dt2 - dt1;
-            return interval.Days * 24 + interval.Hours;
+            TimeSpan interval = dt2.ToUniversalTime() - dt1.ToUniversalTime();
+            return (int)interval.TotalHours;
 
             //throw new NotImplementedException();
         }
@@ -141,7 +141,7 @@ namespace AdventureTime
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
             DateTime time = DateTime.Now;
 
-            return (time.AddMonths(3) - time).Minutes;
+            return (int)(time.AddMonths(3) - time).TotalMinutes;
             //throw new NotImplementedException();
         }
 
@@ -309,7 +309,7 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            return (person1Birthday.DayOfYear == person2Birthday.DayOfYear);
+            return (person1Birthday.Month == person2Birthday.Month && person1Birthday.Day == person2Birthday.Day);
             //throw new NotImplementedException();
         }
     }
