@@ -8,7 +8,7 @@ namespace BoringVector
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
 
-    internal struct Vector
+    public struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
@@ -17,12 +17,12 @@ namespace BoringVector
         /// <summary>
         /// x координата вектора
         /// </summary>
-        public double X { get; set; }
+        public double X { get;}
 
         /// <summary>
         /// y координата вектора
         /// </summary>
-        public double Y { get; set; }
+        public double Y { get; }
 
         /// <summary>
         /// создает объект <see cref="Vector"/> с заданными координатами X, Y
@@ -50,7 +50,7 @@ namespace BoringVector
         /// </summary>
         public double SquareLength()
         {
-            return (X*X + Y*Y);
+            return X*X + Y*Y;
             //throw new NotImplementedException();
         }
 

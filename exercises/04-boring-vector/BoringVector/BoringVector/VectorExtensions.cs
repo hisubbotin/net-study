@@ -25,14 +25,14 @@ namespace BoringVector
          Orthogonal
         };
 
-        private static double EPSILON = 1e-6;
+        private const double Epsilon = 1e-6;
 
         /// <summary>
         /// проверка на равенство вектора нулю
         ///</summary>
         public static bool IsZero(this Vector v)
         {
-            return Math.Sqrt(v.SquareLength()) < EPSILON;
+            return Math.Sqrt(v.SquareLength()) < Epsilon;
         }
 
         /// <summary>
@@ -61,11 +61,11 @@ namespace BoringVector
         ///</summary>
         public static VectorRelation GetRelation(this Vector v, Vector u)
         {
-            if (v.GetAngleBetween(u) == 0.0)
+            if (v.GetAngleBetween(u) < Epsilon)
             {
                 return VectorRelation.Parallel;
             }
-            if (v.DotProduct(u) < EPSILON)
+            if (v.DotProduct(u) < Epsilon)
             {
                 return VectorRelation.Orthogonal;
             }
