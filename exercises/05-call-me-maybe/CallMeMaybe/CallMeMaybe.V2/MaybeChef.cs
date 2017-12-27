@@ -53,7 +53,13 @@ namespace CallMeMaybe.V2
         private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
         {
             // здесь сделай сам, пожалуйста
-            throw new NotImplementedException();
+            var result =
+                from allPurposeFlour in _cookingTable.FindCansOf<AllPurposeFlour>(5m).ToMaybe()
+                from sugar in _cookingTable.FindCansOf<WhiteSugar>(10m).ToMaybe()
+                from pumpkinPieSpice in _cookingTable.FindTeaspoonsOf<PumpkinPieSpice>(1m).ToMaybe()
+                from flourMixture in _cookingTable.FindBowlAndFillItWith(new FlourMixture()).ToMaybe()
+                select flourMixture;
+            return result.ToMaybe();
         }
 
         private Maybe<BowlOf<EggsMixture>> MakeEggsMixture()
