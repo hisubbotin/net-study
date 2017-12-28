@@ -146,7 +146,7 @@ namespace DrunkFibonacci
         {
             // узнаешь о существовании функции Zip.
             return GetDrunkFibonacci()
-                .Zip(GetDrunkFibonacci(), (x, y) => x ^ (y + 42));
+                .Zip(GetDrunkFibonacci().Skip(42), (x, y) => x ^ y);
         }
 
         /// <summary>
@@ -155,16 +155,12 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
-            var counter = 0;
             const int chunkSize = 16;
             while (true)
             {
                 yield return GetDrunkFibonacci()
-                    .Skip(counter * chunkSize)
                     .Take(chunkSize).ToArray();
-                counter += 1;
             }
-
         }
 
         /// <summary>
