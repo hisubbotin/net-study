@@ -1,4 +1,6 @@
-﻿namespace AdventureTime
+﻿using System;
+
+namespace AdventureTime
 {
     internal class Program
     {
@@ -8,7 +10,7 @@
             System.Console.WriteLine(Time.SpecifyKind(Time.WhatTimeIsIt(), System.DateTimeKind.Utc));
             System.Console.WriteLine(Time.ToRoundTripFormatString(Time.SpecifyKind(Time.WhatTimeIsIt(), System.DateTimeKind.Utc)));
 
-            System.Console.WriteLine(Time.GetTotalMinutesInThreeMonths());
+            //System.Console.WriteLine(Time.GetTotalMinutesInThreeMonths());
             System.Console.WriteLine(Time.GetAdventureTimeDurationInMinutes_ver0_Dumb());
             System.Console.WriteLine(Time.GetAdventureTimeDurationInMinutes_ver1_FeelsSmarter());
             System.Console.WriteLine(Time.GetAdventureTimeDurationInMinutes_ver3_NodaTime());
