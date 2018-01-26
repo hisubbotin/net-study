@@ -33,7 +33,7 @@ namespace CallMeMaybe
         public Maybe<TResult> Select<TResult>(Func<T, TResult> map)
         {
             // обеспечит поддержку одинарного from
-            return HasValue ? new Maybe<TResult>(map(_value)) : Maybe<TResult>.Nothing;
+            return HasValue ? map(_value) : Maybe<TResult>.Nothing;
         }
         public Maybe<TResult> Select<TResult>(Func<T, Maybe<TResult>> maybeMap)
         {
@@ -45,8 +45,9 @@ namespace CallMeMaybe
             // обеспечит поддержку цепочки from
             if (HasValue)
             {
-                return otherSelector(_value).HasValue
-                    ? resultSelector(_value, otherSelector(_value)._value)
+                Maybe<T2> otherMaybe = otherSelector(_value);
+                return otherMaybe.HasValue
+                    ? resultSelector(_value, otherMaybe._value)
                     : Maybe<TResult>.Nothing;
             }
             return Maybe<TResult>.Nothing;
