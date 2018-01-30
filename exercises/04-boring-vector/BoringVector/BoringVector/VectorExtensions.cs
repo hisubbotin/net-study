@@ -7,72 +7,87 @@ namespace BoringVector
             - IsZero: проверяет, является ли вектор нулевым, т.е. его координаты близки к нулю (в эпсилон окрестности). За эпсилон здесь и далее берем 1e-6.
             - Normalize: нормализует вектор
             - GetAngleBetween: возвращает угол между двумя векторами в радианах. Примечание: нулевой вектор сонаправлен любому другому.
-            - GetRelation: возвращает значение перечесления VectorExtensions(General, Parallel, Orthogonal) - отношение между двумя векторами("общий случай", параллельны, перпендикулярны). Перечисление задавать тоже тебе)
+            - GetRelation: возвращает значение перечесления VectorRelation(General, Parallel, Orthogonal) - отношение между двумя векторами("общий случай", параллельны, перпендикулярны). Перечисление задавать тоже тебе)
     */
-    /// <summary>
-    /// Тип отношения между двумя векторами.
-    /// </summary>
-    public enum VectorExtensions
-    {
-        ///<summary>Общий случай</summary>
-        General,
-        ///<summary>Векторы параллельны</summary>
-        Parallel,
-        ///<summary>Векторы перпендекулярны</summary>
-        Orthogonal
-    };
 
     /// <summary>
-    /// Класс с методами расширения структуры Vector.
+    /// Класс расширения структуры <see cref="Vector"/>, реализует дополнительные операции
     /// </summary>
-    public static class VectorHelper
+    internal static class VectorExtensions
     {
+        private const double Epsilon = 1e-6;
+
         /// <summary>
-        /// Проверяет, является ли вектор нулевым.
+        /// Проверяет, является ли вектор нулевым, т.е. его координаты близки к нулю (в эпсилон окрестности)
         /// </summary>
-        public static bool IsZero(this Vector v)
+        /// <param name="v">Вектор, <see cref="Vector"/></param>
+        /// <param name="eps">Допустимый радиус эпсилон-окрестности нуля, <see cref="double"/></param>
+        /// <returns>Является ли вектор нулевым, <see cref="bool"/></returns>
+        public static bool IsZero(this Vector v, double eps = Epsilon)
         {
-            return v.Length() < 1E-6;
+            return Math.Abs(v.X) < eps && Math.Abs(v.Y) < eps;
         }
+
         /// <summary>
-        /// Нормализует вектор.
+        /// Нормализует вектор
         /// </summary>
+        /// <param name="v">Исходный вектор, <see cref="Vector"/></param>
+        /// <returns>Нормированный вектор, <see cref="Vector"/></returns>
         public static Vector Normalize(this Vector v)
         {
-            return v / v.Length();
+            return v / Math.Sqrt(v.SquareLength());
         }
+
         /// <summary>
-        /// Возвращает угол между двумя векторами в радианах.
+        /// Возвращает угол между двумя векторами в радианах в отрезке [0, pi]
         /// </summary>
+        /// <param name="v1">Первый вектор, <see cref="Vector"/></param>
+        /// <param name="v2">Второй вектор, <see cref="Vector"/></param>
+        /// <returns>Угол между двумя векторами в радианах в отрезке [0, pi], <see cref="double"/></returns>
         public static double GetAngleBetween(this Vector v1, Vector v2)
         {
-            if (v1.IsZero() || v2.IsZero())
-            {
-                return 0;
-            }
-            else
-            {
-                return Math.Acos(v1.DotProduct(v2) / (v1.Length() * v2.Length()));
-            }
+            return (v1.IsZero() || v2.IsZero()) ? 0 :
+                Math.Acos(v1.Normalize().DotProduct(v2.Normalize()));
         }
+
         /// <summary>
-        /// Возвращает отношение между двумя векторами.
+        /// Возможные отношения между двумя векторами
         /// </summary>
-        public static VectorExtensions GetRelation(this Vector v1, Vector v2)
+        public enum VectorRelation
         {
-            double angle = v1.GetAngleBetween(v2);
-            if (Math.Abs(v1.CrossProduct(v2)) < 1E-6)
+            /// <summary>
+            /// "Общий случай"
+            /// </summary>
+            General,
+            /// <summary>
+            /// Векторы параллельны
+            /// </summary>
+            Parallel,
+            /// <summary>
+            /// Векторы перпендикулярны
+            /// </summary>
+            Orthogonal
+        }
+
+        /// <summary>
+        /// Возвращает отношение между двумя векторами ("общий случай", параллельны, перпендикулярны)
+        /// </summary>
+        /// <param name="v1">Первый вектор, <see cref="Vector"/></param>
+        /// <param name="v2">Второй вектор, <see cref="Vector"/></param>
+        /// <param name="eps">Допустимый радиус эпсилон-окрестности, <see cref="double"/></param>
+        /// <returns>Значение перечесления <see cref="VectorRelation"/></returns>
+        public static VectorRelation GetRelation(this Vector v1, Vector v2, double eps = Epsilon)
+        {
+            if (v1.GetAngleBetween(v2) < eps)
             {
-                return VectorExtensions.Parallel;
+                return VectorRelation.Parallel;
             }
-            else if (v1.DotProduct(v2) < 1E-6)
+            if (Math.Abs(v1.DotProduct(v2)) < eps)
             {
-                return VectorExtensions.Orthogonal;
+                return VectorRelation.Orthogonal;
             }
-            else
-            {
-                return VectorExtensions.General;
-            }
+            return VectorRelation.General;
         }
     }
+
 }
