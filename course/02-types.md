@@ -2,13 +2,12 @@
 
 <!-- TOC -->
 
-- [Types](#types)
+- [Types & basics](#types--basics)
   - [Ссылочные и значимые типы](#Ссылочные-и-значимые-типы)
     - [Stack & Heap](#stack--heap)
     - [Referenced VS Value types](#referenced-vs-value-types)
-    - [Передача параметров (TODO)](#Передача-параметров-todo)
+    - [Передача параметров в методы](#Передача-параметров-в-методы)
     - [System.Object](#systemobject)
-    - [Boxing / Unboxing (TODO)](#boxing--unboxing-todo)
   - [Primitive types](#primitive-types)
     - [Integers](#integers)
     - [Float numbers](#float-numbers)
@@ -27,6 +26,7 @@
   - [Приведение типов](#Приведение-типов)
   - [switch](#switch)
   - [Pattern Matching](#pattern-matching)
+  - [Boxing / Unboxing](#boxing--unboxing)
 
 <!-- /TOC -->
 
@@ -38,12 +38,16 @@
 ### Stack & Heap
 
 Есть Stack (стэк) и есть Heap (управляемая куча) (Ваш КЭП - Вы кстати должны знать эту тему лучше лектора)
-Обычно OS выделяет одну кучу на приложение (но можно сделать несколько).
-На каждый поток (thread) OS создает свой выделенный стэк (в винде по-умолчанию 1Mb). И то и другое живет в RAM.
 
-Куча менеджерится clr.
+- Обычно OS выделяет одну кучу на приложение (можно сделать несколько)
+- На каждый поток (thread) OS создает свой выделенный стэк (в винде по-умолчанию 1Mb). И то и другое живет в RAM.
+- Куча менеджерится CLR
 
-Стэк намного быстрее из-за более простого управления хранением объектов, плюс cpu имеет регистры для работы со стеком и помещает частодоступные объекты из стека в кэш. Стек представляет собой LastInFirstOutput очередь. Размер стека конечен, его нельзя расширить и в него нельзя пихать большие объекты. Примерная его работа понятна по картинке:
+Стэк намного быстрее из-за более простого управления хранением объектов, плюс cpu имеет регистры для работы со стеком и помещает частодоступные объекты из стека в кэш. 
+
+Стек представляет собой LastInFirstOutput очередь. Размер стека конечен, его нельзя расширить и в него нельзя пихать большие объекты. Примерная его работа понятна по картинке:
+
+<div style="page-break-after: always;"></div>
 
 ![Stack](pics/stack.png)
 
@@ -61,15 +65,19 @@ CLR сама решает, где хранить объекты в стеке и
 
 ### Referenced VS Value types
 
-Все объекты в C# делятся на 2 типа: [Value types](https://docs.microsoft.com/ru-ru/dotnet/csharp/language-reference/keywords/value-types) и [Referenced types](https://docs.microsoft.com/ru-ru/dotnet/csharp/language-reference/keywords/reference-types) (Значимые и ссылочные типы).
+Все объекты в C# делятся на два типа:
+- [Value types (значимые типы)](https://docs.microsoft.com/ru-ru/dotnet/csharp/language-reference/keywords/value-types) 
+  - **могут** храниться в стеке, как локальные переменные.
+- [Referenced types (ссылочные типы)](https://docs.microsoft.com/ru-ru/dotnet/csharp/language-reference/keywords/reference-types)
+  - всегда хранятся в куче, в стеке помещается указатель на объект в куче (поэтому и Reference)
 
-**Ссылочные** типы всегда хранятся в куче, в стеке помещается указатель на объект в куче (поэтому и Reference).
+Значимые типы, сохраненные в стеке, «легче» ссылочных: 
+- для них не нужно выделять память в управляемой куче
+- их не затрагивает сборка мусора
 
-**Значимые** типы **могут** храниться в стеке, как локальные переменные.
+<div style="page-break-after: always;"></div>
 
-Значимые типы, сохраненные в стеке, «легче» ссылочных: для них не нужно выделять память в управляемой куче, их не затрагивает сборка мусора, к ним нельзя обратиться через указатель.
-
-Value Types (структуры и перечисления):
+Value Types
 
 - **enum**
 - **struct**
@@ -79,7 +87,7 @@ Value Types (структуры и перечисления):
   - char
   - float / double
 
-Reference Types (классы):
+Reference Types
 
 - object
 - **class**
@@ -146,9 +154,9 @@ public static void Main()
     var r = new RefType { X = 1 };
     var v = new ValueType { X = 1 };
     RefMethod(r);
-    Console.WriteLine(r.X); // 2
+    Console.WriteLine(r.X);
     ValueMethod(v);
-    Console.WriteLine(v.X); // 1
+    Console.WriteLine(v.X);
 }
 
 class RefType { public Int32 X; }
@@ -164,7 +172,7 @@ static void ValueMethod(ValueType r) { r.X = 2; }
 - ref - параметр передается по ссылке
 - out - параметр является "выходным" для метода
   - метод обязательно должен устанавливать значение для параметра
-- in -  
+- in - параметр не изменяется в методе
 - params - передает массив параметров
 
 Нельзя использовать ref, in, and out keywords в:
@@ -201,23 +209,96 @@ public static void Main()
 {
     var r = new RefType { X = 1 };
     RefMethod(r);
-    Console.WriteLine(r.X); // 1
+    Console.WriteLine(r.X);
     RefMethod(ref r);
-    Console.WriteLine(r.X); // 15
+    Console.WriteLine(r.X);
 }
 
 class RefType { public Int32 X; }
 static void RefMethod(RefType r) { r = new RefType { X = 15 }; }
-static void RefMethod(ref RefType r) { r = new RefType { X = 15 }; }
+static void RefMethod(ref RefType r)
+{
+     r = new RefType { X = 15 };
+}
 
 ```
 
 <div style="page-break-after: always;"></div>
 
+- Можно возвращать результат метода по ссылке 
+
+```cs
+public static void Main()
+{
+    var array = new int[5];
+    ref int value = ref ElementAt(ref array, 3);
+    value = 5;
+    Console.WriteLine(array[3]);
+}
+
+public static ref T ElementAt<T>(ref T[] array, int position)
+{
+     if (array == null)
+         throw new ArgumentNullException(nameof(array));
+     if (position < 0 || position >= array.Length)
+         throw new ArgumentOutOfRangeException(nameof(position));
+
+     return ref array[position];
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+- Есть много дополнительных оптимизаций для ref + value types: `ref local`, `ref struct` type, `ref readonly struct` etc:
+  - https://docs.microsoft.com/en-us/dotnet/csharp/reference-semantics-with-value-types
+  - https://blogs.msdn.microsoft.com/mazhou/2017/12/12/c-7-series-part-7-ref-returns/
+- Которые нужны для использования новых классов `Span<T>`, `Memory<T>`
+
+<div style="page-break-after: always;"></div>
+
 **out**
 
+- Значение тоже передается по ссылке, но может быть не инициализировано до вызова метода
+- метод внутри себя обязательно должен присвоить это значение
+
+```cs
+public static void Main()
+{
+    string s = "33";
+
+    if (Int32.TryParse(s, out int value))
+        Console.WriteLine(value);
+    else
+        Console.WriteLine($"Unable to convert '{s}'");
+}
+```
+
+<div style="page-break-after: always;"></div>
+
 **in**
+
+- Тоже по ссылке, метод не может внутри себя присваивать такой параметр
+
 **params**
+
+- Указывает на переменное количество параметров в методе
+
+```cs
+public static void Main()
+{
+    WriteParams();
+    WriteParams(1);
+    WriteParams(3, 3, 4, 1, 10);
+    WriteParams(new int[]{2,2,2});
+}
+
+public static void WriteParams(params int[] array)
+{
+    Console.WriteLine(string.Join(",", array));
+}
+```
+
+<div style="page-break-after: always;"></div>
 
 ### System.Object
 
@@ -234,8 +315,6 @@ static void RefMethod(ref RefType r) { r = new RefType { X = 15 }; }
   - Finalize `*` - используется для очистки ресурсов, вызывается, когда сборщик мусора пометил объект для удаления, но до освобождения памяти
 
 `*` - Методы, которые можно переопределить в своих классах
-
-### Boxing / Unboxing (TODO)
 
 <div style="page-break-after: always;"></div>
 
@@ -254,10 +333,12 @@ static void RefMethod(ref RefType r) { r = new RefType { X = 15 }; }
 | System.Int64  | **long**  | 8 byte | signed `± 9 223 372 036 854 775 807`          |
 | System.UInt64 | ulong     | 8 byte | unsigned  `0` до `18 446 744 073 709 551 615` |
 
-Не рекомендуется использовать sbyte / uint / ushort / ulong, как не CLS совместимые.
+<div style="page-break-after: always;"></div>
 
-- Многие стандартные методы возвращают обычные типы (получится дополнительная конвертация).
-- Если не хватает размера, то увеличение в 2 раза не решает проблему.
+Не рекомендуется использовать sbyte / uint / ushort / ulong
+- Не CLS совместимые
+- Многие стандартные методы возвращают обычные типы (получится дополнительная конвертация)
+- Если не хватает размера, то увеличение в 2 раза не решает проблему
 
 Короче, используйте int, long, short, byte.
 
@@ -276,6 +357,8 @@ static void RefMethod(ref RefType r) { r = new RefType { X = 15 }; }
 [single-pre]:https://en.wikipedia.org/wiki/Single-precision_floating-point_format
 
 decimal - десятичное число с плавающей запятой, это не примитивный тип и работает сильно медленее double (до 20 раз).
+
+<div style="page-break-after: always;"></div>
 
 Основное различие можно понять на примере:
 
@@ -335,7 +418,11 @@ bool isValid = true;
 double y = 3.0;      // По-дефолту число с точкой считается компилятором как double
 float f = 33.1f;     // Используем суфикс, чтобы студия не считала его double
 decimal d = 11.1m;   // m для decimal
+```
 
+<div style="page-break-after: always;"></div>
+
+```cs
 char c = 's';
 string s = "Hello!"; // Разные кавычки
 
@@ -362,7 +449,11 @@ var x = new MyClass();
 var i = 3;
 var list = new List<int>();
 var db = new Data(_connection) { RetryPolicy = _retryPolicy };
+```
 
+<div style="page-break-after: always;"></div>
+
+```cs
 // Не используете var, если тип не очевиден из правой части
 var ExampleClass.ResultSoFar();
 var ticketLifeTime = getTicketLifeTime(licenses);
@@ -375,10 +466,6 @@ foreach (var element in myList)
 {
 }
 ```
-
-<div style="page-break-after: always;"></div>
-
-### default
 
 <div style="page-break-after: always;"></div>
 
@@ -399,6 +486,8 @@ foreach (var element in myList)
   - `--` Декремент
 
 У инкремента, декремента выше приоритет, чем у операций умножения, сложения, остатка.
+
+<div style="page-break-after: always;"></div>
 
 ```cs
 int x = 2;
@@ -454,9 +543,7 @@ x += y; // Записи эквиваленты
 Они и быстре и позволяют делать проверки, которые невозможны при одновременном вычислении обоих полей логического оператора
 
 ```cs
-if ((myObj != null) && (myObj.A == 1))
-{
-}
+if ((myObj != null) && (myObj.A == 1)) { ... }
 ```
 
 <div style="page-break-after: always;"></div>
@@ -479,12 +566,16 @@ int result = Check() ? 1 : 0;
 
 // Использование в качестве параметра метода
 someMethod((sampleCondition) ? 3 : 1);
+```
 
+<div style="page-break-after: always;"></div>
+
+```cs
 int ticketLifetime = licenses.Any()
     ? licenses.Select(x => x.TicketExpiration).Min()
-    : TicketMinutesLifetime;
+    : ConstTicketMinutesLifetime;
 
-// Можно делать вложенные, но не стоит увлекаться, делает код нечитаемым.
+// Можно делать вложенные, но не стоит увлекаться, делает код нечитаемым
 int x = 1, y = 2;
 string result = x > y
     ? "x > y"
@@ -632,8 +723,7 @@ switch (value)
         break;
     default:
         Console.WriteLine("default");
-        break;
-}
+        break;}
 ```
 
 <div style="page-break-after: always;"></div>
@@ -659,9 +749,7 @@ public static void IsPattern(object o)
 
 - В switch можно использовать любой тип
 - В case можно использовать паттерны и дополнительные условия
-- Порядок важен
-- дефолт всегда выполнится последним (независимо от места)
-
+- Порядок важен, но дефолт всегда выполнится последним независимо от места
 ```cs
 switch(shape)
 {
@@ -678,6 +766,45 @@ switch(shape)
         WriteLine("<unknown shape>");
         break;
     case null:
-        throw new ArgumentNullException(nameof(shape));
-}
+        throw new ArgumentNullException(nameof(shape));}
+```
+
+<div style="page-break-after: always;"></div>
+
+## Boxing / Unboxing
+
+- При [boxing](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/types/boxing-and-unboxing) мы создаем обертку над элементом в куче
+- Очень дорогое занятие
+
+```cs
+int i = 123;
+object o = i;  // boxes i
+
+o = 123;
+i = (int)o;  // unboxing
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+double e = 2.33333333;
+int ee = (int)e;
+Console.WriteLine(ee);
+
+object o = (object) e;
+int e2 = (int)o;
+Console.WriteLine(e2);
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+double i = 3;
+double i2 = i;
+object o1 = i;
+object o2 = i2;
+object o3 = i;
+Console.WriteLine(i == i2);
+Console.WriteLine(o1 == o2);
+Console.WriteLine(o1 == o3);
 ```
