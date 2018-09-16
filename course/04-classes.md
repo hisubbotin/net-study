@@ -3,11 +3,13 @@
 <!-- TOC -->
 
 - [Classes](#classes)
+  - [Namespaces](#namespaces)
   - [Members](#members)
-  - [Модификаторы доступа](#access-modifiers)
+  - [Access Modifiers](#access-modifiers)
   - [Конструкторы](#Конструкторы)
   - [Methods](#methods)
     - [Local functions (TODO)](#local-functions-todo)
+    - [Deconstructors (TODO)](#deconstructors-todo)
   - [Properties](#properties)
   - [`readonly`](#readonly)
   - [`const`](#const)
@@ -26,6 +28,55 @@
   - [Аттрибуты](#Аттрибуты)
 
 <!-- /TOC -->
+
+<div style="page-break-after: always;"></div>
+
+## Namespaces
+
+Пространства имен нужны для логической группировки родственных типов.
+Делают имя класса уникальным для компилятора.
+Например, `System.Int32`, `System.Collections.Generic.List`.
+
+`using` - директива заставляет компилятор добавлять этот префикс к классам, пока не найдет нужный класс.
+
+В коде можно писать имя класса без namespace.
+
+```cs
+using System.IO; // Здесь собранны InputOtput классы для работы с файловой системой, потоками
+using System.Collections; // Все готовые коллекции
+using System.Collections.Generic; // Обобщенные коллекции
+using System.Linq; // Набор хелперов для генерации LINQ запросов
+using Newtonsoft.Json; // Подключили сторонюю библиотеку
+using Abbyy.Shared.Library; // Подключили свою отдельную библиотеку
+
+...
+var list = new List<int>();
+
+```
+
+<div style="page-break-after: always;"></div>
+
+Пространства имен и сборки могут не быть связаны друг с другом.
+
+Типы одного пространства имен могут быть реализованы разными сборками.
+
+Чтобы обезапасить от конфликтов имен рекомендуется использовать namespace,
+начинающийся с имени компании, потом название системы/подсистемы.
+
+Если в двух namespace содержатся одинаковые классы, то:
+
+- либо надо указывать полное имя класса с namespace
+- либо можно, используя директиву `using`, задать alias для класса
+
+```cs
+using System.Windows.Forms;
+using myButton = Abbyy.Shared.Controls.Button; // Добавляем alias для класса
+
+...
+var button = new myButton();
+var button = new Abbyy.Shared.Controls.Button();
+```
+
 
 <div style="page-break-after: always;"></div>
 
