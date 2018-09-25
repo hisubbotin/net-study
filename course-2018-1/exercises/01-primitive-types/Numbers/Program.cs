@@ -17,8 +17,8 @@ namespace Numbers
         private static void Main()
         {
             // твои бро: Console.WriteLine и Console.ReadLine
-
-            Console.WriteLine("Hello World!");
+            string a = Console.ReadLine();
+            Console.WriteLine(a);
         }
     }
 }
