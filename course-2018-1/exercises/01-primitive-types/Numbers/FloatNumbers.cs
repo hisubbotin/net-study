@@ -17,7 +17,7 @@ namespace Numbers
                 Необходимо вернуть значение, не используя непосредственно саму константу.
                 Для этого подумай, какой смысл в себе несет эта константа и где бы она могла стать результатом операции или вычисления функции.
             */
-            throw new NotImplementedException();
+            return 0.0 / 0.0;
         }
 
         /// <summary>
@@ -28,20 +28,25 @@ namespace Numbers
         internal static bool IsNaN(double d)
         {
             // Подсказка: по аналогии с константами типа int, у типа double тоже есть свой набор констант.
-            throw new NotImplementedException();
+            return double.IsNaN(d);
+        }
+
+        internal static bool IsLess(double number1, double number2)
+        {
+            return number1 < number2 - double.Epsilon;
         }
         
         /// <summary>
         /// Возвращает результат сравнения двух вещественнозначных чисел.
         /// </summary>
         /// <returns>-1 - первое меньше второго, 0 - значения равны, 1 - первое больше второго.</returns>
-        internal static int Compare(/* дополни сигнатуру метода как считаешь правильным */)
+        internal static int Compare(double number1, double number2)
         {
             /*
                 Подумай, почему это задание дано в части про вещественнозначные числа. И почему не дана полная сигнатура метода.
                 Если сходу идей нет, перестань искать подвох и просто реализуй дословно. Теперь еще раз посмотри на код и подумай в чем может быть проблема, сколько должно быть аргументов.
             */
-            throw new NotImplementedException();
+            return IsLess(number1, number2) ? 1 : (IsLess(number2, number1) ? -1 : 0);
         }
 
         // и все?!! О_о
