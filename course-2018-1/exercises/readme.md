@@ -39,3 +39,16 @@ Tags: primitive types, numbers, operations, checked/unchecked arithmetics, numbe
 - работой с консолью.
 
 Инструкция лежит в [01-primitive-types/readme.md](01-primitive-types/readme.md).
+
+## 02. What time is it? Adventure Time!
+
+Tags: datetime, datetime.kind, utc, timezone, timezoneinfo, timespan, datetimeoffset, noda time, time formatting and parsing.
+
+В данном задании вы познакомитесь с:
+
+- типами данных для базовой работы со временем,
+- операциями над ними,
+- чтением дат и отрезков времени из строки и форматированием их обратно в строку,
+- проблемами, связанными со временем.
+
+Инструкция лежит в [02-adventure-time/readme.md](02-adventure-time/readme.md).
