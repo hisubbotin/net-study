@@ -3,10 +3,11 @@
 <!-- TOC -->
 
 - [Exercises](#exercises)
-  - [Цель заданий](#цель-заданий)
+  - [Цель заданий](#Цель-заданий)
   - [Code of conduct](#code-of-conduct)
   - [Git + GitHub workflow](#git--github-workflow)
   - [01. May the primitive types be with you](#01-may-the-primitive-types-be-with-you)
+  - [02. What time is it? Adventure Time!](#02-what-time-is-it-adventure-time)
 
 <!-- /TOC -->
 
