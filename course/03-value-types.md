@@ -5,6 +5,8 @@
 - [Value types](#value-types)
   - [Struct](#struct)
     - [Mutable struct problem](#mutable-struct-problem)
+    - [Readonly struct](#readonly-struct)
+    - [Оптимизации структур](#Оптимизации-структур)
   - [Nullable](#nullable)
   - [Guid](#guid)
   - [Dates, times](#dates-times)
@@ -74,7 +76,6 @@ struct Vector
         Y = y;
     }
 }
-
 ...
 var vector = new Vector(5, 3);
 ```
@@ -96,6 +97,48 @@ var vector = new Vector(5, 3);
 Вывод: **никогда не делайте Mutable структуры** (из исключений - спец. оптимизиация внутри фреймворка, см. енумератор)
 
 К каким ошибкам это приводит [раз](http://sergeyteplyakov.blogspot.ru/2011/07/blog-post.html), [два](http://sergeyteplyakov.blogspot.ru/2012/12/2.html)
+
+<div style="page-break-after: always;"></div>
+
+### Readonly struct
+
+В C#7 добавили возможность красиво сделать immutable структуру:
+
+- все публичные поля должны быть readonly
+- все изменения полей /this только в конструкторах
+
+```cs
+public readonly struct S
+{
+    public int Age { get; set; } // низя
+
+    public S(int age) { this.Age = age; }
+    public S(S other) { this = other; }
+
+    public S Replace(S other)
+    {
+        S value = this;
+        this = other; // низя
+        return value;
+    }
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+### Оптимизации структур
+
+- Можно использовать `ref` / `out` / `in` атрибуты для передачи параметров в методы
+
+В C#7 улучшили возможности оптимизации valuetype:
+
+- `ref struct` тип
+  - Тип может быть истанцирован только на стеке
+  - Нельзя использовать как член класса или структуры, не может boxing/unboxing, не может быть static, нельзя использовать в async методах
+  - Можно использовать только для передачи в методы / local variable
+- `ref return`
+- Можно одновременно использовать `readonly ref struct`
+- Добавили новые типы `Span<T>` and `Memory<T>` и др.
 
 <div style="page-break-after: always;"></div>
 
@@ -312,15 +355,15 @@ Cons:
 - `Utc`
 
 ```cs
-DateTime date0 = new DateTime();          // минимальное время
-DateTime date1 = new DateTime(2017,10,3); // 03.10.2017 0:00:00 , Kind == Unspecified
+DateTime date0 = new DateTime();         // минимальное время
+DateTime date1 = new DateTime(2017,10,3);// 03.10.2017 0:00:00 Unspecified
 DateTime utcTime = new DateTime(2010, 11, 18, 17, 30, 0, DateTimeKind.Utc);
-DateTime date2 = DateTime.MinValue;       // 01.01.0001 0:00:00
-DateTime date3 = DateTime.MaxValue;       // 31.12.9999 23:59:59
-DateTime date4 = DateTime.Now;            // Kind == Local
-DateTime date5 = DateTime.UtcNow;         // Kind == Utc
+DateTime date2 = DateTime.MinValue;      // 01.01.0001 0:00:00
+DateTime date3 = DateTime.MaxValue;      // 31.12.9999 23:59:59
+DateTime date4 = DateTime.Now;           // Kind == Local
+DateTime date5 = DateTime.UtcNow;        // Kind == Utc
 DateTime date6 = DateTime.Today;
-DateTimeKind kind = date5.Kind;           // DateTimeKind.Utc
+DateTimeKind kind = date5.Kind;          // DateTimeKind.Utc
 var value = date1.AddHours(3);
 ```
 
@@ -474,7 +517,6 @@ Console.WriteLine(myVariable);  // Green
 
 int i = (int) myVariable; // Явно приводится к целочисленному типу
 Console.WriteLine(i);     // 1
-
 Color value = (Color) (i + 1);  // И обратно приводится
 Console.WriteLine(value);       // Blue
 ```
@@ -573,12 +615,10 @@ public enum Color
     Green = 3,
     Blue = 4
 }
-
 public static void Main()
 {
     Color c = new Color();
     Console.WriteLine($"{c} - {(int)c}"); // 0 - 0
-
     c = (Color) (-1); // -1 - -1
     bool flag = Enum.IsDefined(typeof(Color), c); // False
     c = (Color) 2; // Red - 2
@@ -607,7 +647,41 @@ Boolean IsDefined(Type enumType, Object value);
 
 <div style="page-break-after: always;"></div>
 
-Посмотрим, как работает парсинг из строки:
+Посмотрим, как работает парсинг из строки. Поиграем в игру, угадай как работает framework:
+
+```cs
+public enum Status
+{
+    New = 2,
+    Commited = 3,
+    Deleted = 4
+}
+
+string[] test = new []
+{
+    "New",
+    "new",
+    "3",
+    "0",
+    "",
+    "-1",
+    "New, Commited"
+};
+```
+
+<div style="page-break-after: always;"></div>
+
+Для каждой строки будем находить:
+
+```cs
+Status value = (Status) Enum.Parse(typeof(Status), s);
+int intValue = (int)value;
+bool isDefined = Enum.IsDefined(typeof(Status), value);
+```
+
+<div style="page-break-after: always;"></div>
+
+Полный итоговый код с результатами:
 
 ```cs
 public enum Status
