@@ -17,8 +17,16 @@ namespace Numbers
         private static void Main()
         {
             // твои бро: Console.WriteLine и Console.ReadLine
-
             Console.WriteLine("Hello World!");
+
+            // Proof that we need TOLERANCE in Compare method
+            const double x = .1;
+            const double l = 10 * x;
+            const double r = x + x + x + x + x + x + x + x + x + x;
+            
+            // We expect that `l == r`
+            Console.WriteLine(FloatNumbers.Compare(l, r));
+            Console.WriteLine("{0:R} - {1:R} != 0", l, r);
         }
     }
 }
