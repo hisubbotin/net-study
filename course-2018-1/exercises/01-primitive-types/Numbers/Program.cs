@@ -16,9 +16,10 @@ namespace Numbers
     {
         private static void Main()
         {
-            // твои бро: Console.WriteLine и Console.ReadLine
-
-            Console.WriteLine("Hello World!");
+            var a = 0.0001;
+            var b = 0.00009;
+            var epsilon = 1E-06;
+            Console.WriteLine(FloatNumbers.Compare(a, b, epsilon));
         }
     }
 }
