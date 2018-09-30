@@ -19,6 +19,11 @@ namespace Numbers
             // твои бро: Console.WriteLine и Console.ReadLine
 
             Console.WriteLine("Hello World!");
+            Console.WriteLine(FloatNumbers.Compare(0.005, 0.004, 0.0001));
+            Console.WriteLine(FloatNumbers.Compare(0.005, 0.004, 0.001));
+            Console.WriteLine(FloatNumbers.Compare(0.005, 0.004, 0.01));
+            Console.WriteLine(FloatNumbers.Compare(3, 7-4, 0.000001));
+            Console.ReadLine();
         }
     }
 }
