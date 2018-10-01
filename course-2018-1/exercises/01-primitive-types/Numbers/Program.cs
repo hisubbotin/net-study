@@ -18,7 +18,7 @@ namespace Numbers
         {
             // твои бро: Console.WriteLine и Console.ReadLine
 
-            Console.WriteLine(FloatNumbers.Compare(3.1, 3.15, 0.1));
+            Console.WriteLine(FloatNumbers.Compare(3.1, 3.15, 0.5));
 
         }
     }
