@@ -16,10 +16,19 @@ namespace Numbers.Tests
             Assert.Equal(FloatNumbers.IsNaN(x), isNaN);
         }
 
+        [Theory]
+        [InlineData(0.5, 0.49999, 0.001, 0)]
+        [InlineData(0.5, 0.48999, 0.001, 1)]
+        [InlineData(0.5, 0.51, 0.001, -1)]
+        public void Test_Compare_Returns_Equal(double a, double b, double eps, int equal)
+        {
+            Assert.Equal(FloatNumbers.Compare(a, b, eps), equal);
+        }
+        
         [Fact]
         public void Test_GetNaN_IsNaNOfGetNaNReturnsTrue()
         {
             Assert.True(FloatNumbers.IsNaN(FloatNumbers.GetNaN()));
-        }
+        }      
     }
 }
