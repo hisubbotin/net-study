@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using System;
+using Xunit;
 
 namespace Numbers.Tests
 {
@@ -29,7 +30,7 @@ namespace Numbers.Tests
         [InlineData(0.0, 0.01, 0.001, -1)]
         public void Test_Compare_ComparesCorrectly(double x, double y, double tol, int result)
         {
-            Assert.Equal(FloatNumbers.Compare(x, y, tol), result);
+            Assert.Equal(result, FloatNumbers.Compare(x, y, tol));
         }
     }
 }
