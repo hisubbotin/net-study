@@ -45,14 +45,8 @@ namespace Numbers
             {
                 return 0;
             }
-            else if (second > first)
-            {
-                return 1;
-            }
-            else
-            {
-                return -1;
-            }
+
+            return second < first ? 1 : -1;
         }
 
         // и все?!! О_о

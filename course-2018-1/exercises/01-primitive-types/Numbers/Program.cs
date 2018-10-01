@@ -20,6 +20,7 @@ namespace Numbers
 
             Console.WriteLine(Math.Sqrt(-1));
             Console.WriteLine(Double.NaN);
+            Console.WriteLine(FloatNumbers.Compare(1, 2));
         }
     }
 }
