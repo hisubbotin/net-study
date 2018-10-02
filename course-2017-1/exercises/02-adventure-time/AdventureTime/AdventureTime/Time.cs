@@ -14,7 +14,9 @@ namespace AdventureTime
         /// </summary>
         public static DateTime WhatTimeIsIt()
         {
-            throw new NotImplementedException();
+            return DateTime.Now;
+            
+            //throw new NotImplementedException();
         }
 
         /// <summary>
@@ -22,7 +24,8 @@ namespace AdventureTime
         /// </summary>
         public static DateTime WhatTimeIsItInUtc()
         {
-            throw new NotImplementedException();
+            return DateTime.UtcNow;
+            //throw new NotImplementedException();
         }
 
         /// <summary>
