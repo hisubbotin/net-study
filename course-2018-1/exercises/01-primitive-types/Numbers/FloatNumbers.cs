@@ -38,14 +38,20 @@ namespace Numbers
         /// Возвращает результат сравнения двух вещественнозначных чисел.
         /// </summary>
         /// <returns>-1 - первое меньше второго, 0 - значения равны, 1 - первое больше второго.</returns>
-        internal static int Compare(double x, double y)
+        internal static int Compare(double x, double y, double offset)
         {
-            return x.CompareTo(y);         
+            if (Math.Abs(x-y)< offset)
+            {
+                return 0;
+
+            }
+            else return x > y ? 1 : -1;
+
             /*
                 Подумай, почему это задание дано в части про вещественнозначные числа. И почему не дана полная сигнатура метода.
                 Если сходу идей нет, перестань искать подвох и просто реализуй дословно. Теперь еще раз посмотри на код и подумай в чем может быть проблема, сколько должно быть аргументов.
             */
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         // и все?!! О_о
