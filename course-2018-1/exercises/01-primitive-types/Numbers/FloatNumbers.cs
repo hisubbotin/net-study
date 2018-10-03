@@ -31,8 +31,8 @@ namespace Numbers
         {
             // Подсказка: по аналогии с константами типа int, у типа double тоже есть свой набор констант.
 
-//            return double.IsNaN(d);
-            return d == double.NaN;
+            return double.IsNaN(d);
+//            return d == double.NaN;
 //            throw new NotImplementedException();
         }
 
