@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.1</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="xunit" Version="2.4.1-pre.build.4071" />
+      <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1-pre.build.4071" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\AdventureTime\AdventureTime.csproj" />
+    </ItemGroup>
+
+</Project>
