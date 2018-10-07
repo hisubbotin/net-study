@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Globalization;
+using System.Runtime.CompilerServices;
 using NodaTime;
 using NodaTime.TimeZones;
 
+[assembly: InternalsVisibleTo("AdventureTime.Tests")]
 namespace AdventureTime
 {
     /// <summary>
@@ -78,7 +80,7 @@ namespace AdventureTime
                 Eсли воспользуешься нужным методом, то напоминаю, что результат его работы зависит от dt.Kind.
                 В случае dt.Kind == Unspecified предполагается, что время локальное, т.е. результат работы в случае Local и Unspecified совпадают. Такие дела
             */
-            throw new NotImplementedException();
+            return dt.ToUniversalTime();
         }
 
         /// <summary>
@@ -119,16 +121,23 @@ namespace AdventureTime
                 2) Проверь, учитывается ли Kind объектов при арифметических операциях.
                 3) Подумай, почему возвращаемое значение может отличаться от действительности.
             */
-            return (dt2 - dt1).Hours;
+            return (int)(dt2 - dt1).TotalHours;
         }
 
         /// <summary>
         /// Возвращает количество минут во временном промежутке, равном трем месяцам.
         /// </summary>
-        public static int GetTotalMinutesInThreeMonths()
+        public static int GetTotalMinutesInThreeMonths(DateTime fromThisDate)
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            return TimeSpan.FromDays(30 * 3).Minutes;
+            int days = 0;
+            for (int i = 0; i < 3; ++i)
+            {
+                DateTime dt = fromThisDate.AddDays(-fromThisDate.Day + 1).AddMonths(i);
+                days += DateTime.DaysInMonth(dt.Year, dt.Month);
+            }
+
+            return (int)TimeSpan.FromDays(days).TotalMinutes;
         }
 
         #region Adventure time saga
@@ -150,7 +159,7 @@ namespace AdventureTime
             */
             DateTimeOffset start = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(3));
             DateTimeOffset finish = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(0));
-            return (finish - start).Minutes;
+            return (int)(finish - start).TotalMinutes;
         }
 
         /// <summary>
@@ -170,7 +179,7 @@ namespace AdventureTime
             */
             DateTimeOffset start = new DateTimeOffset(2010, 3, 28, 3, 15, 0, TimeSpan.FromHours(3));
             DateTimeOffset finish = new DateTimeOffset(2010, 3, 28, 1, 15, 0, TimeSpan.FromHours(0));
-            return (finish - start).Minutes;
+            return (int)(finish - start).TotalMinutes;
         }
 
         /// <summary>
@@ -187,7 +196,7 @@ namespace AdventureTime
             */
             DateTimeOffset start = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(4));
             DateTimeOffset finish = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(1));
-            return (finish - start).Minutes;
+            return (int)(finish - start).TotalMinutes;
         }
 
         // GetGenderSwappedAdventureTimeDurationInMinutes_ver1_FeelsSmarter опустим, там то же самое
@@ -211,11 +220,11 @@ namespace AdventureTime
             */
             const string moscowZoneId = "Russian Standard Time";
             const string londonZoneId = "GMT Standard Time";
-            DateTime startDateTime= new DateTime(2010, 3, 28, 2, 15, 0);
+            DateTime startDateTime = new DateTime(2010, 3, 28, 2, 15, 0);
             DateTime finishDateTime = new DateTime(2010, 3, 28, 2, 15, 0);
             DateTimeOffset start = GetZonedTime(startDateTime, moscowZoneId);
             DateTimeOffset finish = GetZonedTime(finishDateTime, londonZoneId);
-            return (finish - start).Minutes;
+            return (int)(finish - start).TotalMinutes;
         }
 
         /// <summary>
@@ -232,7 +241,7 @@ namespace AdventureTime
             DateTime finishDateTime = new DateTime(2010, 3, 28, 1, 15, 0);
             DateTimeOffset start = GetZonedTime(startDateTime, moscowZoneId);
             DateTimeOffset finish = GetZonedTime(finishDateTime, londonZoneId);
-            return (finish - start).Minutes;
+            return (int)(finish - start).TotalMinutes;
         }
 
         private static DateTimeOffset GetZonedTime(DateTime localTime, string timeZoneId)
@@ -269,7 +278,26 @@ namespace AdventureTime
             //Тип ZonedDateTime - это ровным счетом LocalDateTime + DateTimeZone (локальное время + часовой пояс). Вот из него абсолютное время уже можно получить (информации достаточно).
             var fromMoscowZoned = GetZonedTime(from, moscowTimeZoneId);
             var toLondonZoned = GetZonedTime(to, londonTimeZoneId);
-            return (int) (toLondonZoned - fromMoscowZoned).TotalMinutes;
+            return (int)(toLondonZoned - fromMoscowZoned).TotalMinutes;
+        }
+
+        /// <summary>
+        /// Возвращает количество минут, проведенных в пути из Москвы в Лондон.
+        /// </summary>
+        public static int GetGenderSwappedAdventureTimeDurationInMinutes_ver3_NodaTime()
+        {
+            const string londonTimeZoneId = "Europe/London";
+            const string moscowTimeZoneId = "Europe/Moscow";
+
+            // Тип LocalDateTime не хранит информации о том, где "наблюдается" это время, но явно говорит, что данное время нужно трактовать как есть и никаких неявных преобразований не делать.
+            // Более того, его апи не позволяет тебе сделать что-то неявно или трактовать это время как-то иначе. Например, его невозможно превратить в абсолютное время UTC (в Noda Time ему отвечает тип Instant)
+            var from = new LocalDateTime(2010, 3, 28, 3, 15, 0);
+            var to = new LocalDateTime(2010, 3, 28, 1, 15, 0);
+
+            //Тип ZonedDateTime - это ровным счетом LocalDateTime + DateTimeZone (локальное время + часовой пояс). Вот из него абсолютное время уже можно получить (информации достаточно).
+            var fromMoscowZoned = GetZonedTime(from, moscowTimeZoneId);
+            var toLondonZoned = GetZonedTime(to, londonTimeZoneId);
+            return (int)(toLondonZoned - fromMoscowZoned).TotalMinutes;
         }
 
         private static ZonedDateTime GetZonedTime(LocalDateTime localTime, string timeZoneId)
@@ -291,7 +319,12 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            throw new NotImplementedException();
+            if (person1Birthday.Kind == DateTimeKind.Utc || person2Birthday.Kind == DateTimeKind.Utc)
+            {
+                throw new NotSupportedException();
+            }
+
+            return person1Birthday.Date == person2Birthday.Date;
         }
     }
 }
