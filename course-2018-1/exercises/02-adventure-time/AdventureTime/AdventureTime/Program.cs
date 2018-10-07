@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace AdventureTime
+﻿namespace AdventureTime
 {
     internal class Program
     {
