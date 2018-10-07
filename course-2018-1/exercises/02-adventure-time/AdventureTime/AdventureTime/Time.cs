@@ -14,7 +14,7 @@ namespace AdventureTime
         /// </summary>
         public static DateTime WhatTimeIsIt()
         {
-            throw new NotImplementedException();
+            return DateTime.Now;
         }
 
         /// <summary>
@@ -22,7 +22,7 @@ namespace AdventureTime
         /// </summary>
         public static DateTime WhatTimeIsItInUtc()
         {
-            throw new NotImplementedException();
+            return DateTime.UtcNow;
         }
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace AdventureTime
             /*
                 Подсказка: поищи в статических методах DateTime.
             */
-            throw new NotImplementedException();
+            return DateTime.SpecifyKind(dt, kind);
         }
 
         /// <summary>
@@ -51,7 +51,7 @@ namespace AdventureTime
                 Ну и на будущее запомни этот прекрасный строковый формат представления времени - он твой бро!
                 Название запоминать не нужно, просто помни, что для передачи значения в виде строки, выбирать лучше инвариантные относительно сериализации/десериализации форматы.
             */
-            throw new NotImplementedException();
+            return dt.ToString("o");
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace AdventureTime
                 Поиграйся и проверь, что round-trip действительно round-trip, т.е. туда-обратно равно оригиналу (для туда воспользуйся предыдущим методом).
                 Проверь для всех значений DateTime.Kind.
             */
-            throw new NotImplementedException();
+            return DateTime.Parse(dtStr, null, System.Globalization.DateTimeStyles.RoundtripKind);
         }
 
         /// <summary>
@@ -77,7 +77,7 @@ namespace AdventureTime
                 Eсли воспользуешься нужным методом, то напоминаю, что результат его работы зависит от dt.Kind.
                 В случае dt.Kind == Unspecified предполагается, что время локальное, т.е. результат работы в случае Local и Unspecified совпадают. Такие дела
             */
-            throw new NotImplementedException();
+            return dt.ToUniversalTime();
         }
 
         /// <summary>
@@ -88,7 +88,7 @@ namespace AdventureTime
         public static DateTime AddTenSeconds(DateTime dt)
         {
             // здесь воспользуйся методами самого объекта и заодно посмотри какие еще похожие есть
-            throw new NotImplementedException();
+            return dt.AddSeconds(10);
         }
 
         /// <summary>
@@ -102,7 +102,8 @@ namespace AdventureTime
                 Ну а здесь воспользуйся сложением с TimeSpan. Обрати внимание, что помимо конструктора, у класса есть набор полезных статических методов-фабрик.
                 Обрати внимание, что у TimeSpan нет статических методов FromMonth, FromYear. Как думаешь, почему?
             */
-            throw new NotImplementedException();
+            TimeSpan ts = TimeSpan.FromSeconds(10);
+            return dt.Add(ts);
         }
 
         /// <summary>
@@ -118,7 +119,7 @@ namespace AdventureTime
                 2) Проверь, учитывается ли Kind объектов при арифметических операциях.
                 3) Подумай, почему возвращаемое значение может отличаться от действительности.
             */
-            throw new NotImplementedException();
+            return (int)(dt2 - dt1).TotalHours;
         }
 
         /// <summary>
@@ -127,6 +128,9 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
+
+            // не очевидно какие три месяца
+
             throw new NotImplementedException();
         }
 
@@ -147,7 +151,13 @@ namespace AdventureTime
                 Держи, заготовочку для копипасты:
                     - 2010, 3, 28, 2, 15, 0
             */
-            throw new NotImplementedException();
+            TimeSpan moscowSpan = TimeSpan.FromHours(+3);
+            TimeSpan londonSpan = TimeSpan.FromHours(+0);
+
+            DateTimeOffset moscowTime = new DateTimeOffset(2010, 3, 28, 2, 15, 0, moscowSpan);
+            DateTimeOffset londonTime = new DateTimeOffset(2010, 3, 28, 2, 15, 0, londonSpan);
+
+            return (int)(londonTime - moscowTime).TotalMinutes;
         }
 
         /// <summary>
@@ -165,7 +175,13 @@ namespace AdventureTime
                     - 2010, 3, 28, 3, 15, 0
                     - 2010, 3, 28, 1, 15, 0
             */
-            throw new NotImplementedException();
+            TimeSpan moscowSpan = TimeSpan.FromHours(+3);
+            TimeSpan londonSpan = TimeSpan.FromHours(+0);
+
+            DateTimeOffset moscowTime = new DateTimeOffset(2010, 3, 28, 3, 15, 0, moscowSpan);
+            DateTimeOffset londonTime = new DateTimeOffset(2010, 3, 28, 1, 15, 0, londonSpan);
+
+            return (int)(londonTime - moscowTime).TotalMinutes;
         }
 
         /// <summary>
@@ -180,7 +196,13 @@ namespace AdventureTime
                 На самом деле смещения таковы: Лондон +1 (BST - British Summer Time), Москва +4 (MSD - Moscow Daylight Time).
                 Давай теперь учтем правильное смещение. Я понимаю, что это очевидно, что результат не изменится, но тебе же не сложно скопипастить и просто поменять смещения?
             */
-            throw new NotImplementedException();
+            TimeSpan moscowSpan = TimeSpan.FromHours(+4);
+            TimeSpan londonSpan = TimeSpan.FromHours(+1);
+
+            DateTimeOffset moscowTime = new DateTimeOffset(2010, 3, 28, 2, 15, 0, moscowSpan);
+            DateTimeOffset londonTime = new DateTimeOffset(2010, 3, 28, 2, 15, 0, londonSpan);
+
+            return (int)(londonTime - moscowTime).TotalMinutes;
         }
 
         // GetGenderSwappedAdventureTimeDurationInMinutes_ver1_FeelsSmarter опустим, там то же самое
@@ -205,7 +227,13 @@ namespace AdventureTime
             const string moscowZoneId = "Russian Standard Time";
             const string londonZoneId = "GMT Standard Time";
 
-            throw new NotImplementedException();
+            DateTime moscowLocalTime = new DateTime(2010, 3, 28, 2, 15, 0);
+            DateTime londonLocalTime = new DateTime(2010, 3, 28, 2, 15, 0);
+
+            DateTimeOffset moscowTime = GetZonedTime(moscowLocalTime, moscowZoneId);
+            DateTimeOffset londonTime = GetZonedTime(londonLocalTime, londonZoneId);
+
+            return (int)(londonTime - moscowTime).TotalMinutes;
         }
 
         /// <summary>
@@ -218,7 +246,14 @@ namespace AdventureTime
             */
             const string moscowZoneId = "Russian Standard Time";
             const string londonZoneId = "GMT Standard Time";
-            throw new NotImplementedException();
+
+            DateTime moscowLocalTime = new DateTime(2010, 3, 28, 3, 15, 0);
+            DateTime londonLocalTime = new DateTime(2010, 3, 28, 1, 15, 0);
+
+            DateTimeOffset moscowTime = GetZonedTime(moscowLocalTime, moscowZoneId);
+            DateTimeOffset londonTime = GetZonedTime(londonLocalTime, londonZoneId);
+
+            return (int)(londonTime - moscowTime).TotalMinutes;
         }
 
         private static DateTimeOffset GetZonedTime(DateTime localTime, string timeZoneId)
