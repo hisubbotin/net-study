@@ -233,7 +233,6 @@ namespace AdventureTime
             DateTime LondonTime = new DateTime(2010, 3, 28, 1, 15, 0);
 
             return (int)(GetZonedTime(LondonTime, londonZoneId) - GetZonedTime(MoscowTime, moscowZoneId)).TotalMinutes;
-
         }
 
         private static DateTimeOffset GetZonedTime(DateTime localTime, string timeZoneId)
