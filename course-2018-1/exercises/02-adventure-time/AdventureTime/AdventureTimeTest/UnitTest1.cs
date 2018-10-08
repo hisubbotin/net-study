@@ -70,7 +70,7 @@ namespace AdventureTimeTest
         {
             Assert.Equal(Time.GetAdventureTimeDurationInMinutes_ver0_Dumb(), 180);
             Assert.Equal(Time.GetGenderSwappedAdventureTimeDurationInMinutes_ver0_Dumb(), 60);
-            Assert.Equal(Time.GetAdventureTimeDurationInMinutes_ver1_FeelsSmarter(), 60);
+            Assert.Equal(Time.GetAdventureTimeDurationInMinutes_ver1_FeelsSmarter(), 180);
             Assert.Equal(Time.GetAdventureTimeDurationInMinutes_ver2_FeelsLikeRocketScience(), 120);
             Assert.Equal(Time.GetGenderSwappedAdventureTimeDurationInMinutes_ver2_FeelsLikeRocketScience(), 120);
             Assert.Equal(Time.GetAdventureTimeDurationInMinutes_ver3_NodaTime(), 120);

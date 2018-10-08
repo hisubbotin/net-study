@@ -186,8 +186,8 @@ namespace AdventureTime
                 На самом деле смещения таковы: Лондон +1 (BST - British Summer Time), Москва +4 (MSD - Moscow Daylight Time).
                 Давай теперь учтем правильное смещение. Я понимаю, что это очевидно, что результат не изменится, но тебе же не сложно скопипастить и просто поменять смещения?
             */
-            var moscow = new DateTimeOffset(2010, 3, 28, 3, 15, 0, TimeSpan.FromHours(4));
-            var london = new DateTimeOffset(2010, 3, 28, 1, 15, 0, TimeSpan.FromHours(1));
+            var moscow = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(4));
+            var london = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(1));
             return (int)(london - moscow).TotalMinutes;
         }
 
@@ -228,8 +228,8 @@ namespace AdventureTime
             */
             const string moscowZoneId = "Europe/Moscow";
             const string londonZoneId = "Europe/London";
-            var moscow = GetZonedTime(new DateTime(2010, 3, 28, 2, 15, 0), moscowZoneId);
-            var london = GetZonedTime(new DateTime(2010, 3, 28, 2, 15, 0), londonZoneId);
+            var moscow = GetZonedTime(new DateTime(2010, 3, 28, 3, 15, 0), moscowZoneId);
+            var london = GetZonedTime(new DateTime(2010, 3, 28, 1, 15, 0), londonZoneId);
             return (int)(london - moscow).TotalMinutes;
         }
 
