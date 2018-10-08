@@ -59,8 +59,8 @@ namespace AdventureTime
             Console.WriteLine(Time.GetHoursBetween(new DateTime(1900, 1, 1, 15, 21, 12), new DateTime(1900, 1, 1, 16, 21, 11))); // 0
             Console.WriteLine(Time.GetHoursBetween(new DateTime(1900, 1, 1, 15, 21, 12), new DateTime(1900, 1, 1, 16, 32, 12))); // 1
             Console.WriteLine(Time.GetHoursBetween(new DateTime(1900, 1, 1, 15, 21, 12), new DateTime(1900, 1, 2, 16, 32, 12))); // 25
-            Console.WriteLine(Time.GetHoursBetween(new DateTime(1900, 1, 1, 15, 21, 12, DateTimeKind.Local), new DateTime(1900, 1, 1, 16, 32, 12, DateTimeKind.Utc))); // :(
-            Console.WriteLine(Time.GetHoursBetween(new DateTime(1900, 1, 1, 15, 21, 12, DateTimeKind.Utc), new DateTime(1900, 1, 2, 16, 32, 12, DateTimeKind.Local))); // :(
+            Console.WriteLine(Time.GetHoursBetween(new DateTime(1900, 1, 1, 15, 21, 12, DateTimeKind.Local), new DateTime(1900, 1, 1, 16, 32, 12, DateTimeKind.Utc))); // 4
+            Console.WriteLine(Time.GetHoursBetween(new DateTime(1900, 1, 1, 15, 21, 12, DateTimeKind.Utc), new DateTime(1900, 1, 2, 16, 32, 12, DateTimeKind.Local))); // 22
             Console.WriteLine();
 
             Console.WriteLine("Count of minutes between Moscow and London");
@@ -76,6 +76,9 @@ namespace AdventureTime
             }
             Console.WriteLine();
 
+            Console.WriteLine(Time.AreEqualBirthdays(new DateTime(1987, 12, 1), new DateTime(1987, 12, 1, 15, 7, 7)));
+            Console.WriteLine(Time.AreEqualBirthdays(new DateTime(1987, 12, 1), new DateTime(1987, 12, 2, 15, 7, 7)));
+          //  Console.WriteLine(Time.AreEqualBirthdays(new DateTime(1987, 12, 1), new DateTime(1987, 12, 1, 15, 7, 7, DateTimeKind.Utc)));
         }
     }
 }

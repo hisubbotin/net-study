@@ -122,11 +122,10 @@ namespace AdventureTime
                 -- TotalHours - все ticks / кол-во ticks В часе
                 -- Hours - полное кол-во часов
                 2) Проверь, учитывается ли Kind объектов при арифметических операциях.
-                -- No
+                -- Нет без приведения к Utc
                 3) Подумай, почему возвращаемое значение может отличаться от действительности. 
-                -- (2)
             */
-            return (int)(dt2 - dt1).TotalHours;
+            return (int)(dt2.ToUniversalTime() - dt1.ToUniversalTime()).TotalHours;
         }
 
         /// <summary>
@@ -310,8 +309,9 @@ namespace AdventureTime
         {
             // Считаем, один день - в плане одинаковой даты
             // (а не так, что два человека рождаются одновременно в разных часовых поясах, но у одного из  них уже следующий день)
-            if (person1Birthday.Kind != DateTimeKind.Unspecified && person2Birthday.Kind != DateTimeKind.Unspecified) // хз, наверное, так
+            if (person1Birthday.Kind != DateTimeKind.Unspecified || person2Birthday.Kind != DateTimeKind.Unspecified)
             {
+                Console.WriteLine("Wrong format this data");
                 throw new NotSupportedException();
             }
             return person1Birthday.Year == person2Birthday.Year && person1Birthday.Month == person2Birthday.Month && person1Birthday.Day == person2Birthday.Day;
