@@ -8,7 +8,7 @@ namespace AdventureTime
     /// <summary>
     /// Класс методов для работы с временем.
     /// </summary>
-    internal static class Time
+    public static class Time
     {
         /// <summary>
         /// Возвращает текущее локальное время.
@@ -119,7 +119,17 @@ namespace AdventureTime
                 2) Проверь, учитывается ли Kind объектов при арифметических операциях.
                 3) Подумай, почему возвращаемое значение может отличаться от действительности.
             */
-            return (dt1 - dt2).Hours;
+            return (int) (dt1 - dt2).TotalHours;
+        }
+
+        public static int GetMinutesBetween(DateTimeOffset dt1, DateTimeOffset dt2)
+        {
+            /*
+                1) Подумай, в чем разница между Hours и TotalHours
+                2) Проверь, учитывается ли Kind объектов при арифметических операциях.
+                3) Подумай, почему возвращаемое значение может отличаться от действительности.
+            */
+            return (int)(dt1 - dt2).TotalMinutes;
         }
 
         /// <summary>
@@ -129,7 +139,7 @@ namespace AdventureTime
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
             DateTime dt = DateTime.Now;
-            return (dt - dt.AddMonths(3)).Minutes;
+            return (int) (dt - dt.AddMonths(3)).TotalMinutes;
         }
 
         #region Adventure time saga
@@ -151,7 +161,7 @@ namespace AdventureTime
             */
             DateTimeOffset dt1 = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(3));
             DateTimeOffset dt2 = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(0));
-            return (dt1 - dt2).Minutes;
+            return GetMinutesBetween(dt2, dt1);
         }
 
         /// <summary>
@@ -171,7 +181,7 @@ namespace AdventureTime
             */
             DateTimeOffset dt1 = new DateTimeOffset(2010, 3, 28, 3, 15, 0, TimeSpan.FromHours(3));
             DateTimeOffset dt2 = new DateTimeOffset(2010, 3, 28, 1, 15, 0, TimeSpan.FromHours(0));
-            return (dt2 - dt1).Minutes;
+            return GetMinutesBetween(dt2, dt1);
         }
 
         /// <summary>
@@ -188,7 +198,7 @@ namespace AdventureTime
             */
             DateTimeOffset dt1 = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(4));
             DateTimeOffset dt2 = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(1));
-            return (dt1 - dt2).Minutes;
+            return GetMinutesBetween(dt2, dt1);
         }
 
         // GetGenderSwappedAdventureTimeDurationInMinutes_ver1_FeelsSmarter опустим, там то же самое
@@ -215,7 +225,7 @@ namespace AdventureTime
 
             DateTimeOffset dt1 = GetZonedTime(new DateTime(2010, 3, 28, 2, 15, 0), moscowZoneId);
             DateTimeOffset dt2 = GetZonedTime(new DateTime(2010, 3, 28, 2, 15, 0), londonZoneId);
-            return (dt1 - dt2).Minutes;
+            return GetMinutesBetween(dt2, dt1);
         }
 
         /// <summary>
@@ -231,7 +241,7 @@ namespace AdventureTime
 
             DateTimeOffset dt1 = GetZonedTime(new DateTime(2010, 3, 28, 3, 15, 0), moscowZoneId);
             DateTimeOffset dt2 = GetZonedTime(new DateTime(2010, 3, 28, 1, 15, 0), londonZoneId);
-            return (dt2 - dt1).Minutes;
+            return GetMinutesBetween(dt2, dt1);
         }
 
         private static DateTimeOffset GetZonedTime(DateTime localTime, string timeZoneId)
@@ -290,8 +300,8 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            return (person1Birthday.Month.Equals(person2Birthday.Month) &&
-                    person1Birthday.DayOfYear.Equals(person2Birthday.DayOfYear)); 
+            return (person1Birthday.ToUniversalTime().DayOfYear.Equals(
+                person2Birthday.ToUniversalTime().DayOfYear)); 
         }
     }
 }  
