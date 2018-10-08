@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("BoringVector.Tests")]
 
 namespace BoringVector
 {
@@ -13,7 +16,15 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        public double X { get; }
 
+        public double Y { get; }
+
+        Vector(double X, double Y)
+        {
+            this.X = X;
+            this.Y = Y;
+        }
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -26,28 +37,33 @@ namespace BoringVector
 
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(X * k, Y * k);
         }
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+
+        public override string ToString()
+        {
+            return $"({X};{Y})";
+        }
 
         #region operators
 
@@ -57,6 +73,35 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return v.Add(u);
+        }
+
+        public static Vector operator *(double k, Vector v)
+        {
+            return v.Scale(k);
+        }
+
+        public static Vector operator *(Vector v, double k)
+        {
+            return k * v;
+        }
+
+        public static Vector operator /(Vector v, double k)
+        {
+            return v.Scale(1 / k);
+        }
+
+        public static Vector operator +(Vector v)
+        {
+            return v;
+        }
+
+        public static Vector operator -(Vector v)
+        {
+            return -1 * v;
+        }
 
         #endregion
     }
@@ -96,7 +141,7 @@ namespace BoringVector
 
 
         Ты мог(-ла) заметить, что в предыдущих заданиях для комментариев я использовал немного необычный синтаксис:
-    
+
             /// <summary>
             /// Возвращает объект <see cref="DateTime"/> с заданными временем и значением <see cref="DateTime.Kind"/>.
             /// </summary>
