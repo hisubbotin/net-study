@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AdventureTime;
 using Xunit;
+using Xunit.Sdk;
 
 namespace TestProject1
 {
@@ -67,6 +68,85 @@ namespace TestProject1
                 }
             }
             
+        }
+
+        [Fact]
+        public void Test_AddTenSecond()
+        {
+            DateTime date = new DateTime(2018, 10, 30, 21, 12, 15);
+            DateTime shiftedDate = new DateTime(2018, 10, 30, 21, 12, 25);
+            Assert.Equal(AdventureTime.Time.AddTenSeconds(date), shiftedDate);
+            
+            date = new DateTime(2009, 8, 12, 9, 2, 27);
+            shiftedDate = new DateTime(2009, 8, 12, 9, 2, 37);
+            Assert.Equal(AdventureTime.Time.AddTenSeconds(date), shiftedDate);
+        }
+        
+        [Fact]
+        public void Test_GetHoursBetween()
+        {
+            for (int i = 0; i < dates.Count - 1; i++)
+            {
+                Assert.Equal(AdventureTime.Time.GetHoursBetween(dates[i], dates[i + 1]), 1);                
+            }
+        }
+
+        [Fact]
+        public void Test_GetAdventureTimeDurationInMinutes_ver0_Dumb()
+        {
+            Assert.Equal(AdventureTime.Time.GetAdventureTimeDurationInMinutes_ver0_Dumb(), -3 * 60);
+        }
+        
+        [Fact]
+        public void Test_GetGenderSwappedAdventureTimeDurationInMinutes_ver0_Dumb()
+        {
+            Assert.Equal(AdventureTime.Time.GetAdventureTimeDurationInMinutes_ver0_Dumb(), -3 * 60);
+        }
+        
+        [Fact]
+        public void Test_GetAdventureTimeDurationInMinutes_ver1_FeelsSmarter()
+        {
+            Assert.Equal(AdventureTime.Time.GetAdventureTimeDurationInMinutes_ver0_Dumb(), -3 * 60);
+        }
+        
+        [Fact]
+        public void Test_GetAdventureTimeDurationInMinutes_ver2_FeelsLikeRocketScience()
+        {
+            Assert.Equal(AdventureTime.Time.GetAdventureTimeDurationInMinutes_ver0_Dumb(), -3 * 60);
+        }
+        
+        [Fact]
+        public void Test_ThreeMonths()
+        {
+            Assert.Equal(AdventureTime.Time.GetTotalMinutesInThreeMonths(), (30 + 31 + 30 )* 24 * 60 );
+        }
+        
+        [Fact]
+        public void Test_AddTenSecondv2()
+        {
+            DateTime date = new DateTime(2018, 10, 12, 21, 12, 15);
+            DateTime shiftedDate = new DateTime(2018, 10, 12, 21, 12, 25);
+            Assert.Equal(AdventureTime.Time.AddTenSecondsV2(date), shiftedDate);
+            
+            date = new DateTime(2009, 8, 12, 9, 2, 27);
+            shiftedDate = new DateTime(2009, 8, 12, 9, 2, 37);
+            Assert.Equal(AdventureTime.Time.AddTenSecondsV2(date), shiftedDate);
+        }
+        
+        [Fact]
+        public void Test_AreEqualBirthdays()
+        {
+            /* Проверка на равенство */
+            for (int i = 0; i < dates.Count; i++)
+            {
+                Assert.Equal(AdventureTime.Time.AreEqualBirthdays(dates[i],dates[i]), true);
+            }
+            
+            /* Проверка на неравенство */
+            for (int i = 0; i < dates.Count; i++)
+            {
+                Assert.Equal(AdventureTime.Time.AreEqualBirthdays(dates[i],dates[i].AddDays(2)), false);
+            }
         }
     }
 }

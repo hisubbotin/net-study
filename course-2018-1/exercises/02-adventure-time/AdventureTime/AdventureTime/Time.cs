@@ -132,8 +132,8 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            DateTime end = new DateTime(1,4,1);
-            DateTime begin = new DateTime(1,1,1);
+            DateTime end = new DateTime(1,7,1);
+            DateTime begin = new DateTime(1,4,1);
             
             return Convert.ToInt32((end - begin).TotalMinutes);
         }
@@ -304,7 +304,7 @@ namespace AdventureTime
         /// <param name="person1Birthday">День рождения первого человека.</param>
         /// <param name="person2Birthday">День рождения второго человека.</param>
         /// <returns>True - если родились в один день, иначе - false.</returns>
-        internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
+        public static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
             return DateTime.Compare(person1Birthday, person2Birthday) == 0 ? true : false;
         }

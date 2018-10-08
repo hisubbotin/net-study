@@ -8,7 +8,6 @@ namespace AdventureTime
         {
             // Get the current date.
             // Display the date in the default (general) format.
-            Console.WriteLine(Time.GetGenderSwappedAdventureTimeDurationInMinutes_ver0_Dumb());
         }
     }
 }
