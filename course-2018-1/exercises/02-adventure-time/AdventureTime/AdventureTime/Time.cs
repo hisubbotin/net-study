@@ -274,6 +274,10 @@ namespace AdventureTime {
         /// <param name="person2Birthday">День рождения второго человека.</param>
         /// <returns>True - если родились в один день, иначе - false.</returns>
         public static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday) {
+            if (person1Birthday.Kind != person2Birthday.Kind) {
+                throw new ArgumentException("Dates should have the same kind.");
+            }
+
             var ts1 = (int)(person1Birthday - DateTime.MinValue).TotalDays;
             var ts2 = (int)(person2Birthday - DateTime.MinValue).TotalDays;
             return ts1 == ts2;
