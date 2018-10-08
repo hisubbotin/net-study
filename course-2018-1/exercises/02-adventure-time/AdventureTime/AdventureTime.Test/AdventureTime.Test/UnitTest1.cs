@@ -48,5 +48,20 @@ namespace AdventureTime.Test
             Assert.Equal(120, Time.GetAdventureTimeDurationInMinutes_ver2_FeelsLikeRocketScience());
             Assert.Equal(120, Time.GetGenderSwappedAdventureTimeDurationInMinutes_ver2_FeelsLikeRocketScience());
         }
+
+        [Fact]
+        public void BirthdayTest()
+        {
+            DateTime d1 = new DateTime(2015, 1, 1, 0, 0, 0);
+            DateTime d2 = new DateTime(2007, 1, 1, 12, 7, 54);
+            Assert.True(Time.AreEqualBirthdays(d1, d2));
+        }
+
+        [Fact]
+        public void AddingMethodsAreEqualTest()
+        {
+            DateTime now = DateTime.Now;
+            Assert.Equal(Time.AddTenSeconds(now), Time.AddTenSecondsV2(now));
+        }
     }
 }

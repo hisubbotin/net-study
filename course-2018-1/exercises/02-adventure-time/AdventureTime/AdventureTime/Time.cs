@@ -288,7 +288,7 @@ namespace AdventureTime
         /// <param name="person1Birthday">День рождения первого человека.</param>
         /// <param name="person2Birthday">День рождения второго человека.</param>
         /// <returns>True - если родились в один день, иначе - false.</returns>
-        internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
+        public static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
             if (person1Birthday.Month != person2Birthday.Month)
             {
