@@ -121,6 +121,10 @@ namespace AdventureTime
                 2) Проверь, учитывается ли Kind объектов при арифметических операциях.
                 3) Подумай, почему возвращаемое значение может отличаться от действительности.
             */
+            if (dt1.Kind != dt2.Kind)
+            {
+                throw new NotSupportedException();
+            }
             return (int)(dt2 - dt1).TotalHours;
         }
 
@@ -146,7 +150,7 @@ namespace AdventureTime
         /// Возвращает количество минут, проведенных в пути из Москвы в Лондон.
         /// </summary>
         /// <remarks>
-        /// Финн и Джейк, плотно поужин ав, решили, что спать для слабаков и настало время приключений, поэтому быстро собрали вещи, уложили спать БиМО и отправились из воображаемой Москвы в воображаемый Лондон верхом на леди Ливнероге.
+        /// Финн и Джейк, плотно поужинав, решили, что спать для слабаков и настало время приключений, поэтому быстро собрали вещи, уложили спать БиМО и отправились из воображаемой Москвы в воображаемый Лондон верхом на леди Ливнероге.
         /// Сколько минут они провели в пути, если Москву они покинули 28.03.2010 в 02:15 по местному времени, а в Лондон прибыли в 28.03.2010 в 02:15 по местному?
         /// </remarks>
         public static int GetAdventureTimeDurationInMinutes_ver0_Dumb()
@@ -319,12 +323,12 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            if (person1Birthday.Kind == DateTimeKind.Utc || person2Birthday.Kind == DateTimeKind.Utc)
+            if (person1Birthday.Kind != DateTimeKind.Unspecified || person2Birthday.Kind != DateTimeKind.Unspecified)
             {
                 throw new NotSupportedException();
             }
 
-            return person1Birthday.Date == person2Birthday.Date;
+            return person1Birthday.Day == person2Birthday.Day && person1Birthday.Month == person2Birthday.Month;
         }
     }
 }
