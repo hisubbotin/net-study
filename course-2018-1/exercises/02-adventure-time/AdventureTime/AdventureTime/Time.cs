@@ -2,6 +2,7 @@
 using System.Globalization;
 using NodaTime;
 using NodaTime.TimeZones;
+using TimeZoneConverter;
 
 namespace AdventureTime {
     /// <summary>
@@ -197,10 +198,10 @@ namespace AdventureTime {
                 ниже ты найдешь готовый метод GetZonedTime. Просто посмотри на него (можешь даже посмотреть методы и свойства типа TimeZoneInfo, если интересно) и воспользуйся им для вычисления правильного времени
                 "отбытия" и "прибытия" наших героев. Затем посчитай длительность путешествия. Также даны правильные идентификаторы зон.
             */
-            const string londonZoneId = "GMT Standard Time";
+            var londonZoneId = TZConvert.WindowsToIana("GMT Standard Time");
             var london = GetZonedTime(new DateTime(2010, 3, 28, 2, 15, 0), londonZoneId);
 
-            const string moscowZoneId = "Russian Standard Time";
+            var moscowZoneId = TZConvert.WindowsToIana("Russian Standard Time");
             var moscow = GetZonedTime(new DateTime(2010, 3, 28, 2, 15, 0), moscowZoneId);
 
             return (int)(london - moscow).TotalMinutes;
@@ -213,13 +214,13 @@ namespace AdventureTime {
             /*
                 Реши по аналогии с предыдущим методом и проверь, что оба метода действительно возвращают одно и то же время (и что оно правильное).
             */
-            const string londonZoneId = "GMT Standard Time";
+            var londonZoneId = TZConvert.WindowsToIana("GMT Standard Time");
             var london = GetZonedTime(new DateTime(2010, 3, 28, 1, 15, 0), londonZoneId);
-
-            const string moscowZoneId = "Russian Standard Time";
+            
+            var moscowZoneId = TZConvert.WindowsToIana("Russian Standard Time");
             var moscow = GetZonedTime(new DateTime(2010, 3, 28, 3, 15, 0), moscowZoneId);
 
-            return (london - moscow).Minutes;
+            return (int)(london - moscow).TotalMinutes;
         }
 
         private static DateTimeOffset GetZonedTime(DateTime localTime, string timeZoneId) {

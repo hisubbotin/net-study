@@ -44,5 +44,30 @@ namespace AdventureTime.Tests {
             dt2 = new DateTime(2018, 06, 21, 3, 00, 00);
             Assert.False(Time.AreEqualBirthdays(dt1, dt2));
         }
+
+        [Fact]
+        public void GetAdventureTimeDurationInMinutes_ver0_DumbTest() {
+            Assert.Equal(Time.GetAdventureTimeDurationInMinutes_ver0_Dumb(), 3 * 60);
+        }
+        
+        [Fact]
+        public void GetGenderSwappedAdventureTimeDurationInMinutes_ver0_DumbTest() {
+            Assert.Equal(Time.GetGenderSwappedAdventureTimeDurationInMinutes_ver0_Dumb(), 2 * 60);
+        }
+
+        [Fact]
+        public void GetAdventureTimeDurationInMinutes_ver1_FeelsSmarterTest() {
+            Assert.Equal(Time.GetAdventureTimeDurationInMinutes_ver1_FeelsSmarter(), 3 * 60);
+        }
+
+        [Fact]
+        public void GetAdventureTimeDurationInMinutes_ver2_FeelsLikeRocketScienceTest() {
+            Assert.Equal(Time.GetAdventureTimeDurationInMinutes_ver2_FeelsLikeRocketScience(), 2 * 60);
+        }
+
+        [Fact]
+        public void GetGenderSwappedAdventureTimeDurationInMinutes_ver2_FeelsLikeRocketScienceTest() {
+            Assert.Equal(Time.GetGenderSwappedAdventureTimeDurationInMinutes_ver2_FeelsLikeRocketScience(), 2 * 60);
+        }
     }
 }

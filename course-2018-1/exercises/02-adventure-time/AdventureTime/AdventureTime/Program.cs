@@ -1,11 +1,8 @@
 ﻿using System;
 
-namespace AdventureTime
-{
-    internal class Program
-    {
-        private static void Main()
-        {
+namespace AdventureTime {
+    internal class Program {
+        private static void Main() {
         }
     }
 }
