@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace BoringVector
 {
@@ -13,8 +15,14 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        internal double x { get; set; }
+        internal double y { get; set; }
 
-
+        public Vector(double _x, double _y)
+        {
+            x = _x;
+            y = _y;
+        }
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
                 - квадрат длины
@@ -26,28 +34,36 @@ namespace BoringVector
 
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return x * x + y * y;
         }
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            x += v.x;
+            y += v.y;
+            return this;
         }
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            x *= k;
+            y *= k;
+            return this;
         }
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return x * v.x + y * v.y;
         }
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return x * v.y  - y * v.x;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+        public string ToString()
+        {
+            return "(" + x.ToString() + "; " + y.ToString() + ")";
+        }
 
         #region operators
 
@@ -57,7 +73,39 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+        public static Vector operator+(Vector left, Vector right)
+        {
+            return new Vector(left.x + right.x, left.y + right.y);
+        }
+        public static Vector operator-(Vector left, Vector right)
+        {
+            return new Vector(left.x - right.x, left.y - right.y);
+        }
+        public static Vector operator*(Vector left, double k)
+        {
+            return new Vector(left.x * k, left.y * k);
+        }
+        public static Vector operator*(double k, Vector right)
+        {
+            return new Vector( k * right.x, k * right.y);
+        }
+        public static Vector operator/(double k, Vector right)
+        {
+            return new Vector( right.x / k, right.y / k);
+        }
+        public static Vector operator/(Vector left, double k)
+        {
+            return new Vector( left.x / k, left.y / k);
+        }
 
+        public static Vector operator+(Vector vec)
+        {
+            return vec;
+        }
+        public static Vector operator-(Vector vec)
+        {
+            return vec;
+        }
         #endregion
     }
 
@@ -67,7 +115,6 @@ namespace BoringVector
         Время отправиться в VectorExtensions.cs за новой порцией квестов, герой!
         Как закончишь, возвращайся за щедрым вознаграждением!
     */
-
 
     #region 3. Комментарии
 
