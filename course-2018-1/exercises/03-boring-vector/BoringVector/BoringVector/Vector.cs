@@ -2,7 +2,6 @@
 using System.Runtime.CompilerServices;
 
 [assembly: InternalsVisibleTo("BoringVector.Tests")]
-
 namespace BoringVector
 {
     #region 1. Структура Vector
@@ -10,7 +9,9 @@ namespace BoringVector
     /*
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
-
+	/// <summary>
+	/// Вектор в двумерном вещественном пространстве.
+	/// </summary>
     internal struct Vector
     {
         /*
@@ -20,7 +21,12 @@ namespace BoringVector
 
         public double Y { get; }
 
-        Vector(double X, double Y)
+		/// <summary>
+		/// Покоординатный конструктор
+		/// </summary>
+		/// <param name="X">Координата X</param>
+		/// <param name="Y">Координата Y</param>
+        public Vector(double X, double Y)
         {
             this.X = X;
             this.Y = Y;
@@ -35,32 +41,62 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+		/// <summary>
+		/// Вычисляет квадрат длины вектора
+		/// </summary>
+		/// <returns><see cref="double"/> со значением квадрата длины вектора</returns>
         public double SquareLength()
         {
             return X * X + Y * Y;
         }
+		/// <summary>
+		/// Складывает два вектора
+		/// </summary>
+		/// <param name="v">Прибавляемый вектор</param>
+		/// <returns><see cref="Vector"/>, равный сумме данного и <paramref name="v"/></returns>
         public Vector Add(Vector v)
         {
             return new Vector(X + v.X, Y + v.Y);
         }
+		/// <summary>
+		/// Умножает вектор на константу
+		/// </summary>
+		/// <param name="k">Коэффициент</param>
+		/// <returns><see cref="Vector"/>, равный данному, умноженному на коэффициент <paramref name="k"/></returns>
         public Vector Scale(double k)
         {
             return new Vector(X * k, Y * k);
         }
+		
+		/// <summary>
+		/// Вычисляет скалярное произведение двух векторов
+		/// </summary>
+		/// <param name="v">Другой вектор</param>
+		/// <returns><see cref="double"/>, равный скалярному произведению данного вектора и <paramref name="v"/></returns>
         public double DotProduct(Vector v)
         {
             return X * v.X + Y * v.Y;
         }
+
+		/// <summary>
+		/// Вычисляет векторное произведение двух векторов
+		/// </summary>
+		/// <param name="v">Другой вектор</param>
+		/// <returns><see cref="double"/>, равный модулю векторного произведения данного вектора и <paramref name="v"/></returns>
         public double CrossProduct(Vector v)
         {
-            return X * v.Y - Y * v.X;
+            return Math.Abs(X * v.Y - Y * v.X);
         }
 
-        /*
+		/*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
 
-        public override string ToString()
+		/// <summary>
+		/// Возвращает строковое представление вектора в формате (X; Y) 
+		/// </summary>
+		/// <returns>Строковое представление вектора.</returns>
+		public override string ToString()
         {
             return $"({X};{Y})";
         }
