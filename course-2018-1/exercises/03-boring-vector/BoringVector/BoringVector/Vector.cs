@@ -9,8 +9,10 @@ namespace BoringVector
     /*
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
-
-    internal struct Vector
+    /// <summary>
+    /// Класс сущности "вектор из R^2"
+    /// </summary>
+    public struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
@@ -32,34 +34,56 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        /// <summary>
+        /// Вычисляет квадрат длины вектора
+        /// </summary>
+        /// <returns>квадрат длины вектора</returns>
         public double SquareLength()
         {
             return x * x + y * y;
         }
-        public Vector Add(Vector v)
+        /// <summary>
+        /// Добавляет вектор к данному
+        /// </summary>
+        /// <param name="v">добавляемый вектор</param>
+        public void Add(Vector v)
         {
             x += v.x;
             y += v.y;
-            return this;
         }
-        public Vector Scale(double k)
+        /// <summary>
+        /// Домножает вектор на действительное число
+        /// </summary>
+        /// <param name="k">число, на которое умножаем</param>
+        /// <returns></returns>
+        public void Scale(double k)
         {
             x *= k;
             y *= k;
-            return this;
         }
+        /// <summary>
+        /// Вычисляет скалярное произведение 
+        /// </summary>
+        /// <param name="v">второй вектор</param>
+        /// <returns>скалярное произведение this и v</returns>
         public double DotProduct(Vector v)
         {
             return x * v.x + y * v.y;
         }
+        /// <summary>
+        /// Вычисляет векторное произведение
+        /// </summary>
+        /// <param name="v">вектор для умножения</param>
+        /// <returns>ориентированную площадь параллелограмма</returns>
         public double CrossProduct(Vector v)
         {
             return x * v.y  - y * v.x;
         }
 
-        /*
-            Переопредели ниже метод ToString - пусть выводит (X; Y)
-        */
+        /// <summary>
+        /// Представляет вектор в виде строки
+        /// </summary>
+        /// <returns>"(x; y)"</returns>
         public string ToString()
         {
             return "(" + x.ToString() + "; " + y.ToString() + ")";
@@ -73,38 +97,74 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+        /// <summary>
+        /// Оператор сложения 2-ух векторов
+        /// </summary>
+        /// <param name="left">левое слагаемое</param>
+        /// <param name="right">правое слагаемое</param>
+        /// <returns>сумму 2-ух векторов</returns>
         public static Vector operator+(Vector left, Vector right)
         {
             return new Vector(left.x + right.x, left.y + right.y);
         }
+        /// <summary>
+        /// Оператор разности 2-ух векторов
+        /// </summary>
+        /// <param name="left">уменьшаемое</param>
+        /// <param name="right">вычитаемое</param>
+        /// <returns>разность</returns>
         public static Vector operator-(Vector left, Vector right)
         {
             return new Vector(left.x - right.x, left.y - right.y);
         }
+        /// <summary>
+        /// Оператор умножения вектора на число справа
+        /// </summary>
+        /// <param name="left">умножаемый вектор</param>
+        /// <param name="k">коэффицент</param>
+        /// <returns>вектор умноженный справа на число </returns>
         public static Vector operator*(Vector left, double k)
         {
             return new Vector(left.x * k, left.y * k);
         }
+        /// <summary>
+        /// Оператор умножения вектора на число слева
+        /// </summary>
+        /// <param name="right">умножаемый вектор</param>
+        /// <param name="k">коэффицент</param>
+        /// <returns>вектор умноженный слева на число </returns>
         public static Vector operator*(double k, Vector right)
         {
             return new Vector( k * right.x, k * right.y);
         }
-        public static Vector operator/(double k, Vector right)
-        {
-            return new Vector( right.x / k, right.y / k);
-        }
+        
+        /// <summary>
+        /// Оператор деления вектора на число
+        /// </summary>
+        /// <param name="left">делимый вектор</param>
+        /// <param name="k">делитель</param>
+        /// <returns>вектор - частное </returns>
         public static Vector operator/(Vector left, double k)
         {
             return new Vector( left.x / k, left.y / k);
         }
-
+        /// <summary>
+        /// Унарный плюс
+        /// </summary>
+        /// <param name="vec">преобразуемый вектор</param>
+        /// <returns>исходный вектор</returns>
         public static Vector operator+(Vector vec)
         {
             return vec;
         }
+        /// <summary>
+        /// Унарный минус
+        /// </summary>
+        /// <param name="vec">преобразуемый вектор</param>
+        /// <returns>исходный вектор, умноженный на -1</returns>
         public static Vector operator-(Vector vec)
         {
-            return vec;
+            return new Vector(vec.x * (-1), vec.y * (-1));
         }
         #endregion
     }
