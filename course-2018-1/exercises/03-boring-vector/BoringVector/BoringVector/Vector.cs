@@ -17,8 +17,14 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
+		/// <summary>
+		/// Координата X
+		/// </summary>
         public double X { get; }
 
+		/// <summary>
+		/// Координата Y
+		/// </summary>
         public double Y { get; }
 
 		/// <summary>
@@ -49,6 +55,7 @@ namespace BoringVector
         {
             return X * X + Y * Y;
         }
+
 		/// <summary>
 		/// Складывает два вектора
 		/// </summary>
@@ -58,6 +65,7 @@ namespace BoringVector
         {
             return new Vector(X + v.X, Y + v.Y);
         }
+
 		/// <summary>
 		/// Умножает вектор на константу
 		/// </summary>
@@ -109,31 +117,62 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+		/// <summary>
+		/// Сложение векторов
+		/// </summary>
+		/// <param name="v">Первый вектор</param>
+		/// <param name="u">Второй вектор</param>
+		/// <returns>Сумма <paramref name="v"/> и <paramref name="u"/></returns>
         public static Vector operator +(Vector v, Vector u)
         {
             return v.Add(u);
         }
 
+		/// <summary>
+		/// Умножение вектора на скаляр
+		/// </summary>
+		/// <param name="k">Скаляр</param>
+		/// <param name="v">Вектор</param>
+		/// <returns>Результат умножения</returns>
         public static Vector operator *(double k, Vector v)
         {
             return v.Scale(k);
         }
 
+		/// <summary>
+		/// <see cref="op_Multiply(double,BoringVector.Vector)"/>
+		/// </summary>
         public static Vector operator *(Vector v, double k)
         {
             return k * v;
         }
 
-        public static Vector operator /(Vector v, double k)
+	    /// <summary>
+	    /// Деление вектора на скаляр
+	    /// </summary>
+	    /// <param name="k">Скаляр</param>
+	    /// <param name="v">Вектор</param>
+	    /// <returns>Результат деления</returns>
+		public static Vector operator /(Vector v, double k)
         {
             return v.Scale(1 / k);
         }
 
+		/// <summary>
+		/// Унарный плюс
+		/// </summary>
+		/// <param name="v">Вектор</param>
+		/// <returns><paramref name="v"/></returns>
         public static Vector operator +(Vector v)
         {
             return v;
         }
 
+		/// <summary>
+		/// Унарный минус
+		/// </summary>
+		/// <param name="v">Вектор</param>
+		/// <returns>Противоположно направленный вектор</returns>
         public static Vector operator -(Vector v)
         {
             return -1 * v;

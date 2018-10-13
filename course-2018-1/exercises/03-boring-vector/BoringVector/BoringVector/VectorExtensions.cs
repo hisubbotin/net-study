@@ -36,13 +36,27 @@ namespace BoringVector
         }
 
 		/// <summary>
+		/// Возвращает длину вектора
+		/// </summary>
+		/// <param name="v">Вектор</param>
+		/// <returns>Длина вектора</returns>
+	    public static double Abs(this Vector v)
+	    {
+		    return Math.Sqrt(v.SquareLength());
+	    }
+
+		/// <summary>
 		/// Нормализует вектор, то есть преобразует его в вектор единичной длины.
 		/// </summary>
 		/// <param name="v">Вектор</param>
 		/// <returns>Нормализованный вектор</returns>
-        public static Vector Normalize(this Vector v)
+		public static Vector Normalize(this Vector v)
         {
-            return v / Math.Sqrt(v.SquareLength());
+	        if (v.IsZero())
+	        {
+		        return v;
+	        }
+            return v / v.Abs();
         }
 
 		/// <summary>
@@ -57,7 +71,7 @@ namespace BoringVector
             {
                 return 0;
             }
-            return v.DotProduct(u);
+            return Math.Acos(v.DotProduct(u)/(v.Abs()*u.Abs()));
         }
 
 		/// <summary>
@@ -81,7 +95,7 @@ namespace BoringVector
             {
                 return VectorRelation.Parallel;
             }
-            else if (Math.Abs(angle).EqualEps(Math.PI / 2))
+            else if (angle.EqualEps(Math.PI / 2))
             {
                 return VectorRelation.Orthogonal;
             }
