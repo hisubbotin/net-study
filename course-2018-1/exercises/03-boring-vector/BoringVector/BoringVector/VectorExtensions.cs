@@ -64,7 +64,7 @@ namespace BoringVector
             }
             else
             {
-                return Math.Acos(a.DotProduct(b) / Math.Sqrt(a.SquareLength() * b.SquareLength())) * Math.PI / 180;
+                return Math.Acos(a.DotProduct(b) / Math.Sqrt(a.SquareLength() * b.SquareLength()));
             }
         }
         /// <summary>

@@ -160,8 +160,9 @@ namespace BoringVector.Tests
         {
             return new List<object[]>
             {
-                new object[] {new Vector(1123.0, 4512.0), new Vector(0.241523399, 0.0002087)},
-                new object[] {new Vector(-12.0, -324.0), new Vector(-0.000114, -0.003082)},
+                new object[] {new Vector(1123.0, 4512.0), new Vector(0.24152339981, 0.97039499552)},
+                new object[] {new Vector(-12.0, -324.0), new Vector(-0.0370116605, -0.99931483376)},
+                new object[] {new Vector(-1.0, 0.0), new Vector(-1, 0.0)},
             };
         }
         
@@ -188,7 +189,7 @@ namespace BoringVector.Tests
         [MemberData(nameof(GetAngleBetweenTests))]
         public void Test_GetAngleBetween(Vector a, Vector b, double angle)
         {
-            Assert.Equal(VectorExtension.GetAngleBetween(a,b), angle);
+            Assert.Equal(VectorExtension.GetAngleBetween(a,b), angle, precision);
         }
         
         public static IEnumerable<object[]> GetRelationTests()
