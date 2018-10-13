@@ -42,6 +42,10 @@ namespace BoringVector
         /// <returns>Вектор единичной нормы</returns>
         public static Vector Normalize(this Vector v)
         {
+            if (v.IsZero())
+            {
+                throw new ArgumentException("Vector is zero");
+            } 
             double length = Math.Sqrt(v.SquareLength());
             return v / length;
         }
