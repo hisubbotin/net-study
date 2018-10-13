@@ -8,7 +8,7 @@ namespace AdventureTime
     /// <summary>
     /// Класс методов для работы с временем.
     /// </summary>
-    internal static class Time
+    public static class Time
     {
         /// <summary>
         /// Возвращает текущее локальное время.
@@ -117,9 +117,11 @@ namespace AdventureTime
             /*
                 1) Подумай, в чем разница между Hours и TotalHours
                 2) Проверь, учитывается ли Kind объектов при арифметических операциях.
+                // local-local и local-utc дают одинаковый ответ 
                 3) Подумай, почему возвращаемое значение может отличаться от действительности.
+                // из-за часовых поясов
             */
-            return (int)(dt2 - dt1).TotalHours;
+            return (int) (dt2 - dt1).TotalHours;
         }
 
         /// <summary>
@@ -129,7 +131,7 @@ namespace AdventureTime
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
             var someDate = new DateTime();
-            return (int)(someDate.AddMonths(3) - someDate).TotalMinutes;
+            return (int) (someDate.AddMonths(3) - someDate).TotalMinutes;
         }
 
         #region Adventure time saga
@@ -207,10 +209,16 @@ namespace AdventureTime
                 ниже ты найдешь готовый метод GetZonedTime. Просто посмотри на него (можешь даже посмотреть методы и свойства типа TimeZoneInfo, если интересно) и воспользуйся им для вычисления правильного времени
                 "отбытия" и "прибытия" наших героев. Затем посчитай длительность путешествия. Также даны правильные идентификаторы зон.
             */
-            const string moscowZoneId = "Russian Standard Time";
-            const string londonZoneId = "GMT Standard Time";
-
-            throw new NotImplementedException();
+            const string moscowZoneId = "Europe/Moscow";
+            const string londonZoneId = "Europe/London";
+            
+            var from = new DateTime(2010, 3, 28, 2, 15, 0);
+            var to = new DateTime(2010, 3, 28, 2, 15, 0);
+            
+            var fromMoscowZoned = GetZonedTime(from, moscowZoneId);
+            var toLondonZoned = GetZonedTime(to, londonZoneId);
+            
+            return (int) (toLondonZoned - fromMoscowZoned).TotalMinutes;
         }
 
         /// <summary>
@@ -221,9 +229,16 @@ namespace AdventureTime
             /*
                 Реши по аналогии с предыдущим методом и проверь, что оба метода действительно возвращают одно и то же время (и что оно правильное).
             */
-            const string moscowZoneId = "Russian Standard Time";
-            const string londonZoneId = "GMT Standard Time";
-            throw new NotImplementedException();
+            const string moscowZoneId = "Europe/Moscow";
+            const string londonZoneId = "Europe/London";
+            
+            var from = new DateTime(2010, 3, 28, 3, 15, 0);
+            var to = new DateTime(2010, 3, 28, 1, 15, 0);
+            
+            var fromMoscowZoned = GetZonedTime(from, moscowZoneId);
+            var toLondonZoned = GetZonedTime(to, londonZoneId);
+
+            return (int) (toLondonZoned - fromMoscowZoned).TotalMinutes;
         }
 
         private static DateTimeOffset GetZonedTime(DateTime localTime, string timeZoneId)
@@ -280,9 +295,14 @@ namespace AdventureTime
         /// <param name="person1Birthday">День рождения первого человека.</param>
         /// <param name="person2Birthday">День рождения второго человека.</param>
         /// <returns>True - если родились в один день, иначе - false.</returns>
-        internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
+        public static bool AreEqualBirthdays_ver1(DateTime person1Birthday, DateTime person2Birthday)
         {
-            throw new NotImplementedException();
+            return person1Birthday.Month == person2Birthday.Month && person1Birthday.Day == person2Birthday.Day;
+        }
+        
+        public static bool AreEqualBirthdays_ver2(DateTime person1Birthday, DateTime person2Birthday)
+        {
+            return (person1Birthday - person2Birthday).TotalHours < 24.0;
         }
     }
 }

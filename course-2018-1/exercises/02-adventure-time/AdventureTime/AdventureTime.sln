@@ -10,6 +10,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\readme.md = ..\readme.md
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureTime.Test", "AdventureTime.Test\AdventureTime.Test.csproj", "{89F3A8F3-690A-456B-8C09-6695929F08D4}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -20,6 +22,10 @@ Global
 		{97FF75DD-5D81-4316-8344-8038D2104842}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{97FF75DD-5D81-4316-8344-8038D2104842}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{97FF75DD-5D81-4316-8344-8038D2104842}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89F3A8F3-690A-456B-8C09-6695929F08D4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89F3A8F3-690A-456B-8C09-6695929F08D4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89F3A8F3-690A-456B-8C09-6695929F08D4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89F3A8F3-690A-456B-8C09-6695929F08D4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
