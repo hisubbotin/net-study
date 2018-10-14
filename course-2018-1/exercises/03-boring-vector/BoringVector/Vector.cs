@@ -7,13 +7,21 @@ namespace BoringVector
     /*
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
-
+    
     internal struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
 
+        public readonly double X;
+        public readonly double Y;
+
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -24,30 +32,67 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        /// <summary>
+        /// Returns square length of the vector.
+        /// </summary>
+        /// <returns>Square length of the vector.</returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+        
+        /// <summary>
+        /// Adds given vector to this particular one.
+        /// </summary>
+        /// <param name="v">Given vector.</param>
+        /// <returns>New vector, which equals to the sum of two.</returns>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
+        
+        /// <summary>
+        /// Scales this particular vector in k times.
+        /// </summary>
+        /// <param name="k">Scale factor.</param>
+        /// <returns>New vector, which equals to the scaled first one.</returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(k * X, k * Y);
         }
+        
+        /// <summary>
+        /// Computes dot product of given vector and this particular one.
+        /// </summary>
+        /// <param name="v">Given vector.</param>
+        /// <returns>Dot product of two vectors.</returns>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+        
+        /// <summary>
+        /// Computes cross product of given vector and this particular one.
+        /// </summary>
+        /// <param name="v">Given vector.</param>
+        /// <returns>Cross product of two vectors.</returns>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+
+        /// <summary>
+        /// Returns string representation of this particular vector.
+        /// </summary>
+        /// <returns>String representation of vector.</returns>
+        public override string ToString()
+        {
+            return $"({X}, {Y})";
+        }
 
         #region operators
 
@@ -57,6 +102,81 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+
+        /// <summary>
+        /// Computes sum of two given vectors.
+        /// </summary>
+        /// <param name="v">First vector.</param>
+        /// <param name="u">Second vector.</param>
+        /// <returns>New vector, that is a sum of given two.</returns>
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return new Vector(v.X + u.X, v.Y + u.Y);
+        }
+        
+        /// <summary>
+        /// Computes difference of two given vectors.
+        /// </summary>
+        /// <param name="v">First vector.</param>
+        /// <param name="u">Second vector.</param>
+        /// <returns>New vector, that is a difference of given two.</returns>
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return new Vector(v.X - u.X, v.Y - u.Y);
+        }
+        
+        /// <summary>
+        /// Scales given vector in k times.
+        /// </summary>
+        /// <param name="v">Given vector.</param>
+        /// <param name="k">Scale factor.</param>
+        /// <returns>New vector, which equals to the scaled first one.</returns>
+        public static Vector operator *(Vector v, double k)
+        {
+            return new Vector(k * v.X, k * v.Y);
+        }
+        
+        /// <summary>
+        /// Scales given vector in k times.
+        /// </summary>
+        /// <param name="k">Scale factor.</param>
+        /// <param name="v">Given vector.</param>
+        /// <returns>New vector, which equals to the scaled first one.</returns>
+        public static Vector operator *(double k, Vector v)
+        {
+            return new Vector(k * v.X, k * v.Y);
+        }
+        
+        /// <summary>
+        /// Perform action opposite to scale.
+        /// </summary>
+        /// <param name="v">Given vector.</param>
+        /// <param name="k">Scale factor.</param>
+        /// <returns>New vector, which length is decreased in k times.</returns>
+        public static Vector operator /(Vector v, double k)
+        {
+            return new Vector(v.X / k, v.Y / k);
+        }
+        
+        /// <summary>
+        /// Returns given vector back.
+        /// </summary>
+        /// <param name="v">Given vector.</param>
+        /// <returns>Given vector.</returns>
+        public static Vector operator +(Vector v)
+        {
+            return new Vector(v.X, v.Y);
+        }
+        
+        /// <summary>
+        /// Creates new vector, which points to the opposite direction.
+        /// </summary>
+        /// <param name="v">Given vector.</param>
+        /// <returns>New vector, which is opposite to the given one.</returns>
+        public static Vector operator -(Vector v)
+        {
+            return new Vector(-v.X, -v.Y);
+        }
 
         #endregion
     }
