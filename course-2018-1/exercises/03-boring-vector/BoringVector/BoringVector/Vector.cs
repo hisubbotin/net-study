@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace BoringVector
 {
@@ -14,7 +15,21 @@ namespace BoringVector
             Vector задается парой вещественных координат X и Y.
         */
 
+        public double X { get; }
 
+        public double Y { get; }
+
+        /// <summary>
+        /// Конструктор Вектора
+        /// </summary>
+        /// <param name="x"> Координата оси абсцисс.</param>
+        /// <param name="y"> Координата оси ординат.</param>
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
+            
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
                 - квадрат длины
@@ -23,34 +38,72 @@ namespace BoringVector
                 - скалярное произведение
                 - векторное произведение (= площадь параллелограмма)
         */
-
+        
+        /// <summary>
+        /// Возвращает квадрат длины вектора.
+        /// </summary>
+        /// <returns> Квадрат длины вектора.</returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return DotProduct(new Vector(X, Y));
         }
+        
+        /// <summary>
+        /// Возвращает объект <see cref="Vector"/> с координатами равными сумме координат исходного вектора и вектора v.
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/> с которым суммируем</param>
+        /// <returns>Объект <see cref="Vector"/>  координаты, которого являются суммой исходных векторов</returns>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
+        
+        /// <summary>
+        /// Возвращает объект <see cref="Vector"/> с координатами равными исходным координатам векторами, умноженными на k
+        /// </summary>
+        /// <param name="k"> коеффициент, на который координаты будут умножены</param>
+        /// <returns>Объект <see cref="Vector"/> с координатами равными исходным координатам векторами, умноженными на k</returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(X * k, Y * k);
         }
+        
+        /// <summary>
+        /// Возвращает скалярное произведение исходного объекта и <see cref="Vector"/> v
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/> второй аргумент скалярного произведения</param>
+        /// <returns>Скалярное произведение исходного вектора и вектора v </returns>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+        
+        
+        /// <summary>
+        /// Возвращает векторное произведение исходного объекта и <see cref="Vector"/> v
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/> второй аргумент векторного произведения</param>
+        /// <returns>Векторное произведение исходного вектора и вектора v </returns>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
-
+        
+        /// <summary>
+        /// Переопределенный метод ToString()
+        /// </summary>
+        /// <returns>Возращает строку в формате (X; Y)</returns>
+        public override string ToString()
+        {
+            return $"({X}, {Y})";
+        }
+        
         #region operators
-
+        
         /*
             Реализуй также следущие операторы (Vector v, u и double k):
                 - v + u, v - u
@@ -58,6 +111,85 @@ namespace BoringVector
                 - +v, -v
         */
 
+        
+        /// <summary>
+        /// Возвращает объект <see cref="Vector"/>
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="u"></param>
+        /// <returns></returns>
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return new Vector(v.X + u.X, v.Y + u.Y);
+        }
+        
+        
+        /// <summary>
+        /// Возвращает объект <see cref="Vector"/>
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="u"></param>
+        /// <returns></returns>
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return new Vector(v.X - u.X, v.Y - u.Y);
+        }
+        
+        
+        /// <summary>
+        /// Возвращает объект <see cref="Vector"/>
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="k"></param>
+        /// <returns></returns>
+        public static Vector operator *(Vector v, double k)
+        {
+            return new Vector(v.X * k, v.Y * k);
+        }
+        
+        
+        /// <summary>
+        /// Возвращает объект <see cref="Vector"/>
+        /// </summary>
+        /// <param name="k"></param>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public static Vector operator *(double k, Vector v)
+        {
+            return new Vector(v.X * k, v.Y * k);
+        }
+        
+        /// <summary>
+        /// Возвращает объект <see cref="Vector"/>
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="k"></param>
+        /// <returns></returns>
+        public static Vector operator /(Vector v, double k)
+        {
+            return new Vector(v.X / k, v.Y / k);
+        }
+
+        /// <summary>
+        /// Возвращает объект <see cref="Vector"/>
+        /// </summary>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public static Vector operator -(Vector v)
+        {
+            return new Vector(-v.X, -v.Y);
+        }
+
+        /// <summary>
+        /// Возвращает объект <see cref="Vector"/>
+        /// </summary>
+        /// <param name="k"></param>
+        /// <param name="v"></param>
+        /// <returns></returns>
+        public static Vector operator +(double k, Vector v)
+        {
+            return new Vector(v.X, v.Y);
+        }
         #endregion
     }
 
