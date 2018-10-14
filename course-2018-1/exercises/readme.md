@@ -3,10 +3,11 @@
 <!-- TOC -->
 
 - [Exercises](#exercises)
-  - [Цель заданий](#цель-заданий)
+  - [Цель заданий](#Цель-заданий)
   - [Code of conduct](#code-of-conduct)
   - [Git + GitHub workflow](#git--github-workflow)
   - [01. May the primitive types be with you](#01-may-the-primitive-types-be-with-you)
+  - [02. What time is it? Adventure Time!](#02-what-time-is-it-adventure-time)
 
 <!-- /TOC -->
 
@@ -39,3 +40,29 @@ Tags: primitive types, numbers, operations, checked/unchecked arithmetics, numbe
 - работой с консолью.
 
 Инструкция лежит в [01-primitive-types/readme.md](01-primitive-types/readme.md).
+
+## 02. What time is it? Adventure Time!
+
+Tags: datetime, datetime.kind, utc, timezone, timezoneinfo, timespan, datetimeoffset, noda time, time formatting and parsing.
+
+В данном задании вы познакомитесь с:
+
+- типами данных для базовой работы со временем,
+- операциями над ними,
+- чтением дат и отрезков времени из строки и форматированием их обратно в строку,
+- проблемами, связанными со временем.
+
+Инструкция лежит в [02-adventure-time/readme.md](02-adventure-time/readme.md).
+
+## 03. Boring vector
+
+Tags: struct, operator overloading, extension methods, xml documentation comments, unit-testing.
+
+В данном задании вы познакомитесь с:
+
+- созданием пользовательских структур,
+- перегрузкой операторов и методами-расширениями,
+- документированием кода с использованием стандартного формата комментариев,
+- юнит-тестированием.
+
+Инструкция лежит в [03-boring-vector/readme.md](03-boring-vector/readme.md).
