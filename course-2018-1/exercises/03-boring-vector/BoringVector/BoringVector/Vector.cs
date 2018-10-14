@@ -7,13 +7,16 @@ namespace BoringVector
     /*
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
-
+    
     internal struct Vector
     {
+        internal const double eps = 1e-6;
         /*
             Vector задается парой вещественных координат X и Y.
         */
 
+        public double X { get; set; }
+        public double Y { get; set; }
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -23,31 +26,68 @@ namespace BoringVector
                 - скалярное произведение
                 - векторное произведение (= площадь параллелограмма)
         */
-
+        /// <summary>
+        /// Возвращает объект типа <see cref="double"/> - квадрат длины вектора
+        /// </summary>
+        /// <returns>Объект типа <see cref="double"/></returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return this.X * this.X + this.Y * this.Y;
         }
+        /// <summary>
+        /// Возвращает новый <see cref="Vector"/> - результат сложения this и v
+        /// </summary>
+        /// <param name="v">Объект типа <see cref="Vector"/> с которм нужно произвести сложение</param>
+        /// <returns></returns>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector { X = this.X + v.X, Y = this.Y + v.Y };
         }
+        /// <summary>
+        /// Возвращает новый <see cref="Vector"/> - результат умножения this на число k
+        /// </summary>
+        /// <param name="k">Конечное число <see cref="double"/> на которое нужно умножить вектор</param>
+        /// <returns></returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            if( double.IsNaN(k) || double.IsInfinity(k) )
+            {
+                throw new NotFiniteNumberException();
+            } else {
+                return new Vector { X = k * this.X, Y = k * this.Y };
+            }
         }
+        /// <summary>
+        /// Возвращает объект типа <see cref="double"/> - скалярное произведение this и вектора v
+        /// </summary>
+        /// <param name="v">Объект типа <see cref="Vector"/></param>
+        /// <returns></returns>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return this.X * v.X + this.Y * v.Y;
         }
+        /// <summary>
+        /// Возвращает объект типа <see cref="double"/> - площадь ориентированного параллелограмма построенного
+        /// на векторах this и v
+        /// </summary>
+        /// <param name="v">Объект типа <see cref="Vector"/></param>
+        /// <returns></returns>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return this.X * v.Y - this.Y * v.X;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+        /// <summary>
+        /// Возвращает объект типа <see cref="string"/> - строковое представление вектора в формате (X; Y)
+        /// </summary>
+        /// <returns>Объект типа <see cref="string"/></returns>
+        public override string ToString()
+        {
+            return "(" + this.X.ToString() + "; " + this.Y.ToString() + ")";
+        }
 
         #region operators
 
@@ -57,6 +97,63 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+
+        /// <summary>
+        /// Возвращает объект типа <see cref="Vector"/> - сумму векторов u и v
+        /// </summary>
+        /// <returns>Объект типа <see cref="Vector"/></returns>
+        public static Vector operator +(Vector u, Vector v) => u.Add(v);
+
+        /// <summary>
+        /// Возвращает объект типа <see cref="Vector"/> - разность векторов u и v
+        /// </summary>
+        /// <returns>Объект типа <see cref="Vector"/></returns>
+        public static Vector operator -(Vector u, Vector v) => u.Add(-v);
+
+        /// <summary>
+        /// Возвращает объект типа <see cref="Vector"/> - результат умножения ветора v на число k
+        /// </summary>
+        /// <param name="k">Объект типа <see cref="double"/></param>
+        /// <param name="v">Объект типа <see cref="Vector"/></param>
+        /// <returns>Объект типа <see cref="Vector"/></returns>
+        public static Vector operator *(double k, Vector v) => v.Scale(k);
+
+        /// <summary>
+        /// Возвращает объект типа <see cref="Vector"/> - результат умножения ветора v на число k
+        /// </summary>
+        /// <param name="k">Объект типа <see cref="double"/></param>
+        /// <param name="v">Объект типа <see cref="Vector"/></param>
+        /// <returns>Объект типа <see cref="Vector"/></returns>
+        public static Vector operator *(Vector v, double k) => v.Scale(k);
+
+        /// <summary>
+        /// Возвращает объект типа <see cref="Vector"/> - результат деления ветора v на ненулевое число k
+        /// </summary>
+        /// <param name="k">Объект типа <see cref="double"/></param>
+        /// <param name="v">Объект типа <see cref="Vector"/></param>
+        /// <returns>Объект типа <see cref="Vector"/></returns>
+        public static Vector operator /(Vector v, double k)
+        {
+            if( Math.Abs(k) < eps ) {
+                throw new DivideByZeroException();
+            } else {
+                return v.Scale(1.0 / k);
+            }
+        }
+        
+        /// <summary>
+        /// Возвращает объект типа <see cref="Vector"/> - свой операнд без изменений
+        /// </summary>
+        /// <param name="v">Объект типа <see cref="Vector"/></param>
+        /// <returns></returns>
+        public static Vector operator +(Vector v) => v;
+
+        /// <summary>
+        /// Возвращает объект типа <see cref="Vector"/> - вектор противоположно направленный и равный по модулю исходному
+        /// </summary>
+        /// <param name="v">Объект типа <see cref="Vector"/></param>
+        /// <returns></returns>
+        public static Vector operator -(Vector v) => -1 * v;
 
         #endregion
     }
