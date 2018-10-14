@@ -53,3 +53,16 @@ Tags: datetime, datetime.kind, utc, timezone, timezoneinfo, timespan, datetimeof
 - проблемами, связанными со временем.
 
 Инструкция лежит в [02-adventure-time/readme.md](02-adventure-time/readme.md).
+
+## 03. Boring vector
+
+Tags: struct, operator overloading, extension methods, xml documentation comments, unit-testing.
+
+В данном задании вы познакомитесь с:
+
+- созданием пользовательских структур,
+- перегрузкой операторов и методами-расширениями,
+- документированием кода с использованием стандартного формата комментариев,
+- юнит-тестированием.
+
+Инструкция лежит в [03-boring-vector/readme.md](03-boring-vector/readme.md).
