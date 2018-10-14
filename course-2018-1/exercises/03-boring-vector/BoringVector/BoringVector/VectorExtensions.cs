@@ -45,7 +45,7 @@ namespace BoringVector
         {
             if (vec.IsZero())
             {
-                return vec;
+                throw new DivideByZeroException("BoringVector.Vector.Normalize: " + vec.ToString() + " недопустимое значение");
             }
             vec /= Math.Sqrt(vec.SquareLength());
             return vec;

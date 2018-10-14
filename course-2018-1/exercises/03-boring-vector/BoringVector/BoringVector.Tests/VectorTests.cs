@@ -160,6 +160,7 @@ namespace BoringVector.Tests
         {
             return new List<object[]>
             {
+                new object[] {new Vector(0.0, 0.0), new Vector(0.0, 0.0)},
                 new object[] {new Vector(1123.0, 4512.0), new Vector(0.24152339981, 0.97039499552)},
                 new object[] {new Vector(-12.0, -324.0), new Vector(-0.0370116605, -0.99931483376)},
                 new object[] {new Vector(-1.0, 0.0), new Vector(-1, 0.0)},
@@ -170,7 +171,15 @@ namespace BoringVector.Tests
         [MemberData(nameof(NormalizeTests))]
         public void Test_Normalize(Vector vec, Vector result)
         {
-            vec = vec.Normalize();
+            try
+            {
+                vec = vec.Normalize();
+            }
+            catch (DivideByZeroException e)
+            {
+                Console.WriteLine(e);
+                throw e;
+            }
             Assert.Equal(vec.x, result.x, precision);
             Assert.Equal(vec.y, result.y, precision);
         }
