@@ -13,8 +13,15 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        public double X { get; set; }
+        public double Y { get; set; }
 
 
+        public Vector(double _X = 0, double _Y = 0)
+        {
+            X = _X;
+            Y = _Y;
+        }
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
                 - квадрат длины
@@ -24,30 +31,71 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        /// <summary>
+        /// Вычисляет квадрат длины вектора.
+        /// </summary>
+        /// <returns>Квадрат длины вектора.</returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+
+        /// <summary>
+        /// Вычисляет сумму двух векторов.
+        /// </summary>
+        /// <returns>Новый <see cref="T:BoringVector.Vector"/>, являющийся суммой двух исходных.</returns>
+        /// <param name="v">Прибавляемый вектор.</param>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            double resultX = this.X + v.X;
+            double resultY = this.Y + v.Y;
+            return new Vector(resultX, resultY);
         }
+
+        /// <summary>
+        /// Вычисляет вектор, умноженный на коэффициент.
+        /// </summary>
+        /// <returns>Новый <see cref="T:BoringVector.Vector"/>, являющийся произведением исходного и коэффициента.</returns>
+        /// <param name="k">Коэффициент.</param>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            double resultX = this.X * k;
+            double resultY = this.Y * k;
+            return new Vector(resultX, resultY);
         }
+
+        /// <summary>
+        /// Вычисляет скалярное произведение двух векторов.
+        /// </summary>
+        /// <returns>Величина скалярного произведения.</returns>
+        /// <param name="v">Второй вектор.</param>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return this.X * v.X + this.Y * v.Y;
         }
+
+        /// <summary>
+        /// Вычисляет векторное произведение двух векторов.
+        /// </summary>
+        /// <returns>Модуль векторного произведения (площадь параллелограмма).</returns>
+        /// <param name="v">Второй вектор.</param>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return Math.Abs(this.X * v.Y - this.Y * v.X);
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+
+        /// <summary>
+        /// Приводит вектор к строковому выражению.
+        /// </summary>
+        /// <returns>Строка с координатами вектора в формате (X; Y).</returns>
+        public override string ToString()
+        {
+            return string.Format("({0}; {1})", this.X, this.Y);
+        }
 
         #region operators
 
@@ -58,6 +106,84 @@ namespace BoringVector
                 - +v, -v
         */
 
+        /// <summary>
+        /// Оператор вычисления суммы двух векторов.
+        /// </summary>
+        /// <param name="v">Первый вектор.</param>
+        /// <param name="u">Второй вектор.</param>
+        /// <returns>Новый <see cref="T:BoringVector.Vector"/>, являющийся суммой двух исходных.</returns>
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return new Vector(v.X + u.X, v.Y + u.Y);
+        }
+
+        /// <summary>
+        /// Оператор вычисления разности двух векторов.
+        /// </summary>
+        /// <param name="v">Первый вектор.</param>
+        /// <param name="u">Второй (вычитаемый) ветктор.</param>
+        /// <returns>Новый <see cref="T:BoringVector.Vector"/>, являющийся разностью двух исходных.</returns>
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return new Vector(v.X - u.X, v.Y - u.Y);
+        }
+
+        /// <summary>
+        /// Оператор вычисления умножения вектора на число
+        /// </summary>
+        /// <param name="k">Коэффициент.</param>
+        /// <param name="v">Умножаемый <see cref="BoringVector.Vector"/>.</param>
+        /// <returns>Новый <see cref="T:BoringVector.Vector"/>, являющийся умножением исходного на число.</returns>
+        public static Vector operator *(double k, Vector v)
+        {
+            return new Vector(v.X * k, v.Y * k);
+        }
+
+        /// <summary>
+        /// Оператор вычисления умножения вектора на число
+        /// </summary>
+        /// <param name="v">Умножаемый <see cref="BoringVector.Vector"/>.</param>
+        /// <param name="k">Коэффициент.</param>
+        /// <returns>Новый <see cref="T:BoringVector.Vector"/>, являющийся умножением исходного на число.</returns>
+        public static Vector operator *(Vector v, double k)
+        {
+            return k * v;
+        }
+
+        /// <summary>
+        /// Оператор вычисления деления вектора на число (ненулевое).
+        /// </summary>
+        /// <param name="v">Делимый <see cref="BoringVector.Vector"/>.</param>
+        /// <param name="k">Коэффициент.</param>
+        /// <returns>Новый <see cref="T:BoringVector.Vector"/>, являющийся делением исходного на число.</returns>
+        public static Vector operator /(Vector v, double k)
+        {
+            if (k.Equals(0.0))
+            {
+                throw new DivideByZeroException();
+            }
+            return new Vector(v.X / k, v.Y / k);
+        }
+
+        /// <summary>
+        /// Оператор, не меняющий координат исходного вектора.
+        /// </summary>
+        /// <param name="v">Исходный вектор.</param>
+        /// <returns>Новый <see cref="T:BoringVector.Vector"/>, являющийся копией исходного.</returns>
+        public static Vector operator +(Vector v)
+        {
+            return new Vector(v.X, v.Y);
+        }
+
+        /// <summary>
+        /// Оператор, изменяющий знак координат вектора на противоположный.
+        /// </summary>
+        /// <param name="v">Исходный вектор.</param>
+        /// <returns>Новый <see cref="T:BoringVector.Vector"/>, являющийся отзеркаленной копией исходного.</returns>
+        public static Vector operator -(Vector v)
+        {
+            return new Vector(-v.X, -v.Y);
+        }
         #endregion
     }
 
