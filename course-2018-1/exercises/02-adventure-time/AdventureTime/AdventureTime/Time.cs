@@ -300,8 +300,12 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            return (person1Birthday.ToUniversalTime().DayOfYear.Equals(
-                person2Birthday.ToUniversalTime().DayOfYear)); 
+            if (!person1Birthday.Kind.Equals(DateTimeKind.Local) ||
+                !person2Birthday.Kind.Equals(DateTimeKind.Local))
+            {
+                throw new ArgumentException();
+            }
+            return (person1Birthday.DayOfYear.Equals(person2Birthday.DayOfYear)); 
         }
     }
 }  
