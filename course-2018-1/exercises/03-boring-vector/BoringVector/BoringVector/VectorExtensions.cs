@@ -40,7 +40,7 @@ namespace BoringVector
         /// <returns>Объект типа <see cref="Vector"/></returns>
         public static Vector Normalize(this Vector v)
         {
-            return v.IsZero() ? v : v.Scale(Math.Sqrt(v.SquareLength()));
+            return v.IsZero() ? v : v.Scale(1 / Math.Sqrt(v.SquareLength()));
         }
         
         /// <summary>

@@ -60,7 +60,7 @@ namespace BoringVector.Tests
         [Fact]
         public void TestNormalize()
         {
-            Assert.True(VectorExtension.IsZero(new Vector(5.65685424949238, 5.65685424949238) - 
+            Assert.True(VectorExtension.IsZero(new Vector(0.707106781186547, 0.707106781186547) - 
                                                VectorExtension.Normalize(new Vector(2, 2))));
         }
         
