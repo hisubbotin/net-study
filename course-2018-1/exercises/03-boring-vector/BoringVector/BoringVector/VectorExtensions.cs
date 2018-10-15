@@ -8,7 +8,7 @@ namespace BoringVector
             - GetAngleBetween: возвращает угол между двумя векторами в радианах. Примечание: нулевой вектор сонаправлен любому другому.
             - GetRelation: возвращает значение перечесления VectorRelation(General, Parallel, Orthogonal) - отношение между двумя векторами("общий случай", параллельны, перпендикулярны). Перечисление задавать тоже тебе)
     */
-    internal enum Relation
+    public enum Relation
 
 
 
@@ -18,7 +18,7 @@ namespace BoringVector
         Orthogonal
     }
 
-    internal static class VectorExtensions 
+    public class VectorExtensions 
     {
 
         static private readonly double EPSILON = 1e-6;
@@ -45,7 +45,7 @@ namespace BoringVector
                 return Relation.Orthogonal;
             }
             else if ((Math.Abs(Math.Abs(GetAngleBetween(u, v)) - Math.PI) < EPSILON)
-              || (Math.Abs(Math.Abs(GetAngleBetween(u, v)) - Math.PI) < EPSILON))
+              || (Math.Abs(Math.Abs(GetAngleBetween(u, v))) < EPSILON))
             {
                 return Relation.Parallel;
             }
