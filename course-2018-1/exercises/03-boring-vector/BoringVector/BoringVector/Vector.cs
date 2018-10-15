@@ -63,25 +63,30 @@ namespace BoringVector
         }
         
         /// <summary>
-        ///
+        /// Возвращает вектор, скалярно умноженный на коэффициент.
         /// </summary>
-        /// <param name="k"></param>
-        /// <returns></returns>
+        /// <param name="k">Вещественный коэфициент</param>
+        /// <returns>Вектор, скалярно умноженный на коэффициент</returns>
         public Vector Scale(double k)
         {
             return new Vector(k * X, k * Y);
         }
         
         /// <summary>
-        /// 
+        /// Возвращает скалярное произведение веткоров
         /// </summary>
-        /// <param name="v"></param>
-        /// <returns></returns>
+        /// <param name="v">Правый множитель скалярного произведения</param>
+        /// <returns>Скалярное произведение данного вектора и переданного в аргументе</returns>
         public double DotProduct(Vector v)
         {
             return X * v.X + Y * v.Y;
         }
         
+        /// <summary>
+        /// Возвращает модуль векторного произведения веткоров
+        /// </summary>
+        /// <param name="v">Правый множитель векторного произведения</param>
+        /// <returns>Модуль векторного произведение данного вектора и переданного в аргументе</returns>
         public double CrossProduct(Vector v)
         {
             return Math.Abs(X * v.Y - Y * v.X);
@@ -90,6 +95,11 @@ namespace BoringVector
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+        
+        /// <summary>
+        /// Возвращает строковое представление вектора в формате (X; Y)
+        /// </summary>
+        /// <returns>Строковое представление вектора</returns>
         public override string ToString()
         {
             return $"({X}; {Y})";
@@ -104,35 +114,75 @@ namespace BoringVector
                 - +v, -v
         */
 
+        /// <summary>
+        /// Оператор сложения двух векторов
+        /// </summary>
+        /// <param name="u">Первое слагаемое суммы</param>
+        /// <param name="v">Второе слагаемое суммы</param>
+        /// <returns>Сумма двух векторов</returns>
         public static Vector operator +(Vector u, Vector v)
         {
             return u.Add(v);
         }
         
-        public static Vector operator *(double k, Vector v)
-        {
-            return v.Scale(k);
-        }
-        
+        /// <summary>
+        /// Оператор умножения вектора на скаляр
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        /// <param name="k">Скаляр</param>
+        /// <returns>Вектор, умноженный на скаляр</returns>
         public static Vector operator *(Vector v, double k)
         {
             return k * v;
         }
         
-        public static Vector operator /(Vector u, double k) {
-            return u * (1.0 / k);
-        }
-
-        public static Vector operator +(Vector u)
+        /// <summary>
+        /// Оператор умножения скаляра на вектор
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        /// <param name="k">Скаляр</param>
+        /// <returns>Вектор, умноженный на скаляр</returns>
+        public static Vector operator *(double k, Vector v)
         {
-            return u;
+            return v.Scale(k);
         }
         
+        /// <summary>
+        /// Опрератор деления вектора на скаляр
+        /// </summary>
+        /// <param name="v"></param>
+        /// <param name="k"></param>
+        /// <returns>Вектор, умноженный на скаляр, обратный к заданному</returns>
+        public static Vector operator /(Vector v, double k) {
+            return v * (1.0 / k);
+        }
+
+        /// <summary>
+        /// Оператор унарного плюса для вектора
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        /// <returns>Тот же самый вектор</returns>
+        public static Vector operator +(Vector v)
+        {
+            return v;
+        }
+        
+        /// <summary>
+        /// Оператор унарного минуса для вектора
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        /// <returns>Вектор, обратный к данному по сложению</returns>
         public static Vector operator -(Vector v)
         {
             return -1 * v;
         }
         
+        /// <summary>
+        /// Оператор разности двух векторов
+        /// </summary>
+        /// <param name="u">Уменьшаемое суммы</param>
+        /// <param name="v">Вычитаемое суммы</param>
+        /// <returns>Разность двух векторов</returns>
         public static Vector operator -(Vector u, Vector v)
         {
             return u + (-v);

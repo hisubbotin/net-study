@@ -19,12 +19,53 @@ namespace BoringVector.Tests
         [InlineData(1.5, 0, 2.1, -1, 3.6, -1)]
         [InlineData(2.01, -3.1, -2.01, 3.1, 0, 0)]
         [InlineData(99, -0.5, -100, 1.0, -1, 0.5)]
-        public void Test_Add(double x1, double y1, double x2, double y2, double x3, double y3)
+        public void Test_Add(double x1, double y1, double x2, double y2, double xRes, double yRes)
         {
             var vec1 = new Vector(x1, y1);
             var vec2 = new Vector(x2, y2);
-            var vec3 = new Vector(x3, y3);
-            Assert.Equal(vec1.Add(vec2), vec3);
+            var vecRes = new Vector(xRes, yRes);
+            Assert.Equal(vec1.Add(vec2), vecRes);
+        }
+        
+        [Theory]
+        [InlineData(2, 4, 3, 6, 12)]
+        [InlineData(-0.1, 0, -1, 0.1, 0)]
+        [InlineData(2, 1, 0.0, 0, 0)]
+        public void Test_Scale(double x, double y, double k, double xRes, double yRes)
+        {
+            var vec = new Vector(x, y);
+            var vecRes = new Vector(xRes, yRes);
+            Assert.Equal(vec.Scale(k), vecRes);
+        }
+        
+        [Theory]
+        [InlineData(1, 2, 3, 4, 11)]
+        [InlineData(-1, -1, 2, -2, 0)]
+        [InlineData(-1, 1, 0, 0, 0)]
+        public void Test_DotProduct(double x1, double y1, double x2, double y2, double res)
+        {
+            var vec1 = new Vector(x1, y1);
+            var vec2 = new Vector(x2, y2);
+            Assert.Equal(vec1.DotProduct(vec2), res);
+        }
+        
+        [Theory]
+        [InlineData(1, 3, 2, 4, 2)]
+        [InlineData(-1, -3, 2, 4, 2)]
+        [InlineData(-2, 4, -1, 2, 0)]
+        [InlineData(0, 0, 1, 2, 0)]
+        public void Test_CrossProduct(double x1, double y1, double x2, double y2, double res)
+        {
+            var vec1 = new Vector(x1, y1);
+            var vec2 = new Vector(x2, y2);
+            Assert.Equal(vec1.CrossProduct(vec2), res);
+        }
+        
+        [Fact]
+        public void Test_ToString()
+        {
+            var vec = new Vector(0.04, -1.0);
+            Assert.Equal(vec.ToString(), "(0.04; -1)");
         }
     }
 }
