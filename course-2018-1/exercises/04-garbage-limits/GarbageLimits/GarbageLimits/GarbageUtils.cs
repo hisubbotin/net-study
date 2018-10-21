@@ -5,6 +5,9 @@ using System.Text;
 
 namespace GarbageLimits
 {
+    /// <summary>
+    /// Выделяемые типы
+    /// </summary>
     public enum TAllocationType
     {
         AT_Char,
@@ -12,10 +15,28 @@ namespace GarbageLimits
         AT_Double
     }
 
+    /// <summary>
+    /// Класс с финализатором
+    /// </summary>
+    public class ClassWithFinalizer
+    {
+        ~ClassWithFinalizer()
+        {
+            // Ничего не происходит, но финализатор есть
+        }
+    }
 
+    /// <summary>
+    /// Класс-обертка над методами выделения
+    /// </summary>
     public static class GarbageUtils
     {
-
+        /// <summary>
+        /// Выделить массив определенного размера и типа
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
         public static object Allocate(TAllocationType type, int count)
         {
             object array;
@@ -44,19 +65,45 @@ namespace GarbageLimits
             return array;
         }
 
+        /// <summary>
+        /// Выделить массив и узнать его поколение
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="count"></param>
+        /// <returns></returns>
         public static int AllocateAndGetGeneration(TAllocationType type, int count)
         {
             object array = Allocate(type, count);
             return GC.GetGeneration(array);
         }
 
-        public static void GenerateGarbage()
+        /// <summary>
+        /// Забить память небольшими объектами
+        /// </summary>
+        public static void GenerateSmallGarbage(int count)
         {
-            Random rand = new Random(42);
-            int count = rand.Next(5000);
             for (int i = 0; i < count; i++)
             {
-                Allocate(TAllocationType.AT_Int, rand.Next(500000));
+                object obj = Allocate(TAllocationType.AT_Int, 5);
+            }
+        }
+
+        /// <summary>
+        /// Забить память большими объектами
+        /// </summary>
+        public static void GenerateLargeGarbage(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                object obj = Allocate(TAllocationType.AT_Int, 25000);
+            }
+        }
+
+        public static void GenerateFinalizedGarbage(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                object obj = (object) new ClassWithFinalizer();
             }
         }
     }

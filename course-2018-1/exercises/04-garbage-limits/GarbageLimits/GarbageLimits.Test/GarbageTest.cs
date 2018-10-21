@@ -3,7 +3,7 @@ using Xunit;
 
 namespace GarbageLimits.Test
 {
-    public class UnitTest1
+    public class GarbageTest
     {
         [Theory]
         [InlineData(TAllocationType.AT_Char, 1024, 0)]
