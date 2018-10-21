@@ -6,7 +6,6 @@ namespace GarbageCollector
     {
         static void Main(string[] args)
         {
-            
             GCTest.TestInt();
             GCTest.TestDouble();
             GCTest.TestString();
