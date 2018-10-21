@@ -80,31 +80,40 @@ namespace GarbageLimits
         /// <summary>
         /// Забить память небольшими объектами
         /// </summary>
-        public static void GenerateSmallGarbage(int count)
+        public static List<object> GenerateSmallGarbage(int count)
         {
+            List<object> result = new List<object>();
             for (int i = 0; i < count; i++)
             {
-                object obj = Allocate(TAllocationType.AT_Int, 5);
+                result.Add(Allocate(TAllocationType.AT_Int, 5));
             }
+
+            return result;
         }
 
         /// <summary>
         /// Забить память большими объектами
         /// </summary>
-        public static void GenerateLargeGarbage(int count)
+        public static List<object> GenerateLargeGarbage(int count)
         {
+            List<object> result = new List<object>();
             for (int i = 0; i < count; i++)
             {
-                object obj = Allocate(TAllocationType.AT_Int, 25000);
+                result.Add(Allocate(TAllocationType.AT_Int, 5));
             }
+
+            return result;
         }
 
-        public static void GenerateFinalizedGarbage(int count)
+        public static List<object> GenerateFinalizedGarbage(int count)
         {
+            List<object> result = new List<object>();
             for (int i = 0; i < count; i++)
             {
-                object obj = (object) new ClassWithFinalizer();
+                result.Add(Allocate(TAllocationType.AT_Int, 5));
             }
+
+            return result;
         }
     }
 }
