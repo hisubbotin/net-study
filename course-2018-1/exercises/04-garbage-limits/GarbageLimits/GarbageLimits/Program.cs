@@ -17,11 +17,8 @@ namespace GarbageLimits
             GC.Collect(0, GCCollectionMode.Forced);
             watch.Stop();
             var elapsedMs = watch.ElapsedMilliseconds;
-            Console.WriteLine(elapsedMs);
-            for (int i = 0; i < 3; i++)
-            {
-                Console.WriteLine("Generation " + i.ToString() + " collected " + GC.CollectionCount(i).ToString());
-            }
+            Console.WriteLine("Elapsed time " + elapsedMs);
+            GarbageUtils.PrintStatsAndCleanUp();
 
             {
                 List<object> objects = GarbageUtils.GenerateFinalizedGarbage(5000);
@@ -33,11 +30,8 @@ namespace GarbageLimits
             GC.Collect(1, GCCollectionMode.Forced);
             watch.Stop();
             elapsedMs = watch.ElapsedMilliseconds;
-            Console.WriteLine(elapsedMs);
-            for (int i = 0; i < 3; i++)
-            {
-                Console.WriteLine("Generation " + i.ToString() + " collected " + GC.CollectionCount(i).ToString());
-            }
+            Console.WriteLine("Elapsed time " + elapsedMs);
+            GarbageUtils.PrintStatsAndCleanUp();
 
 
             {
@@ -49,13 +43,8 @@ namespace GarbageLimits
             GC.Collect(2, GCCollectionMode.Forced);
             watch.Stop();
             elapsedMs = watch.ElapsedMilliseconds;
-            Console.WriteLine(elapsedMs);
-
-
-            for (int i = 0; i < 3; i++)
-            {
-                Console.WriteLine("Generation " + i.ToString() + " collected " + GC.CollectionCount(i).ToString());
-            }
+            Console.WriteLine("Elapsed time " + elapsedMs);
+            GarbageUtils.PrintStatsAndCleanUp();
 
         }
     }

@@ -105,6 +105,11 @@ namespace GarbageLimits
             return result;
         }
 
+        /// <summary>
+        /// Заполнить память объектами с финаизатором
+        /// </summary>
+        /// <param name="count"></param>
+        /// <returns></returns>
         public static List<object> GenerateFinalizedGarbage(int count)
         {
             List<object> result = new List<object>();
@@ -114,6 +119,17 @@ namespace GarbageLimits
             }
 
             return result;
+        }
+
+        public static void PrintStatsAndCleanUp()
+        {
+            for (int i = 0; i < 3; i++)
+            {
+                Console.WriteLine("Generation " + i.ToString() + " collected " + GC.CollectionCount(i).ToString());
+            }
+            GC.Collect(2, GCCollectionMode.Forced);
+            GC.WaitForPendingFinalizers();
+            GC.Collect(2, GCCollectionMode.Forced);
         }
     }
 }
