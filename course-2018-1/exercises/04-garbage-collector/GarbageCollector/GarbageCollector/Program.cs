@@ -32,11 +32,11 @@ namespace GarbageCollector {
         }
 
         static TimeSpan GetAverageTime(int generation, int size) {
-            var sw = new Stopwatch();
             var testsCount = 1000;
 
             var g2 = TimeSpan.Zero;
             for (var i = 0; i < testsCount; ++i) {
+                var sw = new Stopwatch();
                 Unused(new int[size]);
                 sw.Start();
                 GC.Collect(generation, GCCollectionMode.Forced, true);
