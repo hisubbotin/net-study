@@ -9,6 +9,7 @@ namespace GarbageCollector
         {
             // Часть 1.
             Console.WriteLine("Part1:");
+            
             // Для начала узнаем, сколько в байтах занимают известные нам типы:
             
             Console.WriteLine("Sizeof char: {0}", sizeof(char)); // 2
