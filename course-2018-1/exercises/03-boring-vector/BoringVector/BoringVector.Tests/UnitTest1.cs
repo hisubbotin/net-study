@@ -3,46 +3,36 @@ using Xunit;
 
 namespace BoringVector.Tests
 {
-    public class VectorTests
+    public class Tests
     {
-        
+        [Fact]
+        internal void AddTest()
+        {
+            Vector vector = new Vector(1, -1);
+            Assert.True(vector.Add(-vector).IsZero());
+        }
+    
         [Theory]
         [InlineData(1, 1, 2)]
         [InlineData(2, 2, 8)]
-        internal void Test_SquareLength(double x, double y, double result)
+        internal void SquareLengthTest(double x, double y, double res)
         {
-            Assert.Equal(result, new Vector(x, y).SquareLength());
-        }
-        
-        [Fact]
-        internal void Test_Add()
-        {
-            var v = new Vector(1, -1);
-            Assert.True(v.Add(-v).IsZero());
-        }
-    
-
-        [Fact]
-        internal void Test_Scale()
-        {
-            var v= new Vector(1, 1);
-            Assert.Equal(200, v.Scale(10).SquareLength());
+            Assert.Equal(res, new Vector(x, y).SquareLength());
         }
     
         [Fact]
-        internal void Test_DotProduct()
+        internal void ScaleTest()
         {
-            var v = new Vector(1, -1);
-            var u = new Vector(-1, -1);
-            Assert.Equal(0, v.DotProduct(u));
+            Vector vector = new Vector(1, 1);
+            Assert.Equal(200, vector.Scale(10).SquareLength());
         }
-
+    
         [Fact]
-        internal void Test_CrossProduct()
+        internal void DotProductTest()
         {
-            var v = new Vector(1, -1);
-            var u = new Vector(-1, -1);
-            Assert.Equal(-2, v.CrossProduct(u));
+            Vector vector1 = new Vector(1, -1);
+            Vector vector2 = new Vector(-1, -1);
+            Assert.Equal(0, vector1.DotProduct(vector2));
         }
     }
 }
