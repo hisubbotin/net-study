@@ -31,6 +31,7 @@ namespace GarbageCollector
             for (var i = 21000; i < 22000; i++)
             {
                 var obj = new int[i];
+                
                 if (GC.GetGeneration(obj) == 2)
                 {
                     Console.WriteLine("Array int size: {0}", i);
@@ -80,7 +81,6 @@ namespace GarbageCollector
             Console.WriteLine("Time 0 generation: {0}", StopWatch.Elapsed);
             Console.WriteLine("AFTER CollectionCount 0 generation: {0}", GC.CollectionCount(0));
 
-            
             // Поколение - 1:
             Console.WriteLine("BEFORE CollectionCount 1 generation: {0}", GC.CollectionCount(1));
             StopWatch.Start();
