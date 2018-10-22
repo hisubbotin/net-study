@@ -52,6 +52,9 @@ namespace GarbageCollector {
             Console.WriteLine(GetArraySize<int>() * sizeof(int));
             Console.WriteLine(GetArraySize<double>() * sizeof(double));
             Console.WriteLine(GetArraySize<char>() * sizeof(char));
+            
+            GC.Collect(2, GCCollectionMode.Forced, true);
+            GC.WaitForPendingFinalizers();
 
             Console.WriteLine(GetAverageTime(0, GetArraySize<int>() - 1));
             Console.WriteLine(GetAverageTime(2, GetArraySize<int>()));
