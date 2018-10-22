@@ -21,7 +21,7 @@ namespace GarbageLimits
             GarbageUtils.PrintStatsAndCleanUp();
 
             {
-                List<object> objects = GarbageUtils.GenerateFinalizedGarbage(5000);
+                List<object> objects = GarbageUtils.GenerateFinalizedGarbage(2500);
                 GC.Collect(0, GCCollectionMode.Forced);
             }
             watch = System.Diagnostics.Stopwatch.StartNew();
@@ -39,6 +39,7 @@ namespace GarbageLimits
                 GC.Collect(0, GCCollectionMode.Forced);
                 GC.Collect(1, GCCollectionMode.Forced);
             }
+            
             watch = System.Diagnostics.Stopwatch.StartNew();
             GC.Collect(2, GCCollectionMode.Forced);
             watch.Stop();
