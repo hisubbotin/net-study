@@ -21,13 +21,18 @@ namespace ConsoleApp1
             Console.WriteLine("Sizes in bytes:" );
             List<int> intArray = new List<int>();
             int generation = -1;
+            int iter = 0;
             while (generation != 2)
             {
+                iter++;
                 if (generation != GC.GetGeneration(intArray))
                 {
                     generation++;
                     Console.WriteLine("Generation: " + generation.ToString());
-                    Console.WriteLine("int[]: "  + (intArray.Capacity * sizeof(int)).ToString() + " bytes");
+                    Console.WriteLine("count: "  + (intArray.Count).ToString());
+                    Console.WriteLine("count_size: "  + (intArray.Count * sizeof(int)).ToString() + " bytes");
+                    Console.WriteLine("cap: "  + intArray.Capacity.ToString());
+                    Console.WriteLine("cap_size: "  + (intArray.Capacity * sizeof(int)).ToString() + " bytes");
                     DateTime start = DateTime.Now;
                     if (generation == 2)
                     {
@@ -45,13 +50,18 @@ namespace ConsoleApp1
             Console.WriteLine("Sizes in bytes:" );
             List<double> doubleArray = new List<double>();
             int generation = -1;
+            int iter = 0;
             while (generation != 2)
             {
+                iter++;
                 if (generation != GC.GetGeneration(doubleArray))
                 {
                     generation++;
                     Console.WriteLine("Generation: " + generation.ToString());
-                    Console.WriteLine("double[] : "  + (doubleArray.Capacity * sizeof(double)).ToString());
+                    Console.WriteLine("count: "  + doubleArray.Count.ToString());
+                    Console.WriteLine("count_size: "  + (doubleArray.Count * sizeof(double)).ToString() + " bytes");
+                    Console.WriteLine("cap: "  + doubleArray.Capacity.ToString());
+                    Console.WriteLine("cap_size: "  + (doubleArray.Capacity * sizeof(double)).ToString() + " bytes");
                     DateTime start = DateTime.Now;
                     if (generation == 2)
                     {
@@ -69,14 +79,19 @@ namespace ConsoleApp1
             Console.WriteLine("Sizes in bytes:" );
             StringBuilder str = new StringBuilder();
             int generation = -1;
+            int iter = 0;
             while (generation != 2)
             {
+                iter++;
                 str.Append('a');
                 if (generation != GC.GetGeneration(str))
                 {
                     generation++;
                     Console.WriteLine("Generation: " + generation.ToString());
-                    Console.WriteLine("string : "  + (str.Length * sizeof(char)).ToString());
+                    Console.WriteLine("count: "  + str.Length.ToString());
+                    Console.WriteLine("count_size: "  + (str.Length * sizeof(char)).ToString() + " bytes");
+                    Console.WriteLine("cap: "  + str.Capacity.ToString());
+                    Console.WriteLine("cap_size: "  + (str.Capacity * sizeof(char)).ToString() + " bytes");
                     DateTime start = DateTime.Now;
                     if (generation == 2)
                     {
@@ -133,11 +148,91 @@ namespace ConsoleApp1
             }
 
         }
-       
+
+        static void GCPureString()
+        {
+            int capacity = 3824192;
+            int gen = -1;
+            for (int i = 1; i < capacity && gen < 2; i++)
+            {
+                string str = new string('a', i);
+                int realGen = GC.GetGeneration(str);
+                if (gen != realGen)
+                {
+                    gen++;
+                    Console.WriteLine("Generation: " + realGen.ToString());
+                    Console.WriteLine("count: "  + str.Length.ToString());
+                    Console.WriteLine("count_size: "  + (str.Length * sizeof(char)).ToString() + " bytes");
+                    if (gen != realGen)
+                    {
+                        DateTime start = DateTime.Now;
+                        GC.Collect(realGen);
+                        DateTime end = DateTime.Now;
+                        Console.WriteLine("Collecting time:" + (end - start).ToString());
+                        break;
+                    }
+                }
+                GC.Collect(realGen);
+            }
+        }
+        
+        static void GCPureIntVector()
+        {
+            int capacity = 524289;
+            int gen = -1;
+            for (int i = 1; i < capacity && gen < 2; i++)
+            {
+                int[] array = new int[i];
+                int realGen = GC.GetGeneration(array);
+                if (gen != realGen)
+                {
+                    gen++;
+                    Console.WriteLine("Generation: " + realGen.ToString());
+                    Console.WriteLine("count: "  + array.Length.ToString());
+                    Console.WriteLine("count_size: "  + (array.Length * sizeof(int)).ToString() + " bytes");
+                    if (realGen == 2)
+                    {
+                        DateTime start = DateTime.Now;
+                        GC.Collect(realGen);
+                        DateTime end = DateTime.Now;
+                        Console.WriteLine("Collecting time:" + (end - start).ToString());
+                        break;
+                    }
+                }
+                GC.Collect(realGen);
+            }
+        }
+        
+        static void GCPureDoubleVector()
+        {
+            int capacity = 524288;
+            int gen = -1;
+            for (int i = 1; i < capacity && gen < 2; i++)
+            {
+                double[] array = new double[i];
+                int realGen = GC.GetGeneration(array);
+                if (gen != realGen)
+                {
+                    gen++;
+                    Console.WriteLine("Generation: " + realGen.ToString());
+                    Console.WriteLine("count: "  + array.Length.ToString());
+                    Console.WriteLine("count_size: "  + (array.Length * sizeof(double)).ToString() + " bytes");
+                    if (realGen == 2)
+                    {
+                        DateTime start = DateTime.Now;
+                        GC.Collect(realGen);
+                        DateTime end = DateTime.Now;
+                        Console.WriteLine("Collecting time:" + (end - start).ToString());
+                        break;
+                    }
+                }
+                GC.Collect(realGen);
+            }
+        }
         
         static void Main(string[] args)
         {
-            StringType();
+            GCPureString();
         }
     }
 }
