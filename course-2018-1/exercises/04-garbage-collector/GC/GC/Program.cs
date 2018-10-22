@@ -58,6 +58,9 @@ namespace GarbageCollector
         {
             for (var i = 0; i < 100; ++i)
             {
+                _ = new int[100];
+                _ = new int[1000];
+                _ = new int[10000];
                 _ = new int[100000];
             }
             DateTime start = DateTime.Now;
@@ -70,10 +73,6 @@ namespace GarbageCollector
                               "Timespan: {1}", 
                 count,
                 end-start);
-            Console.WriteLine("Generation: 0    " +
-                              "Count: 1000   " +
-                              "Timespan: {0}",
-                (end - start) * 1000 / count);
 
             start = DateTime.Now;
             count = GC.CollectionCount(1);
@@ -85,10 +84,6 @@ namespace GarbageCollector
                               "Timespan: {1}",
                 count,
                 end - start);
-            Console.WriteLine("Generation: 1    " +
-                              "Count: 1000   " +
-                              "Timespan: {0}",
-                (end - start) * 1000 / count);
 
             start = DateTime.Now;
             count = GC.CollectionCount(2);
@@ -100,10 +95,6 @@ namespace GarbageCollector
                               "Timespan: {1}",
                 count,
                 end - start);
-            Console.WriteLine("Generation: 2    " +
-                              "Count: 1000   " +
-                              "Timespan: {0}",
-                (end - start) * 1000 / count);
         }
     }
 }
