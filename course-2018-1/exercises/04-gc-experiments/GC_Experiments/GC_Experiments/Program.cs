@@ -5,57 +5,63 @@ namespace GC_Experiments
 {
     class Program
     {
-        private static void Generations()
+        private static void MeasureTimeOnGeneration(int gen)
+        {
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
+            
+            GC.Collect(gen, GCCollectionMode.Forced);
+            GC.WaitForPendingFinalizers();
+            
+            stopwatch.Stop();
+            Console.WriteLine("Generation " + gen + ": " + stopwatch.Elapsed);
+        }
+        
+        private static void MeasureGcTime()
         {
             var stopwatch = new Stopwatch();
             
             var exp_arr = new double[10000];
             
-            stopwatch.Start();
-            GC.Collect(0, GCCollectionMode.Forced);
-            GC.WaitForPendingFinalizers();
-            stopwatch.Stop();
-            Console.WriteLine("Generation 0: " + stopwatch.Elapsed);
-
-            stopwatch.Restart();
-            GC.Collect(1, GCCollectionMode.Forced);
-            GC.WaitForPendingFinalizers();
-            stopwatch.Stop();
-            Console.WriteLine("Generation 1: " + stopwatch.Elapsed);
             
-            stopwatch.Restart();
-            GC.Collect(2, GCCollectionMode.Forced);
-            GC.WaitForPendingFinalizers();
-            stopwatch.Stop();
-            Console.WriteLine("Generation 2: " + stopwatch.Elapsed);
+            MeasureTimeOnGeneration(0);
+            MeasureTimeOnGeneration(1);
+            MeasureTimeOnGeneration(2);
         }
-        
-        static void Main(string[] args)
+
+        private static void CheckArrLength<T>()
         {
-//            Generations();
-           
+            var arrMaxSize = 0;
+            var arr = new T[arrMaxSize];
+            while (GC.GetGeneration(arr) != 2)
+            {
+                arr = new T[++arrMaxSize];
+            }
+            Console.WriteLine(typeof(T).FullName + " arrays: " + arrMaxSize);
+        }
+
+        private static void CheckStrLength()
+        {
             var str = "";
             while (GC.GetGeneration(str) != 2)
             {
                 str += "a";
             }
             Console.WriteLine("Strings: " + str.Length);
-
-            var intArrMaxSize = 0;
-            var intArr = new int[intArrMaxSize];
-            while (GC.GetGeneration(intArr) != 2)
-            {
-                intArr = new int[++intArrMaxSize];
-            }
-            Console.WriteLine("Int arrays: " + intArrMaxSize);
+        }
+        
+        private static void CheckLength()
+        {
+            CheckStrLength();
+            CheckArrLength<int>();
+            CheckArrLength<double>();
+        }
             
-            var doubleArrMaxSize = 0;
-            var doubleArr = new double[doubleArrMaxSize];
-            while (GC.GetGeneration(doubleArr) != 2)
-            {
-                doubleArr = new double[++doubleArrMaxSize];
-            }
-            Console.WriteLine("Double arrays: " + doubleArrMaxSize);
+            
+        static void Main(string[] args)
+        {         
+//            MeasureGcTime();
+            CheckLength();
         }
     }
 }
