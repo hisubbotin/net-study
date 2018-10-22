@@ -57,6 +57,10 @@ namespace GarbageCollector {
             GC.WaitForPendingFinalizers();
 
             Console.WriteLine(GetAverageTime(0, GetArraySize<int>() - 1));
+            
+            GC.Collect(2, GCCollectionMode.Forced, true);
+            GC.WaitForPendingFinalizers();
+            
             Console.WriteLine(GetAverageTime(2, GetArraySize<int>()));
         }
     }
