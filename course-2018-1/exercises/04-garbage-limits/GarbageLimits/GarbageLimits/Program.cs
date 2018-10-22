@@ -26,8 +26,6 @@ namespace GarbageLimits
             }
             watch = System.Diagnostics.Stopwatch.StartNew();
             GC.Collect(1, GCCollectionMode.Forced);
-            GC.WaitForPendingFinalizers();
-            GC.Collect(1, GCCollectionMode.Forced);
             watch.Stop();
             elapsedMs = watch.ElapsedMilliseconds;
             Console.WriteLine("Elapsed time " + elapsedMs);
