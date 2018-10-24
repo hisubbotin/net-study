@@ -66,3 +66,21 @@ Tags: struct, operator overloading, extension methods, xml documentation comment
 - юнит-тестированием.
 
 Инструкция лежит в [03-boring-vector/readme.md](03-boring-vector/readme.md).
+
+## 04. Garbage Cleaning
+
+Задание в свободной форме:
+
+- Экспериментальным путем найти с какого размера объектов (string, массив int/double) clr помещает объекты в LOH
+- Оценить время сборки мусора в разных поколениях
+
+## 05. Wubba Lubba Dub Dub
+
+Tags: string, char, unicode, regex, unicode categories.
+
+В данном задании вы поиграетесь с текстами и познакомитесь с:
+
+- предикатами для определения категорий Юникода
+- поддержкой регулярных выражений в .Net.
+
+Инструкция лежит в [05-wubba-lubba-dub-dub/readme.md](05-wubba-lubba-dub-dub/readme.md)
