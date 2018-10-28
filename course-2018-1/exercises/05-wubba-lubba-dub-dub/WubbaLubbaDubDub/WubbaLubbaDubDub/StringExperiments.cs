@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace StringExperiments    
 {
     class Program
     {
-        void Measure(Func<void, List<string>> method, string methodName)
+        void Measure(Func<List<string>> method, string methodName)
         {
             Stopwatch watch = new Stopwatch();
             watch.Start();
-            method();
             watch.Stop();
             TimeSpan ts = watch.Elapsed;
             string elapsedTime = String.Format("{0:00}:{1:00}:{2:00}.{3:00}", ts.Hours, 
@@ -53,13 +53,11 @@ namespace StringExperiments
 
             Console.WriteLine(String.Concat("numStrings: ", numStrings.ToString(), "\n", 
                                             "numSymbols: ", numSymbols.ToString()));
-            Measure(StrJoin, "StrJoin:"));
-            Measure(StrConcat, "StrConcat:"));
-            Measure(StrBuilder, "StrBuilder:"));
+           
         }
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Regex.Split("hello , world ; , new day   , , , , , , , , ,, , , , , , America, Russia", @"\p{P}");
         }
     }
 }
