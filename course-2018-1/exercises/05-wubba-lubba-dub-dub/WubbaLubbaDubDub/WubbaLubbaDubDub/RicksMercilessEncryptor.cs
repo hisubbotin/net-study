@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
+using System.Reflection.PortableExecutable;
+using System.Text;
+using System.Text.RegularExpressions;
 
 namespace WubbaLubbaDubDub
 {
@@ -12,7 +16,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToLines(this string text)
         {
             // У строки есть специальный метод. Давай здесь без регулярок
-            throw new NotImplementedException();
+	        return text.Split("\n");
         }
 
         /// <summary>
@@ -21,7 +25,8 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            throw new NotImplementedException();
+			Regex re = new Regex(@"\s+");
+	        return re.Split(line);
         }
 
         /// <summary>
@@ -31,7 +36,7 @@ namespace WubbaLubbaDubDub
         public static string GetLeftHalf(this string s)
         {
             // у строки есть метод получения подстроки
-            throw new NotImplementedException();
+	        return s.Substring(0, s.Length / 2);
         }
 
         /// <summary>
@@ -40,8 +45,8 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetRightHalf(this string s)
         {
-            throw new NotImplementedException();
-        }
+			return s.Substring(s.Length / 2);
+		}
 
         /// <summary>
         /// Возвращает строку, в которой все вхождения строки <see cref="old"/> заменены на строку <see cref="@new"/>.
@@ -49,7 +54,7 @@ namespace WubbaLubbaDubDub
         public static string Replace(this string s, string old, string @new)
         {
             // и такой метод у строки, очевидно, тоже есть
-            throw new NotImplementedException();
+	        return s.Replace(old, @new);
         }
 
         /// <summary>
@@ -65,7 +70,18 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            throw new NotImplementedException();
+	        string CharToCode(char c)
+	        {
+		        return string.Format("\\u{0,4:X}", (int)c);
+	        }
+
+	        StringBuilder sb = new StringBuilder();
+	        foreach (char c in s)
+	        {
+		        sb.Append(CharToCode(c));
+	        }
+
+	        return sb.ToString();
         }
 
         /// <summary>
@@ -77,7 +93,13 @@ namespace WubbaLubbaDubDub
                 Собрать строку из последовательности строк можно несколькими способами.
                 Один из низ - статический метод Concat. Но ты можешь выбрать любой.
             */
-            throw new NotImplementedException();
+	        StringBuilder sb = new StringBuilder();
+	        for (int i = s.Length - 1; i >= 0; --i)
+	        {
+		        sb.Append(s[i]);
+	        }
+
+	        return sb.ToString();
         }
 
         /// <summary>
@@ -85,13 +107,18 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string InverseCase(this string s)
         {
-            /*
+			/*
                 Здесь тебе помогут статические методы типа char.
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            throw new NotImplementedException();
-        }
+			StringBuilder sb = new StringBuilder();
+	        foreach (char c in s)
+	        {
+				sb.Append(char.IsLower(c)? char.ToUpper(c): char.ToLower(c));
+	        }
+	        return sb.ToString();
+		}
 
         /// <summary>
         /// Возвращает строку, у которой каждый символ заменен на следующий за ним символ Юникода.
@@ -99,8 +126,13 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            throw new NotImplementedException();
-        }
+			StringBuilder sb = new StringBuilder();
+			foreach (char c in s)
+			{
+		        sb.Append((char)(c+1));
+	        }
+	        return sb.ToString();
+		}
 
 
         #region Чуть посложнее
@@ -117,8 +149,13 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
-        }
+			Regex lineCommentRegex = new Regex(@"\/\/.*\n");
+	        Regex blockCommentRegex = new Regex(@"\/\*(?:.|\s)*\*\/");
+	        Regex objs = new Regex("¶[A-F0-9]{4}:[A-F0-9]{4}¶");
+	        string withoutComments = blockCommentRegex.Replace(lineCommentRegex.Replace(text, ""), "");
+	        
+			return objs.Matches(withoutComments).Select(matched => Convert.ToInt64(matched.Value.Substring(1, matched.Value.Length-2).Replace(":", ""), 16)).ToImmutableList();
+		}
 
         #endregion
     }
