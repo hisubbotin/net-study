@@ -2,6 +2,17 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
+    <ApplicationIcon />
+    <OutputType>Exe</OutputType>
+    <StartupObject />
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BenchmarkDotNet" Version="0.10.0" />
+    <PackageReference Include="BenchmarkDotNet.Core" Version="0.10.0" />
+    <PackageReference Include="BenchmarkDotNet.Diagnostics.Windows" Version="0.10.0" />
+    <PackageReference Include="BenchmarkDotNet.Toolchains.Roslyn" Version="0.10.0" />
+    <PackageReference Include="System.Runtime" Version="4.3.0" />
+  </ItemGroup>
 
 </Project>
