@@ -18,12 +18,12 @@ namespace BoringVector
         /// <summary>
         /// Координата X
         /// </summary>
-        public double x { get; set; }
+        public double x { get; private set; }
         
         /// <summary>
         /// Координата Y
         /// </summary>
-        public double y { get; set; }
+        public double y { get; private set; }
         
         /// <summary>
         /// Конструктор класса <see cref="Vector"/>
