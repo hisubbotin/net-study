@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
+using WubbaLubbaDubDub;
 
 namespace StringExperiments    
 {
@@ -57,7 +58,7 @@ namespace StringExperiments
         }
         static void Main(string[] args)
         {
-            Regex.Split("hello , world ; , new day   , , , , , , , , ,, , , , , , America, Russia", @"\p{P}");
+            string[] s = Regex.Split(" , a, , a, ,ab, ,b, d, d, ,", @"\s|\p{P}");
         }
     }
 }

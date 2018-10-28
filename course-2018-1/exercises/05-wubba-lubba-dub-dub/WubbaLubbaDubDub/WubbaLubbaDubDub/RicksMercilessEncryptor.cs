@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace WubbaLubbaDubDub
@@ -14,7 +16,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToLines(this string text)
         {
             // У строки есть специальный метод. Давай здесь без регулярок
-            return text.Split(new [] {"\n", "\r", "\v"}, StringSplitOptions.None);
+            return text.Split(new [] {"\n", "\r\n"}, StringSplitOptions.RemoveEmptyEntries);
         }
 
         /// <summary>
@@ -42,7 +44,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetRightHalf(this string s)
         {
-            return s.Substring(s.Length / 2);
+            return s.Substring(s.Length / 2 );
         }
 
         /// <summary>
@@ -66,15 +68,17 @@ namespace WubbaLubbaDubDub
                 а затем использовать её для посимвольного преобразования всей строки.
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
-            */
-            char c = '\uD800';
-            
-            char CharToCodePoint(char d)
+            */            
+            string CharToCodePoint(char c)
             {
-                return 's';
-
+                return String.Concat(new string[] {@"\u",  Char.ConvertToUtf32(new string(new char[]{c} ), 0).ToString() });
             }
-            throw new NotImplementedException();
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < s.Length; i++)
+            {
+                builder.Append(CharToCodePoint(s[i]));
+            }
+            return builder.ToString();
         }
 
         /// <summary>
@@ -86,7 +90,12 @@ namespace WubbaLubbaDubDub
                 Собрать строку из последовательности строк можно несколькими способами.
                 Один из низ - статический метод Concat. Но ты можешь выбрать любой.
             */
-            throw new NotImplementedException();
+            StringBuilder builder = new StringBuilder();
+            for(int i = s.Length - 1; i >= 0; i-- )
+            {
+                builder.Append(s[i]);
+            }
+            return builder.ToString();
         }
 
         /// <summary>
@@ -99,7 +108,16 @@ namespace WubbaLubbaDubDub
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            throw new NotImplementedException();
+            CharEnumerator enumer = s.GetEnumerator();
+            StringBuilder builder = new StringBuilder();
+            while (enumer.MoveNext())
+            {
+                builder.Append(Char.IsUpper(enumer.Current) ? 
+                               Char.ToLower(enumer.Current) : 
+                               Char.ToUpper(enumer.Current));
+            }
+            enumer.Dispose();
+            return builder.ToString();
         }
 
         /// <summary>
@@ -108,7 +126,12 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            throw new NotImplementedException();
+            StringBuilder builder = new StringBuilder();
+            for(int i = 0; i < s.Length; i++)
+            {
+                builder.Append(Char.ConvertFromUtf32(Char.ConvertToUtf32(s, i) + 1));
+;            }
+            return builder.ToString();
         }
 
 
@@ -126,6 +149,10 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
+            // Убираем /* */
+            
+            // Убираем //
+            // Выделяем X:Y
             throw new NotImplementedException();
         }
 
