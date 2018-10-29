@@ -53,9 +53,7 @@ namespace BoringVector
         public Vector Add(Vector v)
         {
             //throw new NotImplementedException();
-            this.X += v.X;
-            this.Y += v.Y;
-            return this;
+            return new Vector(this.X + v.X, this.Y + v.Y);
         }
 
         /// <summary>
@@ -66,9 +64,7 @@ namespace BoringVector
         public Vector Scale(double k)
         {
             //throw new NotImplementedException();
-            this.X *= k;
-            this.Y *= k;
-            return this;
+            return new Vector(this.X * k, this.Y * k);
         }
 
         /// <summary>
