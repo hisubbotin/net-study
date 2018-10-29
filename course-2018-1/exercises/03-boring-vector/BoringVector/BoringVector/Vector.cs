@@ -18,12 +18,12 @@ namespace BoringVector
         /// <summary>
         /// Координата X
         /// </summary>
-        public double x { get; private set; }
+        public double x { get; }
         
         /// <summary>
         /// Координата Y
         /// </summary>
-        public double y { get; private set; }
+        public double y { get; }
         
         /// <summary>
         /// Конструктор класса <see cref="Vector"/>
@@ -60,9 +60,7 @@ namespace BoringVector
         /// <returns>Объект типа <see cref="Vector"/></returns>
         public Vector Add(Vector v)
         {
-            x += v.x;
-            y += v.y;
-            return this;
+            return new Vector(x + v.x, y + v.y);
         }
         
         /// <summary>
@@ -72,9 +70,7 @@ namespace BoringVector
         /// <returns>Объект типа <see cref="Vector"/></returns>
         public Vector Scale(double k)
         {
-            x *= k;
-            y *= k;
-            return this;
+            return new Vector(x * k, y * k);
         }
         
         /// <summary>
