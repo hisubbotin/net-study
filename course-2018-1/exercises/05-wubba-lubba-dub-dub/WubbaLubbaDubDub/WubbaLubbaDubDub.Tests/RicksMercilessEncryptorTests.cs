@@ -73,8 +73,8 @@ namespace WubbaLubbaDubDub.Tests
 		}
 
 		[Theory]
-		[InlineData("// line comment ¶1111:2222¶\nasdasd  ¶3333:4444¶/*asd\nmultiline */ sa¶5555:6666¶xzxc", new long[] { 0x33334444, 0x55556666 })]
-		[InlineData("Wubba ¶0000:0000¶ Lubba ¶00:200222¶ Dub ¶0000:0001¶ Dub ¶0000:0002¶", new long[] { 0, 1, 2})]
+		[InlineData("// line comment 1111:2222\nasdasd  3333:4444/*asd\nmultiline */ sa5555:6666xzxc", new long[] { 0x33334444, 0x55556666 })]
+		[InlineData("Wubba 0000:0000 Lubba 00:200222 Dub 0000:0001 Dub 0000:0002", new long[] { 0, 1, 2})]
 		public static void TestGetUsedObjects(string s, long[] ans)
 		{
 			Assert.Equal(ans, RicksMercilessEncryptor.GetUsedObjects(s));
