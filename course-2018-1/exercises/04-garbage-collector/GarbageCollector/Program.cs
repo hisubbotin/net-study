@@ -68,7 +68,7 @@ namespace GarbageCollector
             var StopWatch = new Stopwatch();
             
             //Нагрузим CLR:
-            for (var i = 0; i < 100; i++)
+            for (var i = 0; i < 1000; i++)
             {
                 var tmp = new int[50000];
             }
@@ -84,7 +84,7 @@ namespace GarbageCollector
 
             // Поколение - 1:
             Console.WriteLine("BEFORE CollectionCount 1 generation: {0}", GC.CollectionCount(1));
-            StopWatch.Start();
+            StopWatch.Restart();
             GC.Collect(1, GCCollectionMode.Forced);
             GC.WaitForPendingFinalizers();
             StopWatch.Stop();
@@ -93,7 +93,7 @@ namespace GarbageCollector
 
             // Поколение - 2:
             Console.WriteLine("BEFORE CollectionCount 2 generation: {0}", GC.CollectionCount(2));
-            StopWatch.Start();
+            StopWatch.Restart();
             GC.Collect(2, GCCollectionMode.Forced);
             GC.WaitForPendingFinalizers();
             StopWatch.Stop();
