@@ -25,7 +25,11 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            return Regex.Split(line, @"\p{P}");
+            Regex reg1 = new Regex(@"\p{P}");
+            Regex reg2 = new Regex(@"\s");
+            string[] s = Regex.Split(line, reg1 + "|" + reg2);
+            string[] y = s.Where(x => !string.IsNullOrWhiteSpace(x)).ToArray();
+            return y;
         }
 
         /// <summary>
@@ -71,14 +75,12 @@ namespace WubbaLubbaDubDub
             */            
             string CharToCodePoint(char c)
             {
-                return String.Concat(new string[] {@"\u",  Char.ConvertToUtf32(new string(new char[]{c} ), 0).ToString() });
+                
+                //String.Concat(new string[] {@"\\u",  Char.ConvertToUtf32(new string(c,1), 0).ToString() });
+                string k = $"\\u{Char.ConvertToUtf32(new string(c, 1), 0):X4}";
+                return k;
             }
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < s.Length; i++)
-            {
-                builder.Append(CharToCodePoint(s[i]));
-            }
-            return builder.ToString();
+            return string.Join(string.Empty, s.Select(ch => CharToCodePoint(ch)));
         }
 
         /// <summary>
@@ -150,10 +152,31 @@ namespace WubbaLubbaDubDub
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
             // Убираем /* */
-            
+            var toErase = new Regex(@"\/\*[^*]*\*+([^\/][^*]*\*+)*\/");
+            var splited = toErase.Split(text);
+            text = String.Join("", splited);
             // Убираем //
+            toErase = new Regex(@"\/\/[^*]*\n");
+            var splited2 = toErase.Split(text);
+            var name = new Regex(@"[A-Za-z]\w:\w\w");
             // Выделяем X:Y
-            throw new NotImplementedException();
+            var selected = splited2.Select(txt => name.Match(txt) );
+            var enumer = selected.GetEnumerator();
+            List<long> builder = new List<long>();
+            while (enumer.MoveNext())
+            {
+                if (enumer.Current.ToString() != "")
+                {
+                    var v = enumer.Current;
+                    string k = v.ToString();
+                    string p = k.Replace(":", string.Empty);
+                    char[] z = p.ToCharArray();
+                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(z);
+                    builder.Add(BitConverter.ToInt32(bytes, 0));
+                }
+            }
+
+            return  builder.ToImmutableList();
         }
 
         #endregion

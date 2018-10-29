@@ -24,8 +24,8 @@ namespace WubbaLubbaDubDub.Tests
         }
         
         [Theory]
-        [InlineData("a . ,,a. b. ppp, : \" \" , ,, , , , , , , ttt.", new string[] {"a", "a", "b", "ppp", "ttt"})]
-        [InlineData("... Moscow New_York ,, ; ; ; Oslo", new string[] {"Moscow", "New_York", "Oslo"})]
+        [InlineData(". , ; a , \n \r\n , a , ; ; b ; ", new string[] {"a", "a", "b"})]
+        [InlineData(". , ; a , \n \r\n , a , ; ; b ; ", new string[] {"a", "a", "b"})]
         void Test_SplitToWords(string text, params string[] result)
         {
             string[] splited = RicksMercilessEncryptor.SplitToLines(text);
@@ -63,11 +63,12 @@ namespace WubbaLubbaDubDub.Tests
         }
         
         [Theory]
-        [InlineData("Paul", "\u0050\u0061\u0075\u006C")]
-        [InlineData("John", "\u004A\u006F\u0068\u006E")]
+        [InlineData("Paul", "\\u0050\\u0061\\u0075\\u006C")]
+        [InlineData("John", "\\u004A\\u006F\\u0068\\u006E")]
         void Test_CharsToCodes(string test, string result)
         {
-            Assert.Equal(RicksMercilessEncryptor.CharsToCodes(test), result);
+            string tmp = RicksMercilessEncryptor.CharsToCodes(test);
+            Assert.Equal(tmp, result);
         }
         
         [Theory]
@@ -96,14 +97,11 @@ namespace WubbaLubbaDubDub.Tests
             Assert.Equal(RicksMercilessEncryptor.ShiftInc(test), result);
         }
 
-        /*[Theory]
-        [InlineData("void f(int a) { AV:Ku, OP:bk, // hh:RR \n // jj:RR \n TF:TF}",
-            new string[] {"AV:Ku", "OP:bk", "TF:TF"})]
-        [InlineData("class A { // Something UU:TT \n HH:JJ /* *  text * text *  text * * #1# }", new string[] {"HH:JJ"})]
-        void Test_GetUsedObjects(string text, long[] result);
-        {
-            
+        [Theory]
+        [InlineData("void f() { /*AA:BB*/  /* cc:DD */  // jkjnkjnjknn kjnkjnjknkj  \n  // \n // kk:ll \n tt:ii}", new long[] {1768518772})]
+        void Test_GetUsedObjects(string text, long[] result)
+        {   
             Assert.Equal(RicksMercilessEncryptor.GetUsedObjects(text), result);
-        }*/
+        }
     }
 }
