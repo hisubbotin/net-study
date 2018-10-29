@@ -17,7 +17,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToLines(this string text)
         {
             // У строки есть специальный метод. Давай здесь без регулярок
-            return text.Split("\n");
+            return text.Split(Environment.NewLine);
         }
 
         /// <summary>
@@ -153,8 +153,8 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            var deleteLargeComment = new Regex("\\/\\*(.|\\n)*\\*\\/").Replace(text, "");
-            var deleteSmallComment = new Regex("\\/\\/.*\\n").Replace(deleteLargeComment, "");
+            var deleteLargeComment = new Regex("\\/\\*(.|\\n)*\\*\\/").Replace(text, String.Empty);
+            var deleteSmallComment = new Regex("\\/\\/.*\\n").Replace(deleteLargeComment, String.Empty);
             var ids = new Regex(@"[A-F0-9]{4}:[A-F0-9]{4}").Matches(deleteSmallComment);
             
             return ids.Select(matched => Convert.ToInt64(matched.Value.Replace(":", ""), 16)).ToImmutableList();
