@@ -73,7 +73,7 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            return String.Concat(s.Select(CharToUnicodeCode));
+            return string.Concat(s.Select(CharToUnicodeCode));
         }
 
         /// <summary>
@@ -85,7 +85,7 @@ namespace WubbaLubbaDubDub
                 Собрать строку из последовательности строк можно несколькими способами.
                 Один из низ - статический метод Concat. Но ты можешь выбрать любой.
             */
-            return String.Concat(s.Reverse());
+            return string.Concat(s.Reverse());
         }
 
         private static char InverseCharRegister(char character)
@@ -127,7 +127,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            return String.Concat(s.Select(GetNextUnicode));
+            return string.Concat(s.Select(GetNextUnicode));
         }
 
 
@@ -139,14 +139,17 @@ namespace WubbaLubbaDubDub
         /// Текст <see cref="text"/> так же содержит строчные (//) и блоковые (/**/) комментарии, которые нужно игнорировать.
         /// Т.е. в комментариях идентификаторы объектов искать не нужно. И, кстати, блоковые комментарии могут быть многострочными.
         /// </summary>
-        public static IImmutableList<long> GetUsedObjects(this string text)
+        public static string [] GetUsedObjects(this string text)
         {
             /*
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
-        }
+            var noComments = new Regex("\\/\\/.*\\n|\\/\\*(.|\\n)*?\\*\\/");
+            var identifier = new Regex("[0-9a-zA-Z]{4}:[0-9a-zA-Z]{4}");
+            return noComments.Split(text)
+                .SelectMany(str => identifier.Matches(str).Select(match => match.Groups[0].Value)).ToArray();
+        }		         
 
         #endregion
     }

@@ -1,5 +1,6 @@
 using System;
 using Xunit;
+using System.Collections.Generic;
 
 namespace WubbaLubbaDubDub.Tests
 {
@@ -63,6 +64,12 @@ namespace WubbaLubbaDubDub.Tests
         public void TestShiftInc(string s, string res)
         {
             Assert.Equal(s.ShiftInc(), res);
+        }
+        
+        [Theory]
+        [InlineData("//First comment \n /* Long \n comment \n */ My string F0BE:01A0 \n Second string AC10:0115", new string[] {"F0BE:01A0", "AC10:0115"})]
+        private void TestGetUsedObjects(string text, string[] result) {
+            Assert.Equal(result, text.GetUsedObjects());
         }
     }
 }
