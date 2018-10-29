@@ -152,7 +152,7 @@ namespace WubbaLubbaDubDub
 			Regex lineCommentRegex = new Regex(@"\/\/.*\n");
 	        Regex blockCommentRegex = new Regex(@"\/\*(?:.|\s)*\*\/");
 	        Regex objs = new Regex("[A-F0-9]{4}:[A-F0-9]{4}");
-	        string withoutComments = blockCommentRegex.Replace(lineCommentRegex.Replace(text, ""), "");
+	        string withoutComments = lineCommentRegex.Replace(blockCommentRegex.Replace(text, ""), "");
 	        
 			return objs.Matches(withoutComments).Select(matched => Convert.ToInt64(matched.Value.Replace(":", ""), 16)).ToImmutableList();
 		}
