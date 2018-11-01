@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.ComponentModel.Design;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace WubbaLubbaDubDub
 {
@@ -11,8 +14,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string[] SplitToLines(this string text)
         {
-            // У строки есть специальный метод. Давай здесь без регулярок
-            throw new NotImplementedException();
+            return text.Split('\n').Where(line => line != "").ToArray();
         }
 
         /// <summary>
@@ -20,8 +22,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string[] SplitToWords(this string line)
         {
-            // А вот здесь поиграйся с регулярками.
-            throw new NotImplementedException();
+            return Regex.Split(line, "[ |.|!|:|;|,]+");
         }
 
         /// <summary>
@@ -30,8 +31,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetLeftHalf(this string s)
         {
-            // у строки есть метод получения подстроки
-            throw new NotImplementedException();
+            return s.Substring(0, s.Length / 2);
         }
 
         /// <summary>
@@ -40,7 +40,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetRightHalf(this string s)
         {
-            throw new NotImplementedException();
+            return s.Substring(s.Length / 2);
         }
 
         /// <summary>
@@ -48,8 +48,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string Replace(this string s, string old, string @new)
         {
-            // и такой метод у строки, очевидно, тоже есть
-            throw new NotImplementedException();
+            return s.Replace(old, @new);
         }
 
         /// <summary>
@@ -58,14 +57,18 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string CharsToCodes(this string s)
         {
-            /*
-                Может быть удобным здесь же сначала написать локальную функцию
-                которая содержит логику для преобразования одного символа,
-                а затем использовать её для посимвольного преобразования всей строки.
-                FYI: локальную функцию можно объявлять даже после строки с return.
-                То же самое можно сделать и для всех оставшихся методов.
-            */
-            throw new NotImplementedException();
+            var result = "";
+            foreach (var c in s)
+            {
+                result += GetCode(c);
+            }
+
+            return result;
+
+            string GetCode(char c)
+            {
+                return "\\u" + Convert.ToByte(c).ToString("x4");
+            }
         }
 
         /// <summary>
@@ -73,11 +76,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetReversed(this string s)
         {
-            /*
-                Собрать строку из последовательности строк можно несколькими способами.
-                Один из низ - статический метод Concat. Но ты можешь выбрать любой.
-            */
-            throw new NotImplementedException();
+            return new string(s.ToCharArray().Reverse().ToArray());
         }
 
         /// <summary>
@@ -85,12 +84,21 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string InverseCase(this string s)
         {
-            /*
-                Здесь тебе помогут статические методы типа char.
-                На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
-                Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
-            */
-            throw new NotImplementedException();
+            var charArray = s.ToCharArray();
+            for (var i = 0 ; i < charArray.Length; ++i)
+            {
+                if (Char.IsLower(charArray[i]))
+                {
+                    charArray[i] = Char.ToUpper(charArray[i]);
+                }
+                else
+                {
+                    charArray[i] = Char.ToLower(charArray[i]);
+                }
+
+            }
+
+            return new string(charArray);
         }
 
         /// <summary>
@@ -99,7 +107,18 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            throw new NotImplementedException();
+            var result = "";
+            foreach (char c in s)
+            {
+                result += ShiftChar(c);
+            }
+
+            return result;
+
+            char ShiftChar(char c)
+            {
+                return Convert.ToChar(Convert.ToByte(c) + 1);
+            }
         }
 
 
@@ -113,11 +132,14 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static IImmutableList<long> GetUsedObjects(this string text)
         {
-            /*
-                Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
-                Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
-            */
-            throw new NotImplementedException();
+
+            var noCommentsString = Regex.Replace(text, "//[^\n]*\n|/\\*(.|\\n)*\\*/", "");
+            var result = new Regex("¶[A-F0-9]{4}:[A-F0-9]{4}¶")
+                .Matches(noCommentsString)
+                .Select(matched => Convert.ToInt64(matched.Value.Substring(1, matched.Value.Length - 2)
+                    .Replace(":", ""), 16))
+                .ToImmutableList();
+            return result;
         }
 
         #endregion
