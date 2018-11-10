@@ -3,11 +3,13 @@
 <!-- TOC -->
 
 - [Classes](#classes)
+  - [Namespaces](#namespaces)
   - [Members](#members)
-  - [Модификаторы доступа](#access-modifiers)
+  - [Access Modifiers](#access-modifiers)
   - [Конструкторы](#Конструкторы)
   - [Methods](#methods)
-    - [Local functions (TODO)](#local-functions-todo)
+    - [Local functions](#local-functions)
+    - [Deconstructors](#deconstructors)
   - [Properties](#properties)
   - [`readonly`](#readonly)
   - [`const`](#const)
@@ -26,6 +28,53 @@
   - [Аттрибуты](#Аттрибуты)
 
 <!-- /TOC -->
+
+<div style="page-break-after: always;"></div>
+
+## Namespaces
+
+Пространства имен нужны для логической группировки родственных типов.
+Делают имя класса уникальным для компилятора.
+Например, `System.Int32`, `System.Collections.Generic.List`.
+
+`using` - директива заставляет компилятор добавлять этот префикс к классам, пока не найдет нужный класс.
+
+В коде можно писать имя класса без namespace.
+
+```cs
+using System.IO;       // Классы для работы с файловой системой, потоками
+using System.Collections;   // Все готовые коллекции
+using System.Collections.Generic; // Обобщенные коллекции
+using System.Linq;          // Набор хелперов для генерации LINQ запросов
+using Newtonsoft.Json;      // Подключили сторонюю библиотеку
+using Abbyy.Shared.Library; // Подключили свою отдельную библиотеку
+...
+var list = new List<int>();
+
+```
+
+<div style="page-break-after: always;"></div>
+
+Пространства имен и сборки могут не быть связаны друг с другом.
+
+Типы одного пространства имен могут быть реализованы разными сборками.
+
+Чтобы обезапасить от конфликтов имен рекомендуется использовать namespace,
+начинающийся с имени компании, потом название системы/подсистемы.
+
+Если в двух namespace содержатся одинаковые классы, то:
+
+- либо надо указывать полное имя класса с namespace
+- либо можно, используя директиву `using`, задать alias для класса
+
+```cs
+using System.Windows.Forms;
+using myButton = Abbyy.Shared.Controls.Button; // Добавляем alias для класса
+
+...
+var button = new myButton();
+var button = new Abbyy.Shared.Controls.Button();
+```
 
 <div style="page-break-after: always;"></div>
 
@@ -59,7 +108,8 @@ internal class SomeType
 - `internal` - только в текущей сборке
 - `private` - только в данном классе
 - `protected` - в классе и его наследниках
-- `protected internal` - в классе и его наследниках из данной сборки
+- `internal protected` - в классах данной сборки или любых его наследниках (дурное название, конечно)
+- `private protected` - доступен в классе и его наследниках в данной сборке
 
 Можно определить сборку [дружественной](https://msdn.microsoft.com/en-us/library/0tke9fxk(v=vs.100).aspx), чтобы internal можно было использовать в другой сборке.
 
@@ -115,14 +165,8 @@ e.SomeProp = 5  // Идентично
 <div style="page-break-after: always;"></div>
 
 - Конструкторы позволяют инициализировать объект
-- Есть ключевое слово `this` для доступа к полям экземпляра
-- Конструкторы не наследуются
 - Если конструктор не указать, компилятор создаст пустой конструктор без параметров автоматически.
-
-```cs
-public class SomeType {  public SomeType() }
-public class SomeType {  public SomeType() : base() { } }
-```
+- Есть ключевое слово `this` для доступа к полям экземпляра
 
 ```cs
 internal class SomeType
@@ -135,8 +179,27 @@ internal class SomeType
         this._value = x; // Ключевое слово this
     }
 }
-
 var value = new SomeType(x);
+```
+
+<div style="page-break-after: always;"></div>
+
+- Конструкторы не наследуются
+
+```cs
+public class BaseType
+{
+    private readonly _x;
+    public BaseType(int x)
+    {
+        _x = x;
+    }
+}
+
+public class SomeType : BaseType
+{  
+    public SomeType(int x) : base(x) { }
+}
 ```
 
 <div style="page-break-after: always;"></div>
@@ -148,10 +211,9 @@ internal class SomeType
 {
     internal int Value;
 }
-// Инициализируем
-var value = new SomeType();
+var value = new SomeType(); // Инициализируем
 value.Value = 10;
-// Эквивалент через инициализатор
+// Похожее поведение через инициализатор
 var value = new SomeType { Value = 10 };
 ```
 
@@ -233,7 +295,6 @@ public class Example
     {
         Console.WriteLine($"{a} {b}");
     }
-}
 ```
 
 <div style="page-break-after: always;"></div>
@@ -255,7 +316,6 @@ static void ExampleValue(int x, int y)
 
 int x = 1;
 int y = 2;
-
 ExampleValue(x, y);
 Console.WriteLine(x); // 1
 ExampleReference(ref a, b);
@@ -326,13 +386,11 @@ public static int Add(params int[] values)
     if (values != null);
     {
         for (int x = 0; x < values.Length; x++)
-        {
             sum += values[x];
-        }
     }
     return sum;
 }
-
+...
 int result = Add(new int[] {1, 2, 3, 4, 5});
 result = Add(1, 2, 3, 4, 5);
 result = Add(); // Все варианты валидны
@@ -341,9 +399,48 @@ result = Add(null);
 
 <div style="page-break-after: always;"></div>
 
-### Local functions (TODO)
+### Local functions
 
-### Deconstructors (TODO)
+Можно объявлять анонимные методы прямо в теле методов (подробнее потом при сравнении с делегатами):
+
+- Локальные переменные передаются в метод через ref
+- Не создает делегат (нет аллокации на него)
+- Можно использовать итераторы `yield return`
+
+```cs
+public double Do(double a, double b, double c)
+{
+    var resultA = f(a);
+    var resultB = f(b);
+    return resultA + resultB;
+
+    double f(double x) => 2 * x + 3 + c;
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+### Deconstructors
+
+Можно возвращать набор полей и делать ему ["deconstructing"](https://docs.microsoft.com/en-us/dotnet/csharp/deconstruct):
+
+Подробнее о `Tuple` в лекции generic.
+
+```cs
+public static void Main()
+{
+    (string firstname, string lastname, int height) = GetSomeData("Alex");
+    Console.WriteLine($" {firstname} - {lastname} - {height}");
+}
+
+private static (string, string, int) GetSomeData(string name)
+{
+    if (name == "Alex")
+        return ("Alexander", "Subbotin", 196);
+
+    return (string.Empty, string.Empty, 0);
+}
+```
 
 <div style="page-break-after: always;"></div>
 
@@ -474,9 +571,8 @@ public class Automobile
     public static int SizeOfGasTank { get { return 15; } }
     public static void Drive() { }
     public static event EventType RunOutOfGas;
-    // Other non-static fields and properties...
 }
-
+...
 Automobile.Drive(); // Обращаемся через тип
 int i = Automobile.NumberOfWheels;
 ```
@@ -520,12 +616,10 @@ Console.WriteLine(Math.Abs(dub));
 public static class MyHelper
 {
     public static readonly string Format;
-
     static MyHelper()
     {
         Format = Configuration.Format;
     }
-
     public static string EncodeObject<T>(T value) {...}
 }
 ```
@@ -599,7 +693,6 @@ internal class A
     {
         X = x;
     }
-
     internal int X {get;set;}
 }
 
@@ -610,7 +703,6 @@ internal class B:A
         Y = y;
         // base.X;
     }
-
     internal int Y {get;set;}
 }
 ```
@@ -681,16 +773,11 @@ public class A
 {
     public virtual string Method => "this A";
 }
-
 public class B:A
 {
     public override sealed string Method => "this B";
 }
-
-public sealed C:B
-{
-    //
-}
+public sealed C:B { }
 ```
 
 <div style="page-break-after: always;"></div>
@@ -787,15 +874,14 @@ class SampleClass : IControl, ISurface
     {
         Console.WriteLine("Paint");
     }
-
-    SampleClass sc = new SampleClass();
-    IControl ctrl = (IControl)sc;
-    ISurface srfc = (ISurface)sc;
-
-    sc.Paint();
-    ctrl.Paint();
-    srfc.Paint();
 }
+...
+SampleClass sc = new SampleClass();
+IControl ctrl = (IControl)sc;
+ISurface srfc = (ISurface)sc;
+sc.Paint();
+ctrl.Paint();
+srfc.Paint();
 ```
 
 <div style="page-break-after: always;"></div>
@@ -806,16 +892,10 @@ class SampleClass : IControl, ISurface
 ```cs
 public class SampleClass : IControl, ISurface
 {
-    void IControl.Paint()
-    {
-        System.Console.WriteLine("IControl.Paint");
-    }
-    void ISurface.Paint()
-    {
-        System.Console.WriteLine("ISurface.Paint");
-    }
+    void IControl.Paint() => System.Console.WriteLine("IControl.Paint");
+    void ISurface.Paint() => System.Console.WriteLine("ISurface.Paint");
 }
-
+...
 SampleClass obj = new SampleClass();
 //obj.Paint();  // Compiler error.
 IControl c = (IControl)obj;
@@ -870,12 +950,10 @@ SOF Discussion [1](https://stackoverflow.com/questions/56867/interface-vs-base-c
 public class Example
 {
     public int X { get; set; }
-
     public static Example operator +(Example f, Example s)
     {
         return new Example { X = f.X + s.X };
     }
-
     public static bool operator >(Example f, Example s) => return (f.X > s.X);
     public static bool operator <(Example f, Example s) => return (f.X < s.X);
 }
@@ -1104,8 +1182,8 @@ internal sealed class SomeType {}
 Как их использовать? `System.Attribute`
 
 - `IsDefined`
-- `GetCustmoAttributes`
-- `GetCustmoAttribute`
+- `GetCustomAttributes`
+- `GetCustomAttribute`
 
 ```cs
 public static String Format(Type enumType, Object value, String format)

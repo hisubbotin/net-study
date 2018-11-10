@@ -358,9 +358,21 @@ private static void ComparingWithNull<T>(T obj)
 
 #### `default`
 
-- `default` используется для получения дефолтного значения в Generic типах/методах, поскольку null просто так получить не можем (для значимых)
+- [`default`](https://docs.microsoft.com/en-us/dotnet/csharp/programming-guide/statements-expressions-operators/default-value-expressions) используется для получения дефолтного значения в Generic типах/методах, поскольку null просто так получить не можем (для значимых)
 - для ссылочных возвращает `null`
 - для значимых 0 (инициализированное нулями значение)
+
+| | | 
+| - |-|
+| Any reference type | null |
+| Numeric value type | Zero |
+| bool | false |
+| char | '\0' |
+| enum | The value produced by the expression (E)0, where E is the enum identifier. |
+| struct | The value produced by setting all value type fields to their default value and all reference type fields to null. |
+| Nullable type | An instance for which the HasValue property is false and the Value property is undefined. |
+
+<div style="page-break-after: always;"></div>
 
 ```cs
 class Element<T>
