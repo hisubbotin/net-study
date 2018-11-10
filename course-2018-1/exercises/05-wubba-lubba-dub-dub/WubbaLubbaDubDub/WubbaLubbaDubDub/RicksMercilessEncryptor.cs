@@ -14,7 +14,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToLines(this string text)
         {
             // У строки есть специальный метод. Давай здесь без регулярок
-            return text.SplitToLines();
+            return text.Split("\n");
         }
 
         /// <summary>

@@ -29,6 +29,7 @@ namespace StringConcat
         [Benchmark]
         public string StrBuilder()
         {
+            sb = new StringBuilder();
             for (int i = 0; i < arrlen; i++)
             {
                 sb.Append(data[i]);
