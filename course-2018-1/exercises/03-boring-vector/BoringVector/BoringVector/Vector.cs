@@ -44,9 +44,12 @@ namespace BoringVector
         /// <returns>Сумма векторов</returns>
         public Vector Add(Vector v)
         {
-            this.X += v.X;
-            this.Y += v.Y;
-            return this;
+            double a = this.X + v.X;
+            double b = this.Y + v.Y;
+            Vector result = new Vector();
+            result.X = a;
+            result.Y = b;
+            return result;
         }
         
         /// <summary>
@@ -56,9 +59,12 @@ namespace BoringVector
         /// <returns>Получившийся вектор</returns>
         public Vector Scale(double k)
         {
-            this.X *= k;
-            this.Y *= k;
-            return this;
+            double a = this.X * k;
+            double b = this.Y * k;
+            Vector result = new Vector();
+            result.X = a;
+            result.Y = b;
+            return result;
         }
         
         /// <summary>
