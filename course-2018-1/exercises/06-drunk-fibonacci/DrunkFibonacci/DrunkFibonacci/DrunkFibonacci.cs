@@ -1,9 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DrunkFibonacci
 {
-    internal static class DrunkFibonacci
+    public static class DrunkFibonacci
     {
         /// <summary>
         /// Создает пустой массив заданной длины.
@@ -12,7 +13,7 @@ namespace DrunkFibonacci
         public static int[] CreateIntArray(int len)
         {
             // на создание массивов заданной длины
-            throw new NotImplementedException();
+            return new int[len];
         }
 
         /// <summary>
@@ -24,7 +25,10 @@ namespace DrunkFibonacci
         public static void FillIntArray(int[] arr, int seed, int step)
         {
             // на задание значений массива
-            throw new NotImplementedException();
+            for (var i = 0; i < arr.Length; i++) 
+            {
+                arr[i] = seed + i * step;
+            }
         }
 
         /// <summary>
@@ -34,7 +38,7 @@ namespace DrunkFibonacci
         public static int[] GetFirstFiveFibonacci()
         {
             // на создание массива с инициализацией
-            throw new NotImplementedException();
+            return new int[]{1, 1, 2, 3, 5};
         }
 
         /// <summary>
@@ -49,9 +53,33 @@ namespace DrunkFibonacci
 
                 Задача на ленивую генерацию последовательностей.
             */
-            throw new NotImplementedException();
+            var myFavoriteNumber = 27;
+            var random = new Random(-1 * myFavoriteNumber);
+            while (true)
+            {
+                yield return random.Next();
+            }
         }
+        
+        /// <summary>
+        /// Возвращает последовательность Фибоначчи.
+        /// </summary>
+        public static IEnumerable<int> GetFibonacciOriginal()
+        {
+            yield return 1;
+            yield return 1;
+            var last = 1;
+            var current = 1;
 
+            while (true)
+            {
+                var next = unchecked(last + current);
+                yield return next;
+                last = current;
+                current = next;
+            }
+        }
+        
         /// <summary>
         /// Возвращает последовательность Фибоначчи, которая слегка перебрала и теперь путается, что-то забывает или по десятому разу рассказывает одни и те же шутки :)
         /// </summary>
@@ -67,7 +95,39 @@ namespace DrunkFibonacci
                     из последовательности GetDeterministicRandomSequence и проверяешь, есть ли у числа Y единичные биты числа 42.
                 При вычислении сложения переполнение типа разрешено и всячески поощряется.
             */
-            throw new NotImplementedException();
+            yield return 1;
+            yield return 1;
+            var last = 1;
+            var current = 1;
+
+            var index = 3;
+
+            var drs = GetDeterministicRandomSequence().GetEnumerator();
+            while (true)
+            {
+                var next = unchecked(last + current);
+                
+                drs.MoveNext();
+                
+                if ((drs.Current & 42) == 42)
+                {
+                    next &= ~42;
+                }
+                if (index % 6 != 0)
+                {
+                    if (index % 6 == 4)
+                    {
+                        yield return 300;
+                    }
+                    else
+                    {
+                        yield return next;
+                    }
+                }
+                last = current;
+                current = next;
+                index++;
+            }
         }
 
         /// <summary>
@@ -78,7 +138,7 @@ namespace DrunkFibonacci
         public static int GetMaxOnRange(int from, int cnt)
         {
             // научишься пропускать и брать фиксированную часть последовательности, агрегировать. Максимум есть среди готовых функций агрегации.
-            throw new NotImplementedException();
+            return GetDrunkFibonacci().Take(from + cnt - 1).Skip(from - 1).Max();
         }
 
         /// <summary>
@@ -88,7 +148,7 @@ namespace DrunkFibonacci
         public static List<int> GetNextNegativeRange(int from = 1)
         {
             // научишься пропускать и брать по условию, превращать в список (см. ToList).
-            throw new NotImplementedException();
+            return GetDrunkFibonacci().Skip(from - 1).SkipWhile((x) => x >= 0).TakeWhile((x) => x < 0).ToList();
         }
 
         /// <summary>
@@ -97,7 +157,7 @@ namespace DrunkFibonacci
         public static IEnumerable<int> GetXoredWithLaggedItself()
         {
             // узнаешь о существовании функции Zip.
-            throw new NotImplementedException();
+            return GetDrunkFibonacci().Zip(GetDrunkFibonacci().Skip(42), (a, b) => a ^ b);
         }
 
         /// <summary>
@@ -106,7 +166,19 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
-            throw new NotImplementedException();
+            var drunkFibonacci = GetDrunkFibonacci().GetEnumerator();
+
+            while (true)
+            {
+                int[] set16 = new int[16];
+                for (var i = 0; i < 16; i++)
+                {
+                    drunkFibonacci.MoveNext();
+                    set16[i] = drunkFibonacci.Current;
+                }
+
+                yield return set16;
+            }
         }
 
         /// <summary>
@@ -122,7 +194,7 @@ namespace DrunkFibonacci
                 Вообще говоря, SelectMany умеет много чего и мегаполезна.
                 Она в какой-то степени эквивалентна оператору `bind` над монадами (в данном случае над монадами последовательностей).
             */
-            throw new NotImplementedException();
+            return GetInChunks().SelectMany(set16 => set16.OrderBy(Math.Abs).Take(3));
         }
 
         /// <summary>
@@ -156,7 +228,7 @@ namespace DrunkFibonacci
 
                 Итого научишься группировать и создавать на их основе словарь (см. ToDictionary).
             */
-            throw new NotImplementedException();
+            return GetDrunkFibonacci().Take(10000).GroupBy(item => item % 8).ToDictionary(item => item.Key, item => item.Count());
         }
     }
 }
