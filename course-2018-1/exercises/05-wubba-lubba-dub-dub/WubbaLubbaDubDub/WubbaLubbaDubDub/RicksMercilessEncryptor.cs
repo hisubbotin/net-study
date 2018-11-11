@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
+using System.Security.Cryptography.X509Certificates;
+using System.Text.RegularExpressions;
 
 namespace WubbaLubbaDubDub
 {
@@ -12,7 +15,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToLines(this string text)
         {
             // У строки есть специальный метод. Давай здесь без регулярок
-            throw new NotImplementedException();
+            return text.Split('\n');
         }
 
         /// <summary>
@@ -21,7 +24,8 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            throw new NotImplementedException();
+            string pattern = @"[^a-zA-Z0-9_]+";
+            return Regex.Split(line, pattern);
         }
 
         /// <summary>
@@ -31,7 +35,7 @@ namespace WubbaLubbaDubDub
         public static string GetLeftHalf(this string s)
         {
             // у строки есть метод получения подстроки
-            throw new NotImplementedException();
+            return s.Substring(0, s.Length / 2);
         }
 
         /// <summary>
@@ -40,7 +44,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetRightHalf(this string s)
         {
-            throw new NotImplementedException();
+            return s.Substring(s.Length / 2);
         }
 
         /// <summary>
@@ -49,7 +53,7 @@ namespace WubbaLubbaDubDub
         public static string Replace(this string s, string old, string @new)
         {
             // и такой метод у строки, очевидно, тоже есть
-            throw new NotImplementedException();
+            return s.Replace(old, @new);
         }
 
         /// <summary>
@@ -65,7 +69,12 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            throw new NotImplementedException();
+            return String.Join("", s.Select(CharToCode));
+
+            string CharToCode(char c)
+            {
+                return String.Format(@"\u{0}", ((int) c).ToString("X4"));
+            }
         }
 
         /// <summary>
@@ -77,7 +86,7 @@ namespace WubbaLubbaDubDub
                 Собрать строку из последовательности строк можно несколькими способами.
                 Один из низ - статический метод Concat. Но ты можешь выбрать любой.
             */
-            throw new NotImplementedException();
+            return String.Concat(s.Reverse());
         }
 
         /// <summary>
@@ -90,7 +99,12 @@ namespace WubbaLubbaDubDub
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            throw new NotImplementedException();
+            return String.Concat(s.Select(InvertCharCase));
+
+            char InvertCharCase(char c)
+            {
+                return char.IsLower(c) ? char.ToUpper(c) : char.ToLower(c);
+            }
         }
 
         /// <summary>
@@ -99,7 +113,12 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            throw new NotImplementedException();
+            return String.Concat(s.Select(GetNextChar));
+
+            char GetNextChar(char c)
+            {
+                return (char)(c + 1);
+            }
         }
 
 
@@ -117,7 +136,20 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
+            string identifierPattern = @"¶([0-9a-fA-F]{8}):([0-9a-fA-F]{8})¶";
+            string oneLineCommetPattern = @"//.*?\n";
+            string multilineCommentPattern = @"/\*.*?\*/";
+
+            // удаляем комментарии
+            string filtered = Regex.Replace(text, oneLineCommetPattern, "", RegexOptions.Singleline);
+            filtered = Regex.Replace(filtered, multilineCommentPattern, "", RegexOptions.Singleline);
+
+            var matches = Regex.Matches(filtered, identifierPattern, RegexOptions.Singleline);
+            Console.WriteLine(matches);
+
+            return matches.Select(x => Convert.ToInt64(x.Groups[1].Value + x.Groups[2].Value, 16))
+                          .Distinct()
+                          .ToImmutableList();
         }
 
         #endregion
