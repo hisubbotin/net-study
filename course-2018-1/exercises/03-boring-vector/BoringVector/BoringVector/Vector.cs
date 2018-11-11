@@ -107,7 +107,7 @@ namespace BoringVector
         /// <returns>строковое представление вектора</returns>
         public override string ToString()
         {
-            return "(" + X.ToString("F") +"; " + Y.ToString("F") + ")";
+            return $"({X:F};{Y:F})";
         }
 
         #region operators
