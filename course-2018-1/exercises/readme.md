@@ -3,7 +3,7 @@
 <!-- TOC -->
 
 - [Exercises](#exercises)
-  - [Цель заданий](#Цель-заданий)
+  - [Target](#target)
   - [Code of conduct](#code-of-conduct)
   - [Git + GitHub workflow](#git--github-workflow)
   - [01. May the primitive types be with you](#01-may-the-primitive-types-be-with-you)
@@ -11,10 +11,11 @@
   - [03. Boring vector](#03-boring-vector)
   - [04. Garbage Cleaning](#04-garbage-cleaning)
   - [05. Wubba Lubba Dub Dub](#05-wubba-lubba-dub-dub)
+  - [06. Go home, Fibonacci, you're drunk](#06-go-home-fibonacci-youre-drunk)
 
 <!-- /TOC -->
 
-## Цель заданий
+## Target
 
 Первые задания предполагаются простыми и направлеными на то, чтобы максимально полно покрыть базовые части фреймворка. Мы старательно избегаем задач на алгоритмы и прочие зубодробительные штуки, чтобы вы полностью сконцентрировались на самом языке, фреймворке и их возможностях.
 
@@ -87,3 +88,14 @@ Tags: string, char, unicode, regex, unicode categories.
 - поддержкой регулярных выражений в .Net.
 
 Инструкция лежит в [05-wubba-lubba-dub-dub/readme.md](05-wubba-lubba-dub-dub/readme.md)
+
+## 06. Go home, Fibonacci, you're drunk
+
+Tags: generics, linq, collections, enumerables, lambdas, random.
+
+В данном задании вы познакомитесь с:
+
+- обобщенными коллекциями и перечисляемыми последовательностями,
+- операциями фильтрации, группировки, проекции и агрегации над ними.
+
+Инструкция лежит в [06-drunk-fibonacci/readme.md](06-drunk-fibonacci/readme.md).
