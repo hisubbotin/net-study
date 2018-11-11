@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using Xunit;
 
 namespace WubbaLubbaDubDub.Tests
@@ -18,21 +19,21 @@ namespace WubbaLubbaDubDub.Tests
         public void Test_GetLeftHalf()
         {
             string s = "aBCdeFbcBc!BCcb hg";
-            Assert.Equal(s.GetLeftHalf(), "gh !FedCBa");
+            Assert.Equal(s.GetLeftHalf(), "aBCdeFbcB");
         }
 
         [Fact]
         public void Test_Replace()
         {
             string s = "aBCdeFbcBc!BCcb hg";
-            Assert.Equal(s.Replace("BC", "XY"), "gh !FedCBa");
+            Assert.Equal(s.Replace("BC", "XY"), "aXYdeFbcBc!XYcb hg");
         }
 
         [Fact]
         public void Test_CharToCodes()
         {
-            string s = "aBCdeF! hg";
-            Assert.Equal(s.CharsToCodes(), "gh !FedCBa");
+            string s = "aBCdeF";
+            Assert.Equal(s.CharsToCodes(), "\\u0061\\u0042\\u0043\\u0064\\u0065\\u0046");
         }
 
         [Fact]
@@ -54,6 +55,14 @@ namespace WubbaLubbaDubDub.Tests
         {
             string s = "abcdef";
             Assert.Equal(s.ShiftInc(), "bcdefg");
+        }
+
+        [Fact]
+        public void Test_GetUsedObjects()
+        {
+            string text = "1234:5674\n4325:45\n364:1";
+            var answer = (new long[] {12345674}).ToImmutableList();
+            Assert.Equal(answer, text.GetUsedObjects());
         }
     }
 }

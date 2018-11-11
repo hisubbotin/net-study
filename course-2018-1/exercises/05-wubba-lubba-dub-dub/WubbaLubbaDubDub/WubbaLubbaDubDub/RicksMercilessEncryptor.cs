@@ -25,7 +25,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            return Regex.Split(line, @"\S");
+            return Regex.Split(line, @"\s+");
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace WubbaLubbaDubDub
                 То же самое можно сделать и для всех оставшихся методов.
             */
             StringBuilder builder = new StringBuilder();
-            foreach (char c in s)
+            foreach (var c in s)
             {
                 builder.Append(replaceChar(c));
             }
@@ -108,7 +108,7 @@ namespace WubbaLubbaDubDub
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
             StringBuilder builder = new StringBuilder();
-            foreach (char c in s)
+            foreach (var c in s)
             {
                 builder.Append(replaceChar(c));
             }
@@ -116,7 +116,7 @@ namespace WubbaLubbaDubDub
 
             char replaceChar(char c)
             {
-                return Char.ToLower(c);
+                return Char.IsUpper(c) ? Char.ToLower(c) : Char.ToUpper(c);
             }
         }
 
@@ -127,7 +127,7 @@ namespace WubbaLubbaDubDub
         public static string ShiftInc(this string s)
         {
             StringBuilder builder = new StringBuilder();
-            foreach (char c in s)
+            foreach (var c in s)
             {
                 builder.Append(replaceChar(c));
             }
@@ -154,7 +154,9 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
+            // пока без комментариев
+            var ids = new Regex(@"[0-9]{4}:[0-9]{4}").Matches(text);
+            return ids.Select(matched => Convert.ToInt64(matched.Value.Replace(":", ""), 10)).ToImmutableList();
         }
 
         #endregion
