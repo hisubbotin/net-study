@@ -231,9 +231,7 @@ namespace DrunkFibonacci
 
                 Итого научишься группировать и создавать на их основе словарь (см. ToDictionary).
             */
-           // return GetDrunkFibonacci().Take(10000).GroupBy(fibNumber => fibNumber, fibNumber => fibNumber % 8, group => Coune);
-            var t = GetDrunkFibonacci().Take(10000).GroupBy(fib => fib % 8).Select(group => group.Count())
-            return new Dictionary<int, int>();
+            return GetDrunkFibonacci().Take(10000).GroupBy(fib => fib % 8).ToDictionary(group => group.Key, group=> group.ToList().Count);
         }
     }
 }
