@@ -23,7 +23,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            return Regex.Split(line, "\\s"); ;
+            return Regex.Split(line, @"\s+"); ;
         }
 
         /// <summary>
@@ -67,9 +67,9 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            return string.Concat(s.Select(x => convert(x)));
-
             string convert(char x) => $"\\u{Convert.ToInt32(x).ToString("X4")}";
+
+            return string.Concat(s.Select(x => convert(x)));
         }
 
         /// <summary>
@@ -123,7 +123,14 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            
+            var comment = new Regex(@"(/\*(.|\n)*\*/)|(//[^\n]*($|\n))");
+            var filtered = comment.Replace(text, "");
+            var id = new Regex(@"([0-9a-fA-F]{8}):([0-9a-fA-F]{8})");
+
+            return id.Matches(filtered).Select(x => Convert.ToInt64(x.Groups[1].Value, 16)*(1 << 32) +
+                                                    Convert.ToInt64(x.Groups[2].Value, 16) )
+                          .Distinct()
+                          .ToImmutableList();
         }
 
         #endregion
