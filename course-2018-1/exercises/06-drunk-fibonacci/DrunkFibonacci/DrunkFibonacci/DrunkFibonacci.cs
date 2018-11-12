@@ -91,7 +91,7 @@ namespace DrunkFibonacci
                 fiboNumber += fiboNumberPrev;
                 fiboNumberPrev = fiboNumber - fiboNumberPrev;
 
-                if (iter > 4 && iter - 4 % 6 == 0)
+                if (iter > 4 && (iter - 4) % 6 == 0)
                 {
                     fiboNumber = 300;
                 }
