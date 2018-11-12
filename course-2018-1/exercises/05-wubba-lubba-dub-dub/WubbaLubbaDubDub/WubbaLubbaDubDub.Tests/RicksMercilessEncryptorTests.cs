@@ -60,7 +60,11 @@ namespace WubbaLubbaDubDub.Tests
         [Fact]
         public void Test_GetUsedObjects()
         {
-            string text = "1234:5674\n4325:45\n364:1";
+            string text = "1234:5674//4568:8906\n" +
+                          "4325:45\n" +
+                          "/*6785:4567\n" +
+                          "6755:4567*/\n" +
+                          "364:1";
             var answer = (new long[] {12345674}).ToImmutableList();
             Assert.Equal(answer, text.GetUsedObjects());
         }

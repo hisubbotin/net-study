@@ -12,7 +12,7 @@ namespace Compare
         {
             var timer = new Stopwatch();
             var random = new Random();
-            var countOfStrings = 100;
+            var countOfStrings = 300;
             var lengthsOfStrings = new int[] { 1, 10, 100, 1000, 10000, 100000 };
             var strings = new string[] { };
             for (var i = 0; i < countOfStrings; i++)

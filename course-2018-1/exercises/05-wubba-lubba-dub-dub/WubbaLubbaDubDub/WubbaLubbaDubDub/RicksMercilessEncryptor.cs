@@ -154,8 +154,9 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            // пока без комментариев
-            var ids = new Regex(@"[0-9]{4}:[0-9]{4}").Matches(text);
+            var oneLineComments = new Regex("\\/\\/(.)*\\n").Replace(text, "");
+            var manyLinesComments = new Regex("\\/\\*(.|\\n)*\\*\\/").Replace(oneLineComments, "");
+            var ids = new Regex(@"[0-9]{4}:[0-9]{4}").Matches(manyLinesComments);
             return ids.Select(matched => Convert.ToInt64(matched.Value.Replace(":", ""), 10)).ToImmutableList();
         }
 
