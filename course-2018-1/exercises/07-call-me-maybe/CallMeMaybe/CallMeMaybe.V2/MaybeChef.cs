@@ -32,7 +32,7 @@ namespace CallMeMaybe.V2
             // !!!: result имеет тип IEnumerable<IImmutableList<PumpkinMuffin>>
 
             // нужно явно вернуться из IEnumerable в Maybe - для этого и нужен соответствующий экстеншн.
-            return result.ToMaybe().GetValueOrDefault();
+            return result.ToMaybe().GetValueOrDefault(null);
         }
 
         private Maybe<BakingDish<PumpkinBatterCup>> PrepareBackingDish(BowlOf<FlourMixture> flourMixture, BowlOf<EggsMixture> eggsMixture)
@@ -52,8 +52,14 @@ namespace CallMeMaybe.V2
 
         private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
         {
-            // здесь сделай сам, пожалуйста
-            throw new NotImplementedException();
+            var result = 
+                from wholeWheatFlour in _cookingTable.FindCupsOf<WholeWheatFlour>(3.5m).ToMaybe()
+                from allPurposeFlour in _cookingTable.FindCupsOf<AllPurposeFlour>(3.5m).ToMaybe()
+                from pumpkinPieSpice in _cookingTable.FindTeaspoonsOf<PumpkinPieSpice>(5m).ToMaybe()
+                from bakingSoda in _cookingTable.FindTeaspoonsOf<BakingSoda>(2m).ToMaybe()
+                from salt in _cookingTable.FindTeaspoonsOf<Salt>(1.5m).ToMaybe()
+                select _cookingTable.FindBowlAndFillItWith(new FlourMixture());
+            return result.ToMaybe();
         }
 
         private Maybe<BowlOf<EggsMixture>> MakeEggsMixture()

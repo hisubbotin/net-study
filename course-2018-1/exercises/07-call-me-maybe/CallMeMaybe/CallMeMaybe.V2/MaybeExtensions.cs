@@ -5,16 +5,11 @@ namespace CallMeMaybe.V2
 {
     public static class MaybeExtensions
     {
-        public static Maybe<T> ToMaybe<T>(this T value)
+        public static Maybe<T> ToMaybe<T>(this T value) => value;
+
+        public static Maybe<T> ToMaybe<T>(this T? value) where T : struct
         {
-            // скопируй из предыдущего шага
-            throw new NotImplementedException();
-        }
-        public static Maybe<T> ToMaybe<T>(this T? value)
-            where T : struct
-        {
-            // скопируй из предыдущего шага
-            throw new NotImplementedException();
+            return value.HasValue ? value.Value : Maybe<T>.Nothing;
         }
 
         public static Maybe<T> ToMaybe<T>(this IEnumerable<T> seq)
@@ -26,7 +21,28 @@ namespace CallMeMaybe.V2
                     само же итерирование производится с помощью метода .Next().
                     Обрати внимание на его сигнатуру.
                 */
-                throw new NotImplementedException();
+                if (iter.MoveNext())
+                {
+                    return iter.Current;
+                } else
+                {
+                    return Maybe<T>.Nothing;
+                }
+            }
+        }
+
+        public static Maybe<T> ToMaybe<T>(this IEnumerable<T?> seq) where T : struct
+        {
+            using (var iter = seq.GetEnumerator())
+            {
+                if (iter.MoveNext())
+                {
+                    return iter.Current.ToMaybe();
+                }
+                else
+                {
+                    return Maybe<T>.Nothing;
+                }
             }
         }
     }
