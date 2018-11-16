@@ -161,7 +161,7 @@ namespace DrunkFibonacci
 		public static IEnumerable<int[]> GetInChunks()
 		{
 			// ни чему особо не научишься, просто интересная задачка :)
-			var seq = GetDrunkFibonacci();
+			IEnumerable<int> seq = GetDrunkFibonacci();
 			while (true)
 			{
 				yield return seq.Take(16).ToArray();
@@ -220,8 +220,7 @@ namespace DrunkFibonacci
 			return GetDrunkFibonacci()
 				.Take(10000)
 				.GroupBy(x => x % 8)
-				.Select(x => Tuple.Create(x.Key, x.Count()))
-				.ToDictionary(x => x.Item1, x => x.Item2);
+				.ToDictionary(x => x.Key, x => x.Count());
 		}
 	}
 }
