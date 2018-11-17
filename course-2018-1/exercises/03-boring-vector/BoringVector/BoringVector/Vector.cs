@@ -13,8 +13,7 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
-
-
+        public double X, Y;
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
                 - квадрат длины
@@ -24,31 +23,147 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        /// <summary>
+        /// Считает квадрат длины вектора
+        /// </summary>
+        /// <returns> Квадрат длины вектора</returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+        
+        /// <summary>
+        /// Прибавляет к текущему вектору заданный.
+        /// </summary>
+        /// <param name="v">Вектор, который надо прибавить</param>
+        /// <returns>Сумма векторов</returns>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector {X = X + v.X, Y = Y + v.Y};
         }
+        
+        /// <summary>
+        /// Умножает вектор на число.
+        /// </summary>
+        /// <param name="k">Параметр растяжения(сжатия) вектора.</param>
+        /// <returns>Получившийся вектор</returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector {X = X * k, Y = Y * k};
         }
+        
+        /// <summary>
+        /// Скалярное произведение
+        /// </summary>
+        /// <param name="v">Второй вектор</param>
+        /// <returns>Скалярное произведение</returns>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+        
+        /// <summary>
+        /// Векторное произведение
+        /// </summary>
+        /// <param name="v">Второй вектор</param>
+        /// <returns>Векторное произведение</returns>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
 
+        /// <summary>
+        ///  Строка координат вектора
+        /// </summary>
+        /// <returns>Строка координат вектора</returns>
+        public string ToString()
+        {
+            return string.Format("( {0}, {1})", X, Y);
+        }
+        
+        /// <summary>
+        /// Складывает два вектора
+        /// </summary>
+        /// <param name="v">Первый вектор</param>
+        /// <param name="u">Второй вектор</param>
+        /// <returns>Вектор, являющийся суммой этих двух</returns>
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return new Vector {X = v.X + u.X, Y = v.Y + u.Y};
+        }
+
+        /// <summary>
+        /// Вычитает один вектор из другого
+        /// </summary>
+        /// <param name="v">Уменьшаемый вектор</param>
+        /// <param name="u">Вычитаемый вектор</param>
+        /// <returns>Разность двух векторов</returns>
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return new Vector {X = v.X - u.X, Y = v.Y - u.Y};
+        }
+
+        /// <summary>
+        /// Умножает вектор на число (сначала идет число, потом вектор)
+        /// </summary>
+        /// <param name="k">Число</param>
+        /// <param name="v">Вектор</param>
+        /// <returns>Получившийся вектор</returns>
+        public static Vector operator *(double k, Vector v)
+        {
+            return new Vector {X = k * v.X, Y = k * v.Y};
+        }
+
+        /// <summary>
+        /// Умножает вектор на число (сначала идет вектор, потом число)
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        /// <param name="k">Число</param>
+        /// <returns>Получившийся вектор</returns>
+        public static Vector operator *(Vector v, double k)
+        {
+            return new Vector {X = k * v.X, Y = k * v.Y};
+        }
+
+        /// <summary>
+        /// Уменьшает вектор в k раз
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        /// <param name="k">число</param>
+        /// <returns>укороченный вектор</returns>
+        /// <exception cref="DivideByZeroException"></exception>
+        public static Vector operator /(Vector v, double k)
+        {
+            if (k == 0)
+            {
+                throw new DivideByZeroException();
+            }
+            return new Vector {X = v.X / k, Y = v.Y / k};
+        }
+
+        /// <summary>
+        /// Унарный плюс
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        /// <returns>копия вектора</returns>
+        public static Vector operator +(Vector v)
+        {
+            return new Vector{X = v.X, Y = v.Y};
+        }
+
+        /// <summary>
+        /// Унарный минус
+        /// </summary>
+        /// <param name="v">вектор</param>
+        /// <returns>обратный вектор</returns>
+        public static Vector operator -(Vector v)
+        {
+            return new Vector{X = - v.X, Y = -v.Y};
+        }
         #region operators
 
         /*
