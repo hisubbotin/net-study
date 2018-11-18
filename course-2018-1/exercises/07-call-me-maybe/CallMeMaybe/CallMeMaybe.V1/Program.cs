@@ -30,6 +30,8 @@ namespace CallMeMaybe.V1
             var maybeChef = new MaybeChef(cookingTable);
             muffins = maybeChef.CookPumpkinMuffins();
             Console.WriteLine(muffins.Count);
+
+			Console.ReadKey();
         }
 
         private static void TestSelectChain(Maybe<DateTime> maybeDt1, Maybe<DateTime> maybeDt2)
@@ -53,3 +55,28 @@ namespace CallMeMaybe.V1
         }
     }
 }
+
+/*
+Hello World!
+null
+Test Maybe<DateTime> for: null
+False
+null
+Don't know, man
+I have no value
+=======================================
+Test Maybe<DateTime> for: 18.11.2018 12:48:07
+True
+18.11.2018 12:48:07
+Today
+I have a value
+=======================================
+Test select chain for: null; 18.11.2018 12:48:07
+type: CallMeMaybe.V1.Maybe`1[System.DateTime]; value: null
+=======================================
+Test select chain for: 17.11.2018 0:00:00; 18.11.2018 12:48:07
+type: CallMeMaybe.V1.Maybe`1[System.DateTime]; value: 17.11.2018 12:48:07
+=======================================
+24
+24
+*/

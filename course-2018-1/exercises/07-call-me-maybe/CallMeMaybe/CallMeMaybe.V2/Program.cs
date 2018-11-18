@@ -29,7 +29,9 @@ namespace CallMeMaybe.V2
             var maybeChef = new MaybeChef(cookingTable);
             muffins = maybeChef.CookPumpkinMuffins();
             Console.WriteLine(muffins.Count);
-        }
+
+			Console.ReadKey();
+		}
 
         private static void TestSingleFrom<T>(Maybe<T> m)
         {
@@ -81,3 +83,41 @@ namespace CallMeMaybe.V2
         }
     }
 }
+
+/*
+Test from clause for: null
+type: System.Linq.Enumerable+SelectEnumerableIterator`2[System.DateTime,System.D
+ateTime]; values: []
+==========================
+Test from clause for: 18.11.2018 12:56:45
+type: System.Linq.Enumerable+SelectEnumerableIterator`2[System.DateTime,System.D
+ateTime]; values: [18.11.2018 12:56:45]
+==========================
+Test multiple from clause for: null; 18.11.2018 12:56:45
+type: System.Linq.Enumerable+<SelectManyIterator>d__167`3[System.DateTime,System
+.DateTime,<>f__AnonymousType9`2[System.DateTime,System.DateTime]]; values: []
+==========================
+Test multiple from clause for: 18.11.2018 12:56:45; 18.11.2018 12:56:45
+type: System.Linq.Enumerable+<SelectManyIterator>d__167`3[System.DateTime,System
+.DateTime,<>f__AnonymousType9`2[System.DateTime,System.DateTime]]; values: [{ x
+= 18.11.2018 12:56:45, y = 18.11.2018 12:56:45 }]
+==========================
+Test multiple from clause for: 10; 20
+type: System.Linq.Enumerable+<SelectManyIterator>d__167`3[System.Int32,System.In
+t32,<>f__AnonymousType9`2[System.Int32,System.Int32]]; values: [{ x = 10, y = 20
+ }]
+==========================
+Test multiple from clause with filter for: 3; 4; 5
+type: System.Linq.Enumerable+WhereSelectEnumerableIterator`2[<>f__AnonymousType1
+0`2[<>f__AnonymousType9`2[System.Int32,System.Int32],System.Int32],<>f__Anonymou
+sType11`3[System.Int32,System.Int32,System.Int32]]; values: [{ x = 3, y = 4, z =
+ 5 }]
+==========================
+Test multiple from clause with filter for: 2; 3; 5
+type: System.Linq.Enumerable+WhereSelectEnumerableIterator`2[<>f__AnonymousType1
+0`2[<>f__AnonymousType9`2[System.Int32,System.Int32],System.Int32],<>f__Anonymou
+sType11`3[System.Int32,System.Int32,System.Int32]]; values: []
+==========================
+24
+24
+*/

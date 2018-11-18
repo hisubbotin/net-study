@@ -28,7 +28,9 @@ namespace CallMeMaybe.Final
             var maybeChef = new MaybeChef(cookingTable);
             muffins = maybeChef.CookPumpkinMuffins();
             Console.WriteLine(muffins.Count);
-        }
+
+			Console.ReadKey();
+		}
 
         private static void TestSingleFrom<T>(Maybe<T> m)
         {
@@ -80,3 +82,25 @@ namespace CallMeMaybe.Final
         }
     }
 }
+
+/*
+==========================
+Test multiple from clause for: 18.11.2018 12:58:11; 18.11.2018 12:58:11
+type: CallMeMaybe.Maybe`1[<>f__AnonymousType10`2[System.DateTime,System.DateTime
+]]; values: [{ x = 18.11.2018 12:58:11, y = 18.11.2018 12:58:11 }]
+==========================
+Test multiple from clause for: 10; 20
+type: CallMeMaybe.Maybe`1[<>f__AnonymousType10`2[System.Int32,System.Int32]]; va
+lues: [{ x = 10, y = 20 }]
+==========================
+Test multiple from clause with filter for: 3; 4; 5
+type: CallMeMaybe.Maybe`1[<>f__AnonymousType12`3[System.Int32,System.Int32,Syste
+m.Int32]]; values: [{ x = 3, y = 4, z = 5 }]
+==========================
+Test multiple from clause with filter for: 2; 3; 5
+type: CallMeMaybe.Maybe`1[<>f__AnonymousType12`3[System.Int32,System.Int32,Syste
+m.Int32]]; values: [null]
+==========================
+24
+24
+*/
