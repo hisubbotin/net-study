@@ -57,7 +57,7 @@ namespace CallMeMaybe.V2
 				from wholeWheatFlour in _cookingTable.FindCupsOf<WholeWheatFlour>(3.5m).ToMaybe()
 				from allPurposeFlour in _cookingTable.FindCupsOf<AllPurposeFlour>(3.5m).ToMaybe()
 				from pumpkinPieSpice in _cookingTable.FindTeaspoonsOf<PumpkinPieSpice>(5m).ToMaybe()
-				from bakingSoda in _cookingTable.FindTeaspoonsOf<Salt>(1.5m).ToMaybe()
+				from bakingSoda in _cookingTable.FindTeaspoonsOf<BakingSoda>(2m).ToMaybe()
 				from salt in _cookingTable.FindTeaspoonsOf<Salt>(1.5m).ToMaybe()
 				select _cookingTable.FindBowlAndFillItWith(new FlourMixture()).GetValueOrDefault();
 			return result.ToMaybe();
