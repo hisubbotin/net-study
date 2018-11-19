@@ -155,16 +155,16 @@ namespace DrunkFibonacci
         {
             // ни чему особо не научишься, просто интересная задачка :)
             var generator = GetDrunkFibonacci().GetEnumerator();
-            while (true)
+            int[] chunk = new int[16];
+            int i = 0;
+            foreach (var val in GetDrunkFibonacci())
             {
-                int[] chunk = new int[16];
-                for (var i = 0; i < 16; ++i)
+                chunk[i] = generator.Current;
+                i = (i + 1) % 16;
+                if (i == 15)
                 {
-                    generator.MoveNext();
-                    chunk[i] = generator.Current;
+                    yield return chunk;
                 }
-
-                yield return chunk;
             }
         }
 
