@@ -16,7 +16,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToLines(this string text)
         {
             // У строки есть специальный метод. Давай здесь без регулярок
-            return text.Split("\n");
+            return text.Split(Environment.NewLine);
         }
 
         /// <summary>
@@ -69,15 +69,9 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            StringBuilder builder = new StringBuilder();
-            foreach (var c in s)
-            {
-                builder.Append(replaceChar(c));
-            }
+            return string.Join("", s.Select(ReplaceChar));
 
-            return builder.ToString();
-
-            string replaceChar(char c)
+            string ReplaceChar(char c)
             {
                 return "\\u" + ((int)c).ToString("X4");
             }
@@ -92,9 +86,7 @@ namespace WubbaLubbaDubDub
                 Собрать строку из последовательности строк можно несколькими способами.
                 Один из низ - статический метод Concat. Но ты можешь выбрать любой.
             */
-            char[] charArray = s.ToCharArray();
-            Array.Reverse(charArray);
-            return new string(charArray);
+            return string.Concat(s.Reverse());
         }
 
         /// <summary>
@@ -107,14 +99,9 @@ namespace WubbaLubbaDubDub
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            StringBuilder builder = new StringBuilder();
-            foreach (var c in s)
-            {
-                builder.Append(replaceChar(c));
-            }
-            return builder.ToString();
+            return string.Join("", s.Select(ReplaceChar));
 
-            char replaceChar(char c)
+            char ReplaceChar(char c)
             {
                 return Char.IsUpper(c) ? Char.ToLower(c) : Char.ToUpper(c);
             }
@@ -126,14 +113,9 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            StringBuilder builder = new StringBuilder();
-            foreach (var c in s)
-            {
-                builder.Append(replaceChar(c));
-            }
-            return builder.ToString();
+            return string.Join("", s.Select(ReplaceChar));
 
-            char replaceChar(char c)
+            char ReplaceChar(char c)
             {
                 return (char)((int)c+1);
             }
