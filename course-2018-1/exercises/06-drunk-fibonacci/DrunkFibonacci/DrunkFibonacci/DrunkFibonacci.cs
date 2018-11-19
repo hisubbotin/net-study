@@ -102,14 +102,12 @@ namespace DrunkFibonacci
 
             var index = 3;
 
-            var drs = GetDeterministicRandomSequence().GetEnumerator();
-            while (true)
-            {
-                var next = unchecked(last + current);
-                
-                drs.MoveNext();
-                
-                if ((drs.Current & 42) == 42)
+            var drs = GetDeterministicRandomSequence();
+            
+            var next = unchecked(last + current);
+            foreach (var Y in drs)
+            {  
+                if ((Y & 42) == 42)
                 {
                     next &= ~42;
                 }
@@ -126,6 +124,7 @@ namespace DrunkFibonacci
                 }
                 last = current;
                 current = next;
+                next = unchecked(last + current);
                 index++;
             }
         }
@@ -166,18 +165,12 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
-            var drunkFibonacci = GetDrunkFibonacci().GetEnumerator();
+            var drunkFibonacci = GetDrunkFibonacci();
 
             while (true)
             {
-                int[] set16 = new int[16];
-                for (var i = 0; i < 16; i++)
-                {
-                    drunkFibonacci.MoveNext();
-                    set16[i] = drunkFibonacci.Current;
-                }
-
-                yield return set16;
+                yield return drunkFibonacci.Take(16).ToArray();
+                drunkFibonacci = drunkFibonacci.Skip(16);
             }
         }
 
