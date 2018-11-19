@@ -35,23 +35,25 @@ namespace Numbers
         /// Возвращает результат сравнения двух вещественнозначных чисел.
         /// </summary>
         /// <returns>-1 - первое меньше второго, 0 - значения равны, 1 - первое больше второго.</returns>
-        internal static int Compare(double num1, double num2, double eps=double.Epsilon)
+        internal static double Compare(double num1, double num2, double eps=1e-10)
         {
             /*
                 Подумай, почему это задание дано в части про вещественнозначные числа. И почему не дана полная сигнатура метода.
                 Если сходу идей нет, перестань искать подвох и просто реализуй дословно. Теперь еще раз посмотри на код и подумай в чем может быть проблема, сколько должно быть аргументов.
             */
-            if (num1 > num2 + eps)
+            var dif = num1 - num2;
+
+            if (Math.Abs(dif) < eps)
             {
-                return 1;
+                return 0;
             }
-            else if (num2 > num1 + eps)
+            else if (dif < 0)
             {
                 return -1;
             }
             else
             {
-                return 0;
+                return 1;
             }
         }
 
