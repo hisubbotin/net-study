@@ -6,13 +6,20 @@
   - [Thread](#thread)
     - [`System.Threading.Thread`](#systemthreadingthread)
   - [Thread Pool](#thread-pool)
-    - [ExecutionContext](#executioncontext)
-    - [Cancellation](#cancellation)
+  - [Cancellation](#cancellation)
   - [TPL](#tpl)
     - [Класс Task](#класс-task)
       - [Continuation](#continuation)
     - [async / await](#async--await)
-    - [SyncronizationContext](#syncronizationcontext)
+  - [ExecutionContext](#executioncontext)
+  - [SyncronizationContext](#syncronizationcontext)
+    - [Deadlock на SynchronizationContext](#deadlock-на-synchronizationcontext)
+  - [Synchronization primitives](#synchronization-primitives)
+    - [lock](#lock)
+    - [volatile](#volatile)
+    - [Interlocked](#interlocked)
+  - [`Lazy<T>`](#lazyt)
+  - [Concurrent Collections](#concurrent-collections)
 
 <!-- /TOC -->
 
@@ -167,30 +174,7 @@ private static void Compute(Object state)
 
 <div style="page-break-after: always;"></div>
 
-### ExecutionContext
-
-Не лишним будет упомянуть, что есть контекст выполнения потока:
-
-- Параметры безопасности, Principal
-- Контекстные данные логического вызова
-
-- Копирование контекста занимает много ресурсов
-- По-умолчанию для новых потоков копируется контекст безопасности
-- Можно запретить копирование контекста
-
-```cs
-public sealed class ExecutionContext : IDisposable, ISerializable
-{
-    [SecurityCritical] public static AsyncFlowControl SuppressFlow();
-    public static void RestoreFlow();
-    public static Boolean IsFlowSuppressed();
-    // Не показаны редко применяемые методы
-}
-```
-
-<div style="page-break-after: always;"></div>
-
-### Cancellation
+## Cancellation
 
 - В C# используется стандартный паттерн отмены операций [скоординированная отмена](https://docs.microsoft.com/en-us/dotnet/standard/threading/cancellation-in-managed-threads) - оба класса должны явно поддерживать отмену
 - `CancellationTokenSource` - специальный класс для управления токеном и непосредственно отменой операции
@@ -772,3 +756,349 @@ Links:
   - [SOF: What is the difference between asynchronous programming and multithreading?](https://stackoverflow.com/questions/34680985/what-is-the-difference-between-asynchronous-programming-and-multithreading)
   - [SOF:Asynchronous vs synchronous execution, what does it really mean?](https://stackoverflow.com/questions/748175/asynchronous-vs-synchronous-execution-what-does-it-really-mean?rq=1)
   - [difference-between-await-and-continuewith, good example continue with problem](https://stackoverflow.com/questions/18965200/difference-between-await-and-continuewith?noredirect=1&lq=1)
+
+<div style="page-break-after: always;"></div>
+
+## ExecutionContext
+
+Не лишним будет упомянуть, что есть контекст выполнения потока [1](https://docs.microsoft.com/ru-ru/dotnet/api/system.threading.executioncontext?redirectedfrom=MSDN&view=netframework-4.7.2), [2](https://blogs.msdn.microsoft.com/pfxteam/2012/06/15/executioncontext-vs-synchronizationcontext/):
+
+- SecurityContext
+- HostExecutionContext
+- CallContext
+- SynchronizationContext
+
+MSDN:
+> ExecutionContext is one of those things that the vast majority of developers never need to think about.  It’s kind of like air: it’s important that it’s there, but except at some crucial times (e.g. when something goes wrong with it), we don’t think about it being there.  ExecutionContext is actually just a container for other contexts.  Some of these other contexts are ancillary, while some are vital to the execution model of .NET, but they all follow the same philosophy I described for ExecutionContext: if you have to know they’re there, either you’re doing something super advanced, or something’s gone wrong.
+
+<div style="page-break-after: always;"></div>
+
+MS Docs:
+> An execution context is the managed equivalent of a COM apartment. Within an application domain, the entire execution context must be transferred whenever a thread is transferred. This situation occurs during transfers made by the Thread.Start method, most thread pool operations, and Windows Forms thread marshaling through the Windows message pump. It does not occur in unsafe thread pool operations (such as the UnsafeQueueUserWorkItem method), which do not transfer the compressed stack.
+
+<div style="page-break-after: always;"></div>
+
+```cs
+public sealed class ExecutionContext : IDisposable, ISerializable
+{
+    public static System.Threading.ExecutionContext Capture ();
+    public static void Run (System.Threading.ExecutionContext executionContext, System.Threading.ContextCallback callback, object state);
+
+    [SecurityCritical] public static AsyncFlowControl SuppressFlow();
+    public static void RestoreFlow();
+    public static Boolean IsFlowSuppressed();
+    // Не показаны редко применяемые методы
+}
+```
+
+- ExecutionContext is captured with the static `Capture()` method
+- it’s restored during the invocation of a delegate via the static `Run()` method
+
+<div style="page-break-after: always;"></div>
+
+MSDN:
+> All of the methods in the .NET Framework that fork asynchronous work capture and restore ExecutionContext in a manner like this (that is, all except for those prefixed with the word “Unsafe,” which are unsafe because they explicitly do not flow ExecutionContext).  For example, when you use Task.Run, the call to Run captures the ExecutionContext from the invoking thread, storing that ExecutionContext instance into the Task object. When the delegate provided to Task.Run is later invoked as part of that Task’s execution, it’s done so via ExecutionContext.Run using the stored context.  This is true for Task.Run, for ThreadPool.QueueUserWorkItem, for Delegate.BeginInvoke, for Stream.BeginRead, for DispatcherSynchronizationContext.Post, and for any other async API you can think of.
+
+<div style="page-break-after: always;"></div>
+
+## SyncronizationContext
+
+Контекст синхронизации [MSDN](https://msdn.microsoft.com/magazine/gg598924.aspx?f=255&MSPPError=-2147217396), [MSDN ExecContext vs SyncContext](https://blogs.msdn.microsoft.com/pfxteam/2012/06/15/executioncontext-vs-synchronizationcontext/), [3](https://nirmalyabhattacharyya.com/2013/08/31/executioncontext-synchronizationcontext-and-callcontext/)
+
+- SynchronizationContext is just an abstraction, one that represents a particular environment you want to do some work in.
+- Предоставляет способ размещения единицы работы в очереди контекста
+- `SynchronizationContext.Current` - получает контекст синхронизации, привязанный к текущему потоку (синглтон в рамках потока). Хранится в данных потока
+- Хранение счетчика незавершенных асинхронных операций. Это позволяет использовать асинхронные ASP.NET-страницы и любой другой хост, где нужен счетчик такого рода. В большинстве случаев значение счетчика увеличивается на 1, когда захватывается текущий SynchronizationContext, и уменьшается на 1, когда захваченный SynchronizationContext используется для размещения уведомления о завершении в очереди контекста.
+- Изначально сделаны для работы с UI потоком.
+- Thread 1 / Thread 2 -> SyncContext -> GUI
+
+<div style="page-break-after: always;"></div>
+
+Какие бывают реализации:
+
+- `null` - это контекст по-умолчанию ThreadPool
+- AspNetSynchronizationContext (System.Web.dll) / LegacyAspNetSynchronizationContext
+  - Делегат, помещаемый в очередь полученного AspNetSynchronizationContext, восстанавливает идентификацию и культуру исходной страницы, а затем напрямую выполняет делегат. Этот делегат вызывается напрямую, даже если он ставится в очередь «асинхронно» вызовом Post.
+  - С концептуальной точки зрения, контекст AspNetSynchronizationContext весьма сложен.
+  - Если в одном приложении одновременно выполняется несколько операций, AspNetSynchronizationContext обеспечит их поочередное выполнение (по одной за раз). Они могут выполняться любым потоком, но этот поток получит идентификацию и культуру исходной страницы.
+- [DispatcherSyncronizationContext](https://docs.microsoft.com/en-us/dotnet/api/system.windows.threading.dispatchersynchronizationcontext?redirectedfrom=MSDN&view=netframework-4.7.2) (WPF)
+- [WindowsFormsSynchronizationContext](https://docs.microsoft.com/en-us/dotnet/api/system.windows.forms.windowsformssynchronizationcontext?redirectedfrom=MSDN&view=netframework-4.7.2)
+
+<div style="page-break-after: always;"></div>
+
+```cs
+public static void DoWork()
+{
+    var sc = SynchronizationContext.Current;
+    ThreadPool.QueueUserWorkItem(delegate
+    {
+        … // do work on ThreadPool
+        sc.Post(delegate
+        {
+            … // do work on the original context
+        }, null);
+   });
+}
+```
+
+> When you await a task, by default the awaiter will capture the current SynchronizationContext, and if there was one, when the task completes it’ll Post the supplied continuation delegate back to that context, rather than running the delegate on whatever thread the task completed or rather than scheduling it to run on the ThreadPool.  If a developer doesn’t want this marshaling behavior, it can be controlled by changing the awaitable/awaiter that’s used.  Whereas this behavior is always employed when you await a Task or Task<TResult>, you can instead await the result of calling task.ConfigureAwait(…).
+
+<div style="page-break-after: always;"></div>
+
+```cs
+// The important aspects of the SynchronizationContext APIclass
+SynchronizationContext
+{
+  // Dispatch work to the context.
+  void Post(..); // (asynchronously)
+  void Send(..); // (synchronously)
+  // Keep track of the number of asynchronous operations.
+  void OperationStarted();
+  void OperationCompleted();
+  // Each thread has a current context.
+  // If "Current" is null, then the thread's current context is
+  // "new SynchronizationContext()", by convention.
+  static SynchronizationContext Current { get; }
+  static void SetSynchronizationContext(SynchronizationContext);
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+| |Выполнение делегатов в определенном потоке|Делегаты выполняются по одному за раз|Делегаты выполняются в порядке очереди|Send может напрямую вызывать делегат|Post может напрямую вызывать делегат|
+|---------------|---|---|---|------------------------------|---------|
+|Windows Forms  |Да |Да |Да | Если вызывается из UI-потока | Никогда |
+|WPF/Silverlight|Да |Да |Да | Если вызывается из UI-потока | Никогда |
+|По умолчанию   |Нет|Нет|Нет| Всегда                       | Никогда |
+|ASP.NET        |Нет|Да |Нет| Всегда                       | Всегда  |
+
+<div style="page-break-after: always;"></div>
+
+### Deadlock на SynchronizationContext
+
+Stephen Cleary: [DontBlockAsyncCode](http://blog.stephencleary.com/2012/07/dont-block-on-async-code.html):
+
+```cs
+public static async Task<JObject> GetJsonAsync(Uri uri) // My "library" method.
+{
+  using (var client = new HttpClient())
+  {
+    var jsonString = await client.GetStringAsync(uri);
+    return JObject.Parse(jsonString);
+  }
+}
+// My "top-level" method.
+public class MyController : ApiController
+{
+  public string Get()
+  {
+    var jsonTask = GetJsonAsync(...);
+    return jsonTask.Result.ToString(); // DEADLOCKED
+  }
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+1. The top-level method calls GetJsonAsync (within the UI/ASP.NET context).
+2. GetJsonAsync starts the REST request by calling HttpClient.GetStringAsync (still within the context).
+3. GetStringAsync returns an uncompleted Task, indicating the REST request is not complete.
+4. GetJsonAsync awaits the Task returned by GetStringAsync. The context is captured and will be used to continue running the GetJsonAsync method later. GetJsonAsync returns an uncompleted Task, indicating that the GetJsonAsync method is not complete.
+5. The top-level method synchronously blocks on the Task returned by GetJsonAsync. This blocks the context thread.
+6. … Eventually, the REST request will complete. This completes the Task that was returned by GetStringAsync.
+7. The continuation for GetJsonAsync is now ready to run, and it waits for the context to be available so it can execute in the context.
+8. Deadlock. The top-level method is blocking the context thread, waiting for GetJsonAsync to complete, and GetJsonAsync is waiting for the context to be free so it can complete.
+
+<div style="page-break-after: always;"></div>
+
+```cs
+public static async Task<JObject> GetJsonAsync(Uri uri)
+{
+  using (var client = new HttpClient())
+  {
+    var jsonString = await client.GetStringAsync(uri).ConfigureAwait(false);
+    return JObject.Parse(jsonString);
+  }
+}
+public class MyController : ApiController
+{
+  public async Task<string> Get()
+  {
+    var json = await GetJsonAsync(...);
+    return json.ToString();
+  }
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+## Synchronization primitives
+
+MS Docs [Synchronization primitives](https://docs.microsoft.com/en-us/dotnet/standard/threading/overview-of-synchronization-primitives):
+
+- [Monitor](https://docs.microsoft.com/en-us/dotnet/api/system.threading.monitor?view=netframework-4.7.2) - grants mutually exclusive access to a shared resource by acquiring or releasing a lock on the object that identifies the resource.
+- [Mutex](https://docs.microsoft.com/en-us/dotnet/api/system.threading.mutex) (.NET Framework and .NET Core) -  like Monitor, grants exclusive access to a shared resource., Unlike Monitor, the Mutex class can be used for inter-process synchronization.
+- [SpinLock](https://docs.microsoft.com/en-us/dotnet/api/system.threading.spinlock) / [SpinWait](https://docs.microsoft.com/en-us/dotnet/api/system.threading.spinwait)
+- Semaphore, [SemaphoreSlim](https://docs.microsoft.com/en-us/dotnet/api/system.threading.semaphoreslim) - limit the number of threads that can access a shared resource or a pool of resources concurrently
+- EventWaitHandle, AutoResetEvent, ManualResetEvent, ManualResetEventSlim
+- [Barrier](https://docs.microsoft.com/en-us/dotnet/api/system.threading.barrier)
+
+<div style="page-break-after: always;"></div>
+
+### lock
+
+[lock](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/lock-statement) - базовый keywork языка, как if / else
+
+- The lock statement acquires the mutual-exclusion lock for a given object, executes a statement block, and then releases the lock. While a lock is held, the thread that holds the lock can again acquire and release the lock. Any other thread is blocked from acquiring the lock and waits until the lock is released.
+
+```cs
+lock (x) // where x is an expression of a reference type.
+{
+    // Your code...
+}
+```
+
+- You can't use the await keyword in the body of a lock statement.
+
+<div style="page-break-after: always;"></div>
+
+```cs
+object __lockObj = x;
+bool __lockWasTaken = false;
+try
+{
+    System.Threading.Monitor.Enter(__lockObj, ref __lockWasTaken);
+    // Your code...
+}
+finally
+{
+    if (__lockWasTaken) System.Threading.Monitor.Exit(__lockObj);
+}
+```
+
+<div style="page-break-after: always;"></div>
+
+### volatile
+
+[volatile modifier](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/volatile):
+
+> The volatile keyword indicates that a field might be modified by multiple threads that are executing at the same time. The compiler, the runtime system, and even hardware may rearrange reads and writes to memory locations for performance reasons. Fields that are declared volatile are not subject to these optimizations. Adding the volatile modifier ensures that all threads will observe volatile writes performed by any other thread in the order in which they were performed. There is no guarantee of a single total ordering of volatile writes as seen from all threads of execution.
+
+[Stackoverflow lock vs volatile vs interlocked](https://stackoverflow.com/questions/154551/volatile-vs-interlocked-vs-lock):
+> volatile just ensures the two CPUs see the same data at the same time
+
+<div style="page-break-after: always;"></div>
+
+### Interlocked
+
+[Interlocked Class](https://docs.microsoft.com/en-us/dotnet/api/system.threading.interlocked?view=netframework-4.7.2) - Provides atomic operations for variables that are shared by multiple threads.
+
+```cs
+public static int Add (ref int location1, int value);
+public static int Increment (ref int location);
+public static int Decrement (ref int location);
+public static int Exchange (ref int location1, int value);
+```
+
+<div style="page-break-after: always;"></div>
+
+## `Lazy<T>`
+
+```cs
+class Foo
+{
+  public readonly Expensive Expensive = new Expensive();
+  ...
+}
+class Expensive {  /* Предположим, что создание этого объекта является дорогим */ }
+```
+
+<div style="page-break-after: always;"></div>
+
+```cs
+class Foo
+{
+  Expensive _expensive;
+  public Expensive Expensive // Создать экземпляр класса Expensive отложенно
+  {
+    get
+    {
+      if (_expensive == null)
+          _expensive = new Expensive();
+      return _expensive;
+    }
+  }
+  ...
+}
+```
+
+С многопоточностью плохо
+
+<div style="page-break-after: always;"></div>
+
+```cs
+Expensive _expensive;
+readonly object _expenseLock = new object();
+
+public Expensive Expensive
+{
+  get
+  {
+    lock (_expenseLock)
+    {
+      if (_expensive == null)
+          _expensive = new Expensive();
+      return _expensive;
+    }
+  }
+}
+```
+
+Как-то фигово добавили многопоточности
+
+<div style="page-break-after: always;"></div>
+
+```cs
+volatile Expensive _expensive;
+public Expensive Expensive
+{
+  get
+  {
+    if (_expensive == null)
+    {
+      var expensive = new Expensive();
+      lock (_expenseLock)
+      {
+        if (_expensive == null)
+            _expensive = expensive;
+      }
+    }
+    return _expensive;
+  }
+}
+```
+
+Самому этим заниматься, конечно не надо.
+
+<div style="page-break-after: always;"></div>
+
+`Lazy<T>`
+
+```cs
+Lazy<Expensive> _expensive = new Lazy<Expensive>(() => new Expensive(), true);
+
+public Expensive Expensive { get { return _expensive.Value; } }
+```
+
+<div style="page-break-after: always;"></div>
+
+## Concurrent Collections
+
+[MS Docs](https://docs.microsoft.com/en-us/dotnet/standard/collections/thread-safe/index)
+
+- `ConcurrentBag<T>` Thread-safe implementation of an unordered collection of elements.
+- `ConcurrentDictionary<TKey,TValue>` Thread-safe implementation of a dictionary of key-value pairs.
+- `ConcurrentQueue<T>` Thread-safe implementation of a FIFO (first-in, first-out) queue.
+- `ConcurrentStack<T>` Thread-safe implementation of a LIFO (last-in, first-out) stack.
+- `BlockingCollection<T>` Provides bounding and blocking functionality for any type that implements IProducerConsumerCollection<T>. For more information, see BlockingCollection Overview.
+- `IProducerConsumerCollection<T>` The interface that a type must implement to be used in a BlockingCollection.
