@@ -135,6 +135,11 @@ namespace WubbaLubbaDubDub
 
         #region Чуть посложнее
 
+        
+        static long ConvertID(string id)
+        {
+            return BitConverter.ToInt32(System.Text.Encoding.UTF8.GetBytes(id.Replace(":", string.Empty)), 0);
+        }
         /// <summary>
         /// Возвращает список уникальных идентификаторов объектов, используемых в тексте <see cref="text"/>.
         /// Идентификаторы объектов имеют длину 8байт и представлены в тексте в виде ¶X:Y¶, где X - старшие 4 байта, а Y - младшие 4 байта.
@@ -148,31 +153,13 @@ namespace WubbaLubbaDubDub
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
             // Убираем /* */
-            var toErase = new Regex(@"\/\*[^*]*\*+([^\/][^*]*\*+)*\/");
-            var splited = toErase.Split(text);
-            text = String.Join("", splited);
+            text = new Regex(@"\/\*[^*]*\*+([^\/][^*]*\*+)*\/").Replace(text, "");
             // Убираем //
-            toErase = new Regex(@"\/\/[^*]*\n");
-            var splited2 = toErase.Split(text);
-            var name = new Regex(@"[A-Za-z]\w:\w\w");
+            text = new Regex(@"\/\/[^*]*\n").Replace(text, "");
             // Выделяем X:Y
-            var selected = splited2.Select(txt => name.Match(txt) );
-            var enumer = selected.GetEnumerator();
-            List<long> builder = new List<long>();
-            while (enumer.MoveNext())
-            {
-                if (enumer.Current.ToString() != "")
-                {
-                    var v = enumer.Current;
-                    string k = v.ToString();
-                    string p = k.Replace(":", string.Empty);
-                    char[] z = p.ToCharArray();
-                    byte[] bytes = System.Text.Encoding.UTF8.GetBytes(z);
-                    builder.Add(BitConverter.ToInt32(bytes, 0));
-                }
-            }
-
-            return  builder.ToImmutableList();
+            var identifiers = new Regex(@"[A-Za-z]\w:\w\w").Matches(text);
+            
+            return identifiers.Select( ID => ConvertID(ID.ToString()) ).ToImmutableList();
         }
 
         #endregion
