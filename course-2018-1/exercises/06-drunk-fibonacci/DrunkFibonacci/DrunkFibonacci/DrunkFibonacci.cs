@@ -112,10 +112,8 @@ namespace DrunkFibonacci
             // В новой последовательность 2- е модификации: повторения и вставки 300, sзануление битов не учитывается в формировании последовательности
             // см. определение ф-ции
             int count = 0;
-            while (true)
+            foreach (var Y in GetDeterministicRandomSequence())
             {
-                var iter = GetDeterministicRandomSequence();
-                int Y = iter.GetEnumerator().Current;
                 shiftWindow( ref cur, ref next, ref count);
                 if ( nextIterationForget(count) )
                 {
@@ -125,12 +123,7 @@ namespace DrunkFibonacci
                 {
                     next = 300;
                 }
-                int val = cur;
-                /*if ( hasOneBits(Y, 42) )
-                {
-                    val = val & ~42;
-                }*/
-                yield return val;
+                yield return !hasOneBits(Y, 42) ? cur : cur & ~42;
             }
         }
 
@@ -231,7 +224,7 @@ namespace DrunkFibonacci
 
                 Итого научишься группировать и создавать на их основе словарь (см. ToDictionary).
             */
-            return GetDrunkFibonacci().Take(10000).GroupBy(fib => fib % 8).ToDictionary(group => group.Key, group=> group.ToList().Count);
+            return GetDrunkFibonacci().Take(10000).GroupBy(fib => fib % 8).ToDictionary(group => group.Key, group=> group.Count());
         }
     }
 }
