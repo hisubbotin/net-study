@@ -110,15 +110,11 @@ namespace WubbaLubbaDubDub
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            CharEnumerator enumer = s.GetEnumerator();
             StringBuilder builder = new StringBuilder();
-            while (enumer.MoveNext())
+            foreach (var ch in s)
             {
-                builder.Append(Char.IsUpper(enumer.Current) ? 
-                               Char.ToLower(enumer.Current) : 
-                               Char.ToUpper(enumer.Current));
+                builder.Append(Char.IsUpper(ch) ? Char.ToLower(ch) : Char.ToUpper(ch));
             }
-            enumer.Dispose();
             return builder.ToString();
         }
 
