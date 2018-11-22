@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using CallMeMaybe.BaseModel;
+using CallMeMaybe.V1;
 
 namespace CallMeMaybe.V1
 {
