@@ -40,18 +40,18 @@ namespace CallMeMaybe.V1
                 По смыслу это фабрика объектов данного типа (ну или по модному монадный конструктор).
                 Т.к. это оператор неявного приведения, позволяет не засорять код кастами.
             */
-            throw new NotImplementedException();
+            return value == null ? new Maybe<T>(value) : Nothing;
         }
 
         #region Optional useful methods
 
         public static explicit operator T(Maybe<T> maybe)
         {
-            throw new NotImplementedException();
+            return maybe.Value;
         }
 
-        public T GetValueOrDefault() => throw new NotImplementedException();
-        public T GetValueOrDefault(T defaultValue) => throw new NotImplementedException();
+        public T GetValueOrDefault() => HasValue ? _value: default(T);
+        public T GetValueOrDefault(T defaultValue) => HasValue ? _value : defaultValue;
 
         public Maybe<TResult> Select<TResult>(Func<T, TResult> map)
         {
