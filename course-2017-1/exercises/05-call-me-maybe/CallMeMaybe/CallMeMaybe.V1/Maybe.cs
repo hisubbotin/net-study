@@ -40,7 +40,7 @@ namespace CallMeMaybe.V1
                 По смыслу это фабрика объектов данного типа (ну или по модному монадный конструктор).
                 Т.к. это оператор неявного приведения, позволяет не засорять код кастами.
             */
-            return value == null ? new Maybe<T>(value) : Nothing;
+            return value == null ? Nothing: new Maybe<T>(value);
         }
 
         #region Optional useful methods
@@ -55,33 +55,46 @@ namespace CallMeMaybe.V1
 
         public Maybe<TResult> Select<TResult>(Func<T, TResult> map)
         {
-            throw new NotImplementedException();
+            return HasValue ?  map(_value) : Maybe<TResult>.Nothing;
         }
         public Maybe<TResult> Select<TResult>(Func<T, Maybe<TResult>> maybeMap)
         {
-            throw new NotImplementedException();
+            return HasValue ? maybeMap(_value) : Maybe<TResult>.Nothing;
         }
         public TResult SelectOrElse<TResult>(Func<T, TResult> map, Func<TResult> elseMap)
         {
-            throw new NotImplementedException();
+            return HasValue ? map(_value) : elseMap();
         }
 
         public void Do(Action<T> doAction)
         {
-            throw new NotImplementedException();
+            if (HasValue)
+            {
+                doAction(Value);
+            };
         }
         public void DoOrElse(Action<T> doAction, Action elseAction)
         {
-            throw new NotImplementedException();
+            if (HasValue)
+            {
+                doAction(Value);
+            }
+            else
+            {
+                elseAction();
+            }
         }
 
         public T OrElse(Func<T> elseMap)
         {
-            throw new NotImplementedException();
+            return HasValue ? _value : elseMap();
         }
         public void OrElseDo(Action elseAction)
         {
-            throw new NotImplementedException();
+            if (!HasValue)
+            {
+                elseAction();
+            }
         }
 
         #endregion
