@@ -12,6 +12,7 @@
   - [04. Garbage Cleaning](#04-garbage-cleaning)
   - [05. Wubba Lubba Dub Dub](#05-wubba-lubba-dub-dub)
   - [06. Go home, Fibonacci, you're drunk](#06-go-home-fibonacci-youre-drunk)
+  - [07. Here's my `T` value so call me `Maybe<T>`](#07-heres-my-t-value-so-call-me-maybet)
 
 <!-- /TOC -->
 
@@ -99,3 +100,16 @@ Tags: generics, linq, collections, enumerables, lambdas, random.
 - операциями фильтрации, группировки, проекции и агрегации над ними.
 
 Инструкция лежит в [06-drunk-fibonacci/readme.md](06-drunk-fibonacci/readme.md).
+
+## 07. Here's my `T` value so call me `Maybe<T>`
+
+Tags: generics, extension methods, lambdas, LINQ-query syntax, maybe monad.
+
+В данном задании вы познакомитесь с:
+
+- обобщенными типами-контейнерами на примере реализации монады _maybe_,
+- обобщенными методами-расширениями с ограничениями на применяемые типы,
+- анонимными-функциями (aka лямбды) и типами, в т.ч. обобщенными,
+- техникой добавления поддержки синтаксиса LINQ-запросов.
+
+Инструкция лежит в [07-call-me-maybe/readme.md](07-call-me-maybe/readme.md).
