@@ -1,0 +1,16 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "garbage_collector", "garbage_collector\garbage_collector.csproj", "{8BA089EB-4564-4460-84DD-94F51863DFDE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8BA089EB-4564-4460-84DD-94F51863DFDE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BA089EB-4564-4460-84DD-94F51863DFDE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BA089EB-4564-4460-84DD-94F51863DFDE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BA089EB-4564-4460-84DD-94F51863DFDE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
