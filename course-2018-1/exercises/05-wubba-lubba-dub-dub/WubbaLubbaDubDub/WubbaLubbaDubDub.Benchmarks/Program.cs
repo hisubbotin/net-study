@@ -18,9 +18,15 @@ namespace WubbaLubbaDubDub.Benchmarks {
         public string Join() => string.Join("", strings);
 
         [Benchmark]
-        public string Build() =>
-            strings.Aggregate(new StringBuilder(), (current, str) => current.Append(str)).ToString();
-
+        public string Build() {
+            var sb = new StringBuilder();
+            foreach (var str in strings)
+            {
+                sb.Append(str);
+            }
+            return sb.ToString();
+        }
+        
         [Benchmark]
         public string Concat() => strings.Aggregate("", (current, str) => current + str);
     }
@@ -31,11 +37,12 @@ namespace WubbaLubbaDubDub.Benchmarks {
             BenchmarkRunner.Run<JoinVsSbVsConcat>();
             
             /*
-             *   Method |     Mean |    Error |    StdDev |
-             *  ------- |---------:|---------:|----------:|
-             *     Join | 147.6 ns | 2.991 ns |  3.889 ns |
-             *    Build | 436.2 ns | 8.728 ns | 21.079 ns |
-             *   Concat | 363.5 ns | 7.347 ns | 11.219 ns |
+             *  Method |     Mean |    Error |    StdDev |   Median |
+             * ------- |---------:|---------:|----------:|---------:|
+             *    Join | 153.2 ns | 3.104 ns |  3.925 ns | 151.6 ns |
+             *   Build | 343.3 ns | 6.865 ns | 11.280 ns | 338.0 ns |
+             *  Concat | 388.0 ns | 7.849 ns | 17.393 ns | 381.6 ns |
+
              */
         }
     }
