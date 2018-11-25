@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Linq;
 
 namespace DrunkFibonacci
@@ -94,7 +95,8 @@ namespace DrunkFibonacci
             IEnumerable<int> rand_num = GetDeterministicRandomSequence();
             bool is42 = false;
             int num_to_return;
-            while (true)
+            
+            foreach (var rand in rand_num)
             {
                 counter++;
                 if (counter >= 24)
@@ -123,8 +125,7 @@ namespace DrunkFibonacci
                     b = a - b;
                     num_to_return = a;
                 }
-                
-                is42 = (rand_num.GetEnumerator().Current & 42) == 42;
+                is42 = (rand & 42) == 42;
                 if (is42)
                 {
                     yield return (num_to_return | 42) ^ 42;
@@ -174,6 +175,23 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
+            /*IEnumerable<int> fib_seq = GetDrunkFibonacci();
+            var new_mass = new int[16];
+            int count = 0;
+            
+            foreach (var el in fib_seq)
+            {
+                if (count == 16)
+                {
+                    count = 0;
+                    yield return new_mass;
+                    var new_mass = new int[16];
+                }
+                new_mass[count] = el;
+                count += 1;
+            }*/
+            
+            
             IEnumerator<int> fib_seq = GetDrunkFibonacci().GetEnumerator();
             while (true)
             {
