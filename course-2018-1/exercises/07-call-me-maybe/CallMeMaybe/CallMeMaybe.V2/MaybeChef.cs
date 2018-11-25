@@ -68,6 +68,7 @@ namespace CallMeMaybe.V2 {
                     - нарушается семантика кода. Мы должны работать в терминах монады Maybe, а не последовательностей
                     - кое-что еще. Что? Подсказка: проблема в работе с объектами как объектами некоторого интерфейса
             */
+            // ¯\_(ツ)_/¯
             var result = from pumpkinPieFilling in _cookingTable.FindCansOf<PumpkingPieFilling>(1m).ToMaybe()
                 from sugar in _cookingTable.FindCupsOf<WhiteSugar>(3m).ToMaybe()
                 from oil in _cookingTable.FindCupsOf<VegetableOil>(0.5m).ToMaybe()

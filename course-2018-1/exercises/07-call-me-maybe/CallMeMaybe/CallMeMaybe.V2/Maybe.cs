@@ -36,6 +36,7 @@ namespace CallMeMaybe.V2 {
 
         /// <inheritdoc />
         public IEnumerator<T> GetEnumerator() {
+            // Видимо, камень в том, что может не быть значения.
             if (HasValue) {
                 yield return _value;
             }
