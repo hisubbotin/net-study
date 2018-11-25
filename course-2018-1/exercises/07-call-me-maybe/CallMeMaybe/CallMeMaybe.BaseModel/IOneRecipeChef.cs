@@ -1,9 +1,7 @@
 ﻿using System.Collections.Immutable;
 
-namespace CallMeMaybe.BaseModel
-{
-    public interface IOneRecipeChef
-    {
+namespace CallMeMaybe.BaseModel {
+    public interface IOneRecipeChef {
         IImmutableList<PumpkinMuffin> CookPumpkinMuffins();
     }
 }
