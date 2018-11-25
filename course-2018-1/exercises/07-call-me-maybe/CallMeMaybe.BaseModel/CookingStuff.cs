@@ -225,6 +225,4 @@ namespace CallMeMaybe.BaseModel
     }
 
     #endregion
-
-
 }

@@ -27,7 +27,7 @@ namespace CallMeMaybe.V2
 
         public static implicit operator Maybe<T>(T value)
         {
-            throw new NotImplementedException();
+            return value == null ? Nothing : new Maybe<T>(value);
         }
 
         #region IEnumerable<T> inerface implementation
@@ -35,12 +35,17 @@ namespace CallMeMaybe.V2
         /*
             Здесь реализуй интерфейс IEnumerable<T>.
             Про какой подводный камень нужно помнить, когда объекты Maybe<T> используются как объекты типа IEnumerable?
+            *Ответ:* Maybe<T> может быть пустой (и методы будут кидать исключения),
+            а для IEnumerable типичное поведение - вернуть пустую коллекцию (и все методы корректно работают).
         */
 
         /// <inheritdoc />
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            if (HasValue)
+            {
+                yield return _value;
+            }
         }
 
         /// <inheritdoc />
@@ -51,11 +56,10 @@ namespace CallMeMaybe.V2
 
         #endregion
 
-
         #region Optional useful methods
 
-        public T GetValueOrDefault() => throw new NotImplementedException();
-        public T GetValueOrDefault(T defaultValue) => throw new NotImplementedException();
+        public T GetValueOrDefault() => HasValue ? _value : default(T);
+        public T GetValueOrDefault(T defaultValue) => HasValue ? _value : defaultValue;
 
         #endregion
     }

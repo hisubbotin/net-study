@@ -115,6 +115,5 @@ namespace CallMeMaybe.BaseModel
 
             return _cookingTable.FindBowlAndFillItWith(new EggsMixture());
         }
-
     }
 }
