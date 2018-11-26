@@ -157,10 +157,10 @@ namespace DrunkFibonacci
         {
             // ни чему особо не научишься, просто интересная задачка :)
             var fibSeq = GetDrunkFibonacci();
+            int counter = 0;
             while (true)
             {
-                yield return fibSeq.Take(16).ToArray();
-                fibSeq = fibSeq.Skip(16);
+                yield return fibSeq.Skip(16 * counter++).Take(16).ToArray();
             }
         }
 
