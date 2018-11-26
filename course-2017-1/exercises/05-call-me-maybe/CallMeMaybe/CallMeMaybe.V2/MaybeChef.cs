@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using CallMeMaybe.BaseModel;
 
 namespace CallMeMaybe.V2
@@ -50,10 +51,17 @@ namespace CallMeMaybe.V2
             return new PumpkinBatterCup();
         }
 
-        private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
+            private Maybe<BowlOf<FlourMixture>> MakeFlourMixture()
         {
             // здесь сделай сам, пожалуйста
-            throw new NotImplementedException();
+            return
+                (from wheatFlour in _cookingTable.FindCupsOf<WholeWheatFlour>(3.5m).ToMaybe()
+                from plainFlour in _cookingTable.FindCupsOf<AllPurposeFlour>(3.5m).ToMaybe()
+                from pieSpice in _cookingTable.FindTeaspoonsOf<PumpkinPieSpice>(5m).ToMaybe()
+                from soda in _cookingTable.FindTeaspoonsOf<BakingSoda>(2m).ToMaybe()
+                from salt in _cookingTable.FindTeaspoonsOf<Salt>(1.5m).ToMaybe()
+                from mixture in _cookingTable.FindBowlAndFillItWith(new FlourMixture()).ToMaybe()
+                select mixture).ToMaybe();   
         }
 
         private Maybe<BowlOf<EggsMixture>> MakeEggsMixture()
@@ -68,11 +76,11 @@ namespace CallMeMaybe.V2
                     - кое-что еще. Что? Подсказка: проблема в работе с объектами как объектами некоторого интерфейса
             */
             var result =
-                from pumpkinPieFilling in _cookingTable.FindCansOf<PumpkingPieFilling>(1m).ToMaybe()
-                from sugar in _cookingTable.FindCupsOf<WhiteSugar>(3m).ToMaybe()
-                from oil in _cookingTable.FindCupsOf<VegetableOil>(0.5m).ToMaybe()
-                from water in _cookingTable.FindCupsOf<Water>(0.5m).ToMaybe()
-                from eggs in _cookingTable.FindSome<Egg>(4m).ToMaybe()
+                from pumpkinPieFilling in _cookingTable.FindCansOf<PumpkingPieFilling>(9m).ToMaybe()
+                from sugar in _cookingTable.FindCupsOf<WhiteSugar>(2m).ToMaybe()
+                from oil in _cookingTable.FindCupsOf<VegetableOil>(1.5m).ToMaybe()
+                from water in _cookingTable.FindCupsOf<Water>(0.8m).ToMaybe()
+                from eggs in _cookingTable.FindSome<Egg>(400m).ToMaybe()
                 from eggsMixture in _cookingTable.FindBowlAndFillItWith(new EggsMixture()).ToMaybe()
                 select eggsMixture;
 
