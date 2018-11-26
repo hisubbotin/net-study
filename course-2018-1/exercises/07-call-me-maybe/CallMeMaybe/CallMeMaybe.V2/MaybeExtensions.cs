@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Xml.Linq;
 
 namespace CallMeMaybe.V2
 {
@@ -7,14 +8,12 @@ namespace CallMeMaybe.V2
     {
         public static Maybe<T> ToMaybe<T>(this T value)
         {
-            // скопируй из предыдущего шага
-            throw new NotImplementedException();
+            return value;
         }
         public static Maybe<T> ToMaybe<T>(this T? value)
             where T : struct
         {
-            // скопируй из предыдущего шага
-            throw new NotImplementedException();
+            return value ?? Maybe<T>.Nothing;
         }
 
         public static Maybe<T> ToMaybe<T>(this IEnumerable<T> seq)
@@ -26,7 +25,7 @@ namespace CallMeMaybe.V2
                     само же итерирование производится с помощью метода .Next().
                     Обрати внимание на его сигнатуру.
                 */
-                throw new NotImplementedException();
+                return iter.MoveNext() ? iter.Current : Maybe<T>.Nothing;
             }
         }
     }
