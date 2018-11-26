@@ -78,30 +78,27 @@ namespace DrunkFibonacci
             int previous = 1;
             int current = 1;
             int result = 1;
-            var enumerator = GetDeterministicRandomSequence().GetEnumerator();
 
             yield return previous;
             yield return current;
 
             int index = 2;
-            while(true)
+            foreach(int element in GetDeterministicRandomSequence())
             {
                 index++;
                 result = unchecked(current + previous);
                 previous = current;
                 current = result;
 
-                if (index > 4 && ( index - 4 ) % 6 == 0)
+                if (index > 4 && (index - 4) % 6 == 0)
                 {
                     yield return 300;
                 }
 
-                if ((enumerator.Current & 42) == 42)
+                if ((element & 42) == 42)
                 {
                     result &= ~42;
                 }
-
-                enumerator.MoveNext();
 
                 if (index % 6 == 0)
                 {
@@ -157,10 +154,21 @@ namespace DrunkFibonacci
         {
             // ни чему особо не научишься, просто интересная задачка :)
             var fibSeq = GetDrunkFibonacci();
-            int counter = 0;
-            while (true)
+            int index = 0;
+            var result = new int[16];
+            foreach (int element in fibSeq)
             {
-                yield return fibSeq.Skip(16 * counter++).Take(16).ToArray();
+                if (index < 16)
+                {
+                    result[index] = element;
+                    index++;
+                }
+                else
+                {
+                    yield return result;
+                    result[0] = element;
+                    index = 1;
+                }
             }
         }
 
