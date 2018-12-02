@@ -6,14 +6,16 @@ namespace CallMeMaybe.V1
     {
         /*
             Как ты думаешь, почему Maybe - структура?
+            С классом не работает))
         */
 
         /// <summary>
         /// Зачем может быть нужно такое выделенное значение?
-        /// Для того, чтобы обернуть null
+        /// Для того, чтобы обернуть null и получить неизменяемую сущность.
+        /// Это поле будет одинаковым для всех экземпляров => нет дополнительного копирования.
         /// 
         /// Сколько по факту будет экземпляров данного объекта?
-        /// 1?
+        /// 1, так как стоит ключевое слово static.
         /// </summary>
         public static readonly Maybe<T> Nothing = new Maybe<T>();
 
@@ -24,7 +26,7 @@ namespace CallMeMaybe.V1
 
         /// <summary>
         /// Как думаешь, почему я скрыл конструктор?
-        /// Для неявных преобразований
+        /// Для неявных преобразований(кастов), это удобнее, чем создание объекта типа Maybe<T>
         /// </summary>
         private Maybe(T value)
         {
@@ -59,7 +61,7 @@ namespace CallMeMaybe.V1
 
         public Maybe<TResult> Select<TResult>(Func<T, TResult> map)
         {
-            return HasValue ? map(_value) : Maybe<TResult>.Nothing;
+            return HasValue ? new Maybe<TResult>(map(_value)) : Maybe<TResult>.Nothing;
         }
         public Maybe<TResult> Select<TResult>(Func<T, Maybe<TResult>> maybeMap)
         {
