@@ -80,8 +80,8 @@ namespace DrunkFibonacci
             int first = 0;
             int second = 1;
             int tmp;
-            var randomseq = GetDeterministicRandomSequence().GetEnumerator();
-            while ( true )
+            var randomseq = GetDeterministicRandomSequence();
+            foreach(int random_num in randomseq )
             {
                 if (index % 6 != 0)
                 {
@@ -90,8 +90,7 @@ namespace DrunkFibonacci
                         yield return 300;
 
                     }
-                    int y = randomseq.Current;
-                    randomseq.MoveNext();
+                    int y = random_num;
                     yield return (~(y & 42)) & second;
                 }
 
