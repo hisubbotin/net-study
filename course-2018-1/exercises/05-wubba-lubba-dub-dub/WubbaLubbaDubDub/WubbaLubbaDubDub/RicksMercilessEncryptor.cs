@@ -127,18 +127,12 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            var newString = new StringBuilder();
+            var sb = new StringBuilder();
             foreach (var c in s)
             {
-                newString.Append(ShiftChar(c));
+                sb.Append((char)(c + 1));
             }
-
-            return newString.ToString();
-
-            char ShiftChar(char symbol)
-            {
-                return Convert.ToChar(symbol + 1);
-            }
+            return sb.ToString();
         }
 
 
@@ -158,11 +152,16 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            var deleteLongFirstly = new Regex("\\/\\*(.|\\n)*\\*\\/").Replace(text, "");
-            var deleteShortSecondly = new Regex("\\/\\/.*\\n").Replace(deleteLongFirstly, "");
-            var ids = new Regex(@"[A-F0-9]{4}:[A-F0-9]{4}").Matches(deleteShortSecondly);
-            Console.WriteLine(ids);
-            return ids.Select(matched => Convert.ToInt64(matched.Value.Replace(":", ""), 16)).ToImmutableList();
+            var comments = new Regex(@"\/\/.*(\r\n|\r|\n)|\/\*(.|\r|\n)*\*\/");
+            var textWithoutComments = comments.Replace(text, "");
+            var id = new Regex("[0-9A-F]{4}:[0-9A-F]{4}");
+
+            return id.Matches(textWithoutComments)
+                .OfType<Match>()
+                .Select(m => m.Value.Replace(":", ""))
+                .Distinct()
+                .Select(clearId => Convert.ToInt64(clearId))
+                .ToImmutableList();
         }
 
         #endregion

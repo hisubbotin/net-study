@@ -64,5 +64,20 @@ namespace WubbaLubbaDubDub.Tests
             Assert.Equal(s.GetReversed(), gt);
         }
 
+        [Theory]
+        [InlineData("a-+1\t", "b.,2\n")]
+        public void TestShiftInc(string s, string gt)
+        {
+            Assert.Equal(s.ShiftInc(), gt);
+        }
+
+        [Theory]
+        [InlineData("7890:1234\n7890:1234", new long[] { 78901234 })]
+        [InlineData("//0123:4567\n7890:1234", new long[] { 78901234 })]
+        [InlineData("/*\n7890:1234\n*/\n0123:4567\n asd 8901:2345", new long[] { 1234567, 89012345 })]
+        public static void Test_GetUsedObjects(string s, long[] ans)
+        {
+            Assert.Equal(ans, s.GetUsedObjects());
+        }
     }
 }
