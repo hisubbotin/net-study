@@ -40,9 +40,10 @@ namespace AdventureTime
             System.Console.WriteLine(AdventureTime.Time.GetGenderSwappedAdventureTimeDurationInMinutes_ver2_FeelsLikeRocketScience());
 
             System.Console.WriteLine(AdventureTime.Time.AreEqualBirthdays(
-                System.DateTime.Parse("1911-12-03"),
-                System.DateTime.Parse("03.12.2011")));
+                System.DateTime.Parse("1997-12-03"),
+                System.DateTime.Parse("03.12.2000")));
+            System.Console.ReadLine();
         }
     }
-    }
+    
 }
