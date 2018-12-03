@@ -8,11 +8,20 @@ namespace BoringVector
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
 
-    internal struct Vector
+    public class Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        public double X { get; }
+        public double Y { get; }
+
+
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
 
 
         /*
@@ -23,31 +32,67 @@ namespace BoringVector
                 - скалярное произведение
                 - векторное произведение (= площадь параллелограмма)
         */
-
+        /// <summary>
+        /// Вычисляет квадрат длины вектора.
+        /// </summary>
+        /// <returns>Квадрат длины вектора.</returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+
+        /// <summary>
+        /// Вычисляет сумму двух векторов.
+        /// </summary>
+        /// <returns>Новый <see cref="T:BoringVector.Vector"/>, являющийся суммой двух исходных.</returns>
+        /// <param name="v">Прибавляемый вектор.</param>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X , Y + v.Y);
         }
+
+        /// <summary>
+        /// Вычисляет сумму двух векторов.
+        /// </summary>
+        /// <returns>Новый <see cref="T:BoringVector.Vector"/>, являющийся суммой двух исходных.</returns>
+        /// <param name="v">Прибавляемый вектор.</param>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(X * k, Y * k);
         }
+
+        /// <summary>
+        /// Вычисляет скалярное произведение двух векторов.
+        /// </summary>
+        /// <returns>Величина скалярного произведения.</returns>
+        /// <param name="v">Второй вектор.</param>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y + v.Y;
         }
+
+        /// <summary>
+        /// Вычисляет векторное произведение двух векторов.
+        /// </summary>
+        /// <returns>Векторное произведение.</returns>
+        /// <param name="v">Второй вектор.</param>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+
+        /// <summary>
+        /// Приводит вектор к строковому выражению.
+        /// </summary>
+        /// <returns>Строка с координатами вектора в формате (X; Y).</returns>
+        public override string ToString()
+        {
+            return string.Format("({0}; {1})", X, Y);
+        }
 
         #region operators
 
@@ -92,17 +137,17 @@ namespace BoringVector
         на задачу и ее решение немного с другой стороны. Например, если слова не вяжутся, и не получается написать простое и короткое
         описание к методу или типу - это хороший сигнал, что он "с душком", и его стоит переделать/отрефакторить. 
         Я лично чаще пишу комментарии ближе к концу работы над задачей. Это позволяет мне еще раз просмотреть весь написанный код под
-        слегка иным углом обзора и самому сделать первичный code review.
-
-
-        Ты мог(-ла) заметить, что в предыдущих заданиях для комментариев я использовал немного необычный синтаксис:
-    
-            /// <summary>
+        слегка иным углом обзора и самому с/// <summary>
             /// Возвращает объект <see cref="DateTime"/> с заданными временем и значением <see cref="DateTime.Kind"/>.
             /// </summary>
             /// <param name="dt">Объект <see cref="DateTime"/>, задающий время.</param>
             /// <param name="kind">Значение <see cref="DateTime.Kind"/>, задающий соответствующее свойство возвращаемого объекта.</param>
-            /// <returns>Объект <see cref="DateTime"/> с заданными временем и значением <see cref="DateTime.Kind"/>.</returns>
+            /// <returns>Объект <see cref="DateTime"/> с заданными временем и значением <see cref="DateTime.Kind"/>.</returns>делать первичный code review.
+
+
+        Ты мог(-ла) заметить, что в предыдущих заданиях для комментариев я использовал немного необычный синтаксис:
+    
+            
 
         Такой блок является комментарием, т.к. каждая строка начинается с //, но имеет свою внутреннюю структуру и синтаксис.
         Это так называемые Xml documentation comments. Их поддерживает сам компилятор. Они позволяют писать чуть более умные и продвинутые комментарии к сущностям,
