@@ -18,7 +18,7 @@ namespace Numbers
                 Для этого подумай, какой смысл в себе несет эта константа и где бы она могла стать результатом операции или вычисления функции.
             */
             // throw new NotImplementedException();
-            return 1.0 / 0.0;
+            return 0.0 / 0.0;
         }
 
         /// <summary>
