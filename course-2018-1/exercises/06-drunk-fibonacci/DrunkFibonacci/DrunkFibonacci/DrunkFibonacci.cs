@@ -175,35 +175,25 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
-            /*IEnumerable<int> fib_seq = GetDrunkFibonacci();
+            IEnumerable<int> fib_seq = GetDrunkFibonacci();
             var new_mass = new int[16];
             int count = 0;
             
             foreach (var el in fib_seq)
             {
-                if (count == 16)
-                {
-                    count = 0;
-                    yield return new_mass;
-                    var new_mass = new int[16];
-                }
                 new_mass[count] = el;
-                count += 1;
-            }*/
-            
-            
-            IEnumerator<int> fib_seq = GetDrunkFibonacci().GetEnumerator();
-            while (true)
-            {
-                var new_mass = new int[16];
 
-                for (int i = 0; i < 16; i++)
+                if (count != 16)
                 {
-                    new_mass[i] = fib_seq.Current;
-                    fib_seq.MoveNext();
+                    continue;
                 }
+                
+                count = 0;
                 yield return new_mass;
+                new_mass = new int[16];
+
             }
+            
         }
 
         /// <summary>
