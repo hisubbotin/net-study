@@ -28,6 +28,8 @@ namespace CallMeMaybe.Final
             var maybeChef = new MaybeChef(cookingTable);
             muffins = maybeChef.CookPumpkinMuffins();
             Console.WriteLine(muffins.Count);
+
+            Console.Read();
         }
 
         private static void TestSingleFrom<T>(Maybe<T> m)
