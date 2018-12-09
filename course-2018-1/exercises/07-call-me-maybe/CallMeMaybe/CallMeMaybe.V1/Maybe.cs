@@ -5,11 +5,11 @@ namespace CallMeMaybe.V1
     public struct Maybe<T>
     {
         /*
-            Как ты думаешь, почему Maybe - структура? - это value type -> не Nullable
+            Как ты думаешь, почему Maybe - структура? - это value type -> не Nullable, для удобства
         */
 
         /// <summary>
-        /// Зачем может быть нужно такое выделенное значение?
+        /// Зачем может быть нужно такое выделенное значение? - для удобства
         /// Сколько по факту будет экземпляров данного объекта? - По одному для каждого типа T
         /// </summary>
         public static readonly Maybe<T> Nothing = new Maybe<T>();
@@ -20,7 +20,7 @@ namespace CallMeMaybe.V1
         public T Value => HasValue ? _value : throw new InvalidOperationException($"{typeof(Maybe<T>)} doesn't have value.");
 
         /// <summary>
-        /// Как думаешь, почему я скрыл конструктор?
+        /// Как думаешь, почему я скрыл конструктор? - есть же фабрика
         /// </summary>
         private Maybe(T value)
         {
