@@ -81,13 +81,21 @@ namespace DrunkFibonacci
             int fiboNumberPrev = 1;
             int fiboNumber = 1;
             var sequence = GetDeterministicRandomSequence();
-            var enumerator = sequence.GetEnumerator();
+            //var enumerator = sequence.GetEnumerator();
 
             yield return fiboNumberPrev;
             yield return fiboNumber;
-            
-            for (int iter = 3; ; iter++)
+
+            var iter = 0;
+            foreach (var mask in sequence)
             {
+                ++iter;
+
+                if (iter < 3)
+                {
+                    continue;
+                }
+
                 fiboNumber += fiboNumberPrev;
                 fiboNumberPrev = fiboNumber - fiboNumberPrev;
 
@@ -96,9 +104,7 @@ namespace DrunkFibonacci
                     fiboNumber = 300;
                 }
 
-                int mask = enumerator.Current;
                 fiboNumber = (42 & mask) == 42 ? fiboNumber & ~42 : fiboNumber;
-                enumerator.MoveNext();
 
                 if (iter % 6 == 0)
                 {
@@ -152,11 +158,18 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
-            var fibo = GetDrunkFibonacci();
-            while (true)
+            const int size = 16;
+            int[] buf = new int[size];
+            int i = 0;
+            foreach (var value in GetDrunkFibonacci())
             {
-                yield return fibo.Take(16).ToArray();
-                fibo = fibo.Skip(16);   
+                buf[i++] = value;
+                if (i == size)
+                {
+                    yield return buf;
+                    i = 0;
+                    buf = new int[size];
+                }
             }
         }
 
