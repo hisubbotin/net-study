@@ -147,9 +147,15 @@ namespace DrunkFibonacci
             // ни чему особо не научишься, просто интересная задачка :)
             var seq = GetDrunkFibonacci();
             int index = 0;
-            while ( true )
+            int[] arr = new int[16];
+            foreach(var el in seq)
             {
-                yield return seq.Skip(16 * index++).Take(16).ToArray();
+                arr[index++] = el;
+                if (index != 16)
+                    continue;
+                index = 0;
+                yield return arr;
+                arr = new int[16];
             }
         }
 
