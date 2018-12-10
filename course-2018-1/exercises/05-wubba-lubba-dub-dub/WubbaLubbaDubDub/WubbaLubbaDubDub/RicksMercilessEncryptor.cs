@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace WubbaLubbaDubDub
 {
@@ -12,7 +14,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToLines(this string text)
         {
             // У строки есть специальный метод. Давай здесь без регулярок
-            throw new NotImplementedException();
+            return text.Split("\n");
         }
 
         /// <summary>
@@ -21,7 +23,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            throw new NotImplementedException();
+            return Regex.Split(line, "\\s+");
         }
 
         /// <summary>
@@ -31,7 +33,7 @@ namespace WubbaLubbaDubDub
         public static string GetLeftHalf(this string s)
         {
             // у строки есть метод получения подстроки
-            throw new NotImplementedException();
+            return s.Substring(0, (int)(s.Length / 2));
         }
 
         /// <summary>
@@ -40,7 +42,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetRightHalf(this string s)
         {
-            throw new NotImplementedException();
+            return s.Substring((int)(s.Length / 2));
         }
 
         /// <summary>
@@ -49,7 +51,7 @@ namespace WubbaLubbaDubDub
         public static string Replace(this string s, string old, string @new)
         {
             // и такой метод у строки, очевидно, тоже есть
-            throw new NotImplementedException();
+            return s.Replace(old, @new);
         }
 
         /// <summary>
@@ -65,7 +67,12 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            throw new NotImplementedException();
+            return string.Concat(s.Select(x => CharToCode(x)));
+
+            string CharToCode(char c)
+            {
+                return "\\u" + ((int)c).ToString("X4");
+            }
         }
 
         /// <summary>
@@ -77,7 +84,7 @@ namespace WubbaLubbaDubDub
                 Собрать строку из последовательности строк можно несколькими способами.
                 Один из низ - статический метод Concat. Но ты можешь выбрать любой.
             */
-            throw new NotImplementedException();
+            return string.Concat(s.Reverse());
         }
 
         /// <summary>
@@ -90,7 +97,19 @@ namespace WubbaLubbaDubDub
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            throw new NotImplementedException();
+            return String.Concat(s.Select(x => InverseCharCase(x)));
+
+            char InverseCharCase(char c)
+            {
+                if (Char.IsLower(c))
+                {
+                    return Char.ToUpper(c);
+                }
+                else
+                {
+                    return Char.ToLower(c);
+                }
+            }
         }
 
         /// <summary>
@@ -99,7 +118,12 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            throw new NotImplementedException();
+            return string.Concat(s.Select(x => CharToCode(x)));
+
+            string CharToCode(char c)
+            {
+                return Char.ConvertFromUtf32(unchecked((int)c + 1));
+            }
         }
 
 
@@ -117,7 +141,16 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
+            var linesNoComments = String.Concat(Regex.Split(text, "(/\\*(.|\n)*\\*/)|(//.*(\n|$))"));
+            var ids = Regex.Matches(linesNoComments, "[0-9A-Fa-f]{4}:[0-9A-Fa-f]{4}");
+            var matches = ids.Select(x => x.Value);
+
+            return matches.Select(x => GetLongID(x)).ToImmutableList();
+
+            long GetLongID(string x)
+            {
+                return Convert.ToInt64(x.Replace(":", ""), 16);
+            }
         }
 
         #endregion
