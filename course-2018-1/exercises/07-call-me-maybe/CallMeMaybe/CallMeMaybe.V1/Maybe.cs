@@ -6,11 +6,14 @@ namespace CallMeMaybe.V1
     {
         /*
             Как ты думаешь, почему Maybe - структура?
+            Замена на класс не дает создать Nothing из-за отсутствия подходящего конструктора.
         */
 
         /// <summary>
         /// Зачем может быть нужно такое выделенное значение?
+        /// Получаем неизменный объект для всех представителей, который один, а потому возможны сравнения с ним.
         /// Сколько по факту будет экземпляров данного объекта?
+        /// Один, так как поле static, а потому одно для всех объектов класса.
         /// </summary>
         public static readonly Maybe<T> Nothing = new Maybe<T>();
 
@@ -21,6 +24,7 @@ namespace CallMeMaybe.V1
 
         /// <summary>
         /// Как думаешь, почему я скрыл конструктор?
+        /// Чтобы напрямую не создавались объекты, а использовались для этих целей касты.
         /// </summary>
         private Maybe(T value)
         {
@@ -40,48 +44,61 @@ namespace CallMeMaybe.V1
                 По смыслу это фабрика объектов данного типа (ну или по модному монадный конструктор).
                 Т.к. это оператор неявного приведения, позволяет не засорять код кастами.
             */
-            throw new NotImplementedException();
+            return value == null ? Nothing : new Maybe<T>(value);
         }
 
         #region Optional useful methods
 
         public static explicit operator T(Maybe<T> maybe)
         {
-            throw new NotImplementedException();
+            return maybe.Value;
         }
 
-        public T GetValueOrDefault() => throw new NotImplementedException();
-        public T GetValueOrDefault(T defaultValue) => throw new NotImplementedException();
+        public T GetValueOrDefault() => HasValue ? _value : default(T);
+        public T GetValueOrDefault(T defaultValue) => HasValue ? _value : defaultValue;
 
         public Maybe<TResult> Select<TResult>(Func<T, TResult> map)
         {
-            throw new NotImplementedException();
+            return HasValue ? new Maybe<TResult>(map(_value)) : Maybe<TResult>.Nothing;
         }
         public Maybe<TResult> Select<TResult>(Func<T, Maybe<TResult>> maybeMap)
         {
-            throw new NotImplementedException();
+            return HasValue ? maybeMap(_value) : Maybe<TResult>.Nothing;
         }
         public TResult SelectOrElse<TResult>(Func<T, TResult> map, Func<TResult> elseMap)
         {
-            throw new NotImplementedException();
+            return HasValue ? map(_value) : elseMap();
         }
 
         public void Do(Action<T> doAction)
         {
-            throw new NotImplementedException();
+            if (HasValue)
+            {
+                doAction(_value);
+            }
         }
         public void DoOrElse(Action<T> doAction, Action elseAction)
         {
-            throw new NotImplementedException();
+            if (HasValue)
+            {
+                doAction(_value);
+            }
+            else
+            {
+                elseAction();
+            }
         }
 
         public T OrElse(Func<T> elseMap)
         {
-            throw new NotImplementedException();
+            return HasValue ? _value : elseMap();
         }
         public void OrElseDo(Action elseAction)
         {
-            throw new NotImplementedException();
+            if (HasValue == false)
+            {
+                elseAction();
+            }
         }
 
         #endregion
