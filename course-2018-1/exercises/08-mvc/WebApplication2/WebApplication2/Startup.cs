@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using WebApplication2.Models;
 using Swashbuckle.AspNetCore.Swagger;
+using WebApplication2.Hubs;
+using WebApplication2.Code;
 
 namespace WebApplication2
 {
@@ -32,6 +34,10 @@ namespace WebApplication2
             services.AddDbContext<WebApplicationContext>(options =>
                     options.UseSqlServer(Configuration.GetConnectionString("WebApplicationContext")));
 
+            services.AddHostedService<TimedHostedService>();
+
+            services.AddSignalR();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
@@ -51,8 +57,12 @@ namespace WebApplication2
                     c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 });
             }
-            
 
+            app.UseStaticFiles();
+            app.UseSignalR(routes =>
+            {
+                routes.MapHub<NotificationHub>("/notificationHub");
+            });
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

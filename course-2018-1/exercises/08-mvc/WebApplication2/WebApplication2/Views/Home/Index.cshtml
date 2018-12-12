@@ -4,4 +4,21 @@
 
 <h2>Index</h2>
 
-<p>Hello from our View Template!</p>
+<p id="message">Current Time is: N/A</p>
+
+@section Scripts {
+    <script src="~/lib/signalr/dist/browser/signalr.js"></script>
+    <script type="text/javascript">
+        var messagesList = document.getElementById("message");
+        function appendMessage(content) {
+            messagesList.innerText = content;
+        }
+        var connection = new signalR.HubConnectionBuilder()
+            .withUrl("/notificationHub")
+            .build();
+        connection.on("Notify", function (message) {
+            appendMessage(message)
+        });
+        connection.start();
+    </script>
+}
