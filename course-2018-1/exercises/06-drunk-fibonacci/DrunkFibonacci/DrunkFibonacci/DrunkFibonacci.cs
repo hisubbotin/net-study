@@ -53,7 +53,7 @@ namespace DrunkFibonacci
                 Задача на ленивую генерацию последовательностей.
             */
             var rand = new Random(42);
-            for (;;) {
+            while (true) {
                 yield return rand.Next();
             }
 
