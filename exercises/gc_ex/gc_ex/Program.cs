@@ -27,29 +27,29 @@ namespace gc_exercise
                 
             new Thread(new ThreadStart(WaitForFullGCProc)).Start();
 
-                int lastCollCount = 0;
-                int newCollCount = 0;
+            int lastCollCount = 0;
+            int newCollCount = 0;
 
-                while (true)
+            while (true)
+            {
+                if (bAllocate)
                 {
-                    if (bAllocate)
+                    load.Add(new byte[1000]);
+                    newCollCount = GC.CollectionCount(2);
+                    if (newCollCount != lastCollCount)
                     {
-                        load.Add(new byte[1000]);
-                        newCollCount = GC.CollectionCount(2);
-                        if (newCollCount != lastCollCount)
-                        {
-                            Console.WriteLine("Gen 2 collection count: {0}", GC.CollectionCount(2).ToString());
-                            lastCollCount = newCollCount;
-                        }
+                        Console.WriteLine("Gen 2 collection count: {0}", GC.CollectionCount(2).ToString());
+                        lastCollCount = newCollCount;
+                    }
                             
-                        if (newCollCount == 5)
-                        {
-                            finalExit = true;
-                            checkForNotify = false;
-                            break;
-                        }
+                    if (newCollCount == 5)
+                    {
+                        finalExit = true;
+                        checkForNotify = false;
+                        break;
                     }
                 }
+            }
 
 
             finalExit = true;
