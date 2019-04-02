@@ -1,10 +1,10 @@
 ﻿# Курс .NET
 
-- Система выставления [оценок](course-2018-1/readme.md)
-- Посещаемость [студентов](course-2018-1/attendance.md)
-- Список [заданий](course-2018-1/exercises)
-- Таблица [успеваемости](course-2018-1/performance.md)
-- Гайд по воркфлоу в [git+github](course-2018-1/exercises/git-help.md)
+- Система выставления [оценок](course-2019-1/readme.md)
+- Посещаемость [студентов](course-2019-1/attendance.md)
+- Список [заданий](course-2019-1/exercises)
+- Таблица [успеваемости](course-2019-1/performance.md)
+- Гайд по воркфлоу в [git+github](course/git-help.md)
 
 ---
 
