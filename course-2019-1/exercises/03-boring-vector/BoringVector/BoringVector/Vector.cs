@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
+[assembly: InternalsVisibleTo("VectorTest")]
 namespace BoringVector
 {
     #region 1. Структура Vector
@@ -14,6 +16,15 @@ namespace BoringVector
             Vector задается парой вещественных координат X и Y.
         */
 
+        public double X;
+        public double Y;
+
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
+
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -24,30 +35,68 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        /// <summary>
+        /// Возвращает квадрат длины вектора
+        /// </summary>
+        /// <returns> double - длина вектора </returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y; 
         }
+
+        /// <summary>
+        ///  Прибавляет к текущему вектору переданный 
+        /// </summary>
+        /// <param name="v"> Складываемый вектор </param>
+        /// <returns> Vector - результат складывания</returns>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector (X + v.X, Y + v.Y);
         }
+
+
+        /// <summary>
+        /// возращает результат умножения вектора на скаляр
+        /// </summary>
+        /// <param name="k"> скаляр </param>
+        /// <returns>Vector - результат умножения</returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(X * k, Y * k);
         }
+
+        /// <summary>
+        /// возвращает скалярное произведение двух векторов
+        /// </summary>
+        /// <param name="v"> умнржаемый вектор </param>
+        /// <returns>Vector - результат умножения</returns>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+
+        /// <summary>
+        /// Возвращает векторное произведение двух векторов
+        /// </summary>
+        /// <param name="v"> умножаемый вектор </param>
+        /// <returns> double - результат умножения </returns>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+
+        /// <summary>
+        /// Возвращает кортеж из координат вектора
+        /// </summary>
+        /// <returns> string  - строка в формате (X; Y) с соответсвующими координатами</returns>
+        public override string ToString()
+        {
+            return "(" + X.ToString() + "; " + Y.ToString() +")";
+        }
 
         #region operators
 
@@ -57,6 +106,71 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+
+        
+        /// <summary>
+        /// Возвращает +вектор  - унарный плюс
+        /// </summary>
+        /// <param name="v"> вектор </param>
+        /// <returns>Vector - +v </returns>
+        public static Vector operator +(Vector v)
+        {
+            return new Vector(v.X, v.Y);
+        }
+
+        /// <summary>
+        /// Возвращает -вектор - унарный минус
+        /// </summary>
+        /// <param name="v"> вектор </param>
+        /// <returns>Vector - -v </returns>
+        public static Vector operator- (Vector v)
+        {
+            return new Vector(-v.X, -v.Y);
+        }
+
+        /// <summary>
+        /// Складывает 2 вектора
+        /// </summary>
+        /// <param name="v1"> 1-й вектор </param>
+        /// <param name="v2"> 2-й вектор </param>
+        /// <returns>Vector - сумма v1 и v2 </returns>
+        public static Vector operator +(Vector v1, Vector v2)
+        {
+            return v1.Add(v2);
+        }
+
+        /// <summary>
+        /// Вычитает из одного вектора другой
+        /// </summary>
+        /// <param name="v1"> 1-й вектор </param>
+        /// <param name="v2"> 2-й вектор </param>
+        /// <returns>Vector - разница v1 и v2 </returns>
+        public static Vector operator -(Vector v1, Vector v2)
+        {
+            return v1.Add(-v2);
+        }
+
+        /// <summary>
+        /// умножает вектор на число
+        /// </summary>
+        /// <param name="v"> вектор </param>
+        /// <param name="k"> скаляр </param>
+        /// <returns>Vector - v умноженный на к  </returns>
+        public static Vector operator *(Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+
+        /// <summary>
+        /// делит вектор на число
+        /// </summary>
+        /// <param name="v"> вектор </param>
+        /// <param name="k"> скаляр </param>
+        /// <returns>Vector - v деленый на к  </returns>
+        public static Vector operator /(Vector v, double k)
+        {
+            return v.Scale(1 / k);
+        }
 
         #endregion
     }
@@ -170,7 +284,7 @@ namespace BoringVector
 
         Для этого создай в этом же солюшене (если ты не в студии, то можешь и не в солюшене) проект BoringVector.Tests,
         который будет содержать класс с набором тестов. Используй Xunit (в принципе можешь воспользоваться и другим фреймворком для тестирования).
-
+        
         Особо не заморачивайся с тем, чтобы оттестировать все возможные специальные случаи - в данном задании важно, чтобы
         ты просто разобрался(-ась), как писать автотесты и как их запускать. Это задание НЕ на то, как писать хорошие тесты.
 
