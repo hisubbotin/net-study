@@ -19,6 +19,9 @@ namespace Numbers
             // твои бро: Console.WriteLine и Console.ReadLine
 
             Console.WriteLine("Hello World!");
+            Console.WriteLine(FloatNumbers.Compare(0.111111111111111111, 0.1111111111111111112, 30));
+            Console.WriteLine((1.1111111111111112 - 1.111) * 100000);
+            Console.WriteLine(0.100000000000000000000000000000001);
         }
     }
 }
