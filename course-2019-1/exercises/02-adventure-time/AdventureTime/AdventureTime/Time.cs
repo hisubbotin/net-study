@@ -148,7 +148,10 @@ namespace AdventureTime
                 Держи, заготовочку для копипасты:
                     - 2010, 3, 28, 2, 15, 0
             */
-            throw new NotImplementedException();
+            
+            return (int) new DateTimeOffset(new DateTime(2010, 3, 28, 2, 15, 0), new TimeSpan(0, 3, 0)).ToUniversalTime()
+                .Subtract(new DateTimeOffset(new DateTime(2010, 3, 28, 2, 15, 0), TimeSpan.Zero).ToUniversalTime()).TotalMinutes;
+            
         }
 
         /// <summary>
@@ -166,7 +169,8 @@ namespace AdventureTime
                     - 2010, 3, 28, 3, 15, 0
                     - 2010, 3, 28, 1, 15, 0
             */
-            throw new NotImplementedException();
+            return (int) new DateTimeOffset(new DateTime(2010, 3, 28, 3, 15, 0), new TimeSpan(0, 3, 0)).ToUniversalTime()
+                .Subtract(new DateTimeOffset(new DateTime(2010, 3, 28, 1, 15, 0), TimeSpan.Zero).ToUniversalTime()).TotalMinutes;
         }
 
         /// <summary>
@@ -181,7 +185,9 @@ namespace AdventureTime
                 На самом деле смещения таковы: Лондон +1 (BST - British Summer Time), Москва +4 (MSD - Moscow Daylight Time).
                 Давай теперь учтем правильное смещение. Я понимаю, что это очевидно, что результат не изменится, но тебе же не сложно скопипастить и просто поменять смещения?
             */
-            throw new NotImplementedException();
+            return (int) new DateTimeOffset(new DateTime(2010, 3, 28, 2, 15, 0), new TimeSpan(0, 4, 0)).ToUniversalTime()
+                .Subtract(new DateTimeOffset(new DateTime(2010, 3, 28, 2, 15, 0), new TimeSpan(0, 1, 0))
+                    .ToUniversalTime()).TotalMinutes;
         }
 
         // GetGenderSwappedAdventureTimeDurationInMinutes_ver1_FeelsSmarter опустим, там то же самое
@@ -206,7 +212,13 @@ namespace AdventureTime
             const string moscowZoneId = "Russian Standard Time";
             const string londonZoneId = "GMT Standard Time";
 
-            throw new NotImplementedException();
+            var from = new LocalDateTime(2010, 3, 28, 2, 15, 0);
+            var to = new LocalDateTime(2010, 3, 28, 2, 15, 0);
+
+            //Тип ZonedDateTime - это ровным счетом LocalDateTime + DateTimeZone (локальное время + часовой пояс). Вот из него абсолютное время уже можно получить (информации достаточно).
+            var fromMoscowZoned = GetZonedTime(from, moscowZoneId);
+            var toLondonZoned = GetZonedTime(to, londonZoneId);
+            return (int) (toLondonZoned - fromMoscowZoned).TotalMinutes;
         }
 
         /// <summary>
@@ -219,7 +231,14 @@ namespace AdventureTime
             */
             const string moscowZoneId = "Russian Standard Time";
             const string londonZoneId = "GMT Standard Time";
-            throw new NotImplementedException();
+           
+            var from = new LocalDateTime(2010, 3, 28, 3, 15, 0);
+            var to = new LocalDateTime(2010, 3, 28, 1, 15, 0);
+
+            //Тип ZonedDateTime - это ровным счетом LocalDateTime + DateTimeZone (локальное время + часовой пояс). Вот из него абсолютное время уже можно получить (информации достаточно).
+            var fromMoscowZoned = GetZonedTime(from, moscowZoneId);
+            var toLondonZoned = GetZonedTime(to, londonZoneId);
+            return (int) (toLondonZoned - fromMoscowZoned).TotalMinutes;
         }
 
         private static DateTimeOffset GetZonedTime(DateTime localTime, string timeZoneId)
