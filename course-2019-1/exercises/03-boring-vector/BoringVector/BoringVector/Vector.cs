@@ -24,27 +24,39 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        public double X, Y;
+
+        public Vector(double d, double d1)
+        {
+            this.X = d;
+            this.Y = d1;
+        }
+
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(X * k, Y * k);
         }
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return Math.Abs(v.X * Y - v.Y * X);
         }
 
+        public override string ToString()
+        {
+            return "(" + X.ToString() + "; " + Y.ToString() + ")";
+        }
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */

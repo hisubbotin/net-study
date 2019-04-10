@@ -14,23 +14,24 @@ namespace BoringVector
     {
         private static double eps = 1e-6;
 
-        enum VectorRealtion
+        public enum VectorRealtion
         {
             General,
             Parallel,
             Orthogonal
         };
-        static bool isZero(this Vector v)
+
+        internal static bool isZero(this Vector v)
         {
             return Math.Abs(v.X) <= eps && Math.Abs(v.Y) <= eps;
         }
 
-        static Vector Normalize(this Vector v)
+        internal static Vector Normalize(this Vector v)
         {
-            return v.Scale(1 / v.SquareLength());
+            return v.Scale(1 / Math.Sqrt(v.SquareLength()));
         }
 
-        static double GetAngleBetween(this Vector v1, Vector v2)
+        internal static double GetAngleBetween(this Vector v1, Vector v2)
         {
             if (v1.isZero() || v2.isZero())
             {
@@ -40,7 +41,7 @@ namespace BoringVector
             return Math.Acos(v1.DotProduct(v2) / (v1.SquareLength() * v2.SquareLength()));
         }
 
-        static VectorRealtion GetRelation(this Vector v1, Vector v2)
+        internal static VectorRealtion GetRelation(this Vector v1, Vector v2)
         {
             if (v1.isZero() || v2.isZero() || v1.CrossProduct(v2) <= eps)
             {
