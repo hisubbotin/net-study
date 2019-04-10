@@ -120,7 +120,7 @@ namespace AdventureTime
                 3) Подумай, почему возвращаемое значение может отличаться от действительности.
             */
             TimeSpan interval = dt2 - dt1;
-            return interval.Hours;
+            return (int)interval.TotalHours;
         }
 
         /// <summary>
@@ -299,7 +299,7 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            return (person1Birthday.Day == person2Birthday.Day) && (person1Birthday.Month == person2Birthday.Month);
+            return (person1Birthday.Day == person2Birthday.Day) && (person1Birthday.Month == person2Birthday.Month) && (person1Birthday.Year == person2Birthday.Year);
         }
     }
 }
