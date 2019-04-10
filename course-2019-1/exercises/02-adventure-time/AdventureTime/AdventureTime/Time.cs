@@ -8,7 +8,7 @@ namespace AdventureTime
     /// <summary>
     /// Класс методов для работы с временем.
     /// </summary>
-    internal static class Time
+    public static class Time
     {
         /// <summary>
         /// Возвращает текущее локальное время.
@@ -119,7 +119,7 @@ namespace AdventureTime
                 2) Проверь, учитывается ли Kind объектов при арифметических операциях.
                 3) Подумай, почему возвращаемое значение может отличаться от действительности.
             */
-            return (int) dt2.Subtract(dt2).TotalHours;
+            return (int) Math.Floor(dt2.Subtract(dt1).TotalHours);
         }
 
         /// <summary>
@@ -128,7 +128,7 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            return (int) DateTime.UtcNow.Subtract(DateTime.UtcNow.AddMonths(3)).TotalMinutes;
+            return Math.Abs((int) DateTime.UtcNow.Subtract(DateTime.UtcNow.AddMonths(3)).TotalMinutes);
         }
 
         #region Adventure time saga
@@ -149,9 +149,9 @@ namespace AdventureTime
                     - 2010, 3, 28, 2, 15, 0
             */
             
-            return (int) new DateTimeOffset(new DateTime(2010, 3, 28, 2, 15, 0), new TimeSpan(0, 3, 0)).ToUniversalTime()
-                .Subtract(new DateTimeOffset(new DateTime(2010, 3, 28, 2, 15, 0), TimeSpan.Zero).ToUniversalTime()).TotalMinutes;
-            
+            return (int) new DateTimeOffset(new DateTime(2010, 3, 28, 2, 15, 0), new TimeSpan(0, 0, 0))
+                .Subtract(new DateTimeOffset(new DateTime(2010, 3, 28, 2, 15, 0), new TimeSpan(3, 0, 0)))
+                .TotalMinutes;
         }
 
         /// <summary>
@@ -169,8 +169,10 @@ namespace AdventureTime
                     - 2010, 3, 28, 3, 15, 0
                     - 2010, 3, 28, 1, 15, 0
             */
-            return (int) new DateTimeOffset(new DateTime(2010, 3, 28, 3, 15, 0), new TimeSpan(0, 3, 0)).ToUniversalTime()
-                .Subtract(new DateTimeOffset(new DateTime(2010, 3, 28, 1, 15, 0), TimeSpan.Zero).ToUniversalTime()).TotalMinutes;
+            return (int) new DateTimeOffset(new DateTime(2010, 3, 28, 1, 15, 0), new TimeSpan(0, 0, 0)).ToUniversalTime()
+                .Subtract(
+                    new DateTimeOffset(new DateTime(2010, 3, 28, 3, 15, 0), new TimeSpan(3, 0, 0)).ToUniversalTime())
+                .TotalMinutes;
         }
 
         /// <summary>
@@ -185,8 +187,8 @@ namespace AdventureTime
                 На самом деле смещения таковы: Лондон +1 (BST - British Summer Time), Москва +4 (MSD - Moscow Daylight Time).
                 Давай теперь учтем правильное смещение. Я понимаю, что это очевидно, что результат не изменится, но тебе же не сложно скопипастить и просто поменять смещения?
             */
-            return (int) new DateTimeOffset(new DateTime(2010, 3, 28, 2, 15, 0), new TimeSpan(0, 4, 0)).ToUniversalTime()
-                .Subtract(new DateTimeOffset(new DateTime(2010, 3, 28, 2, 15, 0), new TimeSpan(0, 1, 0))
+            return (int) new DateTimeOffset(new DateTime(2010, 3, 28, 2, 15, 0), new TimeSpan(1, 0, 0)).ToUniversalTime()
+                .Subtract(new DateTimeOffset(new DateTime(2010, 3, 28, 2, 15, 0), new TimeSpan(4, 0, 0))
                     .ToUniversalTime()).TotalMinutes;
         }
 
@@ -231,6 +233,7 @@ namespace AdventureTime
             */
             const string moscowZoneId = "Russian Standard Time";
             const string londonZoneId = "GMT Standard Time";
+
            
             var from = new LocalDateTime(2010, 3, 28, 3, 15, 0);
             var to = new LocalDateTime(2010, 3, 28, 1, 15, 0);
@@ -295,7 +298,7 @@ namespace AdventureTime
         /// <param name="person1Birthday">День рождения первого человека.</param>
         /// <param name="person2Birthday">День рождения второго человека.</param>
         /// <returns>True - если родились в один день, иначе - false.</returns>
-        internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
+        public static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
             return person1Birthday.Date.Equals(person2Birthday.Date);
         }
