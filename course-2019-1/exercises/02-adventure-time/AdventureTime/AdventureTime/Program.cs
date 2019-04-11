@@ -16,6 +16,7 @@ namespace AdventureTime
             var decodedLocal = Time.ParseFromRoundTripFormat(localTimeStr);
             Debug.Assert(decodedUtc == nowUtc);
             Debug.Assert(decodedLocal == nowLocal);
+            var diffMin = Time.GetAdventureTimeDurationInMinutes_ver0_Dumb();
             return;
         }
     }
