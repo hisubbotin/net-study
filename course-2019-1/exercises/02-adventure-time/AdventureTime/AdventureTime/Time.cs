@@ -127,9 +127,7 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            var dt1 = new DateTime(0, 3, 0);
-            var dt0 = new DateTime(0, 0, 0);
-            return (dt1 - dt0).Minutes;
+            throw new ArgumentException();
         }
 
         #region Adventure time saga
@@ -214,8 +212,8 @@ namespace AdventureTime
                 ниже ты найдешь готовый метод GetZonedTime. Просто посмотри на него (можешь даже посмотреть методы и свойства типа TimeZoneInfo, если интересно) и воспользуйся им для вычисления правильного времени
                 "отбытия" и "прибытия" наших героев. Затем посчитай длительность путешествия. Также даны правильные идентификаторы зон.
             */
-            const string moscowZoneId = "Russian Standard Time";
-            const string londonZoneId = "GMT Standard Time";
+            const string moscowZoneId = "Europe/Moscow";
+            const string londonZoneId = "Europe/London";
 
             var local = new DateTime(2010, 3, 28, 2, 15, 0);
 
@@ -230,8 +228,8 @@ namespace AdventureTime
             /*
                 Реши по аналогии с предыдущим методом и проверь, что оба метода действительно возвращают одно и то же время (и что оно правильное).
             */
-            const string moscowZoneId = "Russian Standard Time";
-            const string londonZoneId = "GMT Standard Time";
+            const string moscowZoneId = "Europe/Moscow";
+            const string londonZoneId = "Europe/London";
             
             var msk = new DateTime(2010, 3, 28, 3, 15, 0);
             var london = new DateTime(2010, 3, 28, 1, 15, 0);
@@ -295,7 +293,7 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            return person1Birthday.Day == person2Birthday.Day;
+            return person1Birthday.Day == person2Birthday.Day && person1Birthday.Month == person2Birthday.Month;
         }
     }
 }
