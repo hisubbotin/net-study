@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace BoringVector
 {
@@ -13,7 +14,14 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        public double X { get; }
+        public double Y { get; }
 
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -24,30 +32,42 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        /// <summary>
+        /// Возвращает квадрат длины.
+        /// </summary>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
-        public Vector Add(Vector v)
-        {
-            throw new NotImplementedException();
-        }
-        public Vector Scale(double k)
-        {
-            throw new NotImplementedException();
-        }
-        public double DotProduct(Vector v)
-        {
-            throw new NotImplementedException();
-        }
-        public double CrossProduct(Vector v)
-        {
-            throw new NotImplementedException();
-        }
+
+        /// <summary>
+        /// Возвращает сумму векторов.
+        /// </summary>
+        /// <param name="v">Экземпляр <see cref="Vector"/> второго слогаемого</param>
+        public Vector Add(Vector v) => new Vector(X + v.X, Y + v.Y);
+
+        /// <summary>
+        /// Возвращает произведение вектора на число.
+        /// </summary>
+        public Vector Scale(double k) => new Vector(k * X, k * Y);
+
+        /// <summary>
+        /// Возвращает скалярное произведение.
+        /// </summary>
+        /// <param name="v">Экземпляр <see cref="Vector"/> второго вектора</param>
+        public double DotProduct(Vector v) => X * v.X + Y * v.Y;
+
+        /// <summary>
+        /// Возвращает векторное произведение.
+        /// </summary>
+        /// <param name="v">Экземпляр <see cref="Vector"/> второго вектора</param>
+        public double CrossProduct(Vector v) => X * v.Y - Y * v.X;
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+
+        public override string ToString() => $"({X}; {Y})";
 
         #region operators
 
@@ -57,6 +77,44 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+
+        /// <summary>
+        /// Возвращает сумму векторво.
+        /// </summary>
+        /// <param name="first">Экземпляр <see cref="Vector"/> первого вектора</param>
+        /// <param name="second">Экземпляр <see cref="Vector"/> первого вектора</param>
+        public static Vector operator +(Vector first, Vector second) => first.Add(second);
+
+        /// <summary>
+        /// Возвращает разницу векторов.
+        /// </summary>
+        /// <param name="first">Экземпляр <see cref="Vector"/> первого вектора</param>
+        /// <param name="second">Экземпляр <see cref="Vector"/> первого вектора</param>
+        public static Vector operator -(Vector first, Vector second) => new Vector(first.X - second.X, first.Y - second.Y);
+
+        /// <summary>
+        /// Возвращает произведение вектора на число.
+        /// </summary>
+        /// <param name="v">Экземпляр <see cref="Vector"/> вектора</param>
+        /// <param name="k"> <see cref="double"/>Число</param>
+        public static Vector operator *(Vector v, double k) => v.Scale(k);
+
+        /// <summary>
+        /// Возвращает произведение вектора на число.
+        /// </summary>
+        /// <param name="k"> <see cref="double"/>Число</param>
+        public static Vector operator *(double k, Vector v) => v.Scale(k);
+
+        /// <summary>
+        /// Возвращает произведение вектора на число.
+        /// </summary>
+        /// <param name="v">Экземпляр <see cref="Vector"/> вектора</param>
+        /// <param name="k"> <see cref="double"/>Число</param>
+        public static Vector operator /(Vector v, double k) => v.Scale(1 / k);
+
+        public static Vector operator +(Vector v) => new Vector(v.X, v.Y);
+
+        public static Vector operator -(Vector v) => new Vector(-v.X, -v.Y);
 
         #endregion
     }
