@@ -8,13 +8,18 @@ namespace BoringVector
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
 
+
     public struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
 
-        public double x, y;
+
+        public double x;
+        public double y;
+
+        const double eps = 1e-6;
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -145,6 +150,10 @@ namespace BoringVector
         /// <returns></returns>
         static public Vector operator / (Vector v, double k)
         {
+            if (Math.Abs(k) < eps)
+            {
+                throw new DivideByZeroException();
+            }
             return v.Scale(1.0 / k);
         }
 
