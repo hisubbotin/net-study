@@ -52,6 +52,7 @@ namespace AdventureTime
                 Ну и на будущее запомни этот прекрасный строковый формат представления времени - он твой бро!
                 Название запоминать не нужно, просто помни, что для передачи значения в виде строки, выбирать лучше инвариантные относительно сериализации/десериализации форматы.
             */
+            
             return dt.ToString("O");
         }
 
@@ -127,6 +128,8 @@ namespace AdventureTime
         /// </summary>
         public static int GetTotalMinutesInThreeMonths()
         {
+            // Не понятно, минуты каких дней нужно возвращать
+            throw new NotImplementedException("Не понятно, что хотят");
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
             return Math.Abs((int) DateTime.UtcNow.Subtract(DateTime.UtcNow.AddMonths(3)).TotalMinutes);
         }
