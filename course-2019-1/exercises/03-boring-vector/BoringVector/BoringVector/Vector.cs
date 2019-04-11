@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("Tests")]
 
 namespace BoringVector
 {
@@ -8,6 +11,9 @@ namespace BoringVector
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
 
+    /// <summary>
+    /// Класс стандартного вектора из геометрии
+    /// </summary>
     internal struct Vector
     {
         /*
@@ -23,31 +29,65 @@ namespace BoringVector
                 - скалярное произведение
                 - векторное произведение (= площадь параллелограмма)
         */
+       
+        private double x;
+        private double y;
+       
+        /// <summary>
+        /// Конструктор вектора
+        /// </summary>
+        /// <param name="x">Координата по оси асбцисс</param>
+        /// <param name="y">Координата по оси ординат</param>
+        public Vector(double x, double y)
+        {
+            this.x = x;
+            this.y = y;
+        }
 
+        /// <returns>Квадрат длины</returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return x * x + y * y;
         }
+        
+        /// <param name="v">Второй вектор</param>
+        /// <returns>Сумма двух векторов</returns>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(x + v.x, y + v.y);
         }
+        
+        /// <param name="k">Скалярный множитель</param>
+        /// <returns>Вектор, умноженный на число</returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(k * x, k * y);
         }
+        
+        /// <param name="v">Второй вектор</param>
+        /// <returns>Скалярное произведение</returns>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return x * v.x + y * v.y;
         }
+        
+        /// <param name="v">Второй вектор</param>
+        /// <returns>Векторное произведение</returns>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return x * v.y - y * v.x;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+        
+        
+        /// <returns>Строкове представление в виде (X; Y) </returns>
+        public override string ToString()
+        {
+            return $"({x}; {y})";
+        }
 
         #region operators
 
@@ -57,6 +97,66 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+        
+        /// <summary>
+        /// Сумма двух векторов
+        /// </summary>
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return v.Add(u);
+        }
+
+        /// <summary>
+        /// Разность двух векторов
+        /// </summary>
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return v.Add(-u);
+        }
+
+        /// <summary>
+        /// Произведение числа на вектор
+        /// </summary>
+        public static Vector operator *(double k, Vector v)
+        {
+            return v.Scale(k);
+        }
+
+        /// <summary>
+        /// Сумма вектора на число
+        /// </summary>
+        public static Vector operator *(Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+
+        /// <summary>
+        /// Вектор, поделенный на число
+        /// </summary>
+        public static Vector operator /(Vector v, double k)
+        {
+            if (VectorExtenstions.DoubleEquals(k, 0))
+            {
+                throw new DivideByZeroException();
+            }
+            return v.Scale(1 / k);
+        }
+
+        /// <summary>
+        /// + Вектор
+        /// </summary>
+        public static Vector operator +(Vector v)
+        {
+            return v;
+        }
+
+        /// <summary>
+        /// - Вектор
+        /// </summary>
+        public static Vector operator -(Vector v)
+        {
+            return v.Scale(-1);
+        }
 
         #endregion
     }
