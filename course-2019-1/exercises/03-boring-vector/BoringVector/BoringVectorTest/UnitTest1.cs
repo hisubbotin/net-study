@@ -95,6 +95,8 @@ namespace BoringVectorTest
         [Theory]
         [InlineData(1, 0, 1, 0)]
         [InlineData(3, 4, 0.6, 0.8)]
+        [InlineData(0, 0, 0, 0)]
+        [InlineData(eps, eps, 0, 0)]
         public void TestNormalize(double x1, double y1, 
             double ansx, double ansy)
         {
@@ -107,6 +109,8 @@ namespace BoringVectorTest
         [Theory]
         [InlineData(1, 0, 1, 0, 0)]
         [InlineData(1, 0, -1, 0, Math.PI)]
+        [InlineData(1, 0, eps, 0, 0)]
+        [InlineData(eps, 0, eps, 0, 0)]
         public void TestAngle(double x1, double y1, 
             double x2, double y2,
             double ans)
@@ -118,11 +122,13 @@ namespace BoringVectorTest
         
         
         [Theory]
-        [InlineData(1, 0, 1, 0, BoringVector.BoringVectorExtension.VectorRealtion.Parallel)]
-        [InlineData(1, 0, 0, 1, BoringVector.BoringVectorExtension.VectorRealtion.Orthogonal)]
+        [InlineData(1, 0, 1, 0, BoringVector.BoringVectorExtension.VectorRelation.Parallel)]
+        [InlineData(1, 0, 0, 1, BoringVector.BoringVectorExtension.VectorRelation.Orthogonal)]
+        [InlineData(eps, 0, 0, eps, BoringVector.BoringVectorExtension.VectorRelation.Parallel)]
+        [InlineData(1, 0, 0, eps, BoringVector.BoringVectorExtension.VectorRelation.Parallel)]
         public void TestRelation(double x1, double y1, 
             double x2, double y2,
-            BoringVector.BoringVectorExtension.VectorRealtion rel)
+            BoringVector.BoringVectorExtension.VectorRelation rel)
         {
             var vect1 = new BoringVector.Vector(x1, y1);
             var vect2 = new BoringVector.Vector(x2, y2);

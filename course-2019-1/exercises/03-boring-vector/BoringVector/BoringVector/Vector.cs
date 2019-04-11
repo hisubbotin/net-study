@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Sockets;
 
 namespace BoringVector
 {
@@ -23,39 +24,86 @@ namespace BoringVector
                 - скалярное произведение
                 - векторное произведение (= площадь параллелограмма)
         */
+        /// <summary>
+        /// пермення отвечающая за ось Х
+        /// </summary>
+        public double X { get; }
+        /// <summary>
+        /// переменная отвечающая за ось Y
+        /// </summary>
+        public double Y { get; }
 
-        public double X, Y;
-
+        /// <summary>
+        /// создает вектор с заданными значениями компонент
+        /// </summary>
+        /// <param name="d">ось Х</param>
+        /// <param name="d1">ось Y</param>
         public Vector(double d, double d1)
         {
             this.X = d;
             this.Y = d1;
         }
 
+        /// <summary>
+        /// получает квадрат длины
+        /// </summary>
+        /// <returns>квадрат длины в ортонормированном базисе, обычное скалярное произведение</returns>
         public double SquareLength()
         {
             return X * X + Y * Y;
         }
+        
+        /// <summary>
+        /// возвращает вектор, который является ерультатаом суммирования текущего вектораи второго
+        /// </summary>
+        /// <param name="v">вектор, который нужно добавить</param>
+        /// <returns>сумма векторов</returns>
         public Vector Add(Vector v)
         {
             return new Vector(X + v.X, Y + v.Y);
         }
+        
+        /// <summary>
+        /// возвращает вектор с компонентами умноженными на к,
+        /// если К < 0 -> кидаем исключение 
+        /// </summary>
+        /// <param name="k">число, на которое умножаем</param>
+        /// <returns></returns>
         public Vector Scale(double k)
         {
+            if (Math.Abs(k) <= Double.Epsilon || Double.IsNaN(k))
+            {
+                throw new ArithmeticException("cannot create vector with such scale");
+            }
             return new Vector(X * k, Y * k);
         }
+        /// <summary>
+        /// возращетс склярное произведегние векторов
+        /// </summary>
+        /// <param name="v">вектор, с которым ищем скал. произведение</param>
+        /// <returns>скал. произведение</returns>
         public double DotProduct(Vector v)
         {
             return X * v.X + Y * v.Y;
         }
+        
+        /// <summary>
+        /// площадь параллелограмма, построенного на двух векторах
+        /// </summary>
+        /// <param name="v">вектор, образующий вторую сторону параллеограмма</param>
+        /// <returns>площадь параллелограмма</returns>
         public double CrossProduct(Vector v)
         {
             return Math.Abs(v.X * Y - v.Y * X);
         }
 
+        /// <summary>
+        /// строковое предстваление веткора
+        /// </summary>
+        /// <returns>формат (X; Y)</returns>
         public override string ToString()
         {
-            return "(" + X.ToString() + "; " + Y.ToString() + ")";
+            return $"({X}; {Y})";
         }
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
@@ -69,6 +117,60 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+
+        /// <summary>
+        /// Сумма двух векторов
+        /// </summary>
+        /// <param name="v">Первый веткор</param>
+        /// <param name="u">Второй вектор</param>
+        /// <returns>новый вектор, который является суммой векторов</returns>
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return new Vector(v.X + u.X, v.Y + u.Y);
+        }
+        
+        /// <summary>
+        /// возвращает вектор, с координатами равными "-" исходных
+        /// </summary>
+        /// <param name="v">вектор, обратный которому ищем</param>
+        /// <returns>обратный вектор</returns>
+        public static Vector operator -(Vector v)
+        {
+            return new Vector(-v.X, -v.Y);
+        }
+        
+        /// <summary>
+        /// тот же самый вектоор
+        /// </summary>
+        /// <param name="v">вектор</param>
+        /// <returns>такой же вектор</returns>
+        public static Vector operator +(Vector v)
+        {
+            return new Vector(v.X, v.Y);
+        }
+        
+        /// <summary>
+        /// Разница двух векторов
+        /// </summary>
+        /// <param name="v">Первый веткор</param>
+        /// <param name="u">Второй вектор</param>
+        /// <returns>новый вектор, который является разницой векторов</returns>
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return new Vector(v.X + u.X, v.Y + u.Y);
+        }
+        
+        
+        /// <summary>
+        /// умножает координаты вектора на к
+        /// </summary>
+        /// <param name="v">вектор</param>
+        /// <param name="k">параметр, на который надо домножать</param>
+        /// <returns>новый вектор</returns>
+        public static Vector operator *(Vector v, double k)
+        {
+            return new Vector(v.X, v.Y).Scale(k);
+        }
 
         #endregion
     }
