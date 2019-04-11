@@ -1,4 +1,4 @@
-﻿namespace AdventureTime
+﻿namespace AdventureTime.Implementation
 {
     internal class Program
     {
