@@ -28,7 +28,7 @@ namespace Numbers
         internal static bool IsNaN(double d)
         {
             // Подсказка: по аналогии с константами типа int, у типа double тоже есть свой набор констант.
-            return d.Equals(Double.NaN);
+            return Double.IsNaN(d); 
         }
         
         /// <summary>
@@ -41,7 +41,18 @@ namespace Numbers
                 Подумай, почему это задание дано в части про вещественнозначные числа. И почему не дана полная сигнатура метода.
                 Если сходу идей нет, перестань искать подвох и просто реализуй дословно. Теперь еще раз посмотри на код и подумай в чем может быть проблема, сколько должно быть аргументов.
             */
-            return a.CompareTo(b);
+
+            if (b - a > Double.Epsilon)
+            {
+                return -1;
+            } else if (a - b > Double.Epsilon)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
         }
 
         // и все?!! О_о
