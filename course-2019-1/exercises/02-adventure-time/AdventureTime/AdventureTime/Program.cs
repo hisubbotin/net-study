@@ -48,6 +48,14 @@ namespace AdventureTime
             Console.WriteLine(Time.GetTotalMinutesInThreeMonths());
             
             Console.WriteLine("---------------------");
+
+            Console.WriteLine(Time.GetAdventureTimeDurationInMinutes_ver0_Dumb());
+            Console.WriteLine(Time.GetGenderSwappedAdventureTimeDurationInMinutes_ver0_Dumb());
+            Console.WriteLine(Time.GetAdventureTimeDurationInMinutes_ver1_FeelsSmarter());
+            Console.WriteLine(Time.GetAdventureTimeDurationInMinutes_ver2_FeelsLikeRocketScience());
+            Console.WriteLine(Time.GetGenderSwappedAdventureTimeDurationInMinutes_ver2_FeelsLikeRocketScience());
+
+            Console.WriteLine("---------------------");
             
             date1 = new DateTime(2010, 1, 1, 8, 0, 15);
             date2 = new DateTime(2011, 8, 18, 13, 30, 30);

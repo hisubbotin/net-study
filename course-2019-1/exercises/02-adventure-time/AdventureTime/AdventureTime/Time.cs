@@ -149,7 +149,9 @@ namespace AdventureTime
                 Держи, заготовочку для копипасты:
                     - 2010, 3, 28, 2, 15, 0
             */
-            throw new NotImplementedException();
+            DateTimeOffset dt_m = new DateTimeOffset(2010, 3, 28, 2, 15, 0, new TimeSpan(3, 0, 0));
+            DateTimeOffset dt_l = new DateTimeOffset(2010, 3, 28, 2, 15, 0, new TimeSpan(0, 0, 0));
+            return (int)(dt_l - dt_m).TotalMinutes;
         }
 
         /// <summary>
@@ -167,7 +169,10 @@ namespace AdventureTime
                     - 2010, 3, 28, 3, 15, 0
                     - 2010, 3, 28, 1, 15, 0
             */
-            throw new NotImplementedException();
+            DateTimeOffset dt_m = new DateTimeOffset(2010, 3, 28, 3, 15, 0, new TimeSpan(3, 0, 0));
+            DateTimeOffset dt_l = new DateTimeOffset(2010, 3, 28, 1, 15, 0, new TimeSpan(0, 0, 0));
+            
+            return (int)(dt_l - dt_m).TotalMinutes;
         }
 
         /// <summary>
@@ -182,7 +187,10 @@ namespace AdventureTime
                 На самом деле смещения таковы: Лондон +1 (BST - British Summer Time), Москва +4 (MSD - Moscow Daylight Time).
                 Давай теперь учтем правильное смещение. Я понимаю, что это очевидно, что результат не изменится, но тебе же не сложно скопипастить и просто поменять смещения?
             */
-            throw new NotImplementedException();
+            DateTimeOffset dt_m = new DateTimeOffset(2010, 3, 28, 3, 15, 0, new TimeSpan(4, 0, 0));
+            DateTimeOffset dt_l = new DateTimeOffset(2010, 3, 28, 1, 15, 0, new TimeSpan(1, 0, 0));
+            
+            return (int)(dt_l - dt_m).TotalMinutes;
         }
 
         // GetGenderSwappedAdventureTimeDurationInMinutes_ver1_FeelsSmarter опустим, там то же самое
@@ -204,10 +212,16 @@ namespace AdventureTime
                 ниже ты найдешь готовый метод GetZonedTime. Просто посмотри на него (можешь даже посмотреть методы и свойства типа TimeZoneInfo, если интересно) и воспользуйся им для вычисления правильного времени
                 "отбытия" и "прибытия" наших героев. Затем посчитай длительность путешествия. Также даны правильные идентификаторы зон.
             */
-            const string moscowZoneId = "Russian Standard Time";
-            const string londonZoneId = "GMT Standard Time";
+            const string moscowZoneId = "Europe/London";
+            const string londonZoneId = "Europe/Moscow";
+            
+            var dt_m = new DateTime(2010, 3, 28, 2, 15, 0);
+            var dt_l = new DateTime(2010, 3, 28, 2, 15, 0);
 
-            throw new NotImplementedException();
+            var dt_m1 = GetZonedTime(dt_m, moscowZoneId);
+            var dt_l1 = GetZonedTime(dt_l, londonZoneId);
+
+            return (int) (dt_m1 - dt_l1).TotalMinutes;
         }
 
         /// <summary>
@@ -218,9 +232,17 @@ namespace AdventureTime
             /*
                 Реши по аналогии с предыдущим методом и проверь, что оба метода действительно возвращают одно и то же время (и что оно правильное).
             */
-            const string moscowZoneId = "Russian Standard Time";
-            const string londonZoneId = "GMT Standard Time";
-            throw new NotImplementedException();
+            const string moscowZoneId = "Europe/London";
+            const string londonZoneId = "Europe/Moscow";
+ 
+            
+            var dt_m = new DateTime(2010, 3, 28, 3, 15, 0);
+            var dt_l = new DateTime(2010, 3, 28, 1, 15, 0);
+
+            var dt_m1 = GetZonedTime(dt_m, moscowZoneId);
+            var dt_l1 = GetZonedTime(dt_l, londonZoneId);
+
+            return (int) (dt_m1 - dt_l1).TotalMinutes;
         }
 
         private static DateTimeOffset GetZonedTime(DateTime localTime, string timeZoneId)
