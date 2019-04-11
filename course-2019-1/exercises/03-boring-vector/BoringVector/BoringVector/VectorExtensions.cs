@@ -51,7 +51,7 @@ namespace BoringVector
         public static Vector Normalize(this Vector v)
         {
             double length = Math.Sqrt(v.SquareLength());
-            return new Vector(v.X / length, v.Y / length);
+            return IsZero(length) ? new Vector(0.0, 0.0) : new Vector(v.X / length, v.Y / length);
         }
         
         /// <summary>

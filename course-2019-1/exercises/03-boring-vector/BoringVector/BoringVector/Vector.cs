@@ -164,6 +164,10 @@ namespace BoringVector
         /// <returns>Вектор-результат деления</returns>
         public static Vector operator/(Vector v, double k)
         {
+            if (Math.Abs(k) < 1e-6)
+            {
+                Console.WriteLine("Division of vector by zero!");
+            }
             return v.Scale(1 / k);
         }
         
