@@ -125,7 +125,7 @@ namespace AdventureTime
         /// <summary>
         /// Возвращает количество минут во временном промежутке, равном трем месяцам.
         /// </summary>
-        /// <remarks>Неккоректное тз</remarks>
+        /// <remarks>Неккоректное тз, зависит от года и месяца отсчета.</remarks>
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах
