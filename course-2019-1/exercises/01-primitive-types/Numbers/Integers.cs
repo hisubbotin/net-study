@@ -39,105 +39,47 @@ namespace Numbers
         /// <summary>
         /// Возвращает половину максимального числа типа int.
         /// </summary>
-        internal static int HalfIntMaxValue()
-        {
-            /*
-                После C++ вы будете приятно удивлены какое умное в .Net автодополнение (IntelliSense).
-                Особенно это касается связки Visual Studio + Resharper, используя которую, если просто набрать return и нажать пробел,
-                    то в появившемся списке автодополнения одной из первых будет нужная тебе константа :)
-            */
-            throw new NotImplementedException();
-        }
+        internal static int HalfIntMaxValue() => int.MaxValue / 2;
 
         /// <summary>
         /// Возвращает куб заданного целого числа типа int.
         /// </summary>
-        internal static int Cube(int x)
-        {
-            // не сомневайся, пиши. Тут без подвохов.
-            throw new NotImplementedException();
-        }
+        internal static int Cube(int x) => x * x * x;
 
         /// <summary>
         /// Возвращает куб заданного целого числа типа int. Вычисление куба проводится в режиме проверки переполнения типа.
         /// </summary>
-        internal static int CubeWithOverflowCheck(int x)
-        {
-            /*
-                Если спал на лекции, то тут придется погуглить, сорри.
-                И заодно подумай какой режим выставлен по умолчанию. Почему. И почему категорически нельзя надеяться на режим по умолчанию.
-            */
-            throw new NotImplementedException();
-        }
+        internal static int CubeWithOverflowCheck(int x) => checked(checked(x * x) * x);
 
         /// <summary>
         /// Возвращает куб заданного целого числа типа int. Вычисление куба проводится в режиме игнорирования переполнения типа.
         /// </summary>
-        internal static int CubeWithoutOverflowCheck(int x)
-        {
-            // если сделал предыдущие, то с этим уже должно быть понятно.
-            throw new NotImplementedException();
-        }
+        internal static int CubeWithoutOverflowCheck(int x) => unchecked(unchecked(x * x) * x);
 
         /// <summary>
         /// Конвертирует числовое значение в эквивалентное ему строковое представление.
         /// </summary>
         /// <param name="x">Числовое значение для конвертации.</param>
         /// <returns>Эквивалентное строковое представление числа.</returns>
-        internal static string ToString(int x)
-        {
-            /*
-                Возможно ты уже в курсе, что "эквивалентное ему строковое представление" - понятие очень расплывчатое, и существует
-                огромная куча различных форматов вывода чисел: "123456789", "123 456 789", "0123456789" и т.п.
-                Сейчас представим, что такой проблемы не существует, и выберем самый простой вариант, который использует какие-то дефолтные настройки.
-
-                Подсказка: нужно воспользоваться методом, который есть у абсолютно всех объектов.
-            */
-            throw new NotImplementedException();
-        }
+        internal static string ToString(int x) => x.ToString();
 
         /// <summary>
         /// Конвертирует строковое представление числа в его 32-битное знаковое целочисленное представление.
         /// </summary>
         /// <param name="s">Строковое представление числа.</param>
         /// <returns>32-битное знаковое целочисленное представление числа.</returns>
-        internal static int Parse(string s)
-        {
-            /*
-                Продолжай идти простым путем -нужен метод, обратный методу ToString выше, который распарсит дефолтное строковое представление числа.
-                Подсказка: у каждого примитивного типа есть набор статических методов, среди которых есть нужный.
-            */
-            throw new NotImplementedException();
-        }
+        internal static int Parse(string s) => int.Parse(s);
 
         /// <summary>
         /// Возвращает число в 10 раз большее заданного.
         /// </summary>
-        internal static int TenTimes(int x)
-        {
-            /*
-                Реализуй умножение числа на 10 без использования арифметических операций над числами.
-                Воспользуйся реализованными выше методами ToString и Parse. И не думай ни о каких переполнениях - задача не на это :)
-            */
-            throw new NotImplementedException();
-        }
+        internal static int TenTimes(int x) => Parse(ToString(x) + "0");
 
         /// <summary>
         /// Конвертирует числовое значение в эквивалентное ему строковое представление в шестнадцатиричной системе счисления.
         /// </summary>
         /// <param name="x">Числовое значение для конвертации.</param>
         /// <returns>Эквивалентное строковое представление в шестнадцатиричной системе счисления.</returns>
-        internal static string ToHexString(int x)
-        {
-            /*
-                У метода ToString числовых типов есть перегрузка, которая принимает строку с одним из заданного набора форматов.
-                В студии дается хорошая и понятная подсказка с этим набором форматов, в других же IDE скорее всего такого не будет, и придется погуглить форматы.
-            */
-            throw new NotImplementedException();
-        }
-
-        /*
-            Закончил? Переходи в FloatNumbers.cs
-        */
+        internal static string ToHexString(int x) => x.ToString("X");
     }
 }
