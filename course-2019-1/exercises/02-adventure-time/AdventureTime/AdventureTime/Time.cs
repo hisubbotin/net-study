@@ -125,11 +125,11 @@ namespace AdventureTime
         /// <summary>
         /// Возвращает количество минут во временном промежутке, равном трем месяцам.
         /// </summary>
+        /// <remarks>Неккоректное тз</remarks>
         public static int GetTotalMinutesInThreeMonths()
         {
-            // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            TimeSpan curr = new TimeSpan(30 * 3, 0, 0, 0, 0);
-            return Convert.ToInt32(curr.TotalMinutes);
+            // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах
+            throw new ArgumentException();
         }
 
         #region Adventure time saga
