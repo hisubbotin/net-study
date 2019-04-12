@@ -7,42 +7,77 @@ namespace BoringVector
     /*
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
-
     internal struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        public double X;
+        public double Y;
 
 
-        /*
-            На месте заглушек добавь реализацию базовых методов вектора:
-                - квадрат длины
-                - сумма векторов
-                - умножение на коэффициент
-                - скалярное произведение
-                - векторное произведение (= площадь параллелограмма)
-        */
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="X"></param>
+        /// <param name="Y"></param>
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
 
+        /// <summary>
+        /// Конструктор Копирования
+        /// </summary>
+        /// <param name="vec"></param>
+        public Vector(Vector vec)
+        {
+            X = vec.X;
+            Y = vec.Y;
+        }
+
+        /// <summary>
+        /// Квадрат длины вектора
+        /// </summary>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+
+        /// <summary>
+        /// Создание нового вектора как суммы 2х векторов
+        /// </summary>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
+
+        /// <summary>
+        /// Создание нового вектора путем скалярного умножения на число
+        /// </summary>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(k*X, k*Y);
         }
+
+        /// <summary>
+        /// Скалярное произведение вееторов
+        /// </summary>
+        /// <param name="v"></param>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return v.X * X + v.Y * Y;
         }
+
+
+        /// <summary>
+        /// Ориентированная плозадь параллелограмма, построенного по 2м векторам
+        /// </summary>
+        /// <param name="v"></param>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
 
         /*
@@ -51,12 +86,46 @@ namespace BoringVector
 
         #region operators
 
-        /*
-            Реализуй также следущие операторы (Vector v, u и double k):
-                - v + u, v - u
-                - k * v, v * k, v / k
-                - +v, -v
-        */
+        
+        override public string ToString()
+        {
+            return "(" + X.ToString() + "; " + Y.ToString() + ")";
+        }
+
+        public static Vector operator + (Vector vec1, Vector vec2)
+        {
+            return vec1.Add(vec2);
+        }
+
+        public static Vector operator - (Vector vec1, Vector vec2)
+        {
+            return vec1.Add(-vec2);
+        }
+
+        public static Vector operator *(double koef, Vector vec)
+        {
+            return vec.Scale(koef);
+        }
+
+        public static Vector operator * (Vector vec, double koef)
+        {
+            return vec.Scale(koef);
+        }
+
+        public static Vector operator / (Vector vec, double koef)
+        {
+            return vec.Scale(1/koef);
+        }
+
+        public static Vector operator +(Vector vec)
+        {
+            return new Vector(vec);
+        }
+
+        public static Vector operator -(Vector vec)
+        {
+            return new Vector(-vec.X, -vec.Y);
+        }
 
         #endregion
     }
