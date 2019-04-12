@@ -13,6 +13,24 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        /// <summary>
+        /// X coordinate of the vector
+        /// </summary>
+        public readonly double _X;
+        /// <summary>
+        /// Y coordinate of the vector
+        /// </summary>
+        public readonly double _Y;
+
+        /// <summary>
+        /// Vector constructor, fills vector coordinates with appropriate input parameters.
+        /// </summary>
+        /// <param name="X">Variable of <see cref="double"/> type, X coordinate </param>
+        /// <param name="Y">Variable of <see cref="double"/> type, Y coordinate </param>
+        public Vector(double X, double Y) {
+            _X = X;
+            _Y = Y;
+        }
 
 
         /*
@@ -24,30 +42,74 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        /// <summary>
+        /// Computes square length of the vector
+        /// </summary>
+        /// <returns>Variable of <see cref="double"/> type.</returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            var square_length = _X * _X + _Y * _Y;
+            return square_length;
         }
+
+        /// <summary>
+        /// Sums vectors, returns the result
+        /// </summary>
+        /// <param name="v">Object of <see cref='Vector'/>summing with the current</param>
+        /// <returns>Object of <see cref='Vector'/>.</returns>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            Vector res = new Vector(
+                this._X + v._X, 
+                this._Y + v._Y);
+            return res;
         }
+        
+        /// <summary>
+        /// Multiplies current vector by k, returns result.
+        /// </summary>
+        /// <param name="k">Variable of <see cref='double'/>type, the coefficient to multiply</param>
+        /// <returns>Object of <see cref='Vector'/>.</returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            Vector res = new Vector(
+                this._X * k, 
+                this._Y * k);
+            return res;
         }
+
+        /// <summary>
+        /// Calculates dot product of vectors, returns result.
+        /// </summary>
+        /// <param name="v">Object of <see cref='Vector'/>.</param>
+        /// <returns>Variable of <see cref='double'/>type.</returns>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            var res = this._X * v._X + this._Y * v._Y;
+            return res;
         }
+
+        /// <summary>
+        ///  Calculates cross product of vectors, returns result.
+        /// </summary>
+        /// <param name="v">Object of <see cref='Vector'/>.</param>
+        /// <returns>Variable of <see cref='double'/>type.</returns>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            var res = this._X * v._Y - this._Y * v._X;
+            return res;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+        /// <summary>
+        /// Returns string representation of the vector, in format: (X; Y)
+        /// </summary>
+        /// <returns>Object of <see cref='string'/>type.</returns>
+        public override string ToString()  {
+            return String.Format("({0}; {1})", this._X, this._Y);
+        }
 
         #region operators
 
@@ -57,6 +119,34 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+
+        public static Vector operator +(Vector v) {
+            return new Vector(v._X, v._Y);
+        }
+
+        public static Vector operator -(Vector v) {
+            return new Vector(-v._X, -v._Y);
+        }
+
+        public static Vector operator +(Vector a, Vector b) {
+            return new Vector(a._X + b._X, a._Y + b._Y);
+        }
+
+        public static Vector operator -(Vector a, Vector b) {
+            return new Vector(a._X - b._X, a._Y - b._Y);
+        }
+
+        public static Vector operator *(double k, Vector v) {
+            return new Vector(v._X*k, v._Y*k);
+        }
+
+        public static Vector operator *(Vector v, double k) {
+            return new Vector(v._X*k, v._Y*k);
+        }
+
+        public static Vector operator /(Vector v, double k) {
+            return new Vector(v._X/k, v._Y/k);
+        }
 
         #endregion
     }
