@@ -18,7 +18,11 @@ namespace Numbers
         {
             // твои бро: Console.WriteLine и Console.ReadLine
 
+            Console.WriteLine(Numbers.Integers.HalfIntMaxValue());
+
             Console.WriteLine("Hello World!");
+
+            Console.ReadLine();
         }
     }
 }

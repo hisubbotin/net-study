@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("BoringVector.Test")]
 
 namespace BoringVector
 {
@@ -13,7 +15,8 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
-
+        public double X;
+        public double Y;
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -24,30 +27,43 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        public const double eps = 1e-6;
+
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
+
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector { X = X + v.X, Y = Y + v.Y };
         }
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector { X = X * k, Y = Y * k };
         }
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - v.X * Y;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+
+        public override string ToString()
+        {
+            return $"({X}; {Y})";
+        }
 
         #region operators
 
@@ -58,10 +74,74 @@ namespace BoringVector
                 - +v, -v
         */
 
+        /// <summary>
+        /// Сумма векторов
+        /// </summary>
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return v.Add(u);
+        }
+        /// <summary>
+        /// Разность векторов
+        /// </summary>
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return v.Add(u.Scale(-1.0));
+        }
+        /// <summary>
+        /// Умножение вектора на скаляр
+        /// </summary>
+        public static Vector operator *(double k, Vector v)
+        {
+            return v.Scale(k);
+        }
+        /// <summary>
+        /// Умножение вектора на скаляр (в обратном порядке)
+        /// </summary>
+        public static Vector operator *(Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+        /// <summary>
+        /// Деление вектора на скаляр
+        /// </summary>
+        public static Vector operator /(Vector v, double k)
+        {
+            return v.Scale(1.0 / k);
+        }
+        /// <summary>
+        /// Унарный плюс
+        /// </summary>
+        public static Vector operator +(Vector v)
+        {
+            return new Vector { X = v.X, Y = v.Y };
+        }
+        /// <summary>
+        /// Унарный минус
+        /// </summary>
+        public static Vector operator -(Vector v)
+        {
+            return v.Scale(-1.0);
+        }
+        /// <summary>
+        /// Сравнение векторов с учетом точности <see cref="eps"/> (по компонентам).
+        /// </summary>
+        public static bool operator ==(Vector v, Vector u)
+        {
+            return v.Equals(u);
+        }
+        /// <summary>
+        /// Сравнение векторов с учетом точности <see cref="eps"/> (по компонентам).
+        /// </summary>
+        public static bool operator !=(Vector v, Vector u)
+        {
+            return !v.Equals(u);
+        }
+
         #endregion
     }
 
-    #endregion
+#endregion
 
     /*
         Время отправиться в VectorExtensions.cs за новой порцией квестов, герой!
