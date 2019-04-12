@@ -12,6 +12,9 @@ namespace BoringVector
     /// </summary>
     internal struct Vector
     {
+        /// <summary>
+        /// Точность сравнения <see cref="double"/> значений.
+        /// </summary>
         public const double eps = 1e-6;
         /*
             Vector задается парой вещественных координат X и Y.
