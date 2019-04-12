@@ -7,13 +7,17 @@ namespace BoringVector
     /*
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
-
+    /// <summary>
+    /// Двумерный вектор, задающийся координатами X и Y.
+    /// </summary>
     internal struct Vector
     {
+        public const double eps = 1e-6;
         /*
             Vector задается парой вещественных координат X и Y.
         */
-
+        public double X;
+        public double Y;
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -24,30 +28,43 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
-        public double SquareLength()
-        {
-            throw new NotImplementedException();
-        }
-        public Vector Add(Vector v)
-        {
-            throw new NotImplementedException();
-        }
-        public Vector Scale(double k)
-        {
-            throw new NotImplementedException();
-        }
-        public double DotProduct(Vector v)
-        {
-            throw new NotImplementedException();
-        }
-        public double CrossProduct(Vector v)
-        {
-            throw new NotImplementedException();
-        }
+        /// <summary>
+        /// Квадрат длины вектора.
+        /// </summary>
+        public double SquareLength() => X * X + Y * Y;
+
+        /// <summary>
+        /// Сумма векторов.
+        /// </summary>
+        public Vector Add(Vector v) => new Vector { X = X + v.X, Y = Y + v.Y };
+
+        /// <summary>
+        /// Умножение вектора на коэффициент.
+        /// </summary>
+        public Vector Scale(double k) => new Vector { X = X * k, Y = Y * k };
+
+        /// <summary>
+        /// Скалярное произведение векторов.
+        /// </summary>
+        public double DotProduct(Vector v) => X * v.X + Y * v.Y;
+
+        /// <summary>
+        /// Векторное произведение векторов (площадь параллелограмма, построенного на векторах).
+        /// </summary>
+        public double CrossProduct(Vector v) => X * v.Y - v.X * Y;
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+        /// <summary>
+        /// Строка в формате (X; Y)
+        /// </summary>
+        public override string ToString() => $"({X}; {Y})";
+
+        /// <summary>
+        /// Покомпонентное сравнение векторов с учетом точности <see cref="eps"/>.
+        /// </summary>
+        public bool Equals(Vector v) => X - v.X < eps && X - v.X > -eps && Y - v.Y < eps && Y - v.Y > -eps;
 
         #region operators
 
@@ -57,7 +74,42 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
-
+        /// <summary>
+        /// Сумма векторов.
+        /// </summary>
+        public static Vector operator +(Vector v, Vector u) => v.Add(u);
+        /// <summary>
+        /// Разность векторов.
+        /// </summary>
+        public static Vector operator -(Vector v, Vector u) => v.Add(u.Scale(-1.0));
+        /// <summary>
+        /// Умножение вектора на коэффициент.
+        /// </summary>
+        public static Vector operator *(double k, Vector v) => v.Scale(k);
+        /// <summary>
+        /// Умножение вектора на коэффициент.
+        /// </summary>
+        public static Vector operator *(Vector v, double k) => v.Scale(k);
+        /// <summary>
+        /// Деление вектора на коэффициент.
+        /// </summary>
+        public static Vector operator /(Vector v, double k) => v.Scale(1.0 / k);
+        /// <summary>
+        /// Тот же вектор.
+        /// </summary>
+        public static Vector operator +(Vector v) => new Vector { X = v.X, Y = v.Y };
+        /// <summary>
+        /// Противоположный вектор.
+        /// </summary>
+        public static Vector operator -(Vector v) => v.Scale(-1.0);
+        /// <summary>
+        /// Покомпонентное сравнение векторов с учетом точности <see cref="eps"/>.
+        /// </summary>
+        public static bool operator ==(Vector v, Vector u) => v.Equals(u);
+        /// <summary>
+        /// Покомпонентное сравнение векторов с учетом точности <see cref="eps"/>.
+        /// </summary>
+        public static bool operator !=(Vector v, Vector u) => !v.Equals(u);
         #endregion
     }
 
