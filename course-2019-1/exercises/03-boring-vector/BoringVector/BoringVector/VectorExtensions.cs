@@ -13,6 +13,9 @@ namespace BoringVector
 
     internal class VectorWithExtensions
     {
+        /// <summary>
+        /// Перечисление положений векторов относительно друг друга
+        /// </summary>
         public enum Relation : short
         {
             General,
@@ -20,18 +23,37 @@ namespace BoringVector
             Orthogonal
         }
 
+        /// <summary>
+        /// Точность вычислений
+        /// </summary>
         public const double eps = 1e-8;
 
+        /// <summary>
+        /// Проверка на нулевой вектор
+        /// </summary>
+        /// <param name="vec"><see cref="Vector"/></param>
+        /// <returns><see cref="bool"/></returns>
         public static bool IsZero(Vector vec)
         {
             return vec.SquareLength() < eps;
         }
 
+        /// <summary>
+        /// Нормализация вектора
+        /// </summary>
+        /// <param name="vec"><see cref="Vector"/></param>
+        /// <returns><see cref="Vector"/></returns>
         public static Vector Normalize(Vector vec)
         {
             return vec / Sqrt(vec.SquareLength());
         }
 
+        /// <summary>
+        /// Угол между 2мя векторами
+        /// </summary>
+        /// <param name="vec1"><see cref="Vector"/></param>
+        /// <param name="vec2"><see cref="Vector"/></param>
+        /// <returns><see cref="double"/></returns>
         public static double GetAngleBetween(Vector vec1, Vector vec2)
         {
             if (IsZero(vec1) || IsZero(vec2))
@@ -42,6 +64,12 @@ namespace BoringVector
             return Acos(vec1.DotProduct(vec2) / (Sqrt(vec1.SquareLength()) * Sqrt(vec2.SquareLength())));
         }
 
+        /// <summary>
+        /// Отношение положения 2х векторов в пространстве
+        /// </summary>
+        /// <param name="vec1"><see cref="Vector"/></param>
+        /// <param name="vec2"><see cref="Vector"/></param>
+        /// <returns><see cref="VectorWithExtensions.Relation"/></returns>
         public static Relation GetRelation(Vector vec1, Vector vec2)
         {
             double angle = GetAngleBetween(vec1, vec2);

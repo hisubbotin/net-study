@@ -19,8 +19,8 @@ namespace BoringVector
         /// <summary>
         /// Конструктор
         /// </summary>
-        /// <param name="X"></param>
-        /// <param name="Y"></param>
+        /// <param name="X"><see cref="double"/> 1 координата</param>
+        /// <param name="Y"><see cref="double"/> 2 координата</param>
         public Vector(double x, double y)
         {
             X = x;
@@ -30,7 +30,7 @@ namespace BoringVector
         /// <summary>
         /// Конструктор Копирования
         /// </summary>
-        /// <param name="vec"></param>
+        /// <param name="vec"><see cref="Vector"/></param>
         public Vector(Vector vec)
         {
             X = vec.X;
@@ -47,6 +47,7 @@ namespace BoringVector
 
         /// <summary>
         /// Создание нового вектора как суммы 2х векторов
+        /// <param name="v"><see cref="Vector"/></param>
         /// </summary>
         public Vector Add(Vector v)
         {
@@ -55,6 +56,7 @@ namespace BoringVector
 
         /// <summary>
         /// Создание нового вектора путем скалярного умножения на число
+        /// <param name="k"><see cref="double"/></param>
         /// </summary>
         public Vector Scale(double k)
         {
@@ -64,7 +66,7 @@ namespace BoringVector
         /// <summary>
         /// Скалярное произведение вееторов
         /// </summary>
-        /// <param name="v"></param>
+        /// <param name="v"><see cref="Vector"/></param>
         public double DotProduct(Vector v)
         {
             return v.X * X + v.Y * Y;
@@ -74,7 +76,7 @@ namespace BoringVector
         /// <summary>
         /// Ориентированная плозадь параллелограмма, построенного по 2м векторам
         /// </summary>
-        /// <param name="v"></param>
+        /// <param name="v"><see cref="Vector"/></param>
         public double CrossProduct(Vector v)
         {
             return X * v.Y - Y * v.X;
@@ -86,42 +88,84 @@ namespace BoringVector
 
         #region operators
 
-        
+        /// <summary>
+        /// </summary>
+        /// <returns><see cref="string"/></returns>
         override public string ToString()
         {
             return "(" + X.ToString() + "; " + Y.ToString() + ")";
         }
 
+        /// <summary>
+        /// Бинарный плюс
+        /// </summary>
+        /// <param name="vec1"><see cref="Vector"/></param>
+        /// <param name="vec2"><see cref="Vector"/></param>
+        /// <returns><see cref="Vector"/></returns>
         public static Vector operator + (Vector vec1, Vector vec2)
         {
             return vec1.Add(vec2);
         }
 
+        /// <summary>
+        /// Бинарный минус
+        /// </summary>
+        /// <param name="vec1"><see cref="Vector"/></param>
+        /// <param name="vec2"><see cref="Vector"/></param>
+        /// <returns><see cref="Vector"/></returns>
         public static Vector operator - (Vector vec1, Vector vec2)
         {
             return vec1.Add(-vec2);
         }
 
+        /// <summary>
+        /// Умножение вектора на скаляр слева
+        /// </summary>
+        /// <param name="koef"><see cref="double"/></param>
+        /// <param name="vec"><see cref="Vector"/></param>
+        /// <returns><see cref="Vector"/></returns>
         public static Vector operator *(double koef, Vector vec)
         {
             return vec.Scale(koef);
         }
 
+        /// <summary>
+        /// Умножение вектора на скаляр справа
+        /// </summary>
+        /// <param name="koef"><see cref="double"/></param>
+        /// <param name="vec"><see cref="Vector"/></param>
+        /// <returns><see cref="Vector"/></returns>
         public static Vector operator * (Vector vec, double koef)
         {
             return vec.Scale(koef);
         }
 
+        /// <summary>
+        /// Деление вектора на скаляр
+        /// </summary>
+        /// <param name="vec"><see cref="Vector"/></param>
+        /// <param name="koef"><see cref="double"/></param>
+        /// <returns><see cref="Vector"/></returns>
         public static Vector operator / (Vector vec, double koef)
         {
             return vec.Scale(1/koef);
         }
-
+        
+        /// <summary>
+        /// Унарный плюс
+        /// </summary>
+        /// <param name="vec"><see cref="Vector"/></param>
+        /// <returns><see cref="Vector"/></returns>
         public static Vector operator +(Vector vec)
         {
             return new Vector(vec);
         }
 
+        /// <summary>
+        /// Унарный минус
+        /// </summary>
+        /// <param name="vec"><see cref="Vector"/></param>
+        /// <returns><see cref="Vector"/></returns>
         public static Vector operator -(Vector vec)
         {
             return new Vector(-vec.X, -vec.Y);
