@@ -18,7 +18,10 @@ namespace Numbers
         {
             // твои бро: Console.WriteLine и Console.ReadLine
 
-            Console.WriteLine("Hello World!");
+            FloatNumbers.Compare(0.5, 0.5);
+            Console.WriteLine(Integers.HalfIntMaxValue());
+            int a;
+            a = Console.Read();
         }
     }
 }

@@ -35,13 +35,13 @@ namespace Numbers
         /// Возвращает результат сравнения двух вещественнозначных чисел.
         /// </summary>
         /// <returns>-1 - первое меньше второго, 0 - значения равны, 1 - первое больше второго.</returns>
-        internal static int Compare( double first, double second, double epsilon/* дополни сигнатуру метода как считаешь правильным */)
+        internal static int Compare( double first, double second, double epsilon=1e-7/* дополни сигнатуру метода как считаешь правильным */)
         {
             /*
                 Подумай, почему это задание дано в части про вещественнозначные числа. И почему не дана полная сигнатура метода.
                 Если сходу идей нет, перестань искать подвох и просто реализуй дословно. Теперь еще раз посмотри на код и подумай в чем может быть проблема, сколько должно быть аргументов.
             */
-            return ( Math.Abs( first - second ) < epsilon ) ? 0 :  first > second ? 1 : 0;
+            return ( Math.Abs( first - second ) < epsilon ) ? 0 :  first < second ? 1 : -1;
         }
 
         // и все?!! О_о

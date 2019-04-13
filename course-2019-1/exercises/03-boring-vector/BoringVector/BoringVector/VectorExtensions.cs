@@ -27,6 +27,10 @@ namespace BoringVector
         /// <param name="v"> вектор </param>
         public static Vector Normalize(this Vector v)
         {
+            if (IsZero(v)) {
+                return new Vector(v.X, v.Y);
+            }
+
             return new Vector(v.X / Math.Sqrt(v.SquareLength()), v.Y / Math.Sqrt(v.SquareLength()));
         }
 

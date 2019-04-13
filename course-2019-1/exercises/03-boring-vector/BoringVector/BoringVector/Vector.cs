@@ -16,8 +16,8 @@ namespace BoringVector
             Vector задается парой вещественных координат X и Y.
         */
 
-        public double X;
-        public double Y;
+        public readonly double X;
+        public readonly double Y;
 
         public Vector(double x, double y)
         {
@@ -95,7 +95,7 @@ namespace BoringVector
         /// <returns> string  - строка в формате (X; Y) с соответсвующими координатами</returns>
         public override string ToString()
         {
-            return "(" + X.ToString() + "; " + Y.ToString() +")";
+            return $"({X}; {Y})";
         }
 
         #region operators
@@ -169,6 +169,10 @@ namespace BoringVector
         /// <returns>Vector - v деленый на к  </returns>
         public static Vector operator /(Vector v, double k)
         {
+            if (k == 0) { 
+                 throw new System.DivideByZeroException();
+            }
+
             return v.Scale(1 / k);
         }
 

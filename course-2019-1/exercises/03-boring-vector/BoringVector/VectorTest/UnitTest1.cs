@@ -109,6 +109,14 @@ namespace VectorTest
             Assert.True(Double.Equals(v2.Y, 0.6));
         }
 
+        [Fact]
+        public void testNormalize2()
+        {
+            var v = new Vector(0, 0);
+            var v2 = v.Normalize();
+            Assert.True(v.IsZero());
+        }
+
         [Theory]
         [InlineData(3.0, 4.0, 3.0, 4.0, 0.0)]
         [InlineData(3.0, 4.0, -4.0, 3.0, Math.PI / 2)]
