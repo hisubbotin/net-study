@@ -3,6 +3,7 @@ using System.Globalization;
 using NodaTime;
 using NodaTime.TimeZones;
 
+[assembly: System.Runtime.CompilerServices.InternalsVisibleTo("tests")]
 namespace AdventureTime
 {
     /// <summary>
@@ -52,7 +53,7 @@ namespace AdventureTime
                 Ну и на будущее запомни этот прекрасный строковый формат представления времени - он твой бро!
                 Название запоминать не нужно, просто помни, что для передачи значения в виде строки, выбирать лучше инвариантные относительно сериализации/десериализации форматы.
             */
-            return dt.ToString("o", CultureInfo.InvariantCulture);
+            return dt.ToString("O", CultureInfo.InvariantCulture);
         }
 
         /// <summary>
@@ -66,7 +67,7 @@ namespace AdventureTime
                 Поиграйся и проверь, что round-trip действительно round-trip, т.е. туда-обратно равно оригиналу (для туда воспользуйся предыдущим методом).
                 Проверь для всех значений DateTime.Kind.
             */
-            return DateTime.ParseExact(dtStr, "o", CultureInfo.InvariantCulture);
+            return DateTime.ParseExact(dtStr, "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
         }
 
         /// <summary>
@@ -128,7 +129,7 @@ namespace AdventureTime
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            return (int)TimeSpan.FromDays(30 * 3 + 1).TotalMinutes;
+            throw new System.Exception("Not complete task");
         }
 
         #region Adventure time saga
