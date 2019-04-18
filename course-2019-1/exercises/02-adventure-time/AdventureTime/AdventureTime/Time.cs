@@ -120,17 +120,18 @@ namespace AdventureTime.Implementation
                 2) Проверь, учитывается ли Kind объектов при арифметических операциях.
                 3) Подумай, почему возвращаемое значение может отличаться от действительности.
             */
-            return (dt2 - dt1).Hours;
+            return (int)(dt2 - dt1).TotalHours;
         }
 
         /// <summary>
         /// Возвращает количество минут во временном промежутке, равном трем месяцам.
+        /// Let's suppose, that each month consists of 30 days!
         /// </summary>
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
             // Let's suppose, that each month consists of 30 days)
-            return TimeSpan.FromDays(30*3).Hours;
+            return (int) TimeSpan.FromDays(30*3).TotalHours;
         }
 
         #region Adventure time saga
