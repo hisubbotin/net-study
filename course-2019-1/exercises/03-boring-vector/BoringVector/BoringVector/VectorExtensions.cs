@@ -60,7 +60,7 @@ namespace BoringVector
                 return 0.0;
             }
             var dot_product = v.DotProduct(other_v);
-            Console.WriteLine(dot_product);
+            // Console.WriteLine(dot_product);
             var v_length = Math.Sqrt(v.SquareLength());
             var other_v_length = Math.Sqrt(other_v.SquareLength());
             var angle_cos = dot_product/(v_length * other_v_length);

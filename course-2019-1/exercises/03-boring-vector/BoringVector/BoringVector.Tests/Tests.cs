@@ -32,7 +32,6 @@ namespace BoringVector.Tests
                 Assert.Equal(sum_v, res_v);
         }
 
-        // А можно ли пихнуть в сигнатуру теста Vector? У меня не получилось:(
         [Theory]
         [InlineData(0, 0, 3.1415926, 0, 0)]
         [InlineData(1, 1, 1, 1, 1)]
@@ -120,6 +119,13 @@ namespace BoringVector.Tests
             VectorRelation res = v.GetRelation(v_othr);
             Assert.Equal(res, rel);
 
+        }
+
+        [Fact]
+        public void Test_ExampleFactTest() {
+            Vector v = new Vector(1, 2);
+            Assert.Equal(v._X, 1.0);
+            Assert.Equal(v._Y, 2.0);
         }
     }
 }

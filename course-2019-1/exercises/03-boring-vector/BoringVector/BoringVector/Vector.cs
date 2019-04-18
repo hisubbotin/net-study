@@ -145,6 +145,7 @@ namespace BoringVector
         }
 
         public static Vector operator /(Vector v, double k) {
+            // Add zero test
             return new Vector(v._X/k, v._Y/k);
         }
 
