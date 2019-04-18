@@ -13,7 +13,7 @@ namespace BoringVector
     /// <summary>
     /// Класс для методов-расширений для работы с вектором
     /// </summary>
-    internal static class VectorExtenstions
+    internal static class VectorExtensions
     {
         /// <summary>
         /// Перечисление, задающее отношение векторов друг к другу - параллельные вектора, ортогональные и все остальное

@@ -135,7 +135,7 @@ namespace BoringVector
         /// </summary>
         public static Vector operator /(Vector v, double k)
         {
-            if (VectorExtenstions.DoubleEquals(k, 0))
+            if (VectorExtensions.DoubleEquals(k, 0))
             {
                 throw new DivideByZeroException();
             }
