@@ -18,7 +18,10 @@ namespace AdventureTime
             Console.WriteLine(Time.ToRoundTripFormatString(now));
             var rtf = Time.ToRoundTripFormatString(nowUtc);
             Console.WriteLine(rtf);
-            Console.WriteLine(Time.ParseFromRoundTripFormat(rtf));
+            var parsed = Time.ParseFromRoundTripFormat(rtf);
+            Console.WriteLine("To RTT and back:");
+            Console.WriteLine(nowUtc == parsed);
+            
             Console.WriteLine(Time.ToUtc(local));
             Console.WriteLine(Time.AddTenSeconds(now));
             Console.WriteLine(Time.AddTenSecondsV2(now));
