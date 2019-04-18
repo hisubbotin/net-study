@@ -149,9 +149,9 @@ namespace AdventureTime
             */
          
             var msk = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(3));
-            var london = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.Zero);
+            var london = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(0));
 
-            return (london - msk).Minutes;
+            return (int)(london - msk).TotalMinutes;
         }
 
         /// <summary>
@@ -170,9 +170,9 @@ namespace AdventureTime
                     - 2010, 3, 28, 1, 15, 0
             */
             var msk = new DateTimeOffset(2010, 3, 28, 3, 15, 0, TimeSpan.FromHours(3));
-            var london = new DateTimeOffset( 2010, 3, 28, 1, 15, 0, TimeSpan.Zero);
+            var london = new DateTimeOffset( 2010, 3, 28, 1, 15, 0, TimeSpan.FromHours(0));
 
-            return (london - msk).Minutes;
+            return (int)(london - msk).TotalMinutes;
         }
 
         /// <summary>
@@ -190,7 +190,7 @@ namespace AdventureTime
             var msk = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(4));
             var london = new DateTimeOffset(2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(1));
 
-            return (london - msk).Minutes;
+            return (int)(london - msk).TotalMinutes;
         }
 
         // GetGenderSwappedAdventureTimeDurationInMinutes_ver1_FeelsSmarter опустим, там то же самое
@@ -217,7 +217,7 @@ namespace AdventureTime
 
             var local = new DateTime(2010, 3, 28, 2, 15, 0);
 
-            return (GetZonedTime(local, londonZoneId) - GetZonedTime(local, moscowZoneId)).Minutes;
+            return (int)(GetZonedTime(local, londonZoneId) - GetZonedTime(local, moscowZoneId)).TotalMinutes;
         }
 
         /// <summary>
@@ -234,7 +234,7 @@ namespace AdventureTime
             var msk = new DateTime(2010, 3, 28, 3, 15, 0);
             var london = new DateTime(2010, 3, 28, 1, 15, 0);
 
-            return (GetZonedTime(london, londonZoneId) - GetZonedTime(msk, moscowZoneId)).Minutes;
+            return (int)(GetZonedTime(london, londonZoneId) - GetZonedTime(msk, moscowZoneId)).TotalMinutes;
         }
 
         private static DateTimeOffset GetZonedTime(DateTime localTime, string timeZoneId)
