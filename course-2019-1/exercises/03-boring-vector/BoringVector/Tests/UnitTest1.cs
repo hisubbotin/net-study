@@ -1,4 +1,5 @@
 using System;
+using System.Runtime.InteropServices;
 using BoringVector;
 using Xunit;
 
@@ -22,11 +23,13 @@ namespace Tests
             Assert.Equal(new Vector(2, 9), vec1.Add(vec2));
         }
         
-        [Fact]
-        public void TestScale()
+        [Theory]
+        [InlineData(-9, 12, -3)]
+        [InlineData(0, 0, 0)]
+        public void TestScale(int x, int y, int factor)
         {
             var vec = new Vector(3, -4);
-            Assert.Equal(new Vector(-9, 12), vec.Scale(-3));
+            Assert.Equal(new Vector(x, y), vec.Scale(factor));
         }
         
         [Fact]
