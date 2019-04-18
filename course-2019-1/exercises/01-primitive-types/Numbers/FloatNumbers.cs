@@ -8,6 +8,8 @@ namespace Numbers
 {
     public static class FloatNumbers
     {
+        static double eps = 1e-6;
+
         /// <summary>
         /// Возвращает вещественнозначное число со значением "не число" (Not a number).
         /// </summary>
@@ -29,7 +31,8 @@ namespace Numbers
         internal static bool IsNaN(double d)
         {
             // Подсказка: по аналогии с константами типа int, у типа double тоже есть свой набор констант.
-            return Double.NaN.Equals(d);
+            return Double.IsNaN(d);
+            // return Double.NaN.Equals(d);
         }
         
         /// <summary>
@@ -42,7 +45,13 @@ namespace Numbers
                 Подумай, почему это задание дано в части про вещественнозначные числа. И почему не дана полная сигнатура метода.
                 Если сходу идей нет, перестань искать подвох и просто реализуй дословно. Теперь еще раз посмотри на код и подумай в чем может быть проблема, сколько должно быть аргументов.
             */
-            return a.CompareTo(b);
+            if(a < b - FloatNumbers.eps) {
+                return -1;
+            }
+            if(a > b + FloatNumbers.eps) {
+                return 1;
+            }
+            return 0;
         }
 
         // и все?!! О_о
