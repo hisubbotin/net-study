@@ -30,8 +30,8 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
        
-        private double x;
-        private double y;
+        private readonly double x;
+        private readonly double y;
        
         /// <summary>
         /// Конструктор вектора
