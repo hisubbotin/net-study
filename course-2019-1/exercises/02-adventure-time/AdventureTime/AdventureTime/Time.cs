@@ -156,7 +156,7 @@ namespace AdventureTime.Implementation
             DateTimeOffset lnd = new DateTimeOffset(
                 2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(0));
             
-            return (lnd - msk).Minutes;
+            return (int) (lnd - msk).TotalMinutes;
 
         }
 
@@ -180,7 +180,7 @@ namespace AdventureTime.Implementation
             DateTimeOffset lnd = new DateTimeOffset(
                 2010, 3, 28, 1, 15, 0, TimeSpan.FromHours(0));
             
-            return (lnd - msk).Minutes;
+            return (int) (lnd - msk).TotalMinutes;
         }
 
         /// <summary>
@@ -200,7 +200,7 @@ namespace AdventureTime.Implementation
             DateTimeOffset lnd = new DateTimeOffset(
                 2010, 3, 28, 2, 15, 0, TimeSpan.FromHours(1));
             
-            return (lnd - msk).Minutes;
+            return (int) (lnd - msk).TotalMinutes;
         }
 
         // GetGenderSwappedAdventureTimeDurationInMinutes_ver1_FeelsSmarter опустим, там то же самое
@@ -228,7 +228,7 @@ namespace AdventureTime.Implementation
             DateTime lnd_local = new DateTime(2010, 3, 28, 2, 15, 0);
             var msk_DTO = Time.GetZonedTime(msk_local, moscowZoneId);
             var lnd_DTO = Time.GetZonedTime(lnd_local, londonZoneId);
-            return (lnd_DTO - msk_DTO).Minutes;
+            return (int) (lnd_DTO - msk_DTO).TotalMinutes;
         }
 
         /// <summary>
@@ -245,7 +245,7 @@ namespace AdventureTime.Implementation
             DateTime lnd_local = new DateTime(2010, 3, 28, 1, 15, 0);
             var msk_DTO = Time.GetZonedTime(msk_local, moscowZoneId);
             var lnd_DTO = Time.GetZonedTime(lnd_local, londonZoneId);
-            return (lnd_DTO - msk_DTO).Minutes;
+            return (int) (lnd_DTO - msk_DTO).TotalMinutes;
         }
 
         private static DateTimeOffset GetZonedTime(DateTime localTime, string timeZoneId)

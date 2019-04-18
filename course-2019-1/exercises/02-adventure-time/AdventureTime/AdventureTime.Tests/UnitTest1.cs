@@ -27,7 +27,7 @@ namespace AdventureTime.Tests
 
         [Fact]
         public void Test_GetAdventureTimeDurationInMinutes_ver0_Dumb() {
-            int journey_time = TimeSpan.FromHours(3).Minutes;
+            int journey_time = (int) TimeSpan.FromHours(3).TotalMinutes;
             Assert.Equal(journey_time, Time.GetAdventureTimeDurationInMinutes_ver0_Dumb());
         }
 
