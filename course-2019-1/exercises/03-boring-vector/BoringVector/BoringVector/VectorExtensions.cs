@@ -22,7 +22,7 @@ namespace BoringVector
         /// <returns>True, если координаты вектора близки к нулю, False иначе.</returns>
         public static bool IsZero(Vector v)
         {
-            return v.X < epsilon && v.X > -epsilon && v.Y < epsilon && v.Y > -epsilon;
+            return  Math.Abs(v.X) < epsilon && Math.Abs(v.Y) < epsilon;
         }
 
         /// <summary>
@@ -32,6 +32,10 @@ namespace BoringVector
         /// <returns>Вектор, сонаправленный данному, длины 1.</returns>
         public static Vector Normalize(Vector v)
         {
+            if (IsZero(v))
+            {
+                return v;
+            }
             double norm = v.SquareLength();
             return v / norm;
         }
@@ -44,7 +48,7 @@ namespace BoringVector
         /// <returns>Угол между двумя векторами в радианах.</returns>
         public static double GetAngleBetween(Vector v, Vector u)
         {
-            if (Math.Abs(v.X) < epsilon && Math.Abs(v.Y) < epsilon || Math.Abs(u.X) < epsilon && Math.Abs(u.Y) < epsilon)
+            if (IsZero(v) || IsZero(u))
             {
                 return 0.0;
             }

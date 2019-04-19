@@ -13,7 +13,7 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
-        public double X, Y;
+        internal readonly double X, Y;
 
         public Vector(double x, double y)
         {
@@ -89,7 +89,7 @@ namespace BoringVector
         /// </summary>
         public override string ToString()
         {
-            return "(" + X + ", " + Y + ")";
+            return $"({X}; {Y})";
         }
 
         #region operators
@@ -128,6 +128,10 @@ namespace BoringVector
         // Покоординатное деление вектора на константу.
         public static Vector operator /(Vector v, double k)
         {
+            if (Math.Abs(k) < 1e-6)
+            {
+                throw new DivideByZeroException();
+            }
             return v.Scale(1 / k);
         }
         
