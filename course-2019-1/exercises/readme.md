@@ -67,3 +67,25 @@ Tags: struct, operator overloading, extension methods, xml documentation comment
 - юнит-тестированием.
 
 Инструкция лежит в [03-boring-vector/readme.md](03-boring-vector/readme.md).
+
+## 04. Wubba Lubba Dub Dub
+
+Tags: string, char, unicode, regex, unicode categories.
+
+В данном задании вы поиграетесь с текстами и познакомитесь с:
+
+- предикатами для определения категорий Юникода
+- поддержкой регулярных выражений в .Net.
+
+Инструкция лежит в [04-wubba-lubba-dub-dub/readme.md](04-wubba-lubba-dub-dub/readme.md)
+
+## 05. Go home, Fibonacci, you're drunk
+
+Tags: generics, linq, collections, enumerables, lambdas, random.
+
+В данном задании вы познакомитесь с:
+
+- обобщенными коллекциями и перечисляемыми последовательностями,
+- операциями фильтрации, группировки, проекции и агрегации над ними.
+
+Инструкция лежит в [05-drunk-fibonacci/readme.md](05-drunk-fibonacci/readme.md).
