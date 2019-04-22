@@ -1,0 +1,30 @@
+|        Method | NumberOfStrings | StringLength |             Mean |             Error |             StdDev | Rank |
+|-------------- |---------------- |------------- |-----------------:|------------------:|-------------------:|-----:|
+|    StringJoin |              10 |           10 |         167.7 ns |         2.0620 ns |          1.9288 ns |    1 |
+| StringBuilder |              10 |           10 |         260.1 ns |         1.6339 ns |          1.5284 ns |    4 |
+|  StringConcat |              10 |           10 |         231.8 ns |         0.7687 ns |          0.6419 ns |    2 |
+|    StringJoin |              10 |          100 |         255.3 ns |         2.4466 ns |          2.2885 ns |    3 |
+| StringBuilder |              10 |          100 |         559.0 ns |         4.0458 ns |          3.5865 ns |    5 |
+|  StringConcat |              10 |          100 |         835.5 ns |         2.8511 ns |          2.6669 ns |    6 |
+|    StringJoin |              10 |         1000 |       1,362.2 ns |        25.6581 ns |         24.0006 ns |    7 |
+| StringBuilder |              10 |         1000 |       3,449.7 ns |        32.3683 ns |         30.2773 ns |   10 |
+|  StringConcat |              10 |         1000 |       7,225.6 ns |        35.1194 ns |         29.3263 ns |   12 |
+|    StringJoin |             100 |           10 |       1,427.7 ns |         8.3890 ns |          7.8471 ns |    8 |
+| StringBuilder |             100 |           10 |       1,421.1 ns |         6.1352 ns |          5.4387 ns |    8 |
+|  StringConcat |             100 |           10 |       8,485.0 ns |        50.6751 ns |         47.4015 ns |   13 |
+|    StringJoin |             100 |          100 |       2,265.0 ns |         9.5296 ns |          8.4477 ns |    9 |
+| StringBuilder |             100 |          100 |       3,652.1 ns |         7.7179 ns |          7.2193 ns |   11 |
+|  StringConcat |             100 |          100 |      69,782.1 ns |       283.3193 ns |        265.0171 ns |   20 |
+|    StringJoin |             100 |         1000 |      19,883.6 ns |       399.2351 ns |        409.9851 ns |   16 |
+| StringBuilder |             100 |         1000 |      49,996.3 ns |       248.1988 ns |        232.1653 ns |   18 |
+|  StringConcat |             100 |         1000 |   1,118,132.3 ns |     8,321.7932 ns |      7,377.0529 ns |   24 |
+|    StringJoin |            1000 |           10 |      13,936.8 ns |        56.0227 ns |         52.4037 ns |   15 |
+| StringBuilder |            1000 |           10 |      12,132.6 ns |        38.3684 ns |         35.8899 ns |   14 |
+|  StringConcat |            1000 |           10 |     644,570.1 ns |     3,380.2118 ns |      3,161.8523 ns |   22 |
+|    StringJoin |            1000 |          100 |      27,028.0 ns |        96.2140 ns |         80.3431 ns |   17 |
+| StringBuilder |            1000 |          100 |      53,888.5 ns |       292.6979 ns |        273.7898 ns |   19 |
+|  StringConcat |            1000 |          100 |   9,089,467.5 ns |    50,808.5913 ns |     42,427.4749 ns |   25 |
+|    StringJoin |            1000 |         1000 |     389,064.7 ns |     3,597.9679 ns |      3,365.5414 ns |   21 |
+| StringBuilder |            1000 |         1000 |     766,344.4 ns |     7,965.9832 ns |      7,451.3856 ns |   23 |
+|  StringConcat |            1000 |         1000 | 201,253,957.1 ns | 4,821,352.9266 ns | 14,215,867.8850 ns |   26 |
+
