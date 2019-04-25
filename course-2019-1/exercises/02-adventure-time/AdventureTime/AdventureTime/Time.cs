@@ -103,6 +103,7 @@ namespace AdventureTime
                 Обрати внимание, что у TimeSpan нет статических методов FromMonth, FromYear. Как думаешь, почему?
             */
             TimeSpan value = new TimeSpan(0, 0, 10);
+            TimeSpan.FromSeconds(10);
             return dt + value;
         }
 
