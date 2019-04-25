@@ -11,21 +11,21 @@
     /// <summary>
     /// Проверяет нулевость.
     /// </summary>
-    public static bool IsZero(Vector v)
+    public static bool IsZero(this Vector v)
         {
             return v.SquareLength() < EPS;
         }
     /// <summary>
     /// Нормализация.
     /// </summary>
-    public static Vector Normalize(Vector v)
+    public static Vector Normalize(this Vector v)
         {
             return v / Sqrt(v.SquareLength());
         }
     /// <summary>
     /// Подсчёт угла.
     /// </summary>
-    public static double GetAngleBetween(Vector v1, Vector v2)
+    public static double GetAngleBetween(this Vector v1, Vector v2)
         {
             if (IsZero(v1) || IsZero(v2))
             {
@@ -43,7 +43,7 @@
             General
         }
 
-        public static VectorRelation GetRelation(Vector v1, Vector v2)
+        public static VectorRelation GetRelation(this Vector v1, Vector v2)
         {
             double alpha = GetAngleBetween(v1, v2);
             if (Abs(alpha - PI / 2) < EPS)
