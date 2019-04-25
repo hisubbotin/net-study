@@ -44,5 +44,13 @@ namespace BoringVector.Tests
             var u = new Vector(x2, y2);
             Assert.Equal(v.CrossProduct(u), res);
         }
+        
+        [Theory]
+        [InlineData(1, 1, 3, 3, 3)]
+        public void TestScale0(double x1, double y1, double k, double x3, double y3)
+        {
+            var v = new Vector(x1, y1);
+            Assert.Equal(v/0, new Vector(x3, y3));
+        }
     }
 }

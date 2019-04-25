@@ -182,6 +182,10 @@ namespace BoringVector
         /// <returns>результат деления</returns>
         public static Vector operator /(Vector v, double k = 0)
         {
+            if (k.Equals(0))
+            {
+                throw new DivideByZeroException();
+            }
             return v.Scale(1/k);
         }
         
