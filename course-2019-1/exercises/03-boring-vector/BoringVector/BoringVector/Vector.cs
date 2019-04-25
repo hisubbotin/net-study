@@ -180,7 +180,7 @@ namespace BoringVector
         /// <param name="v">вектор</param>
         /// <param name="k">константа</param>
         /// <returns>результат деления</returns>
-        public static Vector operator /(Vector v, double k)
+        public static Vector operator /(Vector v, double k = 0)
         {
             return v.Scale(1/k);
         }

@@ -1,6 +1,7 @@
 ﻿using System;
-
+using System.ComponentModel.DataAnnotations;
 using System.Runtime.CompilerServices;
+using System.Xml.Linq;
 
 
 [assembly: InternalsVisibleTo("BoringVector.Tests")]
@@ -38,7 +39,7 @@ namespace BoringVector
         /// </summary>
         /// <param name="v">вектор для проверки</param>
         /// <returns>false - не является, true - является</returns>
-        public static bool IsZero(Vector v)
+        public static bool IsZero(this Vector v)
         {
             return v.SquareLength() <= Eps;
         }
@@ -48,8 +49,12 @@ namespace BoringVector
         /// </summary>
         /// <param name="v">вектор для нормировки</param>
         /// <returns>нормированный вектор</returns>
-        public static Vector Normalize(Vector v)
+        public static Vector Normalize(this Vector v)
         {
+            if (v.IsZero())
+            {
+                return new Vector(0, 0);
+            }
             return v / Math.Sqrt(v.SquareLength());
         }
 
@@ -59,13 +64,13 @@ namespace BoringVector
         /// <param name="v">первый вектор</param>
         /// <param name="u">второй вектор</param>
         /// <returns>угол между данными векторами</returns>
-        public static double GetAngleBetween(Vector v, Vector u)
+        public static double GetAngleBetween(this Vector v, Vector u)
         {
-            if (IsZero(v) || IsZero(u))
+            if (v.IsZero() || u.IsZero())
             {
                 return 0;
             }
-            return Math.Asin(Normalize(v).CrossProduct(Normalize(u)));
+            return Math.Asin(v.Normalize().CrossProduct(Normalize(u)));
         }
         
         /// <summary>
@@ -74,9 +79,9 @@ namespace BoringVector
         /// <param name="a">первый вектор</param>
         /// <param name="b">второй вектор</param>
         /// <returns> (General - "общий случай", Parallel - параллельны, Orthogonal - перпендикулярны)</returns>
-        public static VectorRelation GetRelation(Vector a, Vector b)
+        public static VectorRelation GetRelation(this Vector a, Vector b)
         {
-            double angle = GetAngleBetween(a, b);
+            double angle = a.GetAngleBetween(b);
 
             if (angle < Eps || angle > Math.PI - Eps)
             {
