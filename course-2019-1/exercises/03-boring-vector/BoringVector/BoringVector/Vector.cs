@@ -14,6 +14,12 @@ namespace BoringVector
             Vector задается парой вещественных координат X и Y.
         */
 
+        public Vector(double X_, double Y_)
+        {
+            X = X_;
+            Y = Y_;
+        }
+
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -23,31 +29,66 @@ namespace BoringVector
                 - скалярное произведение
                 - векторное произведение (= площадь параллелограмма)
         */
+        /// <summary>
+        /// Задает вектор.
+        /// </summary>
+        public Vector(Vector v)
+        {
+            X = v.X;
+            Y = v.Y;
+        }
+        public double X;
+        public double Y;
+
+        /// <summary>
+        /// Считает квадрат длины
+        /// </summary>
 
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X*X + Y*Y;
         }
+
+        /// <summary>
+        /// Сложение.
+        /// </summary>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
+
+        /// <summary>
+        /// Умножение на константу.
+        /// </summary>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(X*k, Y*k);
         }
+
+        /// <summary>
+        /// Скалярное умножение.
+        /// </summary>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return (X * v.X + Y * v.Y);
         }
+
+        /// <summary>
+        /// Векторное умножение.
+        /// </summary>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return (X * v.Y - Y * v.X);
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+
+        public string ToString()
+        {
+            return "(" + X.ToString() + "; " + Y.ToString() + ")";
+        }
 
         #region operators
 
@@ -57,7 +98,39 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+        public static Vector operator +(Vector v)
+        {
+            return new Vector(v);
+        }
 
+        public static Vector operator -(Vector v)
+        {
+            return new Vector(-v.X, -v.Y);
+        }
+
+        public static Vector operator +(Vector v1, Vector v2)
+        {
+            return v1.Add(v2);
+        }
+
+        public static Vector operator *(Vector v, double k)
+        {
+            return v * k;
+        }
+
+        public static Vector operator *(double k, Vector v)
+        {
+            return k * v;
+        }
+        public static Vector operator -(Vector v1, Vector v2)
+        {
+            return v1.Add(-v2);
+        }
+
+        public static Vector operator /(Vector v, double k)
+        {
+            return v * (1 / k);
+        }
         #endregion
     }
 

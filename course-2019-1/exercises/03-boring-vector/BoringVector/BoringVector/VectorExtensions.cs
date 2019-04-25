@@ -1,6 +1,68 @@
 ﻿namespace BoringVector
 {
-    /*
+    using static System.Math;
+    class VectorExtensions {
+     /// <summary>
+     /// Задаем точность.
+     /// </summary>
+
+
+    public const double EPS = 1e-6;
+    /// <summary>
+    /// Проверяет нулевость.
+    /// </summary>
+    public static bool IsZero(Vector v)
+        {
+            return v.SquareLength() < EPS;
+        }
+    /// <summary>
+    /// Нормализация.
+    /// </summary>
+    public static Vector Normalize(Vector v)
+        {
+            return v / Sqrt(v.SquareLength());
+        }
+    /// <summary>
+    /// Подсчёт угла.
+    /// </summary>
+    public static double GetAngleBetween(Vector v1, Vector v2)
+        {
+            if (IsZero(v1) || IsZero(v2))
+            {
+                return 0.0;
+            }
+            return Acos(Normalize(v2).DotProduct(Normalize(v1)));
+        }
+    /// <summary>
+    /// Типы соотношений.
+    /// </summary>
+    public enum VectorRelation : byte
+        {
+            Parallel,
+            Orthogonal,
+            General
+        }
+
+        public static VectorRelation GetRelation(Vector v1, Vector v2)
+        {
+            double alpha = GetAngleBetween(v1, v2);
+            if (Abs(alpha - PI / 2) < EPS)
+            {
+                return VectorRelation.Orthogonal;
+            }
+            else if (alpha < EPS || alpha > PI - EPS)
+            {
+                return VectorRelation.Parallel;
+            }
+            else
+            {
+                return VectorRelation.General;
+            }
+               
+                    
+            }
+        }
+      /*
         Здесь тебе нужно написать класс с методами-расширениями структуры Vector:
             - IsZero: проверяет, является ли вектор нулевым, т.е. его координаты близки к нулю (в эпсилон окрестности). За эпсилон здесь и далее берем 1e-6.
             - Normalize: нормализует вектор
