@@ -67,7 +67,7 @@ namespace AdventureTime
         /// <param name="dt1">Начало временного отрезка.</param>
         /// <param name="dt2">Конец временного отрезка.</param>
         /// <returns>Полное количество часов заданного временного отрезка.</returns>
-        public static int GetHoursBetween(DateTime dt1, DateTime dt2) => (dt2 - dt1).Hours;
+        public static int GetHoursBetween(DateTime dt1, DateTime dt2) => (int) (dt2 - dt1).TotalHours;
 
         /// <summary>
         /// Возвращает количество минут во временном промежутке, равном трем месяцам.
