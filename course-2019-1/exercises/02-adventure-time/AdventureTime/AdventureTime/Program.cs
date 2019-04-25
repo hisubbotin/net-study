@@ -18,13 +18,25 @@ namespace AdventureTime
             Console.WriteLine(Time.ToRoundTripFormatString(Time.SpecifyKind(Time.WhatTimeIsItInUtc(), DateTimeKind.Utc)));
             
             Console.WriteLine("---------------------");
-            
-            Console.WriteLine(Time.ParseFromRoundTripFormat(
-                Time.ToRoundTripFormatString(Time.SpecifyKind(Time.WhatTimeIsIt(), DateTimeKind.Local))));
-            Console.WriteLine(Time.ParseFromRoundTripFormat(
-                Time.ToRoundTripFormatString(Time.SpecifyKind(Time.WhatTimeIsItInUtc(), DateTimeKind.Utc))));
-            Console.WriteLine(Time.ParseFromRoundTripFormat(
-                Time.ToRoundTripFormatString(Time.SpecifyKind(Time.WhatTimeIsItInUtc(), DateTimeKind.Local))));
+
+            DateTime now_local = Time.SpecifyKind(Time.WhatTimeIsIt(), DateTimeKind.Local);
+            DateTime temp = Time.ParseFromRoundTripFormat(
+                Time.ToRoundTripFormatString(now_local));
+            Console.WriteLine(temp);
+            Console.WriteLine(now_local);
+            Console.WriteLine(temp == now_local);
+
+            DateTime now_utc = Time.SpecifyKind(Time.WhatTimeIsItInUtc(), DateTimeKind.Utc);
+            temp = Time.ParseFromRoundTripFormat(
+                Time.ToRoundTripFormatString(now_utc));
+            Console.WriteLine(temp);
+            Console.WriteLine(now_utc);
+            Console.WriteLine(temp == now_utc);
+
+            DateTime now_un = Time.SpecifyKind(Time.WhatTimeIsIt(), DateTimeKind.Unspecified);
+            temp = Time.ParseFromRoundTripFormat(
+                Time.ToRoundTripFormatString(now_un));
+            Console.WriteLine(temp == now_un);
 
             Console.WriteLine("---------------------");
             

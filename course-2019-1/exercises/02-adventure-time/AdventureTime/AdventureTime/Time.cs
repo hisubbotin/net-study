@@ -1,6 +1,7 @@
 ﻿using System;
 using NodaTime;
 using NodaTime.TimeZones;
+using System.Globalization;
 
 namespace AdventureTime
 {
@@ -65,7 +66,7 @@ namespace AdventureTime
                 Поиграйся и проверь, что round-trip действительно round-trip, т.е. туда-обратно равно оригиналу (для туда воспользуйся предыдущим методом).
                 Проверь для всех значений DateTime.Kind.
             */
-            return DateTime.Parse(dtStr);
+            return DateTime.Parse(dtStr, null, DateTimeStyles.RoundtripKind);
         }
 
         /// <summary>
@@ -123,8 +124,10 @@ namespace AdventureTime
             return (int) ((dt2 - dt1).TotalHours);
         }
 
+        
+        ///TODO уточнить тз
         /// <summary>
-        /// Возвращает количество минут во временном промежутке, равном трем месяцам.
+        /// Возвращает количество минут во временном промежутке, равном 90 дням.
         /// </summary>
         public static int GetTotalMinutesInThreeMonths()
         {
