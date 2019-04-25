@@ -76,7 +76,7 @@ namespace Numbers
         internal static int CubeWithoutOverflowCheck(int x)
         {
             // если сделал предыдущие, то с этим уже должно быть понятно.
-            return Cube(x);
+            return unchecked(x * unchecked(x * x));
         }
 
         /// <summary>
