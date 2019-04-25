@@ -23,28 +23,35 @@ namespace BoringVector
     /// <summary>
     /// Класс с методами-расширениями структуры Vector.
     /// </summary>
-    internal class VectorExtensions
+    internal static class VectorExtensions
     {
         /// <summary>
         /// Проверяет, является ли вектор нулевым.
         /// </summary>
-        public static bool IsZero(Vector v) => v.SquareLength() < Vector.eps && v.SquareLength() > -Vector.eps;
+        public static bool IsZero(this Vector v) => v.SquareLength() < Vector.eps;
 
         /// <summary>
         /// Нормализует вектор.
         /// </summary>
-        public static Vector Normalize(Vector v) => v / Math.Sqrt(v.SquareLength());
+        public static Vector Normalize(this Vector v)
+        {
+            if (IsZero(v))
+            {
+                throw new DivideByZeroException();
+            } 
+            return v / Math.Sqrt(v.SquareLength());
+        }
 
         /// <summary>
         /// Находит угол в радианах от 0 до пи между векторами.
         /// </summary>
         // v * u = |v|*|u|*cos(v^u)
-        public static double GetAngleBetween(Vector v, Vector u) => Math.Acos(Normalize(v).DotProduct(Normalize(u)));
+        public static double GetAngleBetween(this Vector v, Vector u) => Math.Acos(Normalize(v).DotProduct(Normalize(u)));
 
         /// <summary>
         /// Возвращает значение перечесления <see cref="VectorRelation"/>.
         /// </summary>
-        public static VectorRelation GetRelation(Vector v, Vector u)
+        public static VectorRelation GetRelation(this Vector v, Vector u)
         {
             if (IsZero(v) || IsZero(u))
             {

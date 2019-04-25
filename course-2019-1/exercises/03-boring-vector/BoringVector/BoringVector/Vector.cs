@@ -19,9 +19,14 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
-        public double X;
-        public double Y;
+        public readonly double X;
+        public readonly double Y;
 
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
                 - квадрат длины
@@ -39,12 +44,12 @@ namespace BoringVector
         /// <summary>
         /// Сумма векторов.
         /// </summary>
-        public Vector Add(Vector v) => new Vector { X = X + v.X, Y = Y + v.Y };
+        public Vector Add(Vector v) => new Vector(X + v.X, Y + v.Y);
 
         /// <summary>
         /// Умножение вектора на коэффициент.
         /// </summary>
-        public Vector Scale(double k) => new Vector { X = X * k, Y = Y * k };
+        public Vector Scale(double k) => new Vector(X * k, Y * k);
 
         /// <summary>
         /// Скалярное произведение векторов.
@@ -96,11 +101,19 @@ namespace BoringVector
         /// <summary>
         /// Деление вектора на коэффициент.
         /// </summary>
-        public static Vector operator /(Vector v, double k) => v.Scale(1.0 / k);
+        public static Vector operator /(Vector v, double k)
+        {
+            if (k < eps && k > -eps)
+            {
+                throw new DivideByZeroException();
+            }
+            return v.Scale(1.0 / k);
+        }
+
         /// <summary>
         /// Тот же вектор.
         /// </summary>
-        public static Vector operator +(Vector v) => new Vector { X = v.X, Y = v.Y };
+        public static Vector operator +(Vector v) => new Vector(v.X, v.Y);
         /// <summary>
         /// Противоположный вектор.
         /// </summary>
