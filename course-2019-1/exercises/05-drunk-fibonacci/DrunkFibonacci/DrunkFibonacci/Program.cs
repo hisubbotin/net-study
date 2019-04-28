@@ -3,11 +3,15 @@ using System.Linq;
 
 namespace DrunkFibonacci
 {
-    internal class Program
+    internal class Program 
     {
         private static void Main()
         {
-            Console.WriteLine("Hello World!");
+            foreach (int elem in DrunkFibonacci.CreateIntArray(5))
+            {
+                Console.Write(elem);
+            }
+            Console.WriteLine();
 
             Console.WriteLine("GetDrunkFibonacci: " + string.Join(',', DrunkFibonacci.GetDrunkFibonacci().Take(100)));
             Console.WriteLine("GetMaxOnRange: " + DrunkFibonacci.GetMaxOnRange(1000, 400));
