@@ -21,13 +21,21 @@ namespace BoringVector
         /// <summary>
         /// Первая координата
         /// </summary>
+<<<<<<< HEAD
         public readonly double x;
+=======
+        public readonly double x_;
+>>>>>>> fe3f2559eb868c02bf94daace2cf1fb39b11869b
         
         /// <summary>
         /// Вторая координата
         /// </summary>
+<<<<<<< HEAD
         public readonly double y;
         
+=======
+        public readonly double y_;
+>>>>>>> fe3f2559eb868c02bf94daace2cf1fb39b11869b
         
         /// <summary>
         /// Конструктор
