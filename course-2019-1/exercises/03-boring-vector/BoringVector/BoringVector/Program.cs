@@ -6,7 +6,12 @@ namespace BoringVector
     {
         private static void Main()
         {
-            Console.WriteLine("Hello World!");
+            Vector v = new Vector(1, 2);
+            Vector d = new Vector(2, 4);
+            Console.WriteLine(v.GetRelation(d));
+
+            Console.WriteLine(v.ToString());
+
         }
     }
 }

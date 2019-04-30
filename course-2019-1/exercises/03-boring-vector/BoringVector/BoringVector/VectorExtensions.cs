@@ -13,13 +13,13 @@ namespace BoringVector
     /// <summary>
     /// Расширение функционала класса <see cref="Vector"/>
     /// </summary>
-    class VectorExtensions
+    internal static class VectorExtensions
     {
         
         /// <summary>
         /// Точность при работе с <see cref="Vector"/>
         /// </summary>
-        public const double EPS = 1e-6;
+        public static double EPS = 1e-6;
         
         
         /// <summary>
@@ -37,7 +37,7 @@ namespace BoringVector
         /// </summary>
         /// <param name="v">Вектор</param>
         /// <returns>true, если норма вектора v меньше <see cref="EPS"/> </returns>
-        public static bool IsZero(Vector v)
+        public static bool IsZero(this Vector v)
         {
             return v.SquareLength() < EPS;
         }
@@ -47,7 +47,7 @@ namespace BoringVector
         /// </summary>
         /// <param name="v">Нормализуемый вектор</param>
         /// <returns>Возвращает <see cref="Vector"/>, сонаравленный v длины 1 </returns>
-        public static Vector Normalize(Vector v)
+        public static Vector Normalize(this Vector v)
         {
             return v / Math.Sqrt(v.SquareLength());
         }
@@ -58,7 +58,7 @@ namespace BoringVector
         /// <param name="a">Первый вектор</param>
         /// <param name="b">Второй вектор</param>
         /// <returns>Угол между двумя векторами; 0, если длина одного из них 0</returns>
-        public static double GetAngleBetween(Vector a, Vector b)
+        public static double GetAngleBetween(this Vector a, Vector b)
         {
             if (IsZero(a) || IsZero(b))
             {
@@ -74,7 +74,7 @@ namespace BoringVector
         /// <param name="a">Первый вектор</param>
         /// <param name="b">Второй вектор</param>
         /// <returns><see cref="VectorRelation"/> для двух данных векторов</returns>
-        public static VectorRelation GetRelation(Vector a, Vector b)
+        public static VectorRelation GetRelation(this Vector a, Vector b)
         {
             double dot = Normalize(a).DotProduct(Normalize(b));
      

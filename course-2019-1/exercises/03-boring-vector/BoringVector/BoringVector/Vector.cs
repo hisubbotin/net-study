@@ -21,21 +21,22 @@ namespace BoringVector
         /// <summary>
         /// Первая координата
         /// </summary>
-        public double x_;
+        public readonly double x;
         
         /// <summary>
         /// Вторая координата
         /// </summary>
-        public double y_;
+        public readonly double y;
+        
         
         /// <summary>
         /// Конструктор
         /// </summary>
         /// <param name="x">Координата х</param>
         /// <param name="y">Координата y</param>
-        public Vector(double x, double y) {
-            x_ = x;
-            y_ = y;
+        public Vector(double x_, double y_) {
+            x = x_;
+            y = y_;
         }
         
         /*
@@ -54,7 +55,7 @@ namespace BoringVector
         /// <returns>Квадрат длины вектора</returns>
         public double SquareLength()
         {
-            return x_ * x_ + y_ * y_;
+            return x * x + y * y;
         }
         
         /// <summary>
@@ -64,7 +65,7 @@ namespace BoringVector
         /// <returns>Новый вектор, равный сумме двух данных</returns>
         public Vector Add(Vector v)
         {
-            return new Vector(x_ + v.x_, y_ + v.y_);
+            return new Vector(x + v.x, y + v.y);
         }
         
         /// <summary>
@@ -74,7 +75,7 @@ namespace BoringVector
         /// <returns>Вектор, равный произведеню вектора и скаляра</returns>
         public Vector Scale(double k)
         {
-            return new Vector(x_ * k, y_ * k);
+            return new Vector(x * k, y * k);
         }
         
         /// <summary>
@@ -84,7 +85,7 @@ namespace BoringVector
         /// <returns>Скалярное произведение</returns>
         public double DotProduct(Vector v)
         {
-            return x_ * v.x_ + y_ * v.y_;
+            return x * v.x + y * v.y;
         }
         
         /// <summary>
@@ -94,7 +95,7 @@ namespace BoringVector
         /// <returns>Векторное произведение</returns>
         public double CrossProduct(Vector v)
         {
-            return x_ * v.y_ - y_ * v.x_;
+            return x * v.y - y * v.x;
         }
 
         /*
@@ -107,8 +108,8 @@ namespace BoringVector
         /// <returns>Строковое представление вектора: "(X; Y)"</returns>
         public string ToString()
         {
-            var ans = "(" + x_.ToString() + "; " + y_.ToString() + ")";
-            return ans;
+            return $"({x}; {y})";
+          
         }
         
         #region operators
@@ -127,7 +128,7 @@ namespace BoringVector
         /// <returns>Копия текущего вектора</returns>
         public static Vector operator +(Vector v)
         {
-            return new Vector(v.x_, v.y_);
+            return new Vector(v.x, v.y);
         }
         
         /// <summary>
@@ -137,7 +138,7 @@ namespace BoringVector
         /// <returns>Копия текущего вектора с противоположными по знаку коэффициентами</returns>
         public static Vector operator -(Vector v)
         {
-            return new Vector(-v.x_, -v.y_);
+            return new Vector(-v.x, -v.y);
         }
         
         /// <summary>
@@ -192,7 +193,12 @@ namespace BoringVector
         /// <returns>v/k</returns>
         public static Vector operator /(Vector v, double k)
         {
-            return v .Scale(1 / k);
+            if (Math.Abs(k) < 1e-6)
+            {
+                throw new DivideByZeroException();
+            }
+
+            return v.Scale(1 / k);
         }
         
         #endregion
