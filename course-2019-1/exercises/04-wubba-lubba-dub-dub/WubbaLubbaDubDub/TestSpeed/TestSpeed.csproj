@@ -1,0 +1,20 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>netcoreapp2.2</TargetFramework>
+        <RootNamespace>Programm</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="BenchmarkDotNet" Version="0.11.5" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="BenchmarkDotNet.Artifacts\TestSpeed.SpeedTester-20190501-020819.log" />
+      <None Remove="BenchmarkDotNet.Artifacts\TestSpeed.SpeedTester-20190501-020845.log" />
+      <None Remove="BenchmarkDotNet.Artifacts\results\TestSpeed.SpeedTester-report.html" />
+      <None Remove="BenchmarkDotNet.Artifacts\results\TestSpeed.SpeedTester-report.csv" />
+    </ItemGroup>
+
+</Project>

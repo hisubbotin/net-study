@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace WubbaLubbaDubDub
 {
@@ -12,7 +14,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToLines(this string text)
         {
             // У строки есть специальный метод. Давай здесь без регулярок
-            throw new NotImplementedException();
+            return text.Split('\n');
         }
 
         /// <summary>
@@ -21,7 +23,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            throw new NotImplementedException();
+            return Regex.Split(line, @"\W+").Where(w => w!= "").ToArray();
         }
 
         /// <summary>
@@ -31,7 +33,7 @@ namespace WubbaLubbaDubDub
         public static string GetLeftHalf(this string s)
         {
             // у строки есть метод получения подстроки
-            throw new NotImplementedException();
+           return s.Substring(0, s.Length / 2);
         }
 
         /// <summary>
@@ -40,7 +42,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetRightHalf(this string s)
         {
-            throw new NotImplementedException();
+            return s.Substring(s.Length / 2);;
         }
 
         /// <summary>
@@ -49,7 +51,12 @@ namespace WubbaLubbaDubDub
         public static string Replace(this string s, string old, string @new)
         {
             // и такой метод у строки, очевидно, тоже есть
-            throw new NotImplementedException();
+            return s.Replace(old, @new);
+        }
+
+        private static string GetFFFF(char c)
+        {
+            return ((short) c).ToString("X4");
         }
 
         /// <summary>
@@ -65,9 +72,10 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            throw new NotImplementedException();
+            return String.Concat(s.Select(c => @"\u" + GetFFFF(c)));
         }
 
+       
         /// <summary>
         /// Возвращает строку задом наперёд.
         /// </summary>
@@ -77,7 +85,9 @@ namespace WubbaLubbaDubDub
                 Собрать строку из последовательности строк можно несколькими способами.
                 Один из низ - статический метод Concat. Но ты можешь выбрать любой.
             */
-            throw new NotImplementedException();
+            char[] array = s.ToCharArray();
+            Array.Reverse(array);
+            return new string(array);
         }
 
         /// <summary>
@@ -90,7 +100,7 @@ namespace WubbaLubbaDubDub
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            throw new NotImplementedException();
+            return string.Concat(s.Select(c => char.IsUpper(c) ? char.ToLower(c) : char.ToUpper(c)));
         }
 
         /// <summary>
@@ -99,7 +109,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            throw new NotImplementedException();
+            return String.Concat(s.Select(c => (char)((int)c + 1)));
         }
 
 
@@ -117,7 +127,11 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
+            String delete_comments = Regex.Replace(text, @"(\/\/.*)|((\/\*)((?!\*\/)(.|\n))*(\*\/))", " ");
+            var res = Regex.Matches(delete_comments, @"([0-9A-F]{8}):([0-9A-F]{8})");
+            return res.Select(x => (Convert.ToInt64(x.Groups[1].Value, 16) << 32) +
+                             Convert.ToInt64(x.Groups[2].Value, 16)).ToImmutableList();
+            
         }
 
         #endregion
