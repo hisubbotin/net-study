@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>ConsoleApp1.StringJoiner-20190501-112531</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.11.5, OS=manjaro 
+Intel Core i5-4200H CPU 2.80GHz (Haswell), 1 CPU, 4 logical and 2 physical cores
+.NET Core SDK=2.2.105
+  [Host]     : .NET Core 2.2.3 (CoreCLR 4.6.27513.05, CoreFX 4.6.27513.05), 64bit RyuJIT
+  DefaultJob : .NET Core 2.2.3 (CoreCLR 4.6.27513.05, CoreFX 4.6.27513.05), 64bit RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>         Method</th><th>N</th><th> Mean</th><th>Error</th><th>StdDev</th><th>Median</th>
+</tr>
+</thead><tbody><tr><td>JoinFunction</td><td>10</td><td>258.7 ns</td><td>5.855 ns</td><td>16.704 ns</td><td>254.9 ns</td>
+</tr><tr><td>ConcatFunction</td><td>10</td><td>172.7 ns</td><td>3.324 ns</td><td>3.557 ns</td><td>171.8 ns</td>
+</tr><tr><td>StringBuilderFunction</td><td>10</td><td>522.3 ns</td><td>27.117 ns</td><td>79.955 ns</td><td>501.8 ns</td>
+</tr><tr><td>JoinFunction</td><td>100</td><td>1,765.5 ns</td><td>34.951 ns</td><td>42.923 ns</td><td>1,758.9 ns</td>
+</tr><tr><td>ConcatFunction</td><td>100</td><td>1,236.7 ns</td><td>23.592 ns</td><td>23.171 ns</td><td>1,237.2 ns</td>
+</tr><tr><td>StringBuilderFunction</td><td>100</td><td>2,873.3 ns</td><td>88.450 ns</td><td>255.200 ns</td><td>2,784.4 ns</td>
+</tr><tr><td>JoinFunction</td><td>1000</td><td>24,542.2 ns</td><td>338.332 ns</td><td>282.522 ns</td><td>24,549.6 ns</td>
+</tr><tr><td>ConcatFunction</td><td>1000</td><td>16,602.1 ns</td><td>207.622 ns</td><td>194.209 ns</td><td>16,599.4 ns</td>
+</tr><tr><td>StringBuilderFunction</td><td>1000</td><td>36,171.3 ns</td><td>706.268 ns</td><td>785.015 ns</td><td>36,122.6 ns</td>
+</tr></tbody></table>
+</body>
+</html>
