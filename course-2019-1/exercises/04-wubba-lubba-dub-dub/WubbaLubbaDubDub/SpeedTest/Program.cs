@@ -21,22 +21,23 @@ namespace SpeedTest
 
         [Benchmark]
         public string StringBuilderTest() {
-            var build = new StringBuilder();
+            var result = new StringBuilder();
+            
             foreach (var s in test_string_array)
             {
-                build.Append(s + " ");
+                result.Append(s + " ");
             }
-            return build.ToString();
+            return result.ToString();
         }
 
         [Benchmark]
         public string ConcatTest()
         {
             string result = "";
+            
             foreach (var s in test_string_array)
             {
                 result += s + " ";
-
             }
             return result;
         }
