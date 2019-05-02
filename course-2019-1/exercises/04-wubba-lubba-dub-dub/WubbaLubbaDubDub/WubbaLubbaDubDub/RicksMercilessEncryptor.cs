@@ -74,7 +74,7 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            return String.Concat(s.Select(c => CharToCode(c)));
+            return string.Concat(s.Select(c => CharToCode(c)));
         }
 
         /// <summary>
@@ -126,8 +126,8 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            String no_comments = Regex.Replace(text, @"(\/\*((?!\*\/)(.|\n))*\*\/)|(\/\/.*)", " ");
-            var result = Regex.Matches(no_comments, @"([0-9A-F]{8}):([0-9A-F]{8})");
+            String noComments = Regex.Replace(text, @"(\/\*((?!\*\/)(.|\n))*\*\/)|(\/\/.*)", " ");
+            var result = Regex.Matches(noComments, @"([0-9A-F]{8}):([0-9A-F]{8})");
             return result.Select(id => (Convert.ToInt64(id.Groups[1].Value, 16) << 32) + 
                                       Convert.ToInt64(id.Groups[2].Value, 16)).ToImmutableList();
         }

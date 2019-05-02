@@ -10,12 +10,12 @@ namespace SpeedTest
     
     public class SpeedTester
     {
-        public readonly string[] test_string_array = Enumerable.Repeat("I like whales.", 10).ToArray();
+        private readonly string[] _testStringArray = Enumerable.Repeat("I like whales.", 10).ToArray();
         
         [Benchmark]
         public string JoinTest()
         {
-            return string.Join(" ", test_string_array);
+            return string.Join("", _testStringArray);
         }
 
 
@@ -23,7 +23,7 @@ namespace SpeedTest
         public string StringBuilderTest() {
             var result = new StringBuilder();
             
-            foreach (var s in test_string_array)
+            foreach (var s in _testStringArray)
             {
                 result.Append(s + " ");
             }
@@ -33,13 +33,7 @@ namespace SpeedTest
         [Benchmark]
         public string ConcatTest()
         {
-            string result = "";
-            
-            foreach (var s in test_string_array)
-            {
-                result += s + " ";
-            }
-            return result;
+            return _testStringArray.Aggregate("", (current, s) => current + s + " ");
         }
     }
     
