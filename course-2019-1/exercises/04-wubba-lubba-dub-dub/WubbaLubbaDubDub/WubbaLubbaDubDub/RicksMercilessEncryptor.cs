@@ -1,8 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 using System.Linq;
+//using System.Runtime.CompilerServices;
+
+//[assembly: InternalsVisibleTo("WubbaLubbaDubDub.Tests")]
 
 namespace WubbaLubbaDubDub
 {
@@ -23,8 +26,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            string pattern = @"[^a-zA-Z]+";
-            Regex.Split(line, pattern);
+            return Regex.Split(line, @"\s+");
         }
 
         /// <summary>
@@ -68,7 +70,7 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            throw new NotImplementedException();
+            return string.Concat(s.Select(c => $"\\u{Convert.ToInt32(c):X4}"));
         }
 
         /// <summary>
@@ -93,7 +95,7 @@ namespace WubbaLubbaDubDub
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            throw new NotImplementedException();
+            return string.Concat(s.Select(c => char.IsLower(c) ? char.ToUpper(c) : char.ToLower(c)));
         }
 
         /// <summary>
@@ -102,7 +104,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            throw new NotImplementedException();
+            return string.Concat(s.Select(c => char.ConvertFromUtf32(Convert.ToInt32(c) + 1)));
         }
 
 
@@ -120,7 +122,10 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
+            var comment = new Regex(@"(//[^\n]*($|\n))|(/\*(.|\n)*\*/)");
+            var id = new Regex("[0-9A-Z]{4}:[0-9A-Z]{4}");
+            return id.Matches(comment.Replace(text, "")).Select(x => x.Value)
+                .Select(s => Convert.ToInt64(s.Replace(":", ""), 16)).ToImmutableList();
         }
 
         #endregion

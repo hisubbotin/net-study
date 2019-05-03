@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>WubbaLubbaDubDub.Benchmarks.BenchmarkTest-20190503-062740</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.11.5, OS=ubuntu 18.04
+Intel Pentium CPU N3700 1.60GHz, 1 CPU, 4 logical and 4 physical cores
+.NET Core SDK=2.2.202
+  [Host]     : .NET Core 2.2.3 (CoreCLR 4.6.27414.05, CoreFX 4.6.27414.05), 64bit RyuJIT
+  DefaultJob : .NET Core 2.2.3 (CoreCLR 4.6.27414.05, CoreFX 4.6.27414.05), 64bit RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>Method</th><th>Mean</th><th>Error</th><th>StdDev</th><th>Median</th>
+</tr>
+</thead><tbody><tr><td>Join</td><td>1,146.0 ns</td><td>46.36 ns</td><td>133.0 ns</td><td>1,126.0 ns</td>
+</tr><tr><td>Concat</td><td>976.0 ns</td><td>55.56 ns</td><td>160.3 ns</td><td>928.3 ns</td>
+</tr><tr><td>Builder</td><td>3,550.9 ns</td><td>151.37 ns</td><td>419.4 ns</td><td>3,422.3 ns</td>
+</tr></tbody></table>
+</body>
+</html>
