@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Text.RegularExpressions;
+using System.Linq;
+using System.Text;
 
 namespace WubbaLubbaDubDub
 {
@@ -11,8 +14,9 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string[] SplitToLines(this string text)
         {
-            // У строки есть специальный метод. Давай здесь без регулярок
-            throw new NotImplementedException();
+            string[] stringSeparators = new string[] {Environment.NewLine};
+            return text.Split(stringSeparators, 
+                            StringSplitOptions.RemoveEmptyEntries);
         }
 
         /// <summary>
@@ -20,8 +24,9 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string[] SplitToWords(this string line)
         {
-            // А вот здесь поиграйся с регулярками.
-            throw new NotImplementedException();
+            string pattern = @"[\s-.?!)(,:+]";
+            return Regex.Split(line, pattern).Where(s => !String.Equals(s, String.Empty)).ToArray();
+            // return (from Match match in Regex.Matches(line, pattern) select match.Value).ToList().ToArray();
         }
 
         /// <summary>
@@ -30,8 +35,8 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetLeftHalf(this string s)
         {
-            // у строки есть метод получения подстроки
-            throw new NotImplementedException();
+            int length = s.Length/2;
+            return s.Substring(0, length);
         }
 
         /// <summary>
@@ -40,7 +45,8 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetRightHalf(this string s)
         {
-            throw new NotImplementedException();
+            int start_index = s.Length/2;
+            return s.Substring(start_index);
         }
 
         /// <summary>
@@ -48,8 +54,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string Replace(this string s, string old, string @new)
         {
-            // и такой метод у строки, очевидно, тоже есть
-            throw new NotImplementedException();
+            return s.Replace(old, @new);
         }
 
         /// <summary>
@@ -65,7 +70,23 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            throw new NotImplementedException();
+            StringBuilder sb = new StringBuilder();
+            foreach(char c in s) {
+                sb.Append(ConvertToCode(c));
+            }
+
+            return sb.ToString();
+
+            String ConvertToCode(char c) {
+                StringBuilder local_sb = new StringBuilder(@"\u");
+                char[] chars = new char[] {c};
+                Encoding  u16 = Encoding.Unicode;
+                byte[] bytes = u16.GetBytes(chars);
+                foreach(byte b in bytes) {
+                    local_sb.Append(b);
+                }
+                return local_sb.ToString();
+            }
         }
 
         /// <summary>
@@ -77,7 +98,9 @@ namespace WubbaLubbaDubDub
                 Собрать строку из последовательности строк можно несколькими способами.
                 Один из низ - статический метод Concat. Но ты можешь выбрать любой.
             */
-            throw new NotImplementedException();
+            char[] array = s.ToCharArray();
+            array = array.Reverse().ToArray();
+            return(String.Concat(array));
         }
 
         /// <summary>
@@ -85,12 +108,20 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string InverseCase(this string s)
         {
-            /*
+            /*  
                 Здесь тебе помогут статические методы типа char.
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            throw new NotImplementedException();
+            return String.Concat((from c in s select ChangeCase(c)).ToArray());
+
+            char ChangeCase(char c) {
+                if(char.IsLower(c)) {
+                    return char.ToUpper(c);
+                } else {
+                    return char.ToLower(c);
+                }
+            }
         }
 
         /// <summary>
@@ -99,14 +130,14 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            throw new NotImplementedException();
+            return String.Concat((from c in s select (char)(c + 1)).ToArray());
         }
 
 
         #region Чуть посложнее
 
         /// <summary>
-        /// Возвращает список уникальных идентификаторов объектов, используемых в тексте <see cref="text"/>.
+        /// Возвращает список уникальных идентифика     торов объектов, используемых в тексте <see cref="text"/>.
         /// Идентификаторы объектов имеют длину 8байт и представлены в тексте в виде ¶X:Y¶, где X - старшие 4 байта, а Y - младшие 4 байта.
         /// Текст <see cref="text"/> так же содержит строчные (//) и блоковые (/**/) комментарии, которые нужно игнорировать.
         /// Т.е. в комментариях идентификаторы объектов искать не нужно. И, кстати, блоковые комментарии могут быть многострочными.
@@ -117,7 +148,16 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
+            string rm_comments_pattern = @"(\/\*([^*]|[\r\n]|(\*+([^*\/]|[\r\n])))*\*+\/)|(\/\/.*)";
+            string text_no_comments = Regex.Replace(text, rm_comments_pattern, "");
+            string id_pattern = @"¶[\s\S][\s\S]:[\s\S][\s\S]¶";
+            return (from match in Regex.Matches(text_no_comments, id_pattern) select ExtractId(match.Value)).ToImmutableList();
+
+            long ExtractId(string s) {
+                char[] chars = new char[] {s[1], s[2], s[4], s[5]};
+                var unicode = Encoding.Unicode;
+                return BitConverter.ToInt64(unicode.GetBytes(chars), 0);
+            }
         }
 
         #endregion

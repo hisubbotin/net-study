@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>TimeMeasuring.StringConcatenation-20190504-014738</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.11.5, OS=Windows 8.1 (6.3.9600.0)
+Intel Core i7-3630QM CPU 2.40GHz (Ivy Bridge), 1 CPU, 8 logical and 4 physical cores
+Frequency=2338436 Hz, Resolution=427.6362 ns, Timer=TSC
+.NET Core SDK=2.1.504
+  [Host] : .NET Core 2.1.8 (CoreCLR 4.6.27317.03, CoreFX 4.6.27317.03), 64bit RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th> Method</th><th>Mean</th><th>Error</th>
+</tr>
+</thead><tbody><tr><td>Join</td><td>NA</td><td>NA</td>
+</tr><tr><td>StringBuilder</td><td>NA</td><td>NA</td>
+</tr><tr><td>Concatenation</td><td>NA</td><td>NA</td>
+</tr></tbody></table>
+</body>
+</html>
