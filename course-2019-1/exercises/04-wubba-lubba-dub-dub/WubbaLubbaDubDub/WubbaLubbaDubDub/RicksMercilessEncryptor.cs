@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Text.RegularExpressions;
 
 namespace WubbaLubbaDubDub
 {
@@ -9,48 +10,29 @@ namespace WubbaLubbaDubDub
         /// <summary>
         /// Возвращает массив строк исходного текста.
         /// </summary>
-        public static string[] SplitToLines(this string text)
-        {
-            // У строки есть специальный метод. Давай здесь без регулярок
-            throw new NotImplementedException();
-        }
+        public static string[] SplitToLines(this string text) => text.Split("\n");
 
         /// <summary>
         /// Возвращает массив слов исходной строки.
         /// </summary>
-        public static string[] SplitToWords(this string line)
-        {
-            // А вот здесь поиграйся с регулярками.
-            throw new NotImplementedException();
-        }
+        public static string[] SplitToWords(this string line) => Regex.Split(line, @"\s+");
 
         /// <summary>
         /// Возвращает левую половину строки, где граница считается с округлением вниз.
         /// Т.е. и для длины 2n, и для длины 2n + 1 -> первые n символов.
         /// </summary>
-        public static string GetLeftHalf(this string s)
-        {
-            // у строки есть метод получения подстроки
-            throw new NotImplementedException();
-        }
+        public static string GetLeftHalf(this string s) => s.Substring(0, s.Length / 2);
 
         /// <summary>
         /// Возвращает правую половину строки, где граница считается с округлением вниз.
         /// Т.е. для длины 2n: последние n, а для длины 2n + 1 -> последние n + 1 символов.
         /// </summary>
-        public static string GetRightHalf(this string s)
-        {
-            throw new NotImplementedException();
-        }
+        public static string GetRightHalf(this string s) => s.Substring(s.Length / 2);
 
         /// <summary>
         /// Возвращает строку, в которой все вхождения строки <see cref="old"/> заменены на строку <see cref="@new"/>.
         /// </summary>
-        public static string Replace(this string s, string old, string @new)
-        {
-            // и такой метод у строки, очевидно, тоже есть
-            throw new NotImplementedException();
-        }
+        public static string Replace(this string s, string old, string @new) => s.Replace(old, @new);
 
         /// <summary>
         /// Возвращает строку, у которой каждый символ заменен на \uFFFF,
@@ -58,14 +40,15 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string CharsToCodes(this string s)
         {
-            /*
-                Может быть удобным здесь же сначала написать локальную функцию
-                которая содержит логику для преобразования одного символа,
-                а затем использовать её для посимвольного преобразования всей строки.
-                FYI: локальную функцию можно объявлять даже после строки с return.
-                То же самое можно сделать и для всех оставшихся методов.
-            */
-            throw new NotImplementedException();
+            string CharToCode(char c) => string.Format("\\u{0}", ((int) c).ToString("X4"));
+
+            string codes = "";
+            for (int i = 0; i < s.Length; ++i)
+            {
+                codes += CharToCode(s[i]);
+            }
+
+            return codes;
         }
 
         /// <summary>
@@ -73,11 +56,13 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetReversed(this string s)
         {
-            /*
-                Собрать строку из последовательности строк можно несколькими способами.
-                Один из низ - статический метод Concat. Но ты можешь выбрать любой.
-            */
-            throw new NotImplementedException();
+            string reversed = "";
+            for (int i = s.Length - 1; i >= 0; --i)
+            {
+                reversed += s[i];
+            }
+
+            return reversed;
         }
 
         /// <summary>
@@ -85,12 +70,14 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string InverseCase(this string s)
         {
-            /*
-                Здесь тебе помогут статические методы типа char.
-                На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
-                Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
-            */
-            throw new NotImplementedException();
+            string inversed = "";
+            for (int i = 0; i < s.Length; ++i)
+            {
+                inversed += char.IsLower(s[i]) ? char.ToUpper(s[i]) :
+                    char.IsUpper(s[i]) ? char.ToLower(s[i]) : s[i];
+            }
+
+            return inversed;
         }
 
         /// <summary>
@@ -99,7 +86,13 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            throw new NotImplementedException();
+            string shifted = "";
+            for (int i = 0; i < s.Length; ++i)
+            {
+                shifted += (char) (s[i] + 1);
+            }
+
+            return shifted;
         }
 
 
@@ -113,11 +106,20 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static IImmutableList<long> GetUsedObjects(this string text)
         {
-            /*
-                Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
-                Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
-            */
-            throw new NotImplementedException();
+            string objectId = @"¶[0-9a-fA-F]{8}:[0-9a-fA-F]{8}¶";
+            string comments = @"/\*[\s\S]*?\*/|//.*?\n";
+
+            string clearedText = string.Concat(Regex.Split(text, comments));
+            MatchCollection matches = Regex.Matches(clearedText, objectId);
+            var result = new List<long>();
+            foreach (Match s in matches)
+            {
+                long id = (long.Parse(s.Value.Substring(1, 8), System.Globalization.NumberStyles.HexNumber) << 32) |
+                    long.Parse(s.Value.Substring(10, 8), System.Globalization.NumberStyles.HexNumber);
+                result.Add(id);
+            }
+
+            return result.ToImmutableList();
         }
 
         #endregion
