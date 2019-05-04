@@ -39,6 +39,8 @@ namespace BoringVector
         /// </summary>
         public static Vector Normalize(Vector v)
         {
+            if (IsZero(v))
+                return v;
             return v / Math.Sqrt(v.SquareLength());
         }
 

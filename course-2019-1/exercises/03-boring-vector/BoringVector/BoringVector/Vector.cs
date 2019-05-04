@@ -107,6 +107,10 @@ namespace BoringVector
         /// </summary>
         public static Vector operator /(Vector v, double k)
         {
+            if (Math.Abs(k) < eps)
+            {
+                throw new System.DivideByZeroException();
+            }
             return v.Scale(1.0 / k);
         }
         /// <summary>
