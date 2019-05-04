@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace WubbaLubbaDubDub
 {
@@ -12,7 +14,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToLines(this string text)
         {
             // У строки есть специальный метод. Давай здесь без регулярок
-            throw new NotImplementedException();
+            return text.SplitToLines();
         }
 
         /// <summary>
@@ -21,7 +23,8 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            throw new NotImplementedException();
+            var line_splitted = Regex.Split(line, @"[^a-zA-Z0-9_]+");
+            return line_splitted;
         }
 
         /// <summary>
@@ -31,7 +34,7 @@ namespace WubbaLubbaDubDub
         public static string GetLeftHalf(this string s)
         {
             // у строки есть метод получения подстроки
-            throw new NotImplementedException();
+            return s.Substring(0, s.Length/2);
         }
 
         /// <summary>
@@ -40,7 +43,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetRightHalf(this string s)
         {
-            throw new NotImplementedException();
+            return s.Substring(s.Length/2);
         }
 
         /// <summary>
@@ -49,13 +52,22 @@ namespace WubbaLubbaDubDub
         public static string Replace(this string s, string old, string @new)
         {
             // и такой метод у строки, очевидно, тоже есть
-            throw new NotImplementedException();
+            return s.Replace(old, @new);
         }
+
+        //***************************************************************************************//
+
+        
 
         /// <summary>
         /// Возвращает строку, у которой каждый символ заменен на \uFFFF,
         /// где FFFF - соответствующая шестнадцатиричная кодовая точка.
         /// </summary>
+        /// 
+        private static string LocalCharToCode(char symb)
+        {
+            return new string('0', 4 - Convert.ToString(symb, 16).Length) + Convert.ToString(symb, 16);
+        }
         public static string CharsToCodes(this string s)
         {
             /*
@@ -65,7 +77,7 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            throw new NotImplementedException();
+            return String.Join(@"", (s.ToArray()).Select(symbol => @"\u" + LocalCharToCode(symbol)));
         }
 
         /// <summary>
@@ -77,12 +89,19 @@ namespace WubbaLubbaDubDub
                 Собрать строку из последовательности строк можно несколькими способами.
                 Один из низ - статический метод Concat. Но ты можешь выбрать любой.
             */
-            throw new NotImplementedException();
+
+            return String.Concat(s.Reverse());
         }
 
         /// <summary>
         /// Возвращает строку, у которой регистр букв заменён на противоположный.
         /// </summary>
+        /// 
+        private static char LocalInverseCase(char symb)
+        {
+            return char.IsLower(symb) ? char.ToUpper(symb) : char.ToLower(symb);
+        }
+
         public static string InverseCase(this string s)
         {
             /*
@@ -90,7 +109,8 @@ namespace WubbaLubbaDubDub
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            throw new NotImplementedException();
+
+            return String.Concat(s.Select(LocalInverseCase));
         }
 
         /// <summary>
@@ -99,11 +119,17 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            throw new NotImplementedException();
+            return string.Concat(s.Select(symbol => (char)(symbol + 1)));
         }
 
 
         #region Чуть посложнее
+
+        private static long GetLongFromId(string id)
+        {
+            return (Convert.ToInt64(id.GetLeftHalf(), 16) << 32) + 
+                (Convert.ToInt64(id.GetRightHalf().Substring(1), 16));
+        }
 
         /// <summary>
         /// Возвращает список уникальных идентификаторов объектов, используемых в тексте <see cref="text"/>.
@@ -117,6 +143,7 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
+            
             throw new NotImplementedException();
         }
 
