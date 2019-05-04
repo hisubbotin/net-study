@@ -124,13 +124,6 @@ namespace WubbaLubbaDubDub
 
 
         #region Чуть посложнее
-
-        private static long GetLongFromId(string id)
-        {
-            return (Convert.ToInt64(id.GetLeftHalf(), 16) << 32) + 
-                (Convert.ToInt64(id.GetRightHalf().Substring(1), 16));
-        }
-
         /// <summary>
         /// Возвращает список уникальных идентификаторов объектов, используемых в тексте <see cref="text"/>.
         /// Идентификаторы объектов имеют длину 8байт и представлены в тексте в виде ¶X:Y¶, где X - старшие 4 байта, а Y - младшие 4 байта.
