@@ -41,7 +41,7 @@ namespace BoringVector
         /// <summary>
         /// Проверка, что вектор - нулевой
         /// </summary>
-        public static bool IsZero(Vector v)
+        public static bool IsZero(this Vector v)
         {
             return v.SquareLength() < Epsilon;
         }
@@ -49,7 +49,7 @@ namespace BoringVector
         /// <summary>
         /// Нормализует вектор
         /// </summary>
-        public static Vector Normalize(Vector v)
+        public static Vector Normalize(this Vector v)
         {
             return v / v.SquareLength();
         }
@@ -57,7 +57,7 @@ namespace BoringVector
         /// <summary>
         /// Возвращает угол между векторами
         /// </summary>
-        public static double GetAngleBetween(Vector v1, Vector v2)
+        public static double GetAngleBetween(this Vector v1, Vector v2)
         {
             if (IsZero(v1) || IsZero(v2))
             {
@@ -70,7 +70,7 @@ namespace BoringVector
         /// <summary>
         /// Возвращает отношение между векторами
         /// </summary>
-        public static VectorRelation GetRelation(Vector v1, Vector v2)
+        public static VectorRelation GetRelation(this Vector v1, Vector v2)
         {
             var angle = GetAngleBetween(v1, v2);
 
