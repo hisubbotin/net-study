@@ -11,7 +11,7 @@ namespace BoringVector
             двумя векторами("общий случай", параллельны, перпендикулярны). Перечисление задавать тоже тебе)
     */
 
-    internal class VectorWithExtensions
+    static class VectorWithExtensions
     {
         /// <summary>
         /// Перечисление положений векторов относительно друг друга
@@ -33,7 +33,7 @@ namespace BoringVector
         /// </summary>
         /// <param name="vec"><see cref="Vector"/></param>
         /// <returns><see cref="bool"/></returns>
-        public static bool IsZero(Vector vec)
+        public static bool IsZero(this Vector vec)
         {
             return vec.SquareLength() < eps;
         }
@@ -43,7 +43,7 @@ namespace BoringVector
         /// </summary>
         /// <param name="vec"><see cref="Vector"/></param>
         /// <returns><see cref="Vector"/></returns>
-        public static Vector Normalize(Vector vec)
+        public static Vector Normalize(this Vector vec)
         {
             return vec / Sqrt(vec.SquareLength());
         }
@@ -54,7 +54,7 @@ namespace BoringVector
         /// <param name="vec1"><see cref="Vector"/></param>
         /// <param name="vec2"><see cref="Vector"/></param>
         /// <returns><see cref="double"/></returns>
-        public static double GetAngleBetween(Vector vec1, Vector vec2)
+        public static double GetAngleBetween(this Vector vec1, Vector vec2)
         {
             if (IsZero(vec1) || IsZero(vec2))
             {
@@ -70,7 +70,7 @@ namespace BoringVector
         /// <param name="vec1"><see cref="Vector"/></param>
         /// <param name="vec2"><see cref="Vector"/></param>
         /// <returns><see cref="VectorWithExtensions.Relation"/></returns>
-        public static Relation GetRelation(Vector vec1, Vector vec2)
+        public static Relation GetRelation(this Vector vec1, Vector vec2)
         {
             double angle = GetAngleBetween(vec1, vec2);
             if (Abs(angle) < eps || (angle - PI) < eps)
