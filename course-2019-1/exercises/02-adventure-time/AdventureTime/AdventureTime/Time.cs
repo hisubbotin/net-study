@@ -125,10 +125,12 @@ namespace AdventureTime
         /// <summary>
         /// Возвращает количество минут во временном промежутке, равном трем месяцам.
         /// </summary>
+        /// <remarks>Некорректная постановка задачи: данная величина не постоянна
+        /// и зависит от месяца и года, о которых идёт речь</remarks>
         public static int GetTotalMinutesInThreeMonths()
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            return (int)TimeSpan.FromDays(90).TotalMinutes;
+            throw new ArgumentException();
         }
 
         #region Adventure time saga
