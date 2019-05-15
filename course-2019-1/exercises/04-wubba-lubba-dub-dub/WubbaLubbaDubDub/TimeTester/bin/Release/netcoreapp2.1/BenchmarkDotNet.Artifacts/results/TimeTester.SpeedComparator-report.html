@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>TimeTester.SpeedComparator-20190516-010301</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.11.5, OS=Windows 10.0.17134.706 (1803/April2018Update/Redstone4)
+Intel Core i5-8250U CPU 1.60GHz (Kaby Lake R), 1 CPU, 8 logical and 4 physical cores
+Frequency=1757811 Hz, Resolution=568.8894 ns, Timer=TSC
+.NET Core SDK=2.1.504
+  [Host] : .NET Core 2.1.8 (CoreCLR 4.6.27317.03, CoreFX 4.6.27317.03), 64bit RyuJIT  [AttachedDebugger]
+</code></pre>
+<pre><code>Job=InProcess  Toolchain=InProcessEmitToolchain  
+</code></pre>
+
+<table>
+<thead><tr><th>     Method</th><th>N</th><th>  Mean</th><th>Error</th><th>StdDev</th><th>Median</th>
+</tr>
+</thead><tbody><tr><td>TestJoin</td><td>100</td><td>1,194.3 ns</td><td>6.272 ns</td><td>5.560 ns</td><td>1,193.5 ns</td>
+</tr><tr><td>TestStringBuilder</td><td>100</td><td>1,853.8 ns</td><td>8.075 ns</td><td>7.159 ns</td><td>1,853.5 ns</td>
+</tr><tr><td>TestConcat</td><td>100</td><td>726.8 ns</td><td>8.584 ns</td><td>8.030 ns</td><td>724.6 ns</td>
+</tr><tr><td>TestJoin</td><td>500</td><td>6,619.1 ns</td><td>62.648 ns</td><td>58.601 ns</td><td>6,625.1 ns</td>
+</tr><tr><td>TestStringBuilder</td><td>500</td><td>9,083.9 ns</td><td>163.526 ns</td><td>152.962 ns</td><td>9,059.3 ns</td>
+</tr><tr><td>TestConcat</td><td>500</td><td>4,022.5 ns</td><td>92.355 ns</td><td>264.984 ns</td><td>3,927.9 ns</td>
+</tr><tr><td>TestJoin</td><td>1000</td><td>15,701.2 ns</td><td>156.450 ns</td><td>138.689 ns</td><td>15,665.8 ns</td>
+</tr><tr><td>TestStringBuilder</td><td>1000</td><td>19,830.7 ns</td><td>214.075 ns</td><td>189.772 ns</td><td>19,880.1 ns</td>
+</tr><tr><td>TestConcat</td><td>1000</td><td>7,640.3 ns</td><td>89.604 ns</td><td>83.816 ns</td><td>7,618.7 ns</td>
+</tr><tr><td>TestJoin</td><td>5000</td><td>114,844.8 ns</td><td>588.460 ns</td><td>550.446 ns</td><td>114,686.0 ns</td>
+</tr><tr><td>TestStringBuilder</td><td>5000</td><td>151,723.1 ns</td><td>921.243 ns</td><td>861.731 ns</td><td>151,585.8 ns</td>
+</tr><tr><td>TestConcat</td><td>5000</td><td>82,885.8 ns</td><td>560.850 ns</td><td>437.875 ns</td><td>82,698.9 ns</td>
+</tr></tbody></table>
+</body>
+</html>
