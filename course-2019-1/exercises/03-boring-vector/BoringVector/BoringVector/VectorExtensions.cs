@@ -1,5 +1,6 @@
 ﻿namespace BoringVector
 {
+    using System;
     using static System.Math;
     /*
         Здесь тебе нужно написать класс с методами-расширениями структуры Vector:
@@ -12,7 +13,7 @@
     /// <summary>
     /// Класс, расширяющий функционал класса <see cref="Vector"/>
     /// </summary>
-    class VectorExtensions
+    internal static class VectorExtensions
     {
         /// <summary>
         /// Точность, используемая при работе с <see cref="Vector"/>
@@ -35,7 +36,7 @@
         /// </summary>
         /// <param name="v">Вектор</param>
         /// <returns>true, в случае, если норма v меньше <see cref="EPS"/> </returns>
-        public static bool IsZero(Vector v)
+        public static bool IsZero(this Vector v)
         {
             return v.SquareLength() < EPS * EPS;
         }
@@ -46,8 +47,12 @@
         /// <param name="v">Нормализуемый вектор</param>
         /// <returns><see cref="Vector"/>, сонаравленный v, имеющий длину 1 </returns>
         /// <remarks>Возможен выброс исключения в случае нулевого вектора</remarks>
-        public static Vector Normalize(Vector v)
+        public static Vector Normalize(this Vector v)
         {
+            if (v.IsZero())
+            {
+                throw new DivideByZeroException();
+            }
             return v / Sqrt(v.SquareLength());
         }
 
@@ -58,7 +63,7 @@
         /// <param name="v2">Второй вектор</param>
         /// <returns>Угол между двумя векторами, выраженный в радианах</returns>
         /// <remarks>Угол между нуль-вектором и любым другим полагаем равным 0</remarks>
-        public static double GetAngleBetween(Vector v1, Vector v2)
+        public static double GetAngleBetween(this Vector v1, Vector v2)
         {
             if (IsZero(v1) || IsZero(v2))
             {
@@ -75,7 +80,7 @@
         /// <param name="v2">Второй вектор</param>
         /// <returns><see cref="VectorRelation"/> для двух данных векторов</returns>
         /// <remarks>Нуль-вектор полагаем параллельным любому другому</remarks>
-        public static VectorRelation GetRelation(Vector v1, Vector v2)
+        public static VectorRelation GetRelation(this Vector v1, Vector v2)
         {
             double angle = GetAngleBetween(v1, v2);
 

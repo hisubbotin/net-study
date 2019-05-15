@@ -38,8 +38,22 @@ namespace BoringVector
             x = v.x;
             y = v.y;
         }
-        public double x;
-        public double y;
+        private double x;
+        private double y;
+
+        /// <summary>Возвращает первую координату вектора</summary>
+        /// <returns>Первая координата вектора</returns>
+        public double GetX()
+        {
+            return x;    
+        }
+
+        /// <summary>Возвращает вторую координату вектора</summary>
+        /// <returns>Вторая координата вектора</returns>
+        public double GetY()
+        {
+            return y;
+        }
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -109,7 +123,7 @@ namespace BoringVector
         /// <returns>Строковое представление вектора в формате "(X; Y)"</returns>
         public string ToString()
         {
-            return "(" + x.ToString() + "; " + y.ToString() + ")";
+            return $"({x}; {y})";
         }
 
         #region operators
@@ -171,7 +185,7 @@ namespace BoringVector
         /// <returns>Вектор, равный произведению v и k</returns>
         public static Vector operator *(Vector v, double k)
         {
-            return v * k;
+            return v.Scale(k);
         }
 
         /// <summary>
@@ -182,7 +196,7 @@ namespace BoringVector
         /// <returns>Вектор, равный произведению v и k</returns>
         public static Vector operator *(double k, Vector v)
         {
-            return v * k;
+            return v.Scale(k);
         }
 
         /// <summary>
@@ -193,6 +207,10 @@ namespace BoringVector
         /// <returns>Вектор, равный отношению v и k</returns>
         public static Vector operator /(Vector v, double k)
         {
+            if (Math.Abs(k) < 1e-6)
+            {
+                throw new DivideByZeroException();
+            }
             return v * (1 / k);
         }
         #endregion

@@ -34,8 +34,8 @@ namespace BoringVector.Tests
             Vector v1 = new Vector(-1, -1);
             Vector v2 = new Vector(1, 1);
             Vector sum = v1.Add(v2);
-            Assert.True(Math.Abs(sum.x - 0) < EPS);
-            Assert.True(Math.Abs(sum.y - 0) < EPS);
+            Assert.True(Math.Abs(sum.GetX() - 0) < EPS);
+            Assert.True(Math.Abs(sum.GetY() - 0) < EPS);
         }
 
         [Fact]
@@ -44,8 +44,8 @@ namespace BoringVector.Tests
             Vector v1 = new Vector(10, 20);
             Vector v2 = new Vector(30, 40);
             Vector sum = v1.Add(v2);
-            Assert.True(Math.Abs(sum.x - 40) < EPS);
-            Assert.True(Math.Abs(sum.y - 60) < EPS);
+            Assert.True(Math.Abs(sum.GetX() - 40) < EPS);
+            Assert.True(Math.Abs(sum.GetY() - 60) < EPS);
         }
     }
 
@@ -58,8 +58,8 @@ namespace BoringVector.Tests
         {
             Vector v = new Vector(x, y);
             Vector computedRes = v.Scale(k);
-            Assert.True(Math.Abs(computedRes.x - resx) < EPS);
-            Assert.True(Math.Abs(computedRes.y - resy) < EPS);
+            Assert.True(Math.Abs(computedRes.GetX() - resx) < EPS);
+            Assert.True(Math.Abs(computedRes.GetY() - resy) < EPS);
         }
     }
 
