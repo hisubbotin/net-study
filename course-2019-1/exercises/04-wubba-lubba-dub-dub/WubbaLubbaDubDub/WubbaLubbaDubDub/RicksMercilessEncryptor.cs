@@ -24,7 +24,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            return Regex.Split(line, "[ |\n|\r|\r\n]+").Where(x => x != "").ToArray();
+            return Regex.Split(line, @"\W+").Where(x => x != "").ToArray();
         }
 
         /// <summary>

@@ -82,7 +82,7 @@ namespace WubbaLubbaDubDub.Tests
         [InlineData("", new long[] { })]
         [InlineData("¶00000000:0000000A¶", new[] { 10L })]
         [InlineData("¶00000000:0000000A¶ ¶10000001:10000001¶", new[] { 10L, 0x1000000110000001L })]
-        [InlineData("// ¶00000000:00000000¶ \n qwerty ¶00000000:0000000A¶", new[] { 10L })]
+        [InlineData("// ¶00000000:00000000¶ /* \n qwerty ¶00000000:0000000A¶", new[] { 10L })]
         [InlineData("/* ¶00000000:00000000¶ \n qwerty */  ¶00000000:0000000A¶", new[] { 10L })]
         public void Test_GetUsedObjects(string s, long[] result)
         {
