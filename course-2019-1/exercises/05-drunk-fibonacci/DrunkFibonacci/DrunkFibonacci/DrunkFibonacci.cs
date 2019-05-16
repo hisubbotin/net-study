@@ -87,21 +87,21 @@ namespace DrunkFibonacci
                 first = second;
                 second = unchecked(second + temp);
 
-                if ((index < 24) && ((index % 6) == 0))
+                if ((index % 6) == 0)
                 {
                     // Каждое 6е число забывает озвучить (но учитывает при подсчете следующего).
                     index = index % 36 + 1;
                     continue;
                 }
 
-                if ((index >= 24) && ((index % 6) == 0))
+                if ((index % 6) == 4)
                 {
                     res = 300; // Каждое 6е, начиная с 4го, вставляет очередную "шутку за 300": число 300.
                 }
 
                 if ((mask & 42) != 0)
                 {
-                    res = res & 42;
+                    res = res & ~42;
                 }
                 else
                 {
