@@ -15,6 +15,7 @@ namespace WubbaLubbaDubDub.Tests
 
         [Theory]
         [InlineData("1 2  3", new[] { "1", "2", "3" })]
+        [InlineData("1 2\n3\n", new[] { "1", "2", "3" })]
         public void SplitToWordsTest(string test, string[] result)
         {
             Assert.Equal(result, test.SplitToWords());
