@@ -127,7 +127,7 @@ namespace WubbaLubbaDubDub
             */
             string delCommits0 = Regex.Replace(text, @"(\/\/.*)", "", RegexOptions.Multiline);
             string delCommits1 = Regex.Replace(delCommits0, @"(\/\*(.|\n)*\*\/)", "", RegexOptions.Singleline);
-            var matches = Regex.Matches(delCommits1, @"([0-9A-F]{8}):([0-9A-F]{8})");
+            var matches = Regex.Matches(delCommits1, @"¶([0-9A-F]{8}):([0-9A-F]{8})¶");
             var res = matches.Select(id => (Convert.ToInt64(id.Groups[1].Value, 16) << 32) +
                                       Convert.ToInt64(id.Groups[2].Value, 16)).ToImmutableList();
             return res;
