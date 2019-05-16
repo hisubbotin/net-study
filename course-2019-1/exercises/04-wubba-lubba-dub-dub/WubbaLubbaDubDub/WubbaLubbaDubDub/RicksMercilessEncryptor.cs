@@ -122,7 +122,7 @@ namespace WubbaLubbaDubDub
             var withoutComments = Regex.Replace(text, @"(\/\/.*)|(\/\*([^*]|(\*+[^/]))*\*\/)", "\n");
             return Regex.Matches(withoutComments, pattern: @"¶\w{4}:\w{4}¶").Select(x => 
                                  Convert.ToInt64(String.Concat(x.Value.Where(y => y != ':').Where(y => y != '¶')
-                                 .Select(y => Convert.ToInt64(y.ToString()))))).ToImmutableList();
+                                 .Select(y => Convert.ToInt64(y.ToString(), 16))))).ToImmutableList();
         }
 
         #endregion
