@@ -126,7 +126,9 @@ namespace AdventureTime
         /// </summary>
         public static int GetTotalMinutesInThreeMonths()
         {
+
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
+            //
             throw new ArgumentException();
         }
 
