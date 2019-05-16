@@ -31,7 +31,7 @@ namespace BoringVector
         /// </summary>
         /// <param name="v"><see cref="Vector"/></param>
         /// <returns>Является ли вектор нулевым</returns>
-        public static bool IsZero(Vector v)
+        public static bool IsZero(this Vector v)
         {
             return v.SquareLength() <= Eps * Eps;
         }
@@ -41,7 +41,7 @@ namespace BoringVector
         /// </summary>
         /// <param name="v"><see cref="Vector"/></param>
         /// <returns>Нормализованный вектор</returns>
-        public static Vector Normalize(Vector v)
+        public static Vector Normalize(this Vector v)
         {
             return IsZero(v) ? new Vector(0, 0) : v / Math.Sqrt(v.SquareLength());
         }
@@ -52,7 +52,7 @@ namespace BoringVector
         /// <param name="a">Первый <see cref="Vector"/></param>
         /// <param name="b">Второй <see cref="Vector"/></param>
         /// <returns>Угол между векторами в радианнах</returns>
-        public static double GetAngleBetween(Vector a, Vector b)
+        public static double GetAngleBetween(this Vector a, Vector b)
         {
             var squareLengths = Math.Sqrt(a.SquareLength() * b.SquareLength());
             return squareLengths < Eps * Eps ? 0 : Math.Acos(a.DotProduct(b) / squareLengths);
@@ -64,7 +64,7 @@ namespace BoringVector
         /// <param name="a">Первый <see cref="Vector"/></param>
         /// <param name="b">Второй <see cref="Vector"/></param>
         /// <returns>Объект <see cref="VectorRelaion"/>, задающий отношение между векторами</returns>
-        public static VectorRelaion GetRelation(Vector a, Vector b)
+        public static VectorRelaion GetRelation(this Vector a, Vector b)
         {
             var angle = GetAngleBetween(a, b);
             if (Math.Abs(angle - Math.PI / 2) < Eps)
