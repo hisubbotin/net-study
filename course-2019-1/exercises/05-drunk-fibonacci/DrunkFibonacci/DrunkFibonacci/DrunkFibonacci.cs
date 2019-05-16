@@ -54,7 +54,7 @@ namespace DrunkFibonacci
 
                 Задача на ленивую генерацию последовательностей.
             */
-            Random random = new Random(1609);
+            Random random = new Random(17);
 
             do
             {
