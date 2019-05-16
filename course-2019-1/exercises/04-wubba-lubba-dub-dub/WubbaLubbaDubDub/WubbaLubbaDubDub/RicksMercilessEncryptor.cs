@@ -127,8 +127,8 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            Regex CommentsRegex = new Regex(@"((\/\*)((?!\*\/)(.|\n))*\*\/)|(\/\/.*)", RegexOptions.Multiline);
-            Regex IdentifiersRegex = new Regex(@"([0-9A-Fa-f]{8}):([0-9A-Fa-f]{8})", RegexOptions.Multiline);
+            Regex CommentsRegex = new Regex(@"((\/\*)((?!\*\/)(.|\n))*\*\/)|(\/\/.*)");
+            Regex IdentifiersRegex = new Regex(@"([0-9A-Fa-f]{8}):([0-9A-Fa-f]{8})");
 
             string TextWithoutComments = CommentsRegex.Replace(text, String.Empty);
             MatchCollection Identifiers = IdentifiersRegex.Matches(TextWithoutComments);
@@ -138,11 +138,6 @@ namespace WubbaLubbaDubDub
                 Convert.ToInt64(match.Groups[2].Value, 16);
 
             return Identifiers.Select(ConvertIdentifierToNumber).ToHashSet().ToImmutableList();
-            /*
-                String delete_comments = Regex.Replace(text, @"(\/\/.*)|((\/\*)((?!\*\/)(.|\n))*(\*\/))", " ");
-                var res = Regex.Matches(delete_comments, @"([0-9A-F]{8}):([0-9A-F]{8})");
-                return res.Select(x => (Convert.ToInt64(x.Groups[1].Value, 16) << 32) +
-                                 Convert.ToInt64(x.Groups[2].Value, 16)).ToImmutableList();*/
         }
 
         #endregion
