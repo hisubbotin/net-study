@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using NodaTime;
 using NodaTime.TimeZones;
 
@@ -65,7 +66,7 @@ namespace AdventureTime
                 Поиграйся и проверь, что round-trip действительно round-trip, т.е. туда-обратно равно оригиналу (для туда воспользуйся предыдущим методом).
                 Проверь для всех значений DateTime.Kind.
             */
-            return DateTime.Parse(dtStr);
+            return DateTime.Parse(dtStr, null, DateTimeStyles.RoundtripKind);
         }
 
         /// <summary>
@@ -128,7 +129,7 @@ namespace AdventureTime
         {
 
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            //
+            // ответ зависит от выбранных месяцев, то есть без параметров метод не корректен
             throw new ArgumentException();
         }
 
