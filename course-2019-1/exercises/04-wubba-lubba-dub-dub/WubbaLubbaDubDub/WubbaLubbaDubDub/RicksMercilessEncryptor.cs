@@ -125,9 +125,9 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            string delCommits0 = Regex.Replace(text, @"(\/\/.*)", "", RegexOptions.Multiline);
-            string delCommits1 = Regex.Replace(delCommits0, @"(\/\*(.|\n)*\*\/)", "", RegexOptions.Singleline);
-            var matches = Regex.Matches(delCommits1, @"¶([0-9A-F]{8}):([0-9A-F]{8})¶");
+            string delStringCommits = Regex.Replace(text, @"(\/\/.*)", "", RegexOptions.Multiline);
+            string delStarCommits = Regex.Replace(delStringCommits, @"(\/\*(.|\n)*\*\/)", "", RegexOptions.Singleline);
+            var matches = Regex.Matches(delStarCommits, @"¶([0-9A-F]{8}):([0-9A-F]{8})¶");
             var res = matches.Select(id => (Convert.ToInt64(id.Groups[1].Value, 16) << 32) +
                                       Convert.ToInt64(id.Groups[2].Value, 16)).ToImmutableList();
             return res;
