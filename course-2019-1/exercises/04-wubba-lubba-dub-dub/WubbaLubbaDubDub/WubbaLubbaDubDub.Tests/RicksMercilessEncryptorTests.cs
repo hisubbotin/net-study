@@ -16,10 +16,11 @@ namespace WubbaLubbaDubDub.Tests
 
         [Theory]
         [InlineData("new test string", new[] { "new", "test", "string" })]
-        [InlineData("just\ntesting, another\n\n\nthis\nmethod.", new[] { "just", "testing", "another", "this", "method" })]
+        [InlineData("Just testing, another method, e.g. test, is it a success?", 
+            new[] { "Just", "testing", "another", "method", "e.g.", "test", "is", "it", "a", "success"})]
         public void SplitToWords(string before, string[] expected)
         {
-            //Assert.Equal(expected, before.SplitToLines());
+            Assert.Equal(expected, before.SplitToWords());
         }
 
         [Theory]

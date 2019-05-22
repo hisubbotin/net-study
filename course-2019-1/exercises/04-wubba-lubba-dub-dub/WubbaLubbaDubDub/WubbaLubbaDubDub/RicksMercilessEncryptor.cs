@@ -23,7 +23,8 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            throw new NotImplementedException();
+            Regex r = new Regex(@"((\b[^\s]+\b)((?<=\.\w).)?)");
+            return r.Matches(line).Select(x => x.Value).ToArray();
         }
 
         /// <summary>
