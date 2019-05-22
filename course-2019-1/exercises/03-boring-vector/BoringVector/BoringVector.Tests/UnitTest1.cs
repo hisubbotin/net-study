@@ -9,13 +9,8 @@ namespace BoringVector.Tests
         [InlineData(1, 0, 0, 1, 1, 1)]
         public void TestAdd(double x1, double y1, double x2, double y2, double x3, double y3)
         {
-            Vector v1;
-            v1.x = x1;
-            v1.y = y1;
-
-            Vector v2;
-            v2.x = x2;
-            v2.y = y2;
+            Vector v1 = new Vector(x1, y1);
+            Vector v2 = new Vector(x2, y2);
 
             var v3 = v1.Add(v2);
 
@@ -27,9 +22,7 @@ namespace BoringVector.Tests
         [InlineData(1, -1, 0.5, 0.5, -0.5)]
         public void TestScale(double x1, double y1, double coef, double x3, double y3)
         {
-            Vector v1;
-            v1.x = x1;
-            v1.y = y1;
+            Vector v1 = new Vector(x1, y1);
 
             var v3 = v1.Scale(coef);
 
@@ -41,13 +34,8 @@ namespace BoringVector.Tests
         [InlineData(1, 2, 1, 1, 3)]
         public void TestDotProd(double x1, double y1, double x2, double y2, double dotProd)
         {
-            Vector v1;
-            v1.x = x1;
-            v1.y = y1;
-
-            Vector v2;
-            v2.x = x2;
-            v2.y = y2;
+            Vector v1 = new Vector(x1, y1);
+            Vector v2 = new Vector(x2, y2);
 
             var val = v1.DotProduct(v2);
 
@@ -60,13 +48,8 @@ namespace BoringVector.Tests
         [InlineData(0, 1, 1, 0, -1)]
         public void TestCrossProd(double x1, double y1, double x2, double y2, double dotProd)
         {
-            Vector v1;
-            v1.x = x1;
-            v1.y = y1;
-
-            Vector v2;
-            v2.x = x2;
-            v2.y = y2;
+            Vector v1 = new Vector(x1, y1);
+            Vector v2 = new Vector(x2, y2);
 
             var val = v1.CrossProduct(v2);
 

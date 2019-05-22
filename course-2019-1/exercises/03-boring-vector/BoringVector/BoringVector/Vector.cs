@@ -15,9 +15,17 @@ namespace BoringVector
             Vector задается парой вещественных координат X и Y.
         */
 
+        public double _x;
+        public double x
+        {
+            get { return _x; }
+        }
 
-        public double x;
-        public double y;
+        public double _y;
+        public double y
+        {
+            get { return _y; }
+        }
 
         const double eps = 1e-6;
 
@@ -29,6 +37,12 @@ namespace BoringVector
                 - скалярное произведение
                 - векторное произведение (= площадь параллелограмма)
         */
+
+        public Vector(double _X, double _Y)
+        {
+            _x = _X;
+            _y = _Y;
+        }
 
         /// <summary>
         /// Возвращает квадрат длины <see cref="Vector"/> 
@@ -47,8 +61,8 @@ namespace BoringVector
         public Vector Add(Vector other)
         {
             Vector newV;
-            newV.x = x + other.x;
-            newV.y = y + other.y;
+            newV._x = x + other.x;
+            newV._y = y + other.y;
             return newV;
         }
 
@@ -60,8 +74,8 @@ namespace BoringVector
         public Vector Scale(double k)
         {
             Vector newV;
-            newV.x = x * k;
-            newV.y = y * k;
+            newV._x = x * k;
+            newV._y = y * k;
             return newV;
         }
 

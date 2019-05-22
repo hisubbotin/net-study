@@ -33,7 +33,11 @@ namespace BoringVector
         public static Vector Normalize(this Vector v)
         {
             double coef = Math.Sqrt(v.SquareLength());
-            return v.Scale(coef);
+            if(Math.Abs(coef) < eps)
+            {
+                return new Vector(v.x, v.y);
+            }
+            return v / coef;
         }
 
         /// <summary>
