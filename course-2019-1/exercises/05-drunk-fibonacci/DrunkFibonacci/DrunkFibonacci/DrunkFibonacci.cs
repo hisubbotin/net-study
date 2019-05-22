@@ -151,8 +151,21 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
+            const uint chunkSize = 16;
             var fib = GetDrunkFibonacci();
-            while(true) yield return fib.Take(16).ToArray();
+            int[] arr = new int[chunkSize];
+            uint i = 0;
+            foreach (int newFib in fib)
+            {
+                arr[i] = newFib;
+                if (i == (chunkSize - 1))
+                {
+                    yield return arr;
+                    i = 0;
+                    continue;
+                }
+                ++i;
+            }
         }
 
         /// <summary>
