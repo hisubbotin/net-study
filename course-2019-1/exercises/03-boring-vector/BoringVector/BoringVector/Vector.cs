@@ -38,21 +38,16 @@ namespace BoringVector
             x = v.x;
             y = v.y;
         }
-        private double x;
-        private double y;
 
-        /// <summary>Возвращает первую координату вектора</summary>
-        /// <returns>Первая координата вектора</returns>
-        public double GetX()
-        {
-            return x;    
+        //private double x;
+        public double x{
+            get;
         }
 
-        /// <summary>Возвращает вторую координату вектора</summary>
-        /// <returns>Вторая координата вектора</returns>
-        public double GetY()
+        //private double y;
+        public double y
         {
-            return y;
+            get;
         }
 
         /*

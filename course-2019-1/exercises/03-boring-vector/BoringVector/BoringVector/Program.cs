@@ -6,6 +6,7 @@ namespace BoringVector
     {
         private static void Main()
         {
+            Console.WriteLine((new Vector(2.0,2.0)).x);
             Console.WriteLine("Hello World!");
             if (new Vector(0,0).IsZero())
             {
