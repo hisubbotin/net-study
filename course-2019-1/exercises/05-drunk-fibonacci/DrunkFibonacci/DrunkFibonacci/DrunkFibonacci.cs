@@ -155,12 +155,18 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
-            var fib = GetDrunkFibonacci();
-            while (true)
+            var fib = GetDrunkFibonacci();var i = 0;
+            var arr = new int[16];
+            foreach (var f in fib)
             {
-                var batch = fib.Take(16).ToArray();
-                yield return batch;
-                fib = fib.Skip(16);
+                arr[i] = f;
+                if (i == 16)
+                {
+                    i = 0;
+                    yield return arr;
+                }
+
+                i++;
             }
         }
 
