@@ -133,11 +133,21 @@ namespace DrunkFibonacci
         /// </summary>
         public static IEnumerable<int[]> GetInChunks()
         {
-            var drunkFibSequence = GetDrunkFibonacci();
-            while (true)
+            int i = 0;
+            bool firstTime = true;
+            var chunk = new int[16];
+            foreach (int fibNumber in GetDrunkFibonacci())
             {
-                yield return drunkFibSequence.Take(16).ToArray();
-                drunkFibSequence = drunkFibSequence.Skip(16);
+                if (i == 0)
+                {
+                    if (!firstTime)
+                    {
+                        yield return (int[])chunk.Clone();
+                    }
+                    firstTime = false;
+                }
+                chunk[i] = fibNumber;
+                i = (i + 1) % 16;
             }
         }
 
