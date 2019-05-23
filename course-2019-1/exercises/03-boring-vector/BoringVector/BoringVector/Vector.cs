@@ -22,7 +22,7 @@ namespace BoringVector
         /// <summary>
         /// Координаты векора.
         /// </summary>
-        public double x, y;
+        public readonly double x, y;
 
         /// <summary>
         /// Эпсилон для сравнения.

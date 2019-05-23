@@ -42,6 +42,10 @@ namespace BoringVector
         public static Vector Normalize(this Vector v)
         {
             var len = Math.Sqrt(v.SquareLength());
+            if (Double.Equals(len, 0))
+            {
+                throw new DivideByZeroException();
+            }
             return v.Scale(1 / len);
         }
 
