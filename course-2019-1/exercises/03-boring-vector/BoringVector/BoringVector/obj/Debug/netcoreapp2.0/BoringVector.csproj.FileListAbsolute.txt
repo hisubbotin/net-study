@@ -1,0 +1,11 @@
+C:\Users\rvano\source\repos\03-boring-vector\BoringVector\BoringVector\obj\Debug\netcoreapp2.0\BoringVector.csprojAssemblyReference.cache
+C:\Users\rvano\source\repos\03-boring-vector\BoringVector\BoringVector\obj\Debug\netcoreapp2.0\BoringVector.csproj.CoreCompileInputs.cache
+C:\Users\rvano\source\repos\03-boring-vector\BoringVector\BoringVector\obj\Debug\netcoreapp2.0\BoringVector.AssemblyInfoInputs.cache
+C:\Users\rvano\source\repos\03-boring-vector\BoringVector\BoringVector\obj\Debug\netcoreapp2.0\BoringVector.AssemblyInfo.cs
+C:\Users\rvano\source\repos\03-boring-vector\BoringVector\BoringVector\bin\Debug\netcoreapp2.0\BoringVector.deps.json
+C:\Users\rvano\source\repos\03-boring-vector\BoringVector\BoringVector\bin\Debug\netcoreapp2.0\BoringVector.runtimeconfig.json
+C:\Users\rvano\source\repos\03-boring-vector\BoringVector\BoringVector\bin\Debug\netcoreapp2.0\BoringVector.runtimeconfig.dev.json
+C:\Users\rvano\source\repos\03-boring-vector\BoringVector\BoringVector\bin\Debug\netcoreapp2.0\BoringVector.dll
+C:\Users\rvano\source\repos\03-boring-vector\BoringVector\BoringVector\bin\Debug\netcoreapp2.0\BoringVector.pdb
+C:\Users\rvano\source\repos\03-boring-vector\BoringVector\BoringVector\obj\Debug\netcoreapp2.0\BoringVector.dll
+C:\Users\rvano\source\repos\03-boring-vector\BoringVector\BoringVector\obj\Debug\netcoreapp2.0\BoringVector.pdb

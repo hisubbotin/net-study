@@ -1,0 +1,4 @@
+C:\Users\rvano\net-study\course-2019-1\exercises\04-wubba-lubba-dub-dub\WubbaLubbaDubDub\WubbaLubbaDubDub.Tests\obj\Debug\netcoreapp2.0\WubbaLubbaDubDub.Tests.csprojAssemblyReference.cache
+C:\Users\rvano\net-study\course-2019-1\exercises\04-wubba-lubba-dub-dub\WubbaLubbaDubDub\WubbaLubbaDubDub.Tests\obj\Debug\netcoreapp2.0\WubbaLubbaDubDub.Tests.csproj.CoreCompileInputs.cache
+C:\Users\rvano\net-study\course-2019-1\exercises\04-wubba-lubba-dub-dub\WubbaLubbaDubDub\WubbaLubbaDubDub.Tests\obj\Debug\netcoreapp2.0\WubbaLubbaDubDub.Tests.AssemblyInfoInputs.cache
+C:\Users\rvano\net-study\course-2019-1\exercises\04-wubba-lubba-dub-dub\WubbaLubbaDubDub\WubbaLubbaDubDub.Tests\obj\Debug\netcoreapp2.0\WubbaLubbaDubDub.Tests.AssemblyInfo.cs
