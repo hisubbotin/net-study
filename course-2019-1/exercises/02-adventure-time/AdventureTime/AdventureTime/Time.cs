@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Globalization;
 using NodaTime;
 using NodaTime.TimeZones;
 
@@ -65,7 +66,8 @@ namespace AdventureTime
                 Поиграйся и проверь, что round-trip действительно round-trip, т.е. туда-обратно равно оригиналу (для туда воспользуйся предыдущим методом).
                 Проверь для всех значений DateTime.Kind.
             */
-            return DateTime.Parse(dtStr);
+            //return DateTime.Parse(dtStr); //.ToUniversalTime();
+            return DateTime.ParseExact(dtStr, "O", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind);
         }
 
         /// <summary>
