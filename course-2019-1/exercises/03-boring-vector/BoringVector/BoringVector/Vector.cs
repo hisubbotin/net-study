@@ -171,6 +171,20 @@ namespace BoringVector
         {
             return new Vector(v.X, v.Y).Scale(k);
         }
+        
+        public static Vector operator *(double k, Vector v)
+        {
+            return new Vector(v.X, v.Y).Scale(k);
+        }
+        
+        public static Vector operator /(Vector v, double k)
+        {
+            if (Math.Abs(k) <= double.Epsilon)
+            {
+                throw new Exception("Dividing by zero");
+            }
+            return new Vector(v.X, v.Y).Scale(1/k);
+        }
 
         #endregion
     }
