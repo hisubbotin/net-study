@@ -26,7 +26,8 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            return Regex.Split(line, @"\s+");
+            var splitted = Regex.Split(line, @"[\s-.?!)(,:]+");
+            return splitted.Where(s => !string.IsNullOrEmpty(s)).ToArray();
         }
 
         /// <summary>
@@ -122,7 +123,7 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            var comment = new Regex(@"(//[^\n]*($|\n))|(/\*(.|\n)*\*/)");
+            var comment = new Regex(@"(//[^\n]*($|\n))|(/\*(.|\n)*?\*/)");
             var id = new Regex("[0-9A-Z]{4}:[0-9A-Z]{4}");
             return id.Matches(comment.Replace(text, "")).Select(x => x.Value)
                 .Select(s => Convert.ToInt64(s.Replace(":", ""), 16)).ToImmutableList();

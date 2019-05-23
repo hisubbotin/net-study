@@ -9,6 +9,7 @@ namespace WubbaLubbaDubDub.Tests
         
         [Theory]
         [InlineData("text for splitting word test", new[] { "text", "for", "splitting", "word", "test" })]
+        [InlineData("text? for        , splitting !! word :test", new[] { "text", "for", "splitting", "word", "test" })]
         public void TestSplitToWords(string line, string[] result)
         {
             Assert.Equal(result, line.SplitToWords());
@@ -72,6 +73,7 @@ namespace WubbaLubbaDubDub.Tests
 
         [Theory]
         [InlineData("// com1 5678:4321\n/* com2 4685:9867 \n\n */ 1234:5678 some text\n9876:5432", new[] { 305419896L, 2557891634L })]
+        [InlineData("/* 0000:0000 */ 0000:000A /* 0000:000A */", new[] {10L})]
         public void TestGetUsedObjects(string text, long[] result)
         {
             Assert.Equal(result, text.GetUsedObjects());
