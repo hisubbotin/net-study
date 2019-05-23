@@ -13,6 +13,8 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        public double X;
+        public double Y;
 
         public Vector(double X_, double Y_)
         {

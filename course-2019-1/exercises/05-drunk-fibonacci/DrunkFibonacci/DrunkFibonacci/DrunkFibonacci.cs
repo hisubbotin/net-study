@@ -153,13 +153,16 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
-            var drunkFibSequence = GetDrunkFibonacci();
-            while (true)
+            var drunkFibSequence = new List<int>();
+            foreach (var num in GetDrunkFibonacci())
             {
-                yield return drunkFibSequence.Take(16).ToArray();
-                drunkFibSequence = drunkFibSequence.Skip(16);
+                if (drunkFibSequence.Count == 16)
+                {
+                    yield return drunkFibSequence.ToArray();
+                    drunkFibSequence.Clear();
+                }
+                drunkFibSequence.Add(num);
             }
-        }
 
         /// <summary>
         /// Возвращает выравненную последовательность GetInChunks, где из каждой пачки берется только 3 самых маленьких по модулю значения.

@@ -22,6 +22,11 @@ namespace WubbaLubbaDubDub.Tests
             Assert.Equal(text.SplitToLines(), result);
         }
 
+         public void TestSplitToWords(string test, string[] result)
+        {
+            Assert.Equal(test.SplitToWords(), result);
+        }
+
         [Fact]
         public void TestHalf()
         {
