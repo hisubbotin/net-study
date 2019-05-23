@@ -82,8 +82,9 @@ namespace WubbaLubbaDubDub.Tests
                 "/*looong\n" +
                 "multiline\n" +
                 "comment*/\n//\n" +
-                "Mr. ¶/*huge number*/abcba011:0030acdc¶, I don't feel so ¶abcdef00:12345678¶. #¶ed:aa¶\n";
-            var ids = ImmutableList.CreateRange(new long[] { 20, -6067580078073533220, -6066930339413731720 });
+                "Mr. ¶/*huge number*/abcba011:0030acdc¶, I don't feel so ¶abcdef00:12345678¶. #¶ed:aa¶\n" +
+                "/*¶00000000:00000001¶*/¶00000000:00000001¶/*¶00000000:00000001¶*/";
+            var ids = ImmutableList.CreateRange(new long[] { 20, -6067580078073533220, -6066930339413731720, 1 });
             Assert.Equal(text.GetUsedObjects(), ids);
         }
 

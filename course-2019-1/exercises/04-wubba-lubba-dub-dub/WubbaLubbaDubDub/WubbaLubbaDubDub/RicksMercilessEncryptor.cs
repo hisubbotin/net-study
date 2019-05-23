@@ -15,7 +15,7 @@ namespace WubbaLubbaDubDub
         /// <summary>
         /// Возвращает массив слов исходной строки.
         /// </summary>
-        public static string[] SplitToWords(this string line) => Regex.Split(line, @"\s+");
+        public static string[] SplitToWords(this string line) => Regex.Split(line, @"[\s,\.?!;:]+");
 
         /// <summary>
         /// Возвращает левую половину строки, где граница считается с округлением вниз.
