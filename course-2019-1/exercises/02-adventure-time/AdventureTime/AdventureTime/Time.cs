@@ -128,8 +128,8 @@ namespace AdventureTime
         /// </summary>
         public static int GetTotalMinutesInThreeMonths()
         {
-            TimeSpan three_months = TimeSpan.Zero + TimeSpan.FromDays((3 * 31));
-            return three_months.Minutes;
+            // Некорректная функция, не понятно, о каких месяцах идет речь 
+            throw NotImplementedException;
         }
 
         #region Adventure time saga

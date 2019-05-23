@@ -13,6 +13,8 @@ namespace AdventureTime
             var str_datetime_local = Time.ToRoundTripFormatString(Time.SpecifyKind(Time.WhatTimeIsIt(), DateTimeKind.Local));
             var str_datetime_unspec = Time.ToRoundTripFormatString(Time.SpecifyKind(Time.WhatTimeIsIt(), DateTimeKind.Unspecified));
             
+            
+            
             Console.WriteLine("ToRoundTripFormatString -- DateTimeKind: Utc\t\t: " + str_datetime_utc);
             Console.WriteLine("ParseFromRoundTripFormat\t\t\t\t: {0}", Time.ParseFromRoundTripFormat(str_datetime_utc));
             
