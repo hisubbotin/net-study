@@ -109,11 +109,12 @@ namespace WubbaLubbaDubDub.Tests
                 "*/",
                 "var 00000000:00000011 // 00000000:00000005",
                 "// 00000000:00000010/*/**/*/",
+                "/*00000000:00000010 */ 00000000:00000010 /*00000000:00000010*/",
                 ""
             };
             string text = String.Join("\n", lines);
 
-            long[] result = { 10L, 17L};
+            long[] result = { 10L, 17L, 16L};
 
             Assert.Equal(text.GetUsedObjects(), result);
         }
