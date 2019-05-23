@@ -209,10 +209,10 @@ namespace DrunkFibonacci
 
                 Итого научишься группировать и создавать на их основе словарь (см. ToDictionary).
             */
-            return GetDrunkFibonacci().Take(10000).GroupBy(
-                    (x) => x % 8,
-                    (k, v) => (k, v.Count())
-                   ).ToDictionary(x => x.Item1, x => x.Item2);
+            return GetDrunkFibonacci()
+                .Take(10000)
+                .GroupBy(x => Math.Abs(x) % 8)
+                .ToDictionary(group => group.Key, group => group.Count());
         }
     }
 }
