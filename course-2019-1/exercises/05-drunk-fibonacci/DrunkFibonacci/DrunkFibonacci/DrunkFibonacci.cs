@@ -65,7 +65,7 @@ namespace DrunkFibonacci
         {
             if ((mask & 42) != 0)
             {
-                return member & 42;
+                return member & (~42);
             }
 
             return member;
