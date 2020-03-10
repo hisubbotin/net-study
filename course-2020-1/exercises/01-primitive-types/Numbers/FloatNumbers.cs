@@ -13,8 +13,7 @@ namespace Numbers
         /// </summary>
         internal static double GetNaN()
         {
-            double zero = 0;
-            return zero / zero;
+            return 0 / 0.0;
         }
 
         /// <summary>
