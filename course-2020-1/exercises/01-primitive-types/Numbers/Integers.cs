@@ -46,7 +46,8 @@ namespace Numbers
                 Особенно это касается связки Visual Studio + Resharper, используя которую, если просто набрать return и нажать пробел,
                     то в появившемся списке автодополнения одной из первых будет нужная тебе константа :)
             */
-            throw new NotImplementedException();
+            return Int32.MaxValue / 2;
+            //  throw new NotImplementedException();
         }
 
         /// <summary>
@@ -56,7 +57,7 @@ namespace Numbers
         {
             // не сомневайся, пиши. Тут без подвохов.
             //throw new NotImplementedException();
-            return x * x;
+            return x * x * x;
         }
 
         /// <summary>
@@ -69,7 +70,7 @@ namespace Numbers
                 И заодно подумай какой режим выставлен по умолчанию. Почему. И почему категорически нельзя надеяться на режим по умолчанию.
             */
             //throw new NotImplementedException();
-            return checked(x * x);
+            return checked(x * x * x);
         }
 
         /// <summary>
@@ -79,7 +80,7 @@ namespace Numbers
         {
             // если сделал предыдущие, то с этим уже должно быть понятно.
            // throw new NotImplementedException();
-           return unchecked(x * x);
+           return unchecked(x * x * x);
         }
 
         /// <summary>
