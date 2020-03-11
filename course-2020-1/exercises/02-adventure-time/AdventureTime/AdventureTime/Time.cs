@@ -3,8 +3,7 @@ using NodaTime;
 using NodaTime.TimeZones;
 
 namespace AdventureTime
-{
-    /// <summary>
+{    /// <summary>
     /// Класс методов для работы с временем.
     /// </summary>
     internal static class Time
