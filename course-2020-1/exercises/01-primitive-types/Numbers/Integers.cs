@@ -1,4 +1,4 @@
-﻿/*
+/*
     В данном файле вместо методов класса Integers стоят заглушки, которые просто генерируют исключение NotImplementedException.
     Задание: написать реализацию этих методов.
     
@@ -55,7 +55,8 @@ namespace Numbers
         internal static int Cube(int x)
         {
             // не сомневайся, пиши. Тут без подвохов.
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return x * x;
         }
 
         /// <summary>
@@ -67,7 +68,8 @@ namespace Numbers
                 Если спал на лекции, то тут придется погуглить, сорри.
                 И заодно подумай какой режим выставлен по умолчанию. Почему. И почему категорически нельзя надеяться на режим по умолчанию.
             */
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return checked(x * x);
         }
 
         /// <summary>
@@ -76,7 +78,8 @@ namespace Numbers
         internal static int CubeWithoutOverflowCheck(int x)
         {
             // если сделал предыдущие, то с этим уже должно быть понятно.
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
+           return unchecked(x * x);
         }
 
         /// <summary>
@@ -93,7 +96,8 @@ namespace Numbers
 
                 Подсказка: нужно воспользоваться методом, который есть у абсолютно всех объектов.
             */
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return x.ToString();
         }
 
         /// <summary>
@@ -107,7 +111,8 @@ namespace Numbers
                 Продолжай идти простым путем -нужен метод, обратный методу ToString выше, который распарсит дефолтное строковое представление числа.
                 Подсказка: у каждого примитивного типа есть набор статических методов, среди которых есть нужный.
             */
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
+           return Int32.Parse(s);
         }
 
         /// <summary>
@@ -119,7 +124,9 @@ namespace Numbers
                 Реализуй умножение числа на 10 без использования арифметических операций над числами.
                 Воспользуйся реализованными выше методами ToString и Parse. И не думай ни о каких переполнениях - задача не на это :)
             */
-            throw new NotImplementedException();
+            String x0 = ToString(x) + "0";
+            return Parse(x0);
+           // throw new NotImplementedException();
         }
 
         /// <summary>
@@ -133,7 +140,8 @@ namespace Numbers
                 У метода ToString числовых типов есть перегрузка, которая принимает строку с одним из заданного набора форматов.
                 В студии дается хорошая и понятная подсказка с этим набором форматов, в других же IDE скорее всего такого не будет, и придется погуглить форматы.
             */
-            throw new NotImplementedException();
+            return x.ToString("X");
+            //throw new NotImplementedException();
         }
 
         /*
