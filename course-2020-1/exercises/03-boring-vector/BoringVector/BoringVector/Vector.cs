@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Globalization;
 
 namespace BoringVector
 {
@@ -13,7 +14,8 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
-
+        private double x_coordinate;
+        private double y_coordinate;
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -23,31 +25,45 @@ namespace BoringVector
                 - скалярное произведение
                 - векторное произведение (= площадь параллелограмма)
         */
+        /* Добавила конструктор класса */
+        public Vector(double a , double b)
+        {
+            x_coordinate = a;
+            y_coordinate = b;
+        }
+        
 
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return Math.Sqrt(Math.Pow(x_coordinate,2) + Math.Pow(y_coordinate,2));
         }
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(x_coordinate + v.x_coordinate, y_coordinate + v.y_coordinate);
         }
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            // надо возвращать измененный и не менять  или менять вектор, но ничего не возвращать?
+            return new Vector(x_coordinate * k, y_coordinate + y_coordinate*k);
         }
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return x_coordinate * v.x_coordinate + y_coordinate * v.y_coordinate;
         }
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return x_coordinate * v.y_coordinate - v.x_coordinate * y_coordinate;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+        public override string ToString()
+        {
+            // выведется число вида 16325.62901
+            string res = "("+x_coordinate.ToString("G",  CultureInfo.InvariantCulture)+";"+y_coordinate.ToString("G",  CultureInfo.InvariantCulture) + ")";
+            return res;
+        }
 
         #region operators
 
@@ -57,6 +73,35 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+        public static Vector operator+(Vector v1, Vector v2)
+        {
+            return new Vector(v1.x_coordinate + v2.x_coordinate, v1.y_coordinate + v2.y_coordinate);
+        }
+        public static Vector operator-(Vector v1, Vector v2)
+        {
+            return new Vector(v1.x_coordinate - v2.x_coordinate, v1.y_coordinate - v2.y_coordinate);
+        }
+        public static Vector operator*(Vector v1, double k)
+        {
+            return v1.Scale(k);
+        }
+        public static Vector operator*(double k, Vector v1)
+        {
+            return v1.Scale(k);
+        }
+        public static Vector operator/(Vector v1, double k)
+        {
+            return v1.Scale(1/k);
+        }
+        public static Vector operator-(Vector v)
+        {
+            return new Vector(-v.x_coordinate, -v.y_coordinate);
+        }
+        public static Vector operator+(Vector v)
+        {
+            return new Vector(v.x_coordinate, v.y_coordinate);
+        }
+        
 
         #endregion
     }
