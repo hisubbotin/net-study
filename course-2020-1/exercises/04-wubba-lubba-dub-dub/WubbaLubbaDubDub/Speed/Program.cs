@@ -25,7 +25,7 @@ namespace MyBenchmarks
         [Benchmark]
         public string TestJoin()
         {
-            return string.Join(" ", test_str_list);
+            return string.Join("", test_str_list);
         }
 
 
@@ -33,7 +33,7 @@ namespace MyBenchmarks
         public string TestStringBuilder()
         {
             StringBuilder sb = new StringBuilder();
-            sb.Append(test_str_list);
+            test_str_list.ForEach(item => sb.Append(item));
             return sb.ToString();
         }
 
@@ -53,6 +53,12 @@ namespace MyBenchmarks
     {
         static void Main(string[] args)
         {
+            /*
+            SpeedComparator a = new SpeedComparator();
+            System.Console.WriteLine(a.TestConcat());
+            System.Console.WriteLine(a.TestStringBuilder());
+            System.Console.WriteLine(a.TestJoin());
+            */
             BenchmarkRunner.Run<SpeedComparator>();
         }
     }
