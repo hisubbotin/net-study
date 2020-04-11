@@ -1,5 +1,6 @@
 ﻿using System;
-
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("BoringVector.Tests")]
 namespace BoringVector
 {
     #region 1. Структура Vector
@@ -13,7 +14,19 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        public double X { get; }
+        public double Y { get; }
+        /// <summary>
+        /// Конструктор
+        /// </summary>
+        /// <param name="x">Координата x типа <see cref="double"/> </param>
+        /// <param name="y">Координата y типа <see cref="double"/> </param>
 
+        public Vector(double x = 0.0, double y = 0.0)
+        {
+            X = x;
+            Y = y;
+        }
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -23,31 +36,58 @@ namespace BoringVector
                 - скалярное произведение
                 - векторное произведение (= площадь параллелограмма)
         */
-
-        public double SquareLength()
+        /// <summary>
+        /// Квадрат длины вектора
+        /// </summary>
+       public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+        /// <summary>
+        /// Прибавить вектор
+        /// </summary>
+        /// <param name="v">Добавочный вектор типа <see cref="Vector"/> </param>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
+        /// <summary>
+        /// Умножить на число
+        /// </summary>
+        /// <param name="k">Коэффициент умножения типа<see cref="double"/> </param>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(X * k, Y * k);
         }
+        /// <summary>
+        /// Скалярное произведение
+        /// </summary>
+        /// <param name="v">Вектор типа <see cref="Vector"/> </param>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+        /// <summary>
+        /// Векторное произведение
+        /// </summary>
+        /// <param name="v">Вектор типа <see cref="Vector"/> </param>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            //модуль, так как площадь не мб отрицательная
+            return Math.Abs(X * v.Y - Y * v.X);
+
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+        /// <summary>
+        /// Переопределение ToString. Вывод в формате (X; Y)
+        /// </summary>
+        public override string ToString()
+        {
+            return "("+ X.ToString() + "; " + Y.ToString()+")";
+        }
 
         #region operators
 
@@ -58,6 +98,71 @@ namespace BoringVector
                 - +v, -v
         */
 
+        /// <summary>
+        /// Бинарный оператор сложения
+        /// </summary>
+        /// <param name="v">Слагаемое типа <see cref="Vector"/> </param>
+        /// <param name="u">Слагаемое типа <see cref="Vector"/> </param>
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return v.Add(u);
+        }
+
+        /// <summary>
+        /// Бинарный оператор вычитания
+        /// </summary>
+        /// <param name="v">Уменьшаемое типа <see cref="Vector"/> </param>
+        /// <param name="u">Вычитаемое типа <see cref="Vector"/> </param>
+        public static Vector operator -(Vector v, Vector u)
+        {
+            Vector temp = u.Scale(-1);
+            return v.Add(temp);
+        }
+
+        /// <summary>
+        /// Бинарный оператор умножения
+        /// </summary>
+        /// <param name="k">Коэффициент умножения типа <see cref="double"/> </param>
+        /// <param name="v">Вектор типа <see cref="Vector"/> </param>
+        public static Vector operator *(double k, Vector v)
+        {
+            return v.Scale(k);
+        }
+
+        /// <summary>
+        /// Бинарный оператор умножения
+        /// </summary>
+        /// <param name="k">Коэффициент умножения типа <see cref="double"/> </param>
+        /// <param name="v">Вектор типа <see cref="Vector"/> </param>
+        public static Vector operator *(Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+        /// <summary>
+        /// Бинарный оператор деления
+        /// </summary>
+        /// <param name="k">Коэффициент деления типа <see cref="double"/> </param>
+        /// <param name="v">Вектор типа <see cref="Vector"/> </param>
+        public static Vector operator /(Vector v, double k)
+        {
+            return v.Scale(1.0 / k);
+        }
+        /// <summary>
+        /// Унарный оператор плюс. Возвращает тот же вектор
+        /// </summary>
+        /// <param name="v">Вектор типа <see cref="Vector"/> </param>
+        public static Vector operator +(Vector v)
+        {
+            return v;
+        }
+        /// <summary>
+        /// Унарный оператор минус. Возвращает противоположный вектор
+        /// </summary>
+        /// <param name="v">Вектор типа <see cref="Vector"/> </param>
+        public static Vector operator -(Vector v)
+        {
+            return v.Scale(-1.0);
+        }
         #endregion
     }
 
@@ -76,7 +181,8 @@ namespace BoringVector
         успел съездить в путешествие под названием "во все тяжкие" и теперь проходит курс реабилитации. А те, кто был хотя бы примерно в теме,
         внезапно лишились рассудка.
         Тут еще из будущего сообщили, что тебе дали задачу поинтереснее, и ты наотрез отказался(-ась) сотрудничать в передаче знаний.
-        Ну а вместо тебя на эту задачу взяли пушистого котика, который отказывается разбираться в коде и уж тем более его писать - говорит у него лапки.
+        Ну а вместо тебя на эту задачу взяли пушистого котика, который отказывается разбираться в коде и уж тем более его писать - 
+        говорит у него лапки.
 
         В такой ситуации единственно возможное решение задачи - оставить после себя комментарии. Такие, чтобы даже котику было понятно!
         В общем, впереди неприятная для многих часть - необходимо добавить комментарии ко всем введенным типам, методам и свойствам :)
@@ -86,7 +192,8 @@ namespace BoringVector
 
         Для многих это действительно довольно неприятная и скучнейшая часть - писать комментарии к коду. Проблема в том,
         что это еще и не так просто как кажется на первый взгляд. Очень желательно выдерживать единый стиль, писать по существу,
-        писать не "для текущего разобравшегося в проблеме и предметной области себя", а для "того парня", "себя через год". Ну или пушистого котика.
+        писать не "для текущего разобравшегося в проблеме и предметной области себя", а для "того парня", "себя через год". 
+        Ну или пушистого котика.
 
         Есть и хорошее в этом деле. Комментирование кода очень похоже на написание автотестов - оно позволяет взглянуть
         на задачу и ее решение немного с другой стороны. Например, если слова не вяжутся, и не получается написать простое и короткое
@@ -105,9 +212,10 @@ namespace BoringVector
             /// <returns>Объект <see cref="DateTime"/> с заданными временем и значением <see cref="DateTime.Kind"/>.</returns>
 
         Такой блок является комментарием, т.к. каждая строка начинается с //, но имеет свою внутреннюю структуру и синтаксис.
-        Это так называемые Xml documentation comments. Их поддерживает сам компилятор. Они позволяют писать чуть более умные и продвинутые комментарии к сущностям,
-        а потом, например, автоматически генерировать по ним красивую документацию.
-        Правилом хорошего тона считается писать комментарии к методам, классам и другим сущностям, используя данный синтаксис - так ты и комментируешь их, и документируешь.
+        Это так называемые Xml documentation comments. Их поддерживает сам компилятор. Они позволяют писать чуть более умные и 
+        продвинутые комментарии к сущностям, а потом, например, автоматически генерировать по ним красивую документацию.
+        Правилом хорошего тона считается писать комментарии к методам, классам и другим сущностям, используя данный синтаксис - 
+        так ты и комментируешь их, и документируешь.
         Внутри методов он не поддерживается, поэтому там только обычные (// или /*).
 
         Ниже приведены примеры простейших комментариев. Если наведете мышкой на название метода DoNothing, увидишь,
