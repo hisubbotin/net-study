@@ -1,5 +1,8 @@
 ﻿using System;
 
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("BoringVector.Test")]
+
 namespace BoringVector
 {
     #region 1. Структура Vector
@@ -13,7 +16,17 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        
+        public double x;
+        public double y;
 
+        ///<summary>
+        /// Стандартный конструктор
+        ///</summary>
+        public Vector(double x, double y){
+            this.x = x;
+            this.y = y;
+        }
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -23,32 +36,54 @@ namespace BoringVector
                 - скалярное произведение
                 - векторное произведение (= площадь параллелограмма)
         */
-
+        ///<summary>
+        /// Квадрат длины вектора
+        ///</summary>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return x*x + y*y;
         }
+        ///<summary>
+        /// Добавление вектора к другому. Создаем новый вектор.
+        ///</summary>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new Vector(this.x + x, this.y + y);
         }
+        ///<summary>
+        /// Умножение на число.
+        ///</summary>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new Vector(this.x * k, this.y * k);
         }
+        ///<summary>
+        /// Скалярное произведение
+        ///</summary>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return this.x *x + this.y * y;
+            //throw new NotImplementedException();
         }
+        ///<summary>
+        /// Векторное произведение
+        ///</summary>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            
+            //throw new NotImplementedException();
+            return this.x * v.y - v.x * this.y;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
-
+        public override string ToString() {
+            return "(" + this.x.ToString() + ";" + this.y.ToString() + ")";
+        }
         #region operators
 
         /*
@@ -57,7 +92,49 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
-
+        ///<summary>
+        /// Переопределим оператор +, используя метод Add
+        ///</summary>
+        public static Vector operator +(Vector v, Vector u) {
+            return v.Add(u);
+        }
+        ///<summary>
+        /// Переопределим оператор -, используя метод Add и Scale
+        ///</summary>
+        public static Vector operator -(Vector v, Vector u)
+        {
+            Vector temp = u.Scale(-1);
+            return v.Add(temp);
+        }
+        ///<summary>
+        /// Переопределим оператор *, используя метод Scale
+        ///</summary>
+        public static Vector operator *(double k, Vector v)
+        {
+            return v.Scale(k);
+        }
+        ///<summary>
+        /// Переопределим оператор *, используя метод Scale
+        ///</summary>
+        public static Vector operator *(Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+        ///<summary>
+        /// Переопределим оператор /, используя метод Scale
+        ///</summary>
+        public static Vector operator /(Vector v, double k)
+        {
+            return v.Scale(1.0 / k);
+        }
+        public static Vector operator +(Vector v)
+        {
+            return v;
+        }
+        public static Vector operator -(Vector v)
+        {
+            return v.Scale(-1.0);
+        }
         #endregion
     }
 
