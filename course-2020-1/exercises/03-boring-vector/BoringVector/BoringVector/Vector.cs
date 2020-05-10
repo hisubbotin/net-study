@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("BoringVector.Tests")]
 
 namespace BoringVector
 {
@@ -8,13 +11,37 @@ namespace BoringVector
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
 
-    internal struct Vector
+    internal readonly struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
 
+        /// <summary>
+        /// Coordinate X
+        /// </summary>
+        public readonly double X;
 
+        /// <summary>
+        /// Coordinate Y 
+        /// </summary>
+        public readonly double Y;
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        /// <param name="x">Value for coordinate X</param>
+        /// <param name="y">Value for coordinate Y</param>
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
+
+        /// <summary>
+        /// Returns squared length of vector
+        /// </summary>
+        /// <returns>Squared vector's length</returns>
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
                 - квадрат длины
@@ -26,37 +53,134 @@ namespace BoringVector
 
         public double SquareLength()
         {
-            throw new NotImplementedException();
-        }
-        public Vector Add(Vector v)
-        {
-            throw new NotImplementedException();
-        }
-        public Vector Scale(double k)
-        {
-            throw new NotImplementedException();
-        }
-        public double DotProduct(Vector v)
-        {
-            throw new NotImplementedException();
-        }
-        public double CrossProduct(Vector v)
-        {
-            throw new NotImplementedException();
+            return X*X + Y*Y;
         }
 
-        /*
-            Переопредели ниже метод ToString - пусть выводит (X; Y)
-        */
+        /// <summary>
+        /// Returns Object Vector that is sum of this vector and vector v
+        /// </summary>
+        /// <param name="v">Added vector</param>
+        /// <returns>Total vector</returns>
+        public Vector Add(Vector v)
+        {
+            return new Vector(X + v.X, Y + v.Y);
+        }
+
+        /// <summary>
+        /// Returns Object Vector that equals to this vector scaled with coefficient k
+        /// </summary>
+        /// <param name="k">Coefficient of scaling</param>
+        /// <returns>Scaled vector</returns>
+        public Vector Scale(double k)
+        {
+            return new Vector(X * k, Y * k);
+        }
+
+        /// <summary>
+        /// Calculates a dot product of this vector and vector v
+        /// </summary>
+        /// <param name="v">Second vector for product</param>
+        /// <returns>Dot product of this vector and vector v</returns>
+        public double DotProduct(Vector v)
+        {
+            return X * v.X + Y * v.Y;
+        }
+
+        /// <summary>
+        /// Calculates a cross product of this vector and vector v
+        /// </summary>
+        /// <param name="v">Second vector for product</param>
+        /// <returns>Cross product of this vector and vector v</returns>
+        public double CrossProduct(Vector v)
+        {
+            return X * v.Y - Y * v.X;
+        }
+
+        // <summary>
+        /// Returns string presentation of this vector
+        /// </summary>
+        /// <returns>String presentation</returns>
+        public override string ToString()
+        {
+            return "(" + X.ToString() + "; " + Y.ToString() + ")";
+        }
 
         #region operators
 
-        /*
-            Реализуй также следущие операторы (Vector v, u и double k):
-                - v + u, v - u
-                - k * v, v * k, v / k
-                - +v, -v
-        */
+        /// <summary>
+        /// Binary operator that returns Object Vector that equals to sum of vectors v and u
+        /// </summary>
+        /// <param name="v">First vector</param>
+        /// <param name="u">Second vector</param>
+        /// <returns>Value of (v + u)</returns>
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return v.Add(u);
+        }
+
+        /// <summary>
+        /// Binary operator that returns Object Vector that equals to subtraction of vectors v and u
+        /// </summary>
+        /// <param name="v">First vector</param>
+        /// <param name="u">Second vector</param>
+        /// <returns>Value of (v - u)</returns>
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return new Vector(v.X - u.X, v.Y - u.Y);
+        }
+
+        /// <summary>
+        /// Unary operator + returns Object Vector that equals to this vector
+        /// </summary>
+        /// <param name="v">Vector</param>
+        /// <returns>Unchanged value of vector v</returns>
+        public static Vector operator +(Vector v)
+        {
+            return v;
+        }
+
+        /// <summary>
+        /// Unary operator - returns Object Vector that equals to opposite to this vector.
+        /// </summary>
+        /// <param name="v">Vector</param>
+        /// <returns>Value of (-v)</returns>
+        public static Vector operator -(Vector v)
+        {
+            return new Vector(-v.X, -v.Y); 
+        }
+
+        /// <summary>
+        /// Returns Object Vector that equals to this vector scaled with coefficient k
+        /// </summary>
+        /// <param name="k">Scaling coefficient</param>
+        /// <param name="v">Vector</param>
+        /// <returns>Value of (k*v)</returns>
+        public static Vector operator *(double k, Vector v)
+        {
+            return v.Scale(k);
+        }
+
+        /// <summary>
+        /// Returns Object Vector that equals to this vector scaled with coefficient k
+        /// </summary>
+        /// <param name="v">Vector</param>
+        /// <param name="k">Scaling coefficient</param>
+        /// <returns>Value of (k*v)</returns>
+        public static Vector operator *(Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+
+        /// <summary>
+        /// Returns Object Vector that equals to this vector scaled with coefficient 1/k
+        /// </summary>
+        /// <param name="v">Vector</param>
+        /// <param name="k">Inversed scaling coefficient</param>
+        /// <returns>Value of (v/k)</returns>
+        public static Vector operator /(Vector v, double k)
+        {
+            return new Vector(v.X / k, v.Y / k);
+        }      
 
         #endregion
     }
