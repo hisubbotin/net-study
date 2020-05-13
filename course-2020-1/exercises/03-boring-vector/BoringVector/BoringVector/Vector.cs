@@ -3,77 +3,52 @@
 namespace BoringVector
 {
     #region 1. Структура Vector
+
+    /*
+        Реализуй структуру Vector - см. комментарии внутри нее.
+    */
+
     internal struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
-        private readonly double x_;
-        private readonly double y_;
-        /// <summary>
-        /// конструктор
-        /// </summary>
-        /// <param name="x">x кордината вектора</param>
-        /// <param name="y">y кордината вектора</param>
-        /// <returns><see cref="Vector"/> с кординатами x, y</returns>
-        public Vector(double x, double y)
-        {
-            x_ = x;
-            y_ = y;
-        }
-        /// <summary>
-        /// квадарт длины
-        /// </summary>
-        /// <returns>число, равное длине вектора в квадрате</returns>
+
+
+        /*
+            На месте заглушек добавь реализацию базовых методов вектора:
+                - квадрат длины
+                - сумма векторов
+                - умножение на коэффициент
+                - скалярное произведение
+                - векторное произведение (= площадь параллелограмма)
+        */
+
         public double SquareLength()
         {
-            return x_ * x_ + y_ * y_;
+            throw new NotImplementedException();
         }
-        /// <summary>
-        /// сумма векторов
-        /// </summary>
-        /// <param name="v"><see cref="Vector"/>, с которым происходит сложение</param>
-        /// <returns><see cref="Vector"/>, равный сумме нашего вектора и вектора v</returns>
         public Vector Add(Vector v)
         {
-            return new Vector(x_ + v.x_, y_ + v.y_);
+            throw new NotImplementedException();
         }
-        /// <summary>
-        /// умножение на коэфициент
-        /// </summary>
-        /// <param name="k">коэфициент домножения</param>
-        /// <returns><see cref="Vector"/>, равный сумме k наших векторов</returns>
-        public Vector Scale(double k)//умножение на коэфициент
+        public Vector Scale(double k)
         {
-            return new Vector(x_ * k, y_ * k);
+            throw new NotImplementedException();
         }
-        /// <summary>
-        /// скалярное произведение
-        /// </summary>
-        /// <param name="v">вектор с которым производится скалярное произведение</param>
-        /// <returns>число, равное скалярному произведению ветора v и нашего</returns>
         public double DotProduct(Vector v)
         {
-            return x_ * v.x_ + y_ * v.y_;
+            throw new NotImplementedException();
         }
-        /// <summary>
-        /// векторное произведение (= площадь параллелограмма)
-        /// </summary>
-        /// <param name="v"><see cref="Vector"/> с которым производится векторное произведение</param>
-        /// <returns>площадь параллерограмма натянутого на <see cref="Vector"/></returns>
         public double CrossProduct(Vector v)
         {
-            return x_ * v.y_ - y_ * v.x_;
+            throw new NotImplementedException();
+        }
 
-        }
-        /// <summary>
-        /// Переопределили ниже метод ToString - пусть выводит (X; Y)
-        /// </summary>
-        /// <returns>Строковое представление <see cref="Vector"/></returns>
-        public override string ToString()
-        {
-            return string.Format("({0}; {1})", x_, y_);
-        }
+        /*
+            Переопредели ниже метод ToString - пусть выводит (X; Y)
+        */
+
         #region operators
 
         /*
@@ -82,64 +57,7 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
-        /// <summary>
-        /// сумма двух векторов, при помощи оператора +
-        /// </summary>
-        /// <param name="v">первый вектор</param>
-        /// <param name="u">второй вектор</param>
-        /// <returns>сумма u и v</returns>
-        public static Vector operator +(Vector v, Vector u)
-        {
-            return v.Add(u);
-        }
-        /// <summary>
-        /// разность двух векторов, при помощи оператора -
-        /// </summary>
-        /// <param name="v">первый <see cref="Vector"/></param>
-        /// <param name="u">второй <see cref="Vector"/></param>
-        /// <returns>разность u и v</returns>
-        public static Vector operator -(Vector v, Vector u)
-        {
-            return new Vector(v.x_- u.x_, v.y_ - u.y_);
-        }
-        /// <summary>
-        /// Масштабирует вектор
-        /// </summary>
-        /// <param name="v"><see cref="Vector"/></param>
-        /// <param name="k">Коэффициент масштабирования</param>
-        /// <returns>Отмасштабированный вектор v на число k</returns>
-        public static Vector operator *(Vector v, double k)
-        {
-            return v.Scale(k);
-        }
-        /// <summary>
-        /// Масштабирует вектор в обратную сторону
-        /// </summary>
-        /// <param name="v"><see cref="Vector"/></param>
-        /// <param name="k">коэффициент масштабирования</param>
-        /// <returns>В обратную сторону отмасштабированный вектор v на число обратно к k</returns>
-        public static Vector operator /(Vector v, double k)
-        {
-            return v.Scale(1 / k);
-        }
-        /// <summary>
-        /// возвращает тот же вектор
-        /// </summary>
-        /// <param name="v"><see cref="Vector"/></param>
-        /// <returns>вектор v</returns>
-        public static Vector operator +(Vector v)
-        {
-            return v;
-        }
-        /// <summary>
-        /// возвращает тот обратный вектор
-        /// </summary>
-        /// <param name="v"><see cref="Vector"/></param>
-        /// <returns>вектор обратный к v</returns>
-        public static Vector operator -(Vector v)
-        {
-            return v.Scale(-1);
-        }
+
         #endregion
     }
 
