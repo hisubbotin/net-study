@@ -8,12 +8,31 @@ namespace BoringVector
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
 
+    /// <summary>
+    /// Класс двумерного вектора.
+    /// </summary>
     internal struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
-
+        /// <summary>
+        /// X-координата вектора.
+        /// </summary>
+        internal double X { get;set;}
+        /// <summary>
+        /// Y-координата вектора.
+        /// </summary>
+        internal double Y { get;set;}
+        
+        /// <summary>
+        /// Стандартный конструктор вектора из двух координат.
+        /// </summary>
+        internal Vector(double x, double y)
+        {
+            X = x;
+            Y = y; // Ключевое слово this
+        }
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -24,31 +43,64 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        /// <summary>
+        /// Возвращает квадрат длины вектора.
+        /// </summary>
         public double SquareLength()
         {
+            return X*X + Y*Y;
             throw new NotImplementedException();
         }
+        
+        /// <summary>
+        /// Возвращает объект <see cref="Vector"/>, сложенный покоординатно с другим объектом <see cref="Vector"/>.
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/>, который будет сложен с имеющимся объектом.</param>
+        /// <returns>Объект <see cref="Vector"/> - результат сложения двух векторов.</returns>
         public Vector Add(Vector v)
         {
+            return new Vector(this.X + v.X, this.Y + v.Y);
             throw new NotImplementedException();
         }
+        
+        /// <summary>
+        /// Возвращает объект <see cref="Vector"/>, умноженный на скаляр.
+        /// </summary>
+        /// <param name="k">Скаляр, на который будет умножен имеющийся вектор.</param>
+        /// <returns>Объект <see cref="Vector"/> - результат умножения вектора на скаляр.</returns>
         public Vector Scale(double k)
         {
+            return new Vector(this.X * k, this.Y * k);
             throw new NotImplementedException();
         }
+        
+        /// <summary>
+        /// Возвращает скалярное произведение двух объёктов <see cref="Vector"/>.
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/>, который будет скалярно умножен на имеющийся объект.</param>
         public double DotProduct(Vector v)
         {
+            return this.X * v.X + this.Y + v.Y;
             throw new NotImplementedException();
         }
+        /// <summary>
+        /// Возвращает модуль векторного произведения двух объектов <see cref="Vector"/>.
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/>, который будет векторно умножен на имеющийся объект.</param>
+        /// <returns>Модуль векторного произведения данного вектора на v.</returns>
         public double CrossProduct(Vector v)
         {
+            return (this.SquareLength() * v.SquareLength() - Math.Pow(this.DotProduct(v), 2.0))/Math.Sqrt(this.SquareLength() * v.SquareLength());
             throw new NotImplementedException();
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
-
+        public override string ToString()
+        {
+            return "(" + X.ToString() + "; " + Y.ToString() + ")";
+        }
         #region operators
 
         /*
@@ -57,6 +109,41 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+        
+        public static Vector operator +(Vector v1, Vector v2)
+        {
+            return new Vector(v1.X+v2.X, v1.Y+v2.Y);
+        }
+        
+        public static Vector operator -(Vector v1, Vector v2)
+        {
+            return new Vector(v1.X-v2.X, v1.Y-v2.Y);
+        }
+        
+        public static Vector operator *(Vector v1, int k)
+        {
+            return new Vector(v1.X*k, v1.Y*k);
+        }
+        
+        public static Vector operator *(int k, Vector v2)
+        {
+            return new Vector(v2.X*k, v2.Y*k);
+        }
+        
+        public static Vector operator /(Vector v1, int k)
+        {
+            return new Vector(v1.X/k, v1.Y/k);
+        }
+        
+        public static Vector operator +(Vector v1)
+        {
+            return v1;
+        }
+        
+        public static Vector operator -(Vector v1)
+        {
+            return new Vector(-v1.X, -v1.Y);
+        }
 
         #endregion
     }
