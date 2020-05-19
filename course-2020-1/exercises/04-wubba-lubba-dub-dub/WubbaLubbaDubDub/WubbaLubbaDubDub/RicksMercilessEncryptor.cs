@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 
@@ -23,7 +24,10 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            return Regex.Split(line, "\\W+");
+            var fixedLine = Regex.Replace(line, "[^a-zA-Z0-9% ._]", " ");
+            var wordList = Regex.Split(fixedLine, "\\W+");
+            var fixedWordList = wordList.Where(s => s.Length > 0).ToArray();
+            return fixedWordList;
         }
 
         /// <summary>
@@ -142,15 +146,15 @@ namespace WubbaLubbaDubDub
             */
             var lines = SplitToLines(text);
             bool is_comment = false;
-
-            for (int i = 0; i < lines.Length; i++)
+            var ans = new ImmutableArray<long>();
+            string id_regex = "[A-F][0-7][A-F][0-7]:[A-F][0-7][A-F][0-7]";
+            
+            foreach (var line in lines)
             {
                 if (is_comment)
                 {
                     continue;
                 }
-                
-                string line = lines[i];
 
                 if (line.Substring(0, 2) == "//")
                 {
@@ -163,11 +167,27 @@ namespace WubbaLubbaDubDub
                     continue;
                     ;
                 }
+
+                if (line.Substring(2) == "*//")
+                {
+                    is_comment = false;
+                    continue;
+                }
+
+
+                var ids = Regex.Split(line, id_regex).Select(CountId);
+
+                long CountId(string s)
+                {
+                    var id_str = string.Concat(s.Split(":"));
+                    ans.Add(long.Parse(id_str, System.Globalization.NumberStyles.HexNumber));
+                    return 0;
+                }
             }
 
-            return new ImmutableArray<long>();
+            return ans;
             
-            // Iy doesn't work.
+            // It doesn't work.
         }
 
         #endregion

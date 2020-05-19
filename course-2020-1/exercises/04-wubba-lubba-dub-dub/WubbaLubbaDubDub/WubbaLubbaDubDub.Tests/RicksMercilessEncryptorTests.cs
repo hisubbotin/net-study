@@ -17,7 +17,7 @@ namespace WubbaLubbaDubDub.Tests
 
         [Theory]
         [InlineData("Lorem ipsum", new[] {"Lorem", "ipsum"})]
-        [InlineData("Lorem\t\nipsum,   abacaba", new[] {"Lorem", "ipsum", "abacaba"})]
+        [InlineData("Lorem\t\nipsum,   abacaba?", new[] {"Lorem", "ipsum", "abacaba"})]
         public void Test_SplitToWords(string line, string[] answer)
         {
             Assert.Equal(answer, line.SplitToWords());
@@ -79,6 +79,16 @@ namespace WubbaLubbaDubDub.Tests
         public void Test_ShiftInc(string s, string answer)
         {
             Assert.Equal(answer, s.ShiftInc());
+        }
+
+        [Theory]
+        [InlineData("1234:5678\n1234:5679", new long[] { 12345678, 12345679 })]
+        [InlineData("1234:5678\n1234:5678", new long[] {12345678})]
+        [InlineData("//1234:5678\nhello, world:1234:5679\n11234:9876", new long[] {12345679, 12349876})]
+        [InlineData("/*ar1234:5698\n1235:5566\n\n32323:5648*/\n22:456:7564:7895\t", new long[] { 75647895 })]
+        public static void TestGetUsedObjects(string str, long[] right_result)
+        {
+            Assert.Equal(right_result, str.GetUsedObjects());
         }
         
     }
