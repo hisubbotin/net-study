@@ -12,7 +12,7 @@ namespace DrunkFibonacci
         public static int[] CreateIntArray(int len)
         {
             // на создание массивов заданной длины
-            throw new NotImplementedException();
+            return new int[len];
         }
 
         /// <summary>
@@ -24,7 +24,9 @@ namespace DrunkFibonacci
         public static void FillIntArray(int[] arr, int seed, int step)
         {
             // на задание значений массива
-            throw new NotImplementedException();
+            for (int i = 0; i < arr.Length; ++i){
+                arr[i] = seed + i * step;
+            }
         }
 
         /// <summary>
@@ -34,7 +36,13 @@ namespace DrunkFibonacci
         public static int[] GetFirstFiveFibonacci()
         {
             // на создание массива с инициализацией
-            throw new NotImplementedException();
+            int[] arr = new int[5];
+            arr[0] = 1;
+            arr[1] = 1;
+            for (int i = 2; i < arr.Length; ++i){
+                arr[i] = arr[i - 1] + arr[i - 2];
+            }
+            return arr;
         }
 
         /// <summary>
@@ -49,7 +57,12 @@ namespace DrunkFibonacci
 
                 Задача на ленивую генерацию последовательностей.
             */
-            throw new NotImplementedException();
+            int corn = 87;
+            var rand = new Random(corn);
+            while (true)
+            {
+                yield return rand.Next();
+            }
         }
 
         /// <summary>
