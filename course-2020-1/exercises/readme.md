@@ -9,11 +9,7 @@
   - [01. May the primitive types be with you](#01-may-the-primitive-types-be-with-you)
   - [02. What time is it? Adventure Time!](#02-what-time-is-it-adventure-time)
   - [03. Boring vector](#03-boring-vector)
-  - [04. Garbage Cleaning](#04-garbage-cleaning)
-  - [05. Wubba Lubba Dub Dub](#05-wubba-lubba-dub-dub)
-  - [06. Go home, Fibonacci, you're drunk](#06-go-home-fibonacci-youre-drunk)
-  - [07. Here's my `T` value so call me `Maybe<T>`](#07-heres-my-t-value-so-call-me-maybet)
-
+  
 <!-- /TOC -->
 
 ## Target
@@ -30,7 +26,7 @@
 
 ## Git + GitHub workflow
 
-Гайд по тому, как и где делать задания, лежит [здесь](git-help.md).
+Гайд по тому, как и где делать задания, лежит [здесь](../../course/git-help.md).
 
 ## 01. May the primitive types be with you
 
@@ -72,14 +68,7 @@ Tags: struct, operator overloading, extension methods, xml documentation comment
 
 Инструкция лежит в [03-boring-vector/readme.md](03-boring-vector/readme.md).
 
-## 04. Garbage Cleaning
-
-Задание в свободной форме:
-
-- Экспериментальным путем найти с какого размера объектов (string, массив int/double) clr помещает объекты в LOH
-- Оценить время сборки мусора в разных поколениях
-
-## 05. Wubba Lubba Dub Dub
+## 04. Wubba Lubba Dub Dub
 
 Tags: string, char, unicode, regex, unicode categories.
 
@@ -88,9 +77,9 @@ Tags: string, char, unicode, regex, unicode categories.
 - предикатами для определения категорий Юникода
 - поддержкой регулярных выражений в .Net.
 
-Инструкция лежит в [05-wubba-lubba-dub-dub/readme.md](05-wubba-lubba-dub-dub/readme.md)
+Инструкция лежит в [04-wubba-lubba-dub-dub/readme.md](04-wubba-lubba-dub-dub/readme.md)
 
-## 06. Go home, Fibonacci, you're drunk
+## 05. Go home, Fibonacci, you're drunk
 
 Tags: generics, linq, collections, enumerables, lambdas, random.
 
@@ -99,17 +88,4 @@ Tags: generics, linq, collections, enumerables, lambdas, random.
 - обобщенными коллекциями и перечисляемыми последовательностями,
 - операциями фильтрации, группировки, проекции и агрегации над ними.
 
-Инструкция лежит в [06-drunk-fibonacci/readme.md](06-drunk-fibonacci/readme.md).
-
-## 07. Here's my `T` value so call me `Maybe<T>`
-
-Tags: generics, extension methods, lambdas, LINQ-query syntax, maybe monad.
-
-В данном задании вы познакомитесь с:
-
-- обобщенными типами-контейнерами на примере реализации монады _maybe_,
-- обобщенными методами-расширениями с ограничениями на применяемые типы,
-- анонимными-функциями (aka лямбды) и типами, в т.ч. обобщенными,
-- техникой добавления поддержки синтаксиса LINQ-запросов.
-
-Инструкция лежит в [07-call-me-maybe/readme.md](07-call-me-maybe/readme.md).
+Инструкция лежит в [05-drunk-fibonacci/readme.md](05-drunk-fibonacci/readme.md).
