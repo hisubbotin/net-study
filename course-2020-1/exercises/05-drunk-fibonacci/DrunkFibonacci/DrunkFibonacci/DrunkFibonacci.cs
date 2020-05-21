@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace DrunkFibonacci
 {
@@ -12,7 +13,7 @@ namespace DrunkFibonacci
         public static int[] CreateIntArray(int len)
         {
             // на создание массивов заданной длины
-            throw new NotImplementedException();
+            return new int[len];
         }
 
         /// <summary>
@@ -24,7 +25,9 @@ namespace DrunkFibonacci
         public static void FillIntArray(int[] arr, int seed, int step)
         {
             // на задание значений массива
-            throw new NotImplementedException();
+            for (int i = 0; i < arr.Length; i++) {
+				arr[i]  = seed + step * i;
+			}
         }
 
         /// <summary>
@@ -34,7 +37,7 @@ namespace DrunkFibonacci
         public static int[] GetFirstFiveFibonacci()
         {
             // на создание массива с инициализацией
-            throw new NotImplementedException();
+            return new int[] {1, 1, 2, 3, 5};
         }
 
         /// <summary>
@@ -46,10 +49,12 @@ namespace DrunkFibonacci
                 Воспользуйся классом Random.
                 Для того, чтобы данный объект генерировал одну и ту же последовательность,
                 его следует инициализировать одной и той же константой (параметр конструктора seed).
-
                 Задача на ленивую генерацию последовательностей.
             */
-            throw new NotImplementedException();
+            Random random_ = new Random(2020);
+			while(true) {
+				yield return random_.Next();
+			}
         }
 
         /// <summary>
@@ -67,7 +72,50 @@ namespace DrunkFibonacci
                     из последовательности GetDeterministicRandomSequence и проверяешь, есть ли у числа Y единичные биты числа 42.
                 При вычислении сложения переполнение типа разрешено и всячески поощряется.
             */
-            throw new NotImplementedException();
+			unchecked // разрешаем переполнение
+			{
+			int cur_element_number_ = 0;
+			int prevprev = 1;
+			int prev = 1;
+			int cur = 1;
+			Random random_ = new Random(2020);
+            while(true) {
+				if(cur_element_number_ == 0 )  {
+					cur_element_number_++;
+					yield return 1;
+				}
+	
+				if (cur_element_number_ == 1 ) {
+				    cur_element_number_++;
+					yield return 1;
+				}
+				if (cur_element_number_ % 6 == 0) { // Каждое 6-е
+					cur_element_number_++;
+					int new_random_number_ = random_.Next();
+					int cur_element = 300;
+					// с вероятностью 1/2 зануляем биты
+					if(new_random_number_ % 2 == 0) {
+						cur_element = cur_element & ~42;
+						// ~ это побитовое не
+					}
+					// все остальные
+					prevprev = prev;
+					prev = cur;
+					cur = cur_element;
+					yield return cur_element;
+				
+				}
+				int temp_cur = prevprev + prev;
+				prevprev = prev;
+				prev = cur;
+				cur = temp_cur;
+				cur_element_number_++;
+				yield return cur;		
+				
+				
+			}
+			}
+
         }
 
         /// <summary>
@@ -78,7 +126,7 @@ namespace DrunkFibonacci
         public static int GetMaxOnRange(int from, int cnt)
         {
             // научишься пропускать и брать фиксированную часть последовательности, агрегировать. Максимум есть среди готовых функций агрегации.
-            throw new NotImplementedException();
+            return GetDrunkFibonacci().Skip(from - 1).Take(cnt).Max();
         }
 
         /// <summary>
@@ -88,7 +136,7 @@ namespace DrunkFibonacci
         public static List<int> GetNextNegativeRange(int from = 1)
         {
             // научишься пропускать и брать по условию, превращать в список (см. ToList).
-            throw new NotImplementedException();
+			return GetDrunkFibonacci().Skip(from - 1).SkipWhile(el => el >= 0).TakeWhile(el => el < 0).ToList();
         }
 
         /// <summary>
@@ -97,7 +145,8 @@ namespace DrunkFibonacci
         public static IEnumerable<int> GetXoredWithLaggedItself()
         {
             // узнаешь о существовании функции Zip.
-            throw new NotImplementedException();
+            return GetDrunkFibonacci().Zip(GetDrunkFibonacci().Skip(42), (x1, x2) => x1 ^ x2);
+			// ^ is XOR
         }
 
         /// <summary>
@@ -106,7 +155,18 @@ namespace DrunkFibonacci
         public static IEnumerable<int[]> GetInChunks()
         {
             // ни чему особо не научишься, просто интересная задачка :)
-            throw new NotImplementedException();
+			int chunk_number = 0;
+			var chunk_ = new int[16];
+			while(true) {
+				int i = 0;
+			    foreach(var el in GetDrunkFibonacci().Skip(chunk_number*16).Take(16).ToList())
+				{
+					chunk_[i] = el;
+						i++;
+				}
+				yield return chunk_;
+			}
+            
         }
 
         /// <summary>
@@ -118,11 +178,10 @@ namespace DrunkFibonacci
             /*
                 Узнаешь о встроенных функциях сортировки и функции SelectMany,
                 которая сглаживает (flatten) последовательность последовательностей в просто последовательность.
-
                 Вообще говоря, SelectMany умеет много чего и мегаполезна.
                 Она в какой-то степени эквивалентна оператору `bind` над монадами (в данном случае над монадами последовательностей).
             */
-            throw new NotImplementedException();
+            return GetInChunks().SelectMany(chunk => chunk.OrderBy(Math.Abs).Take(3));
         }
 
         /// <summary>
@@ -138,25 +197,28 @@ namespace DrunkFibonacci
             /*
                 Хочется увидеть решение через группировку и агрегацию. Для группировки существуют два метода-расширения GroupBy и ToLookup.
                 Они внешне немного похожи, но на самом деле очень сильно различаются семантически.
-
                 Первый - ленивый (как Take, Where, Select и куча других) и лишь декларирует группировку, т.е. конструирует 
                 новый объект с информацией о том, как производить группировку (сама итерация по исходной последовательности 
                 при вызове метода GroupBy не производится). Это бывает удобно, например, при описании запросов к БД, используя ORM'ки - 
                 GroupBy будет правильно истолковано конструктором запросов и группировка будет произведена на стороне БД, а не на стороне кода,
                 что и быстрее, и требует передачи меньшего кол-ва данных.
                 Если у объекта, полученного вызовом .GroupBy дважды вызвать методы, инициирующие итерацию, то она будет произведена дважды.
-
                 Второй - не ленивый и производит непосредственно саму группировку. Можно трактовать это как "промежуточное кэширование" группировки для быстрого
                 [и возможно повторного] доступа к группам. Т.е. ты один раз произвел группировку, дальше пользуешься уже ей отдельно от оригинальной последовательности - 
                 это не потребует повторных итераций по ней.
                 По сути ILookup<TKey, TVal> аналогичен IDictionary<TKey, IEnumerable<TVal>> - разница лишь в том, что
                 обращение к несуществующему ключу лукапа будет выдавать пустую последовательность, в то время как словарь сгенерирует исключение.
-
                 Конкретно в этом задании более к месту будет выглядеть использование GroupBy. Но можешь ради интереса воспользоваться и ToLookup.
-
                 Итого научишься группировать и создавать на их основе словарь (см. ToDictionary).
             */
-            throw new NotImplementedException();
+			     return GetDrunkFibonacci().Take(10000)
+                .GroupBy(
+                    key => key % 8,
+                    (key, els) => new {key, number_of_el = els.Count()})
+                .ToDictionary(
+					 item => item.key, item => item.number_of_el
+				 );
         }
+     
     }
 }
