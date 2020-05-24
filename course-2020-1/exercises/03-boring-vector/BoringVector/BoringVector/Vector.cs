@@ -13,7 +13,19 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
-
+        
+        public double X;
+        public double Y;
+        /// <summary>
+        /// Constructs a vector using two coordinates
+        /// </summary>
+        /// <param name = "x"> Coordinate <see cref = "double" /> along the x axis </param>
+        /// <param name = "y"> Coordinate <see cref = "double" /> along the y axis </param>
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -23,32 +35,67 @@ namespace BoringVector
                 - скалярное произведение
                 - векторное произведение (= площадь параллелограмма)
         */
-
+        /// <summary>
+        /// Returns <see cref = "double" />, the square of the length of the vector
+        /// </summary>
+        /// <returns> <see cref = "double" />, the square of the length of the vector </returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+
+        /// <summary>
+        /// Adds the given <see cref = "Vector" /> to the current and returns the sum, <see cref = "Vector" />
+        /// </ summary>
+        /// <param name = "v"> adding <see cref = "Vector" /> </ param>
+        /// <return> <see cref = "Vector" />, sum of vectors </ return>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            X += v.X;
+            Y += v.Y;
+            return this;
         }
+        /// <summary>
+        /// Returns the current <see cref = "Vector" /> multiplied by the number <see cref = "double" />
+        /// </summary>
+        /// <param name = "k"> <see cref = "double" />, multiplication factor </param>
+        /// <returns> <see cref = "Vector" /> times the number <see cref = "double" /> </returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            X *= k;
+            Y *= k;
+            return this;
         }
+        /// <summary>
+        /// Returns <see cref = "double" />, the scalar product with the given <see cref = "Vector" />
+        /// </summary>
+        /// <param name = "v"> <see cref = "Vector" />, by which the current is multiplied</param>
+        /// <returns> <see cref = "double" />, scalar product with the given <see cref = "Vector" /> </returns>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+        /// <summary>
+        /// Returns <see cref = "double" />, the vector product module with the given <see cref = "Vector" />
+        /// </summary>
+        /// <param name = "v"> <see cref = "Vector" />, by which the current is multiplied </param> 
+        /// <returns> <see cref = "double" />, vector product with the given <see cref = "Vector" /> </returns>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
-
+        /// <summary>
+        /// Returns <see cref = "string" />, a string representation of <see cref = "Vector" />
+        /// </summary>
+         /// <returns> String representation <see cref = "Vector" /> </returns>
+        public override string ToString()
+        {
+            return $"({X}; {Y})";
+        }
         #region operators
 
         /*
@@ -57,7 +104,78 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
-
+        /// <summary>
+        /// Adds two objects <see cref = "Vector" /> and returns a new <see cref = "Vector" />
+        /// </summary>
+        /// <param name = "v"> <see cref = "Vector" />, left term </param>
+        /// <param name = "u"> <see cref = "Vector" />, right term </param>
+        /// <returns> <see cref = "Vector" />, sum of vectors </returns>
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return v.Add(u);
+        }
+        /// <summary>
+        /// Subtracts one <see cref = "Vector" /> from another and returns a new <see cref = "Vector" />
+        /// </summary>
+        /// <param name = "v"> <see cref = "Vector" />, left term </param>
+        /// <param name = "u"> <see cref = "Vector" />, right term </param>
+        /// <returns> <see cref = "Vector" />, subtraction result </returns>
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return new Vector(v.X - u.X, v.Y - u.Y);
+        }
+        /// <summary>
+        /// Returns <see cref = "Vector" /> times the number <see cref = "double" />
+        /// </summary>
+        /// <param name = "k"> <see cref = "double" />, multiplication factor </param>
+        /// <param name = "v"> Original <see cref = "Vector" /> </param>
+        /// <returns> <see cref = "Vector" /> times the number <see cref = "double" /> </returns>
+        public static Vector operator *(double k, Vector v)
+        {
+            return v.Scale(k);
+        }
+        /// <summary>
+        /// Returns <see cref = "Vector" /> times the number <see cref = "double" />
+        /// </summary>
+        /// <param name = "v"> Original <see cref = "Vector" /> </param>
+        /// <param name = "k"> <see cref = "double" />, multiplication factor </param>
+        /// <returns> <see cref = "Vector" /> times the number <see cref = "double" /> </returns>
+        public static Vector operator *(Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+        /// <summary>
+        /// Returns <see cref = "Vector" /> normalized to the number <see cref = "double" />
+        /// </summary>
+        /// <param name = "v"> Original <see cref = "Vector" /> </param>
+        /// <param name = "k"> <see cref = "double" />, normalization coefficient </param>
+        /// <returns> <see cref = "Vector" /> normalized to the number <see cref = "double" /> </returns>
+        public static Vector operator /(Vector v, double k)
+        {
+            if (Math.Abs(k) < 1e-6)
+            {
+                throw new System.DivideByZeroException();
+            }
+            return v.Scale(1.0 / k);
+        }
+        /// <summary>
+        /// Allows you to use unary + with <see cref = "Vector" />, does not change it
+        /// </summary>
+        /// <param name = "v"> Object <see cref = "Vector" /> </param>
+        /// <returns> Unchanged <see cref = "Vector" /> </returns>
+        public static Vector operator +(Vector v)
+        {
+            return new Vector { X = v.X, Y = v.Y };
+        }
+        /// <summary>
+        /// Returns <see cref = "Vector" /> opposite the given
+        /// </summary>
+        /// <param name = "v"> Object <see cref = "Vector" /> </param>
+        /// <returns> <see cref = "Vector" /> opposite the given </returns>
+        public static Vector operator -(Vector v)
+        {
+            return v.Scale(-1.0);
+        }
         #endregion
     }
 
