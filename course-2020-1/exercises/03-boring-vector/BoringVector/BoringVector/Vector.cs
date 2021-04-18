@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("BoringVector.Tests")]
 
 namespace BoringVector
 {
@@ -13,6 +16,25 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        /// <summary>
+        /// X координата
+        /// </summary>
+        public readonly double X;
+        /// <summary>
+        /// Y координата
+        /// </summary>
+        public readonly double Y;
+
+        /// <summary>
+        /// Создание вектора
+        /// </summary>
+        /// <param name="x"> x координата</param>
+        /// <param name="y">y координата</param>
+        public Vector(double x, double y)
+        {
+            X = x;
+            Y = y;
+        }
 
 
         /*
@@ -24,30 +46,71 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        /// <summary>
+        /// Возвращает квадрат длины
+        /// </summary>
+        /// <returns>квадрат длины</returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+
+        /// <summary>
+        /// Складывает вектор с данным
+        /// </summary>
+        /// <param name="v">вектор, с которым нужно сложить</param>
+        /// <returns>новый вектор</returns>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new Vector(this.X + v.X, this.Y + v.Y);
         }
+
+        /// <summary>
+        /// Домножение вектора на константу
+        /// </summary>
+        /// <param name="k">константа для домножения</param>
+        /// <returns>новый вектор</returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new Vector(this.X * k, this.Y * k);
         }
+
+         /// <summary>
+        /// Скалярное произведение векторов
+        /// </summary>
+        /// <param name="v">вектор, на который нужно скалярно умножить</param>
+        /// <returns>скалярное произведение</returns>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return this.X * v.X + this.Y * v.Y;
         }
+
+        /// <summary>
+        /// Векторное произведение векторов
+        /// </summary>
+        /// <param name="v">вектор, на который нужно векторно умножить</param>
+        /// <returns>векторное произведение</returns>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+           // throw new NotImplementedException();
+           return this.X * v.Y - this.Y * v.X;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+        /// <summary>
+        /// Преобразование к строке
+        /// </summary>
+        /// <returns>вектор в виде строки (X; Y)</returns>
+        public override string ToString()
+        {
+            return "(" + this.X.ToString() + ";" + this.Y.ToString() + ")";
+        }
 
         #region operators
 
@@ -57,6 +120,79 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+        /// <summary>
+        /// Унарный оператор -; меняет направление на противоположное
+        /// </summary>
+        /// <param name="v">вектор, который нужно развернуть</param>
+        /// <returns>вектор противоположной направленности</returns>
+        public static Vector operator -(Vector v)
+        {
+            return new Vector(-v.X, -v.Y);
+        }
+
+        /// <summary>
+        /// Унарный оператор +
+        /// </summary>
+        /// <param name="v">операнд</param>
+        /// <returns>неизмененный операнд</returns>
+        public static Vector operator +(Vector v)
+        {
+            return v;
+        }
+
+        /// <summary>
+        /// Сложение векторов
+        /// </summary>
+        /// <param name="v">первый аргумент</param>
+        /// <param name="u">второй аргумент</param>
+        /// <returns>результат операции</returns>
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return v.Add(u);
+        }
+
+        /// <summary>
+        /// Вычитание векторов
+        /// </summary>
+        /// <param name="v">первый аргумент</param>
+        /// <param name="u">второй аргумент</param>
+        /// <returns>результат операции</returns>
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return v.Add(-u);
+        }
+
+        /// <summary>
+        /// Умножение вектора на константу справа
+        /// </summary>
+        /// <param name="k">константа</param>
+        /// <param name="u">вектор</param>
+        /// <returns>результат операции</returns>
+        public static Vector operator *(double k, Vector u)
+        {
+            return u.Scale(k);
+        }
+        /// <summary>
+        /// Умножение вектора на константу слева
+        /// </summary>
+        /// <param name="k">константа</param>
+        /// <param name="u">вектор</param>
+        /// <returns>результат операции</returns>       
+        public static Vector operator *(Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+
+        /// <summary>
+        /// Деление вектора на константу
+        /// </summary>
+        /// <param name="v">вектор</param>
+        /// <param name="k">константа</param>
+        /// <returns>результат деления</returns>
+        public static Vector operator /(Vector v, double k)
+        {
+            return v.Scale(1 / k);
+        }
 
         #endregion
     }
