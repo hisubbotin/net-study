@@ -1,4 +1,5 @@
 ﻿using System;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace BoringVector
 {
@@ -13,6 +14,13 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        internal readonly double X, Y;
+
+        Vector(double X, double Y)
+        {
+            this.X = X;
+            this.Y = Y;
+        }
 
 
         /*
@@ -26,28 +34,38 @@ namespace BoringVector
 
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return (X * X) + (Y * Y);
         }
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new Vector(k * X, k * Y);
         }
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return X * v.Y - v.X * Y;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+
+        public override string ToString()
+        {
+            return $"({X}; {Y})";
+        }
 
         #region operators
 
@@ -57,6 +75,41 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return new Vector(v.X + u.X, v.Y + u.Y);
+        }
+
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return new Vector(v.X - u.X, v.Y - u.Y);
+        }
+
+        public static Vector operator *(double k, Vector v)
+        {
+            return new Vector(k * v.X, k * v.Y);
+        }
+
+        public static Vector operator *(Vector v, double k)
+        {
+            return new Vector(k * v.X, k * v.Y);
+        }
+
+        public static Vector operator /(Vector v, double k)
+        {
+            return new Vector(v.X / k, v.Y / k);
+        }
+
+        public static Vector operator +(Vector v)
+        {
+            return new Vector(v.X, v.Y);
+        }
+
+        public static Vector operator -(Vector v)
+        {
+            return new Vector(-v.X, -v.Y);
+        }
 
         #endregion
     }
