@@ -39,7 +39,7 @@ namespace AdventureTime
                 Подсказка: поищи в статических методах DateTime.
             */
             //throw new NotImplementedException();
-            DateTime.SpecifyKind(dt, kind);
+            return DateTime.SpecifyKind(dt, kind);
         }
 
         /// <summary>
@@ -157,7 +157,10 @@ namespace AdventureTime
                 Держи, заготовочку для копипасты:
                     - 2010, 3, 28, 2, 15, 0
             */
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new DateTimeOffset(2010, 3, 28, 2, 15, 0, 0, new TimeSpan(0, 0, 0))
+                .Subtract(new DateTimeOffset(2010, 3, 28, 2, 15, 0, 0, new TimeSpan(3, 0, 0)))
+                .Minutes;
         }
 
         /// <summary>
@@ -175,7 +178,10 @@ namespace AdventureTime
                     - 2010, 3, 28, 3, 15, 0
                     - 2010, 3, 28, 1, 15, 0
             */
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new DateTimeOffset(2010, 3, 28, 3, 15, 0, 0, new TimeSpan(3, 0, 0))
+                .Subtract(new DateTimeOffset(2010, 3, 28, 1, 15, 0, 0, new TimeSpan(0, 0, 0)))
+                .Minutes;
         }
 
         /// <summary>
@@ -190,7 +196,10 @@ namespace AdventureTime
                 На самом деле смещения таковы: Лондон +1 (BST - British Summer Time), Москва +4 (MSD - Moscow Daylight Time).
                 Давай теперь учтем правильное смещение. Я понимаю, что это очевидно, что результат не изменится, но тебе же не сложно скопипастить и просто поменять смещения?
             */
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new DateTimeOffset(2010, 3, 28, 2, 15, 0, 0, new TimeSpan(1, 0, 0))
+                .Subtract(new DateTimeOffset(2010, 3, 28, 2, 15, 0, 0, new TimeSpan(4, 0, 0)))
+                .Minutes;
         }
 
         // GetGenderSwappedAdventureTimeDurationInMinutes_ver1_FeelsSmarter опустим, там то же самое
@@ -215,7 +224,10 @@ namespace AdventureTime
             const string moscowZoneId = "Russian Standard Time";
             const string londonZoneId = "GMT Standard Time";
 
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return GetZonedTime(new DateTime(2010, 3, 28, 2, 15, 0), londonZoneId)
+                .Subtract(GetZonedTime(new DateTime(2010, 3, 28, 2, 15, 0), moscowZoneId))
+                .Minutes;
         }
 
         /// <summary>
@@ -228,7 +240,10 @@ namespace AdventureTime
             */
             const string moscowZoneId = "Russian Standard Time";
             const string londonZoneId = "GMT Standard Time";
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return GetZonedTime(new DateTime(2010, 3, 28, 3, 15, 0), moscowZoneId)
+                .Subtract(GetZonedTime(new DateTime(2010, 3, 28, 1, 15, 0), londonZoneId))
+                .Minutes;
         }
 
         private static DateTimeOffset GetZonedTime(DateTime localTime, string timeZoneId)
@@ -287,7 +302,8 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return Math.Abs(person1Birthday.Subtract(person2Birthday).Days) < 1;
         }
     }
 }
