@@ -12,21 +12,24 @@ namespace BoringVector
             - GetRelation: возвращает значение перечесления VectorRelation(General, Parallel, Orthogonal) - отношение между двумя векторами("общий случай", параллельны, перпендикулярны). Перечисление задавать тоже тебе)
     */
 
-    /// <summary>
-    /// Тип перечисления, описывающий виды отношений между двумя векторами
-    /// </summary>
-    internal enum VectorRelation
-    {
-        General,
-        Parallel,
-        Orthogonal
-    };
-    
+
     /// <summary>
     /// Класс с методами-расширениями структуры Vector
     /// </summary>
     internal static class VectorExtensions
     {
+        /// <summary>
+        /// Тип перечисления, описывающий виды отношений между двумя векторами
+        /// </summary>
+        internal enum VectorRelation
+        {
+            General,
+            Parallel,
+            Orthogonal
+        };
+
+        private const double Eps = 1e-6;
+
         /// <summary>
         /// Проверяет, является ли вектор нулевым (0; 0) или нет
         /// </summary>
@@ -34,7 +37,7 @@ namespace BoringVector
         /// <returns>Булево значение true, если вектор нулевой и false, если ненулевой</returns>
         public static bool IsZero(this Vector v)
         {
-            return v.X == 0 && v.Y == 0;
+            return v.X < Eps && v.Y < Eps;
         }
 
         /// <summary>
@@ -64,16 +67,16 @@ namespace BoringVector
         /// <returns><c>General</c> в "общем случае"; <c>Parallel</c> если параллельны; <c>Orthogonal</c> если перпендикулярны</returns>
         public static VectorRelation GetRelation(this Vector v, Vector u)
         {
-            switch (GetAngleBetween(v, u))
+            var angle = GetAngleBetween(v, u);
+            if (angle < Eps || angle > Math.PI - Eps)
             {
-                case 0:
-                case Math.PI:
-                    return VectorRelation.Parallel;
-                case Math.PI / 2:
-                    return VectorRelation.Orthogonal;
-                default:
-                    return VectorRelation.General;
+                return VectorRelation.Parallel;
             }
+            if (angle > Math.PI/2 - Eps && angle < Math.PI/2 + Eps)
+            {
+                return VectorRelation.Orthogonal;
+            }
+            return VectorRelation.General;
         }
     }
 }
