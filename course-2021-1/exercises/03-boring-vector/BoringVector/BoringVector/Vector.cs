@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace BoringVector
 {
@@ -11,6 +12,7 @@ namespace BoringVector
     /// <summary>
     /// Структура, реализующая двумерные вектора и операции над ними
     /// </summary>
+    
     internal readonly struct Vector
     {
         /*
@@ -23,7 +25,7 @@ namespace BoringVector
         /// </summary>
         /// <param name="X">x координата</param>
         /// <param name="Y">y координата</param>
-        Vector(double X, double Y)
+        internal Vector(double X, double Y)
         {
             this.X = X;
             this.Y = Y;
