@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("BoringVector.Tests")]
 
 namespace BoringVector
 {
@@ -80,7 +83,7 @@ namespace BoringVector
             return X * v.X + Y * v.Y;
         }
         /// <summary>
-        /// Длина векторного произведения
+        /// Направленная длина векторного произведения
         /// </summary>
         /// <param name="v">Второй вектор<see cref="BoringVector.Vector"/></param>
         /// <returns>[a,b]<see cref="double"/></returns>
