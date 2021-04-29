@@ -54,6 +54,27 @@ namespace AdventureTime
             
             Console.WriteLine();
             
+            Console.WriteLine(Time.GetAdventureTimeDurationInMinutes_ver0_Dumb());
+            
+            Console.WriteLine();
+            
+            Console.WriteLine(Time.GetGenderSwappedAdventureTimeDurationInMinutes_ver0_Dumb());
+
+            Console.WriteLine();
+            
+            Console.WriteLine(Time.GetAdventureTimeDurationInMinutes_ver1_FeelsSmarter());
+            
+            Console.WriteLine();
+            
+            Console.WriteLine(Time.GetAdventureTimeDurationInMinutes_ver2_FeelsLikeRocketScience());
+            Console.WriteLine(Time.GetGenderSwappedAdventureTimeDurationInMinutes_ver2_FeelsLikeRocketScience());
+            
+            Console.WriteLine();
+
+            Console.WriteLine(Time.GetAdventureTimeDurationInMinutes_ver3_NodaTime());
+            
+            Console.WriteLine();
+
             Console.WriteLine(Time.AreEqualBirthdays(dt1, dt3));
             Console.WriteLine(Time.AreEqualBirthdays(dt1, dt3 + TimeSpan.FromDays(1)));
         }
