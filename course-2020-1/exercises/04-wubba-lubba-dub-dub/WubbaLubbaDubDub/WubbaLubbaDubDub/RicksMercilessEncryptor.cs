@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Text.RegularExpressions;
+using Microsoft.VisualBasic;
 
 namespace WubbaLubbaDubDub
 {
@@ -11,7 +13,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string[] SplitToLines(this string text)
         {
-            // У строки есть специальный метод. Давай здесь без регулярок
+            text.Split('\n');
             throw new NotImplementedException();
         }
 
@@ -20,7 +22,11 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string[] SplitToWords(this string line)
         {
-            // А вот здесь поиграйся с регулярками.
+            Regex regex = new Regex(@"\w");
+            return regex.Match(line)
+                .Cast<Match>()
+                .Select(m => m.Value)
+                .ToArray();
             throw new NotImplementedException();
         }
 
@@ -30,7 +36,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetLeftHalf(this string s)
         {
-            // у строки есть метод получения подстроки
+            return s.Substring(0, s.Length / 2 - 1);
             throw new NotImplementedException();
         }
 
@@ -40,6 +46,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetRightHalf(this string s)
         {
+            return s.Substring(s.Length / 2, s.Length - 1);
             throw new NotImplementedException();
         }
 
@@ -48,7 +55,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string Replace(this string s, string old, string @new)
         {
-            // и такой метод у строки, очевидно, тоже есть
+            return s.Replace(old, @new);
             throw new NotImplementedException();
         }
 
@@ -65,6 +72,20 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
+
+            string toCode(char c)
+            {
+                return Char.ConvertToUtf32(c.ToString(), 0).ToString();
+            }
+            
+            string sToCodes = "";
+            for (int i = 0; i < s.Length; i++)
+            {
+                sToCodes = sToCodes + toCode(s[i]);
+            }
+
+            return sToCodes;
+            
             throw new NotImplementedException();
         }
 
@@ -73,10 +94,13 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetReversed(this string s)
         {
-            /*
-                Собрать строку из последовательности строк можно несколькими способами.
-                Один из низ - статический метод Concat. Но ты можешь выбрать любой.
-            */
+            string reversed = "";
+            for (int i = 0; i < s.Length; i++)
+            {
+                reversed = string.Concat(s[i].ToString(), reversed);
+            }
+
+            return reversed;
             throw new NotImplementedException();
         }
 
@@ -85,11 +109,20 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string InverseCase(this string s)
         {
-            /*
-                Здесь тебе помогут статические методы типа char.
-                На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
-                Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
-            */
+            string antiRegister = "";
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (Char.IsLower(s[i]))
+                {
+                    antiRegister = antiRegister + Char.ToUpper(s[i]);
+                }
+                else
+                {
+                    antiRegister = antiRegister + Char.ToLower(s[i]);
+                }
+            }
+
+            return antiRegister;
             throw new NotImplementedException();
         }
 
@@ -99,6 +132,19 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
+            string toNextCode(char c)
+            {
+                return Char.ConvertFromUtf32(Char.ConvertToUtf32(c.ToString(), 0) + 1).ToString();
+            }
+            
+            string sNextCodes = "";
+            for (int i = 0; i < s.Length; i++)
+            {
+                sNextCodes = sNextCodes + toNextCode(s[i]);
+            }
+
+            return sNextCodes;
+            
             throw new NotImplementedException();
         }
 
