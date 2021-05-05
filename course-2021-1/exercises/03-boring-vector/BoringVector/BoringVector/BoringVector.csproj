@@ -5,4 +5,7 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <None Remove="BoringVector.Tests.csproj" />
+  </ItemGroup>
 </Project>

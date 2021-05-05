@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.809.8
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoringVector", "BoringVector.csproj", "{B04B0C19-F9DB-4EDE-87D6-9502FAE3A06C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BoringVector.Tests", "..\BoringVector.Tests\BoringVector.Tests.csproj", "{63EA55DC-9D94-4075-91E2-588ED924F11F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{B04B0C19-F9DB-4EDE-87D6-9502FAE3A06C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B04B0C19-F9DB-4EDE-87D6-9502FAE3A06C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B04B0C19-F9DB-4EDE-87D6-9502FAE3A06C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B04B0C19-F9DB-4EDE-87D6-9502FAE3A06C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{63EA55DC-9D94-4075-91E2-588ED924F11F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{63EA55DC-9D94-4075-91E2-588ED924F11F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{63EA55DC-9D94-4075-91E2-588ED924F11F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{63EA55DC-9D94-4075-91E2-588ED924F11F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {FCA0C8E4-78D9-4122-B4EF-E867D3B4E9C8}
+	EndGlobalSection
+EndGlobal
