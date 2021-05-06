@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using System.Runtime.ConstrainedExecution;
 
 [assembly: InternalsVisibleTo("Numbers.Tests")]
 
@@ -17,8 +18,7 @@ namespace Numbers
         private static void Main()
         {
             // твои бро: Console.WriteLine и Console.ReadLine
-
-            Console.WriteLine("Hello World!");
+            
         }
     }
 }
