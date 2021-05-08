@@ -8,46 +8,95 @@ namespace BoringVector
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
 
-    internal struct Vector
+    public struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        
+        private readonly double m_X;
+        private readonly double m_Y;
 
+        /// <summary>
+        /// Конструктор вектора по двум объектам <see cref="double"/> - координатам X и Y
+        /// </summary>
+        /// <param name="x">объект <see cref="double"/> с значением координаты X создаваемого вектора.</param>
+        /// <param name="y">объект <see cref="double"/> с значением координаты Y создаваемого вектора.</param>
+        public Vector(double x, double y)
+        {
+            this.m_X = x;
+            this.m_Y = y;
+        }
 
-        /*
-            На месте заглушек добавь реализацию базовых методов вектора:
-                - квадрат длины
-                - сумма векторов
-                - умножение на коэффициент
-                - скалярное произведение
-                - векторное произведение (= площадь параллелограмма)
-        */
+        /// <summary>
+        /// Возвращает объект <see cref="double"/> с значением координаты X вектора.
+        /// </summary>
+        /// <returns>Объект <see cref="double"/> с значением координаты X вектора.</returns>
+        public double X => m_X;
+        
+        /// <summary>
+        /// Возвращает объект <see cref="double"/> с значением координаты Y вектора.
+        /// </summary>
+        /// <returns>Объект <see cref="double"/> с значением координаты Y вектора.</returns>
+        public double Y => m_Y;
 
+        /// <summary>
+        /// Возвращает объект <see cref="double"/> с квадратом длины вектора.
+        /// </summary>
+        /// <returns>Объект <see cref="double"/> с квадратом длины вектора..</returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+        
+        /// <summary>
+        /// Возвращает объект <see cref="Vector"/> - результат покоординатного сложения данного вектора и переданного.
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/> - прибавляемый вектор</param>
+        /// <returns>Объект <see cref="Vector"/> - результат покоординатного сложения данного и переданного векторов</returns>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
+        
+        /// <summary>
+        /// Возвращает объект <see cref="Vector"/> - результат домножения данного вектора на скалярную величину.
+        /// </summary>
+        /// <param name="k">Объект <see cref="double"/> - скалярная величина, на которую домножается вектор</param>
+        /// <returns>Объект <see cref="Vector"/> - результат домножения данного вектора на скалярную величину.</returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(k * X, k * Y);
         }
+        
+        /// <summary>
+        /// Возвращает объект <see cref="double"/> - результат скалярного перемножения данного вектора и переданного.
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/> - вектор, на который будет скалярно домножен данный.</param>
+        /// <returns>Объект <see cref="double"/> - результат скалярного перемножения данного вектора и переданного.</returns>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+        
+        /// <summary>
+        /// Возвращает объект <see cref="double"/> - результат векторного перемножения данного вектора и переданного.
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/> - вектор, на который будет векторно домножен данный.</param>
+        /// <returns>Объект <see cref="double"/> - результат векторного перемножения данного вектора и переданного.</returns>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return Math.Abs(X * v.Y - Y * v.X);
         }
 
-        /*
-            Переопредели ниже метод ToString - пусть выводит (X; Y)
-        */
+        /// <summary>
+        /// Возвращает объект <see cref="String"/> - строковое представление данного вектора в формате (X; Y)
+        /// </summary>
+        /// <returns>Объект <see cref="String"/> - строковое представление данного вектора в формате (X; Y)</returns>
+        public override string ToString()
+        {
+            return "(" + X + "; " + Y + ")";
+        }
 
         #region operators
 
@@ -57,7 +106,84 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+        
+        
 
+        /// <summary>
+        /// Бинарный оператор. Возвращает объект <see cref="Vector"/> - результат сложения двух векторов.
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/> - первый вектор, участвующий в сложении.</param>
+        /// <param name="u">Объект <see cref="Vector"/> - второй вектор, участвующий в сложении.</param>
+        /// <returns> Объект <see cref="Vector"/> - результат сложения двух векторов.</returns>
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return v.Add(u);
+        }
+
+        /// <summary>
+        /// Бинарный оператор. Возвращает объект <see cref="Vector"/> - результат вычитания двух векторов.
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/> - первый вектор, участвующий в вычитании (уменьшаемое).</param>
+        /// <param name="u">Объект <see cref="Vector"/> - второй вектор, участвующий в вычитании (вычитаемое).</param>
+        /// <returns> Объект <see cref="Vector"/> - результат вычитания двух векторов.</returns>
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return v.Add(-u);
+        }
+
+        /// <summary>
+        /// Бинарный оператор. Возвращает объект <see cref="Vector"/> - результат домножения вектора на скалярную величину.
+        /// </summary>
+        /// <param name="k">Объект <see cref="double"/> - скалярная велична, на которую домножается вектор</param>
+        /// <param name="v">Объект <see cref="Vector"/> - домножаемый вектор.</param>
+        /// <returns> Объект <see cref="Vector"/> - результат домножения вектора на скаляр.</returns>
+        public static Vector operator *(double k, Vector v)
+        {
+            return v.Scale(k);
+        }
+
+        /// <summary>
+        /// Бинарный оператор. Возвращает объект <see cref="Vector"/> - результат домножения вектора на скалярную величину.
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/> - домножаемый вектор.</param>
+        /// <param name="k">Объект <see cref="double"/> - скалярная велична, на которую домножается вектор</param>
+        /// <returns> Объект <see cref="Vector"/> - результат домножения вектора на скаляр.</returns>
+        public static Vector operator *(Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+
+        /// <summary>
+        /// Бинарный оператор. Возвращает объект <see cref="Vector"/> - результат деления вектора на скалярную величину.
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/> - разделяемый вектор.</param>
+        /// <param name="k">Объект <see cref="double"/> - скалярная велична, на которую делится вектор</param>
+        /// <returns> Объект <see cref="Vector"/> - результат деления вектора на скаляр.</returns>
+        public static Vector operator /(Vector v, double k)
+        {
+            return v.Scale(1/k);
+        }
+
+        /// <summary>
+        /// Унарный оператор. Возвращает объект <see cref="Vector"/> - результат домножения вектора на (+1).
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/> - вектор.</param>
+        /// <returns>Объект <see cref="Vector"/> - результат домножения вектора на (+1).</returns>
+        public static Vector operator +(Vector v)
+        {
+            return v.Scale(1);
+        }
+
+        /// <summary>
+        /// Унарный оператор. Возвращает объект <see cref="Vector"/> - результат домножения вектора на (-1).
+        /// </summary>
+        /// <param name="v">Объект <see cref="Vector"/> - вектор.</param>
+        /// <returns>Объект <see cref="Vector"/> - результат домножения вектора на (-1).</returns>
+        public static Vector operator -(Vector v)
+        {
+            return v.Scale(-1);
+        }
+        
         #endregion
     }
 

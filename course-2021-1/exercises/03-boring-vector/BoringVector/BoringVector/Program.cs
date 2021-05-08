@@ -6,7 +6,8 @@ namespace BoringVector
     {
         private static void Main()
         {
-            Console.WriteLine("Hello World!");
+            Vector vector = new Vector(1, 1);
+            Console.WriteLine(vector.SquareLength());
         }
     }
 }
