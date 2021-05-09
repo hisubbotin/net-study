@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Text;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
@@ -65,11 +66,15 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            
-            throw new NotImplementedException();
-            // char CharToCode(char ch) {
-            //     Char.
-            // }
+            var sb = new StringBuilder();
+            for (int j = 0; j < s.Length; ++j)
+            {
+                sb.Append(CharToCode(s[j]));            
+            }
+            return sb.ToString();
+            string CharToCode(char ch) {
+                return String.Format("\\u{0:x4}", (int)ch);
+            }
         }
 
         /// <summary>
@@ -81,7 +86,12 @@ namespace WubbaLubbaDubDub
                 Собрать строку из последовательности строк можно несколькими способами.
                 Один из низ - статический метод Concat. Но ты можешь выбрать любой.
             */
-            throw new NotImplementedException();
+            var sb = new StringBuilder();
+            for (int j = s.Length - 1; j >= 0; --j)
+            {
+                sb.Append(s[j]);            
+            }
+            return sb.ToString();
         }
 
         /// <summary>
@@ -94,7 +104,17 @@ namespace WubbaLubbaDubDub
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            throw new NotImplementedException();
+            var sb = new StringBuilder();
+            for (int j = 0; j < s.Length; ++j)
+            {
+                if (Char.IsUpper(s[j])) {
+                    sb.Append(Char.ToLower(s[j]));
+                } else {
+                    sb.Append(Char.ToUpper(s[j]));
+                }
+                            
+            }
+            return sb.ToString();
         }
 
         /// <summary>
@@ -103,12 +123,20 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            throw new NotImplementedException();
+            var sb = new StringBuilder();
+            for (int j = 0; j < s.Length; ++j)
+            {
+                sb.Append(ShiftIncChar(s[j]));
+            }
+            return sb.ToString();
+
+            char ShiftIncChar(char ch) {
+                return (char)((int)ch + 1);
+            }
         }
 
 
         #region Чуть посложнее
-
         /// <summary>
         /// Возвращает список уникальных идентификаторов объектов, используемых в тексте <see cref="text"/>.
         /// Идентификаторы объектов имеют длину 8байт и представлены в тексте в виде ¶X:Y¶, где X - старшие 4 байта, а Y - младшие 4 байта.
@@ -121,7 +149,16 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
+            var noComments = Regex.Replace(text, @"\/\/.*", String.Empty);
+            noComments = Regex.Replace(noComments,@"\/\*[^(\*\/)]*\*\/", String.Empty);
+            // var res = Regex.Matches(noComments, @"\n\w{4}:\w{4}\n").ToImmutableList();
+            // Console.WriteLine(noComments);
+            // foreach (string name in res)
+            //     Console.WriteLine(Regex.Replace(name, pattern, String.Empty));
+
+            Console.WriteLine(res);
+            
+            return null;
         }
 
         #endregion

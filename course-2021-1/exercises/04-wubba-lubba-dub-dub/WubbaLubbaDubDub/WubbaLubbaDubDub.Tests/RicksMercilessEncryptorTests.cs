@@ -36,7 +36,7 @@ namespace WubbaLubbaDubDub.Tests
         public void Test_GetLeftHalf(string line, string result)
         {
             string local_res = RicksMercilessEncryptor.GetLeftHalf(line); 
-            Console.WriteLine(local_res);
+            // Console.WriteLine(local_res);
             
             Assert.Equal(local_res, result);
         }
@@ -57,9 +57,56 @@ namespace WubbaLubbaDubDub.Tests
         public void Test_Replace(string s, string old, string @new, string result)
         {
             string local_res = RicksMercilessEncryptor.Replace(s, old, @new); 
-            Console.WriteLine(local_res);
-            
+            // Console.WriteLine(local_res);
             Assert.Equal(local_res, result);
+        }
+
+        [Theory]
+        [InlineData("jj", "\\u006a\\u006a")]
+        [InlineData("ç", "\\u00e7")]
+        [InlineData("👽", "\\ud83d\\udc7d")]
+        public void Test_CharsToCodes(string old, string result)
+        {
+            string local_res = old.CharsToCodes(); 
+            // Console.WriteLine(local_res);
+            Assert.Equal(local_res, result);
+        }
+
+        [Theory]
+        [InlineData("WubbaLubbaDubDub", "buDbuDabbuLabbuW")]
+        [InlineData("Let's go. In and out. Twenty minute adventure.", ".erutnevda etunim ytnewT .tuo dna nI .og s'teL")]
+        [InlineData("EvacanignitevirtuososoutrivetinginacavE", "EvacanignitevirtuososoutrivetinginacavE")]
+        public void Test_GetReversed(string old, string result)
+        {
+            string local_res = old.GetReversed();
+            Assert.Equal(local_res, result);
+        }
+
+        [Theory]
+        [InlineData("WubbaLubbaDubDub", "wUBBAlUBBAdUBdUB")]
+        [InlineData("aaaAAAAbbbBBB", "AAAaaaaBBBbbb")]
+        public void Test_InverseCase(string old, string result)
+        {
+            string local_res = old.InverseCase();
+            Assert.Equal(local_res, result);
+        }
+
+        [Theory]
+        [InlineData("WubbaLubbaDubDub", "XvccbMvccbEvcEvc")]
+        [InlineData("aaaAAAAbbbBBB", "bbbBBBBcccCCC")]
+        public void Test_ShiftInc(string old, string result)
+        {
+            string local_res = old.ShiftInc();
+            Assert.Equal(local_res, result);
+        }
+
+        [Theory]
+        [InlineData("//WubbaLubbaDubDub\naaaa\n/*\nbbbbb\n*/\nccccc\naaaa\n", "vmfnjxjml")]
+        public void Test_GetUsedObjects(string text, string result)
+        {
+            var local_res = text.GetUsedObjects();
+            // Console.WriteLine(local_res);
+            // Assert.Equal(local_res, result);
         }
     }
 }
