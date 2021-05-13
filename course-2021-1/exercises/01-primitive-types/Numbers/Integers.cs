@@ -48,7 +48,7 @@ namespace Numbers
                     то в появившемся списке автодополнения одной из первых будет нужная тебе константа :)
             */
             //throw new NotImplementedException();
-            return int.MaxValue / 2;
+            return int.MaxValue >> 1;
         }
 
         /// <summary>
