@@ -294,6 +294,11 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
+            if (person1Birthday.Kind == DateTimeKind.Unspecified || person2Birthday.Kind == DateTimeKind.Unspecified)
+            {
+                return person1Birthday.Day == person2Birthday.Day && person1Birthday.Month == person2Birthday.Month;
+            }
+            
             var utcBirthday1 = ToUtc(person1Birthday);
             var utcBirthday2 = ToUtc(person2Birthday);
             return utcBirthday1.Day == utcBirthday2.Day && utcBirthday1.Month == utcBirthday2.Month;
