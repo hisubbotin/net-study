@@ -46,7 +46,7 @@ namespace Numbers
                 Особенно это касается связки Visual Studio + Resharper, используя которую, если просто набрать return и нажать пробел,
                     то в появившемся списке автодополнения одной из первых будет нужная тебе константа :)
             */
-            return int.MaxValue / 2;
+            return int.MaxValue >> 1;
         }
 
         /// <summary>
