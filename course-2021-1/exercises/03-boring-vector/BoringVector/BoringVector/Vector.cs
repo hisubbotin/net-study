@@ -33,7 +33,7 @@ namespace BoringVector
         /// <param name="y"> <see cref="double"/> Y coordinate. </param>
         public Vector(double x, double y)
         {
-            X = x;
+            _x = x;
             _y = y;
         }
 
