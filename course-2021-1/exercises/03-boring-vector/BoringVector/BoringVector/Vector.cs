@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+using Microsoft.VisualBasic.CompilerServices;
 
 namespace BoringVector
 {
@@ -24,30 +26,88 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        /// <summary>
+        /// Constructor based on two <see cref="double"/> coordinates for the <see cref="Vector"/> struct.
+        /// </summary>
+        /// <param name="x"> <see cref="double"/> X coordinate. </param>
+        /// <param name="y"> <see cref="double"/> Y coordinate. </param>
+        public Vector(double x, double y)
+        {
+            _x = x;
+            _y = y;
+        }
+
+        /// <summary>
+        /// Returns Square Length of the <see cref="Vector"/> of type <see cref="double"/>.
+        /// </summary>
+        /// <returns> Square Length of the <see cref="Vector"/> of type <see cref="double"/>. </returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+
+        /// <summary>
+        /// Adds the <see cref="Vector"/> parameter to the <see cref="Vector"/>.
+        /// </summary>
+        /// <param name="v"> The <see cref="Vector"/> that will be added to this <see cref="Vector"/>. </param>
+        /// <returns> Sum of this <see cref="Vector"/> and the parameter. </returns>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            double newX = X + v.X;
+            double newY = Y + v.Y;
+            return new Vector(newX, newY);
         }
+
+        /// <summary>
+        /// Scales the <see cref="Vector"/> linearly by multiplying components.
+        /// </summary>
+        /// <param name="k"> Scaling <see cref="double"/> coefficient. </param>
+        /// <returns> Scaled <see cref="Vector"/>. </returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            double newX = X * k;
+            double newY = Y * k;
+            return new Vector(newX, newY);
         }
+
+        /// <summary>
+        /// Calculates the dot product of two object of <see cref="Vector"/> type.
+        /// </summary>
+        /// <param name="v"> The second <see cref="Vector"/> in dot product. </param>
+        /// <returns> <see cref="double"/> result of the dot product. </returns>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+
+        /// <summary>
+        /// Calculates the absolute of the cross product of two object of <see cref="Vector"/> type.
+        /// </summary>
+        /// <param name="v"> The second <see cref="Vector"/> in cross product. </param>
+        /// <returns> Absolute <see cref="double"/> result of the cross product. </returns>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
+
+        // Coordinates of the vector
+        private readonly double _y;
+        private readonly double _x;
+        public double X => _x;
+        public double Y => _y; // Readonly
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+
+        /// <summary>
+        /// Returns the <see cref="String"/> representation of the <see cref="Vector"/>.
+        /// </summary>
+        /// <returns> <see cref="String"/> representation of the <see cref="Vector"/>. </returns>
+        public override string ToString()
+        {
+            return $"({X.ToString()}; {Y.ToString()})";
+        }
 
         #region operators
 
@@ -57,6 +117,84 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+
+        /// <summary>
+        /// Unary plus operator.
+        /// </summary>
+        /// <param name="v"> <see cref="Vector"/> to return with the same sign. </param>
+        /// <returns> <see cref="Vector"/> of the same sign. </returns>
+        public static Vector operator +(Vector v)
+        {
+            return v;
+        }
+
+        /// <summary>
+        /// Unary minus operator.
+        /// </summary>
+        /// <param name="v"> <see cref="Vector"/> to return with the opposite sign. </param>
+        /// <returns> <see cref="Vector"/> of the opposite sign. </returns>
+        public static Vector operator -(Vector v)
+        {
+            return v.Scale(-1d);
+        }
+
+        /// <summary>
+        /// Binary plus operator.
+        /// </summary>
+        /// <param name="v"> First <see cref="Vector"/> in the sum. </param>
+        /// <param name="u"> Second <see cref="Vector"/> in the sum. </param>
+        /// <returns> The sum of two objects of <see cref="Vector"/> type. </returns>
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return v.Add(u);
+        }
+
+        /// <summary>
+        /// Binary minus operator.
+        /// </summary>
+        /// <param name="v"> First <see cref="Vector"/> in the subtraction. </param>
+        /// <param name="u"> Second <see cref="Vector"/> in the subtraction. </param>
+        /// <returns> The subtraction of two objects of <see cref="Vector"/> type. </returns>
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return v.Add(-u);
+        }
+
+        /// <summary>
+        /// Scalar multiplication operator of <see cref="Vector"/> and <see cref="double"/>.
+        /// </summary>
+        /// <param name="v"> <see cref="Vector"/> to multiply by the scalar. </param>
+        /// <param name="k"> <see cref="double"/> scalar to multiply <see cref="Vector"/> by. </param>
+        /// <returns> The <see cref="Vector"/> result of the multiplication of <see cref="Vector"/> and <see cref="double"/>. </returns>
+        public static Vector operator *(Vector v, double k)
+        {
+            return v.Scale(k);
+        }
+
+        /// <summary>
+        /// Scalar multiplication operator of <see cref="double"/> and <see cref="Vector"/>.
+        /// </summary>
+        /// <param name="v"> <see cref="Vector"/> to multiply by the scalar. </param>
+        /// <param name="k"> <see cref="double"/> scalar to multiply <see cref="Vector"/> by. </param>
+        /// <returns> The <see cref="Vector"/> result of the multiplication of <see cref="Vector"/> and <see cref="double"/>. </returns>
+        public static Vector operator *(double k, Vector v)
+        {
+            return v.Scale(k);
+        }
+
+        /// <summary>
+        /// Division operator of <see cref="Vector"/> and <see cref="double"/>.
+        /// </summary>
+        /// <param name="v"> <see cref="Vector"/> to divide by the scalar. </param>
+        /// <param name="k"> <see cref="double"/> scalar to divide <see cref="Vector"/> by. </param>
+        /// <returns> The <see cref="Vector"/> result of the division of <see cref="Vector"/> and <see cref="double"/>. </returns>
+        public static Vector operator /(Vector v, double k)
+        {
+            if (k == 0)
+                throw new DivideByZeroException("Scaling coefficient can not be zero!");
+            return v.Scale(1/k);
+        }
+
 
         #endregion
     }
