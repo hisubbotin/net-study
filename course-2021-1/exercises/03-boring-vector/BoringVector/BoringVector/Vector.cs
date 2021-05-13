@@ -154,7 +154,14 @@ namespace BoringVector
         /// <returns>Объект <see cref="Vector"/>, частное вектора на коэффицент. </returns>
         public static Vector operator /(Vector v, double k)
         {
-            return v * (1 / k);
+            try
+            {
+                return v * (1 / k);
+            }
+            catch (DivideByZeroException ex) 
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         /// <summary>
