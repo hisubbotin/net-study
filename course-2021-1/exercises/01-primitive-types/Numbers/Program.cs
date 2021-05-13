@@ -17,8 +17,10 @@ namespace Numbers
         private static void Main()
         {
             // твои бро: Console.WriteLine и Console.ReadLine
-
-            Console.WriteLine("Hello World!");
+            double a = 0;
+            double b = 0;
+            double c = a / a;
+            Console.WriteLine(double.IsNaN(c));
         }
     }
 }
