@@ -37,7 +37,7 @@ namespace BoringVector
         /// <returns>Булево значение true, если вектор нулевой и false, если ненулевой</returns>
         public static bool IsZero(this Vector v)
         {
-            return v.X < Eps && v.Y < Eps;
+            return v.SquareLength() < Eps;
         }
 
         /// <summary>
@@ -67,15 +67,16 @@ namespace BoringVector
         /// <returns><c>General</c> в "общем случае"; <c>Parallel</c> если параллельны; <c>Orthogonal</c> если перпендикулярны</returns>
         public static VectorRelation GetRelation(this Vector v, Vector u)
         {
-            var angle = GetAngleBetween(v, u);
-            if (angle < Eps || angle > Math.PI - Eps)
-            {
-                return VectorRelation.Parallel;
-            }
-            if (angle > Math.PI/2 - Eps && angle < Math.PI/2 + Eps)
+            if (v.DotProduct(u) < Eps)
             {
                 return VectorRelation.Orthogonal;
             }
+
+            if (v.CrossProduct(u) < Eps)
+            {
+                return VectorRelation.Parallel;
+            }
+
             return VectorRelation.General;
         }
     }
