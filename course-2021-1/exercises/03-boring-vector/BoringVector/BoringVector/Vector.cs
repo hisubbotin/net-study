@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace BoringVector
 {
@@ -8,11 +9,27 @@ namespace BoringVector
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
 
-    internal struct Vector
+    /// <summary>
+    /// Структура, реализующая двумерные вектора и операции над ними
+    /// </summary>
+    
+    internal readonly struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        internal readonly double X, Y;
+
+        /// <summary>
+        /// Возвращает двумерный вектор с заданными координатами <param name="X"> и <param name="Y">
+        /// </summary>
+        /// <param name="X">x координата</param>
+        /// <param name="Y">y координата</param>
+        internal Vector(double X, double Y)
+        {
+            this.X = X;
+            this.Y = Y;
+        }
 
 
         /*
@@ -24,30 +41,67 @@ namespace BoringVector
                 - векторное произведение (= площадь параллелограмма)
         */
 
+        /// <summary>
+        /// Вычисляет квадрат длины вектора
+        /// </summary>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return (X * X) + (Y * Y);
         }
+        
+        /// <summary>
+        /// Вычисляет сумму векторов
+        /// </summary>
+        /// <param name="v">Вектор, который надо прибавить</param>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new Vector(X + v.X, Y + v.Y);
         }
+        
+        /// <summary>
+        /// Увеличивает длину вектора в k раз
+        /// </summary>
+        /// <param name="k">Коэффициент растяжения вектора</param>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return new Vector(k * X, k * Y);
         }
+        
+        /// <summary>
+        /// Вычисляет скалярное произведение векторов
+        /// </summary>
+        /// <param name="v">Вектор, скалярное произведение с которым нужно вычислить</param>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+        
+        /// <summary>
+        /// Вычисляет векторное произведение двумерных векторов (площадь заданного ими параллелограмма, т.е. x1*y2-x2*y1)
+        /// </summary>
+        /// <param name="v">Вектор, векторное произведение с которым нужно вычислить</param>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return X * v.Y - v.X * Y;
         }
 
         /*
             Переопредели ниже метод ToString - пусть выводит (X; Y)
         */
+
+        /// <summary>
+        /// Возвращает строковое представление вектора
+        /// </summary>
+        /// <returns>Строка вида (x1; y1)</returns>
+        public override string ToString()
+        {
+            return $"({X}; {Y})";
+        }
 
         #region operators
 
@@ -57,6 +111,74 @@ namespace BoringVector
                 - k * v, v * k, v / k
                 - +v, -v
         */
+
+        /// <summary>
+        /// Оператор, суммирующий два вектора
+        /// </summary>
+        /// <param name="v">1-ый вектор</param>
+        /// <param name="u">2-ой вектор</param>
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return new Vector(v.X + u.X, v.Y + u.Y);
+        }
+
+        /// <summary>
+        /// Оператор, вычисляющий разность двух векторов, т.е. <param name="v"/>-<param name="u"/>
+        /// </summary>
+        /// <param name="v">Левый вектор</param>
+        /// <param name="u">Правый вектор</param>
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return new Vector(v.X - u.X, v.Y - u.Y);
+        }
+
+        /// <summary>
+        /// Оператор, увеличивающий длину вектора в k раз
+        /// </summary>
+        /// <param name="k">Коэффициент растяжения</param>
+        /// <param name="v">Вектор</param>
+        public static Vector operator *(double k, Vector v)
+        {
+            return new Vector(k * v.X, k * v.Y);
+        }
+
+        /// <summary>
+        /// Оператор, увеличивающий длину вектора в k раз
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        /// <param name="k">Коэффициент растяжения</param>
+        public static Vector operator *(Vector v, double k)
+        {
+            return new Vector(k * v.X, k * v.Y);
+        }
+
+        /// <summary>
+        /// Оператор, уменьшающий длину вектора в k раз
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        /// <param name="k">Обратный коэффициент растяжения</param>
+        public static Vector operator /(Vector v, double k)
+        {
+            return new Vector(v.X / k, v.Y / k);
+        }
+
+        /// <summary>
+        /// Унарный плюс: сохраняет длину и направление вектора, т.е. не меняет его
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        public static Vector operator +(Vector v)
+        {
+            return new Vector(v.X, v.Y);
+        }
+
+        /// <summary>
+        /// Унарный минус: сохраняет длину вектора, но меняет направление на противоположное
+        /// </summary>
+        /// <param name="v">Вектор</param>
+        public static Vector operator -(Vector v)
+        {
+            return new Vector(-v.X, -v.Y);
+        }
 
         #endregion
     }
