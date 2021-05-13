@@ -33,7 +33,7 @@ namespace BoringVector
         /// <param name="y"> <see cref="double"/> Y coordinate. </param>
         public Vector(double x, double y)
         {
-            _x = x;
+            X = x;
             _y = y;
         }
 
@@ -91,10 +91,9 @@ namespace BoringVector
         }
 
         // Coordinates of the vector
-        private double _x;
-        private double _y;
-
-        public double X => _x; // Readonly
+        private readonly double _y;
+        private readonly double _x;
+        public double X => _x;
         public double Y => _y; // Readonly
 
         /*
@@ -191,6 +190,8 @@ namespace BoringVector
         /// <returns> The <see cref="Vector"/> result of the division of <see cref="Vector"/> and <see cref="double"/>. </returns>
         public static Vector operator /(Vector v, double k)
         {
+            if (k == 0)
+                throw new DivideByZeroException("Scaling coefficient can not be zero!");
             return v.Scale(1/k);
         }
 

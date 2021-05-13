@@ -20,7 +20,7 @@ namespace BoringVector
         /// </summary>
         /// <param name="v"> <see cref="Vector"/> to be checked. </param>
         /// <returns> <see cref="bool"/> of if <see cref="Vector"/> is zero <see cref="Vector"/>. </returns>
-        public static bool IsZero(Vector v)
+        public static bool IsZero(this Vector v)
         {
             return Math.Abs(v.X) < epsilon && Math.Abs(v.Y) < epsilon;
         }
@@ -30,7 +30,7 @@ namespace BoringVector
         /// </summary>
         /// <param name="v"> <see cref="Vector"/> to be normalized. </param>
         /// <returns> Normalized <see cref="Vector"/>. </returns>
-        public static Vector Normalize(Vector v)
+        public static Vector Normalize(this Vector v)
         {
             return v.Scale(Math.Sqrt(v.SquareLength()));
         }
@@ -41,11 +41,11 @@ namespace BoringVector
         /// <param name="v"> First <see cref="Vector"/>. </param>
         /// <param name="u"> Second <see cref="Vector"/>. </param>
         /// <returns> Angle between two objects of <see cref="Vector"/> type in radians (<see cref="double"/>). </returns>
-        public static double GetAngleBetween(Vector v, Vector u)
+        public static double GetAngleBetween(this Vector v, Vector u)
         {
-            if (IsZero(v) || IsZero(u))
+            if (v.IsZero() || u.IsZero())
                 return 0d;
-            return Math.Acos(Normalize(v).DotProduct(Normalize(u)));
+            return Math.Acos(v.Normalize().DotProduct(u.Normalize()));
         }
 
 
@@ -63,12 +63,12 @@ namespace BoringVector
         /// <param name="v"> First <see cref="Vector"/>. </param>
         /// <param name="u"> Second <see cref="Vector"/>. </param>
         /// <returns> <see cref="VectorRelation"/> as the relation between two objects of <see cref="Vector"/> type. </returns>
-        public static VectorRelation GetRelation(Vector v, Vector u)
+        public static VectorRelation GetRelation(this Vector v, Vector u)
         {
-            if (IsZero(v) || IsZero(u))
+            if (v.IsZero() || u.IsZero())
                 return VectorRelation.Parallel;
-            Vector vNorm = Normalize(v);
-            Vector uNorm = Normalize(u);
+            Vector vNorm = v.Normalize();
+            Vector uNorm = u.Normalize();
 
             if (vNorm.DotProduct(uNorm) < epsilon)
                 return VectorRelation.Orthogonal;
