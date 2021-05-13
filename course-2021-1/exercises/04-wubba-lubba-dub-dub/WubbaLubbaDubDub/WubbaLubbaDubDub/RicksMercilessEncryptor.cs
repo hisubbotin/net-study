@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Reflection.Metadata;
+using System.Runtime.ExceptionServices;
+using System.Text.RegularExpressions;
 
 namespace WubbaLubbaDubDub
 {
@@ -12,7 +15,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToLines(this string text)
         {
             // У строки есть специальный метод. Давай здесь без регулярок
-            throw new NotImplementedException();
+            return text.Split('\n');
         }
 
         /// <summary>
@@ -21,7 +24,13 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            throw new NotImplementedException();
+            var collection = new Regex("\\w+").Matches(line);
+            var res = new string[collection.Count];
+            for (int i = 0; i < collection.Count; ++i)
+            {
+                res[i] = collection[i].Value;
+            }
+            return res;
         }
 
         /// <summary>
@@ -31,7 +40,7 @@ namespace WubbaLubbaDubDub
         public static string GetLeftHalf(this string s)
         {
             // у строки есть метод получения подстроки
-            throw new NotImplementedException();
+            return s.Substring(0, s.Length / 2);
         }
 
         /// <summary>
@@ -40,7 +49,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetRightHalf(this string s)
         {
-            throw new NotImplementedException();
+            return s.Substring(s.Length / 2);
         }
 
         /// <summary>
@@ -49,7 +58,7 @@ namespace WubbaLubbaDubDub
         public static string Replace(this string s, string old, string @new)
         {
             // и такой метод у строки, очевидно, тоже есть
-            throw new NotImplementedException();
+            return s.Replace(old, @new);
         }
 
         /// <summary>
@@ -65,7 +74,12 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            throw new NotImplementedException();
+            string[] newChars = new string[s.Length];
+            for (int i = 0; i < s.Length; ++i)
+            {
+                newChars[i] = "\\u" + ((int) s[i]).ToString("X4");
+            }
+            return String.Concat(newChars);
         }
 
         /// <summary>
@@ -77,7 +91,14 @@ namespace WubbaLubbaDubDub
                 Собрать строку из последовательности строк можно несколькими способами.
                 Один из низ - статический метод Concat. Но ты можешь выбрать любой.
             */
-            throw new NotImplementedException();
+            char[] charArray = s.ToCharArray();
+            for (int i = 0; i < charArray.Length / 2; ++i)
+            {
+                char tmp = charArray[i];
+                charArray[i] = charArray[charArray.Length - i - 1];
+                charArray[charArray.Length - i - 1] = tmp;
+            }
+            return String.Concat(charArray);
         }
 
         /// <summary>
@@ -90,7 +111,19 @@ namespace WubbaLubbaDubDub
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            throw new NotImplementedException();
+            char[] charArray = s.ToCharArray();
+            for (int i = 0; i < charArray.Length; ++i)
+            {
+                if (Char.IsLower(charArray[i]))
+                {
+                    charArray[i] = Char.ToUpper(charArray[i]);
+                }
+                else
+                {
+                    charArray[i] = Char.ToLower(charArray[i]);
+                }
+            }
+            return String.Concat(charArray);
         }
 
         /// <summary>
@@ -99,7 +132,14 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            throw new NotImplementedException();
+            char[] charArray = s.ToCharArray();
+            string[] newChars = new string[s.Length];
+            for (int i = 0; i < charArray.Length; ++i)
+            {
+                newChars[i] = char.ConvertFromUtf32(((int) charArray[i]) + 1);
+            }
+
+            return String.Concat(newChars);
         }
 
 
@@ -117,7 +157,22 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
+            Regex idRegex = new Regex("\\¶[0-9A-F]{8}:[0-9A-F]{8}\\¶");
+            Regex commentRegex = new Regex("\\/\\/.*\\n|\\/\\*(.|\\n)*?\\*\\/");
+            var commentSplitted = commentRegex.Split(text);
+            var result = new List<long>();
+            foreach (var split in commentSplitted)
+            {
+                var ids = idRegex.Matches(split);
+                foreach (var id_match in ids)
+                {
+                    // throw new InvalidOperationException(id_match.ToString());
+                    string id = id_match.ToString();
+                    result.Add(long.Parse(id.Replace("¶", "").Replace(":", ""), System.Globalization.NumberStyles.HexNumber));
+                }
+            }
+
+            return result.ToImmutableArray();
         }
 
         #endregion
