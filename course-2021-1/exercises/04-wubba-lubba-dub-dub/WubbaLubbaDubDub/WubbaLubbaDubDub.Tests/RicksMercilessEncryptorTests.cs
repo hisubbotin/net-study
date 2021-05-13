@@ -38,8 +38,7 @@ namespace WubbaLubbaDubDub.Tests
         }
 
         [Theory]
-        [InlineData("abacaba", "ab", "R", "RacRa")]
-        [InlineData("aaaa", "a", "R", "RRRR")]
+        [InlineData("abcdefgabcdabbc", "abc", "cum", "cumdefgcumdabbc")]
         public void Test_Replace(string s, string oldVal, string newVal, string expected)
         {
             Assert.Equal(expected, s.Replace(oldVal, newVal));
