@@ -70,7 +70,7 @@ namespace AdventureTime
                 Проверь для всех значений DateTime.Kind.
             */
             //throw new NotImplementedException();
-            return DateTime.Parse(dtStr);
+            return DateTime.Parse(dtStr, null, System.Globalization.DateTimeStyles.RoundtripKind);
         }
 
         /// <summary>
@@ -127,7 +127,7 @@ namespace AdventureTime
                 3) Подумай, почему возвращаемое значение может отличаться от действительности.
             */
             //throw new NotImplementedException();
-            return dt2.Subtract(dt1).Hours;
+            return (int) dt2.Subtract(dt1).TotalHours;
         }
 
         /// <summary>
