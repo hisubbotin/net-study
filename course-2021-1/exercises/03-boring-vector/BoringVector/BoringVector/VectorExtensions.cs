@@ -33,7 +33,7 @@ namespace BoringVector
         /// </summary>
         /// <param name="v">Искомый вектор</param>
         /// <returns>Результат проверки на равенство нулю</returns>
-        public static bool IsZero(Vector v)
+        public static bool IsZero(this Vector v)
         {
             return v.SquareLength() < EPS * EPS;
         }
@@ -43,7 +43,7 @@ namespace BoringVector
         /// </summary>
         /// <param name="v">Искомый вектор</param>
         /// <returns>Нормированный вектор</returns>
-        public static Vector Normalize(Vector v)
+        public static Vector Normalize(this Vector v)
         {
             return v / Math.Sqrt(v.SquareLength());
         }
@@ -54,7 +54,7 @@ namespace BoringVector
         /// <param name="v">Первый вектор</param>
         /// <param name="u">Второй вектор</param>
         /// <returns>Угол между векторами в радианах</returns>
-        public static double GetAngleBetween(Vector v, Vector u)
+        public static double GetAngleBetween(this Vector v, Vector u)
         {
             if (IsZero(v) || IsZero(u))
             {
@@ -69,9 +69,9 @@ namespace BoringVector
         /// <param name="v">Первый вектор</param>
         /// <param name="u">Второй вектор</param>
         /// <returns>Отношение между векторами</returns>
-        public static VectorRelation GetRelation(Vector v, Vector u)
+        public static VectorRelation GetRelation(this Vector v, Vector u)
         {
-            if (IsZero(v) || IsZero(u) || v.CrossProduct(u) < EPS)
+            if (v.IsZero() || u.IsZero() || v.CrossProduct(u) < EPS)
             {
                 return VectorRelation.Parallel;
             }
