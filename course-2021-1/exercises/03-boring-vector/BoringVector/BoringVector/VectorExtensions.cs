@@ -35,7 +35,7 @@ namespace BoringVector
         /// <returns>Объект <see cref="bool"/> - результат проверки вектора на равенство нулю.</returns>
         public static bool IsZero(Vector v)
         {
-            return (v.X < EPS) && (v.Y < EPS);
+            return Math.Abs(v.X) < EPS && Math.Abs(v.Y) < EPS;
         }
 
         /// <summary>

@@ -288,7 +288,9 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            return person1Birthday.Date == person2Birthday.Date;
+            DateTime person1Bd = new DateTime(2000, ToUtc(person1Birthday).Month, ToUtc(person1Birthday).Day);
+            DateTime person2Bd = new DateTime(2000, ToUtc(person2Birthday).Month, ToUtc(person2Birthday).Day);
+            return person1Bd == person2Bd;
         }
     }
 }

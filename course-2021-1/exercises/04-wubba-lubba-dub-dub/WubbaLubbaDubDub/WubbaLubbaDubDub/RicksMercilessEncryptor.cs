@@ -112,7 +112,7 @@ namespace WubbaLubbaDubDub
         {
             char Shift(char c)
             {
-                return (char) ((int) c + 1);
+                return (char) (c + 1);
             }
 
             return String.Concat(s.Select(Shift));

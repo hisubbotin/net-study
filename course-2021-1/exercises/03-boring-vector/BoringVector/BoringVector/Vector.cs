@@ -13,9 +13,6 @@ namespace BoringVector
         /*
             Vector задается парой вещественных координат X и Y.
         */
-        
-        private readonly double m_X;
-        private readonly double m_Y;
 
         /// <summary>
         /// Конструктор вектора по двум объектам <see cref="double"/> - координатам X и Y
@@ -24,21 +21,21 @@ namespace BoringVector
         /// <param name="y">объект <see cref="double"/> с значением координаты Y создаваемого вектора.</param>
         public Vector(double x, double y)
         {
-            this.m_X = x;
-            this.m_Y = y;
+            this.X = x;
+            this.Y = y;
         }
 
         /// <summary>
         /// Возвращает объект <see cref="double"/> с значением координаты X вектора.
         /// </summary>
         /// <returns>Объект <see cref="double"/> с значением координаты X вектора.</returns>
-        public double X => m_X;
-        
+        public double X { get; }
+
         /// <summary>
         /// Возвращает объект <see cref="double"/> с значением координаты Y вектора.
         /// </summary>
         /// <returns>Объект <see cref="double"/> с значением координаты Y вектора.</returns>
-        public double Y => m_Y;
+        public double Y { get; }
 
         /// <summary>
         /// Возвращает объект <see cref="double"/> с квадратом длины вектора.
