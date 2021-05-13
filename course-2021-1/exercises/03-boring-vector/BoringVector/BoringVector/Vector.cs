@@ -101,7 +101,7 @@ namespace BoringVector
         /// <returns> строку (X; Y)</returns>
         public override string ToString()
         {
-            return "(" + X + "; " + Y + ")";
+            return $"({X}; {Y})";
         }
 
 
