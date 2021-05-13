@@ -125,12 +125,10 @@ namespace AdventureTime
         /// <summary>
         /// Возвращает количество минут во временном промежутке, равном трем месяцам.
         /// </summary>
-        public static int GetTotalMinutesInThreeMonths()
+        public static int GetTotalMinutesInThreeMonths(DateTime date)
         {
             // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            DateTime dt1 = DateTime.UtcNow;
-            DateTime dt2 = DateTime.UtcNow.AddMonths(3);
-            return (int) dt2.Subtract(dt1).TotalMinutes;
+            return (int) date.AddMonths(3).Subtract(date).TotalMinutes;
         }
 
         #region Adventure time saga
@@ -291,6 +289,8 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
+            if (person1Birthday.Kind != person2Birthday.Kind)
+                throw new Exception("Dates' kinds are not equal!");
             return person1Birthday.Day == person2Birthday.Day && person1Birthday.Month == person2Birthday.Month;
         }
     }
