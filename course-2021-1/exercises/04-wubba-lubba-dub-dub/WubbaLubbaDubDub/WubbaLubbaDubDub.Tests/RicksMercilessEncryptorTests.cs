@@ -3,7 +3,7 @@ using Xunit;
 
 namespace WubbaLubbaDubDub.Tests
 {
-    public class RicksMercilessEncryptorTest
+    public class RicksMercilessEncryptorTests
     {
         [Theory]
         [InlineData(" \nHello, \nworld", new string[] { " ", "Hello, ", "world" })]
