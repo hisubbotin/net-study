@@ -1,5 +1,7 @@
 using System;
 using Xunit;
+using System.Collections.Immutable;
+using System.Linq;
 
 namespace WubbaLubbaDubDub.Tests
 {
@@ -101,12 +103,20 @@ namespace WubbaLubbaDubDub.Tests
         }
 
         [Theory]
-        [InlineData("//WubbaLubbaDubDub\naaaa\n/*\nbbbbb\n*/\nccccc\naaaa\n", "vmfnjxjml")]
-        public void Test_GetUsedObjects(string text, string result)
+        
+
+        [InlineData("//WubbaLubbaDubDub\naaaa\n/*\nbbbbb\n*/\nccccc\naaaa\n¶1525:1525¶\n", 
+        new long[] { 15251525 })]
+
+        [InlineData("//WubbaLubbaDubDub\naaaa\n/*\nbbbbb\n*/\nccccc\naaaa\n¶1525:1525¶\n\n¶0000:1525¶\n\n¶1525:1525¶\n\n¶4242:4242¶\n", 
+        new long[] { 15251525, 1525, 42424242})]
+        public void Test_GetUsedObjects(string text, long[] result)
         {
+            var result_checking = ImmutableList.CreateRange(result);
             var local_res = text.GetUsedObjects();
-            // Console.WriteLine(local_res);
-            // Assert.Equal(local_res, result);
+            Console.WriteLine(local_res);
+            Assert.True(local_res.SequenceEqual(result_checking));
+            // CollectionAssert.Equal(local_res, result_checking);
         }
     }
 }

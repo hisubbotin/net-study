@@ -3,6 +3,8 @@ using System.Text;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Text.RegularExpressions;
+using System.Linq;
+
 namespace WubbaLubbaDubDub
 {
     public static class RicksMercilessEncryptor
@@ -151,14 +153,16 @@ namespace WubbaLubbaDubDub
             */
             var noComments = Regex.Replace(text, @"\/\/.*", String.Empty);
             noComments = Regex.Replace(noComments,@"\/\*[^(\*\/)]*\*\/", String.Empty);
-            // var res = Regex.Matches(noComments, @"\n\w{4}:\w{4}\n").ToImmutableList();
-            // Console.WriteLine(noComments);
-            // foreach (string name in res)
-            //     Console.WriteLine(Regex.Replace(name, pattern, String.Empty));
-
-            Console.WriteLine(res);
             
-            return null;
+            var matches = Regex.Matches(noComments, @"¶\w{4}:\w{4}¶").ToImmutableList();
+            var res = matches.Select(
+                x => 
+                Convert.ToInt64(
+                    x.Value.Replace("¶", "").Replace(":", "")
+                    )
+            ).Distinct();
+            
+            return res.ToImmutableList();
         }
 
         #endregion
