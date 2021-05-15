@@ -1,5 +1,7 @@
 ﻿using System;
 
+using System.Runtime.CompilerServices;
+[assembly: InternalsVisibleTo("BoringVector.Tests")]
 namespace BoringVector
 {
     internal class Program
