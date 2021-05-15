@@ -78,6 +78,7 @@ namespace WubbaLubbaDubDub
                 Собрать строку из последовательности строк можно несколькими способами.
                 Один из низ - статический метод Concat. Но ты можешь выбрать любой.
             */
+            // ??? s.Reverse() ???
             return string.Concat(s.ToArray().Reverse());
         }
 
@@ -118,7 +119,14 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
+            var result = new List<long>();
+            Regex.Split(text, @"\/\/.*\n|\/\*(.|\n)*?\*\/").ToList().ForEach(t =>
+            {
+                Regex.Matches(t, @"\¶\w{4}:\w{4}\¶").ToList().ForEach(
+                    match => result.Add(Convert.ToInt64(match.Value.Replace("¶", "").Replace(":", ""), 16))
+                );
+            });
+            return result.ToImmutableList();
         }
 
         #endregion
