@@ -4,6 +4,10 @@
     <TargetFramework>netcoreapp2.0</TargetFramework>
 
     <IsPackable>false</IsPackable>
+
+    <RootNamespace>WubbaLubbaDubDub.Tests</RootNamespace>
+
+    <AssemblyName>WubbaLubbaDubDub.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,4 +16,7 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\WubbaLubbaDubDub\WubbaLubbaDubDub.csproj" />
+  </ItemGroup>
 </Project>
