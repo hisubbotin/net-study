@@ -4,70 +4,95 @@ namespace BoringVector
 {
     #region 1. Структура Vector
 
-    /*
-        Реализуй структуру Vector - см. комментарии внутри нее.
-    */
-
+    /// <summary>
+    /// Simple 2D vector struct.
+    /// </summary>
     internal struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
+        /// <summary> X coordinate </summary>
+        public readonly double X;
+        /// <summary> Y coordinate </summary>
+        public readonly double Y;
 
+        public Vector(double _X, double _Y) { X = _X; Y = _Y; }
 
-        /*
-            На месте заглушек добавь реализацию базовых методов вектора:
-                - квадрат длины
-                - сумма векторов
-                - умножение на коэффициент
-                - скалярное произведение
-                - векторное произведение (= площадь параллелограмма)
-        */
-
+        /// <summary> 
+        /// Get the square of the vector's length.
+        /// </summary>
+        /// <returns> Squared length </returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
-        }
-        public Vector Add(Vector v)
-        {
-            throw new NotImplementedException();
-        }
-        public Vector Scale(double k)
-        {
-            throw new NotImplementedException();
-        }
-        public double DotProduct(Vector v)
-        {
-            throw new NotImplementedException();
-        }
-        public double CrossProduct(Vector v)
-        {
-            throw new NotImplementedException();
+            return X*X + Y*Y;
         }
 
-        /*
-            Переопредели ниже метод ToString - пусть выводит (X; Y)
-        */
+        /// <summary>
+        /// Add another vector.
+        /// </summary>
+        /// <param name="v"> Vector to add </param>
+        /// <returns> The resulting vector </returns>
+        public Vector Add(Vector v)
+        {
+            return new Vector(X + v.X, Y + v.Y);
+        }
+
+        /// <summary>
+        /// Scale vector by a number.
+        /// </summary>
+        /// <param name="k"> Number to multiply the vector by </param>
+        /// <returns> The resulting vector </returns>
+        public Vector Scale(double k)
+        {
+            return new Vector(X * k, Y * k);
+        }
+
+        /// <summary>
+        /// Get the dot product of this vector and another.
+        /// </summary>
+        /// <param name="v"> Vector to get the dot product for </param>
+        /// <returns> The resulting dot product </returns>
+        public double DotProduct(Vector v)
+        {
+            return X*v.X + Y*v.Y;
+        }
+
+        /// <summary>
+        /// Get the cross product of this vector and another 
+        /// (just the magnitude of the cross product vector, since we're in 2D space).
+        /// </summary>
+        /// <param name="v"> Vector to get the cross product for </param>
+        /// <returns> The resulting cross product (as a scalar) </returns>
+        public double CrossProduct(Vector v)
+        {
+            return X*v.Y - Y*v.X;
+        }
+
+        /// <summary>
+        /// Get coords in a string as (X; Y).
+        /// </summary>
+        /// <returns> String of coords </returns>
+        public override string ToString()
+        {
+            return $"({X}; {Y})";
+        }
 
         #region operators
 
-        /*
-            Реализуй также следущие операторы (Vector v, u и double k):
-                - v + u, v - u
-                - k * v, v * k, v / k
-                - +v, -v
-        */
+        public static Vector operator +(Vector v, Vector u) => new Vector(v.X + u.X, v.Y + u.Y);
+        public static Vector operator -(Vector v, Vector u) => new Vector(v.X - u.X, v.Y - u.Y);
+
+        public static Vector operator *(Vector v, double k) => new Vector(v.X * k, v.Y * k);
+        public static Vector operator /(Vector v, double k) => new Vector(v.X / k, v.Y / k);
+
+        public static Vector operator +(Vector v) => new Vector(v.X, v.Y);
+        public static Vector operator -(Vector v) => new Vector(-v.X, -v.Y);
 
         #endregion
     }
 
     #endregion
-
-    /*
-        Время отправиться в VectorExtensions.cs за новой порцией квестов, герой!
-        Как закончишь, возвращайся за щедрым вознаграждением!
-    */
-
 
     #region 3. Комментарии
 
