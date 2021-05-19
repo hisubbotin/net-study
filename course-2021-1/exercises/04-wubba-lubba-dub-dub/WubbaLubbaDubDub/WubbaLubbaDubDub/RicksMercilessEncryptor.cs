@@ -130,7 +130,16 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
+            
+            // https://stackoverflow.com/questions/51312345/regex-to-find-a-string-excluding-comments
+
+            IImmutableList<long> answer = new ImmutableArray<long>();
+
+            const string pattern = @"(?<!^[\p{Zs}\t]*//.*)(?<!/\*(?:(?!\*/)[\s\S\r])*?)\b(\d{4}):(\d{4})\b";
+            
+            MatchCollection matches = Regex.Matches(text, pattern);
+
+            return matches.Select(match => (long)Int32.Parse(match.Groups[1].Value + match.Groups[2].Value)).ToImmutableArray();
         }
 
         #endregion

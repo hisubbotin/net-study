@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Immutable;
 using System.Runtime.InteropServices;
 using Xunit;
 
@@ -74,6 +75,19 @@ namespace WubbaLubbaDubDub.Tests
         public void ShiftInc(string s, string expected)
         {
             Assert.Equal(expected, RicksMercilessEncryptor.ShiftInc(s));
+        }
+        
+        [Theory]
+        [InlineData("text start 2233:322\n// 3456:5879\n1234:5678\n0922:1322 smth /* 1234:5678  /* 9708:0066\nhere 9055:2312*/   word1234:5678\n/* 7879:0001 */ other 1234:7890",
+        new long[] {34565879, 12345678, 9221322, 12347890 })]
+        public void GetUsedObjects(string text, long[] expected)
+        {
+            var actual = RicksMercilessEncryptor.GetUsedObjects(text);
+            Assert.Equal(expected.Length, actual.Count);
+            Assert.Equal(expected[0], actual[0]);
+            Assert.Equal(expected[1], actual[1]);
+            Assert.Equal(expected[2], actual[2]);
+            Assert.Equal(expected[3], actual[3]);
         }
 
     }
