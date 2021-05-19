@@ -55,7 +55,8 @@ namespace Numbers
         internal static int Cube(int x)
         {
             // не сомневайся, пиши. Тут без подвохов.
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
+            return x * x * x;
         }
 
         /// <summary>
