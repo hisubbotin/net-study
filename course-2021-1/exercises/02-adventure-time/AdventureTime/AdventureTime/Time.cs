@@ -49,7 +49,7 @@ namespace AdventureTime
         public static string ToRoundTripFormatString(DateTime dt)
         {
 
-            return dt.ToString("s");
+            return dt.ToString("o");
             /*
                 Обязательно поиграйся и посмотри на изменение результата в зависимости от dt.Kind (для этого тебе поможет метод выше).
                 Ну и на будущее запомни этот прекрасный строковый формат представления времени - он твой бро!
