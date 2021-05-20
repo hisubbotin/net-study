@@ -7,13 +7,35 @@ namespace BoringVector
     /*
         Реализуй структуру Vector - см. комментарии внутри нее.
     */
-
+    
+    /// <summary>
+    /// Совсем не скучный вектор.
+    /// </summary>
     internal struct Vector
     {
         /*
             Vector задается парой вещественных координат X и Y.
         */
-
+        
+        /// <summary>
+        /// 1 координата вектора.
+        /// </summary>
+        public readonly double X;
+        
+        /// <summary>
+        /// 2 координата вектора.
+        /// </summary>
+        public readonly double Y;
+        
+        
+        /// <summary>
+        /// Конструктор класса.
+        /// </summary>
+        public Vector(double init_x, double init_y)
+        {
+            X = init_x;
+            Y = init_y;
+        }
 
         /*
             На месте заглушек добавь реализацию базовых методов вектора:
@@ -23,31 +45,58 @@ namespace BoringVector
                 - скалярное произведение
                 - векторное произведение (= площадь параллелограмма)
         */
-
+        
+        /// <summary>
+        /// Возвращает квадрат длины вектора.
+        /// </summary>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+        
+        /// <summary>
+        /// Складывает два вектора.
+        /// </summary>
+        /// <param name="v">Объект типа <see cref="Vector"/>, который надо прибавить к данному.</param>
+        /// <returns>Объект типа <see cref="Vector"/>, равный сумме двух векторов.</returns>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector(this.X + v.X, this.Y + v.Y);
         }
+        
+        /// <summary>
+        /// Умножает вектор на число.
+        /// </summary>
+        /// <param name="k">Число, на которое умножается вектор.</param>
+        /// <returns>Объект типа <see cref="Vector"/>, равный данному вектору, умноженному на аргумент.</returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector(this.X * k, this.Y * k);
         }
+        
+        /// <summary>
+        /// Возвращает скалярное произведение векторов.
+        /// </summary>
+        /// <param name="v">Объект типа <see cref="Vector"/>, скалярное произведение с которым нужно получить.</param>
+        /// <returns>Число, равное скалярному произведению векторов.</returns>
+        
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return this.X * v.X + this.Y * v.Y;
         }
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return this.X * v.Y - this.Y * v.X;
         }
 
-        /*
-            Переопредели ниже метод ToString - пусть выводит (X; Y)
-        */
+        /// <summary>
+        /// Строковое представление вектора.
+        /// </summary>
+        
+        public override string ToString()
+        {
+            return $"({this.X}; {this.Y})";
+        }
 
         #region operators
 
@@ -59,6 +108,97 @@ namespace BoringVector
         */
 
         #endregion
+        
+        /// <summary>
+        /// Складывает два вектора.
+        /// </summary>
+        /// <param name="v">Объект типа <see cref="Vector"/>, слагаемое.</param>
+        /// <param name="u">Объект типа <see cref="Vector"/>, слагаемое.</param>
+        /// <returns>Объект типа <see cref="Vector"/>, равный сумме векторов.</returns>
+        public static Vector operator +(Vector v, Vector u)
+        {
+            return new Vector(v.X + u.X, v.Y + u.Y);
+        }
+        
+        /// <summary>
+        /// Складывает два вектора.
+        /// </summary>
+        /// <param name="v">Объект типа <see cref="Vector"/>, из которого вычитаем.</param>
+        /// <param name="u">Объект типа <see cref="Vector"/>, который вычитаем.</param>
+        /// <returns>Объект типа <see cref="Vector"/>, равный разности векторов.</returns>
+        
+        public static Vector operator -(Vector v, Vector u)
+        {
+            return new Vector(v.X - u.X, v.Y - u.Y);
+        }
+        
+        /// <summary>
+        /// Умножает вектор на число.
+        /// </summary>
+        /// <param name="k">Число, на которое умножается вектор.</param>
+        /// <param name="v">Объект типа <see cref="Vector"/>, который умножаем на данное число.</param>
+        /// <returns>Объект типа <see cref="Vector"/>, равный данному вектору, умноженному на аргумент.</returns>
+        public static Vector operator *(Vector v, double k)
+        {
+            return new Vector(v.X * k, v.Y * k);
+        }
+        
+        /// <summary>
+        /// Умножает вектор на число.
+        /// </summary>
+        /// <param name="k">Число, на которое умножается вектор.</param>
+        /// <param name="v">Объект типа <see cref="Vector"/>, который умножаем на данное число.</param>
+        /// <returns>Объект типа <see cref="Vector"/>, равный данному вектору, умноженному на аргумент.</returns>
+        
+        public static Vector operator *(double k, Vector v)
+        {
+            return new Vector(v.X * k, v.Y * k);
+        }
+        
+        /// <summary>
+        /// Делит вектор на число.
+        /// </summary>
+        /// <param name="k">Число, на которое делится вектор.</param>
+        /// <param name="v">Объект типа <see cref="Vector"/>, который делим на данное число.</param>
+        /// <returns>Объект типа <see cref="Vector"/>, равный данному вектору, поделенному на аргумент.</returns>
+
+        public static Vector operator /(double k, Vector v)
+        {
+            return new Vector(v.X / k, v.Y / k);
+        }
+        
+        /// <summary>
+        /// Возвращает данный вектор со знаком +.
+        /// </summary>
+        public static Vector operator +(Vector v)
+        {
+            return v;
+        }
+        
+        /// <summary>
+        /// Возвращает противоположный вектор.
+        /// </summary>
+        public static Vector operator -(Vector v)
+        {
+            return new Vector(-v.X, -v.Y);
+        }
+        
+        /// <summary>
+        /// Проверяет два вектора на равенство.
+        /// </summary>
+        public static bool operator ==(Vector v, Vector u)
+        {
+            return v.X == u.X && v.Y == u.Y;
+        }
+        
+        /// <summary>
+        /// Проверяет два вектора на неравенство.
+        /// </summary>
+        public static bool operator !=(Vector v, Vector u)
+        {
+            return v.X != u.X || v.Y != u.Y;
+        }
+
     }
 
     #endregion
