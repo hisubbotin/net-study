@@ -9,31 +9,31 @@ namespace BoringVector
             - GetAngleBetween: возвращает угол между двумя векторами в радианах. Примечание: нулевой вектор сонаправлен любому другому.
             - GetRelation: возвращает значение перечесления VectorRelation(General, Parallel, Orthogonal) - отношение между двумя векторами("общий случай", параллельны, перпендикулярны). Перечисление задавать тоже тебе)
     */
-    class VectorExtencions {
+    static class VectorExtencions {
         public enum VectorRelation
         {
             General,
             Parallel,
             Orthogonal,
         }
-        public bool IsZero(Vector v) {
+        public static bool IsZero(this Vector v) {
             double eps = 1e-6;
             return v.SquareLength() < eps;
         }
 
-        public Vector Normalize(Vector v) {
+        public static Vector Normalize(this Vector v) {
             double length = v.Length();
             return v / length;
         }
 
-        public double GetAngleBetween(Vector v, Vector u) {
+        public static double GetAngleBetween(this Vector v, Vector u) {
             if (IsZero(v) || IsZero(u)) {
                 return 0;
             }
             return Math.Acos(v.DotProduct(u) / (v.Length() * u.Length()));
         }
 
-        public VectorRelation GetRelation(Vector v, Vector u) {
+        public static VectorRelation GetRelation(this Vector v, Vector u) {
             // тут как бы случай 0 - должны быть оба (типо бинарной маски), 
             // но тогда зачам заводить VectorRelation.General
             if (v.CrossProduct(u) == 0) {
@@ -46,7 +46,7 @@ namespace BoringVector
             return VectorRelation.General;
         }
 
-        protected bool IsZeroEps(double d) {
+        public static bool IsZeroEps(double d) {
             double eps = 1e-6;
             return Math.Abs(d) <= eps;
         }
