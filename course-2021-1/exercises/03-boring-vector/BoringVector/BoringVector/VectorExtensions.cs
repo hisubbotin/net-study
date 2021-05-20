@@ -12,17 +12,17 @@ namespace BoringVector
 
     public static class VectorEx
     {
-        internal static bool IsZero(Vector v)
+        internal static bool IsZero(this Vector v)
         {
             return (Math.Abs(v.X) < 1e-6) && (Math.Abs(v.Y) < 1e-6);
         }
 
-        internal static Vector Normalize(Vector v)
+        internal static Vector Normalize(this Vector v)
         {
             return v.Scale(1/Math.Sqrt(v.SquareLength()));
         }
 
-        internal static double GetAngleBetween(Vector v, Vector u)
+        internal static double GetAngleBetween(this Vector v, Vector u)
         {
             if (IsZero(v) || IsZero(u))
             {
@@ -39,7 +39,7 @@ namespace BoringVector
             Orthogonal
         }
 
-        internal static VectorRelation GetRelation(Vector v, Vector u)
+        internal static VectorRelation GetRelation(this Vector v, Vector u)
         {
             if (GetAngleBetween(u, v) == 0)
             {
