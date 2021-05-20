@@ -17,7 +17,7 @@ namespace Numbers
         private static void Main()
         {
             // твои бро: Console.WriteLine и Console.ReadLine
-
+            Integers.Cube(-10);
             Console.WriteLine("Hello World!");
         }
     }
