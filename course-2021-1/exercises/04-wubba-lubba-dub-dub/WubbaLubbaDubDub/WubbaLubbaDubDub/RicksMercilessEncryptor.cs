@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-
+using System.Text.RegularExpressions;
 namespace WubbaLubbaDubDub
 {
     public static class RicksMercilessEncryptor
@@ -12,7 +12,7 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToLines(this string text)
         {
             // У строки есть специальный метод. Давай здесь без регулярок
-            throw new NotImplementedException();
+            return text.SplitToLines();
         }
 
         /// <summary>
@@ -21,7 +21,13 @@ namespace WubbaLubbaDubDub
         public static string[] SplitToWords(this string line)
         {
             // А вот здесь поиграйся с регулярками.
-            throw new NotImplementedException();
+            /*
+             *
+             * Хорошо, но разве не проще String.Split(' ')?
+             *
+             */
+            //return Regex.Split(line, @"\s+");
+            return line.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         }
 
         /// <summary>
@@ -31,7 +37,7 @@ namespace WubbaLubbaDubDub
         public static string GetLeftHalf(this string s)
         {
             // у строки есть метод получения подстроки
-            throw new NotImplementedException();
+            return s.Substring(0, s.Length / 2);
         }
 
         /// <summary>
@@ -40,7 +46,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetRightHalf(this string s)
         {
-            throw new NotImplementedException();
+            return s.Substring(s.Length / 2);
         }
 
         /// <summary>
@@ -49,7 +55,7 @@ namespace WubbaLubbaDubDub
         public static string Replace(this string s, string old, string @new)
         {
             // и такой метод у строки, очевидно, тоже есть
-            throw new NotImplementedException();
+            return s.Replace(old, @new);
         }
 
         /// <summary>
@@ -65,7 +71,21 @@ namespace WubbaLubbaDubDub
                 FYI: локальную функцию можно объявлять даже после строки с return.
                 То же самое можно сделать и для всех оставшихся методов.
             */
-            throw new NotImplementedException();
+
+            /// <summary>
+            /// Возвращает кодовую точку одного символа.
+            /// </summary>
+            int GetCode(char c)
+            {
+                return Convert.ToByte(c);
+            }
+
+            string codes = "";
+            foreach (char c in s)
+            {
+                codes += $"\\u{GetCode(c).ToString("x4")}";
+            }
+            return codes;
         }
 
         /// <summary>
@@ -77,7 +97,9 @@ namespace WubbaLubbaDubDub
                 Собрать строку из последовательности строк можно несколькими способами.
                 Один из низ - статический метод Concat. Но ты можешь выбрать любой.
             */
-            throw new NotImplementedException();
+            char[] array = s.ToCharArray();
+            Array.Reverse(array);
+            return String.Concat(array);
         }
 
         /// <summary>
@@ -90,7 +112,16 @@ namespace WubbaLubbaDubDub
                 На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
                 Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
             */
-            throw new NotImplementedException();
+            char[] array = s.ToCharArray();
+            for (int i = 0; i < s.Length; i++)
+            {
+                char c = array[i];
+                if(Char.IsUpper(c))
+                    array[i] = Char.ToLower(c);
+                else
+                    array[i] = Char.ToUpper(c);
+            }
+            return String.Concat(array);
         }
 
         /// <summary>
@@ -117,7 +148,32 @@ namespace WubbaLubbaDubDub
                 Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
                 Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
             */
-            throw new NotImplementedException();
+
+            /*
+             *
+             * Непонятно условие - как именно записаны байты идентификатора в тексте?
+             * Здесь предполагается что идентификаторы записаны в тексте так:
+             *
+             * ```
+             * Never gonna 31b9:6f8c you up
+             * Never gonna let you a3ba:188a
+             * Never gonna run around and 14hh:00b5 you
+             * Never gonna make you 58f4:7cdc
+             * // Never gonna say 4dd9:00a0
+             * Never gonna tell 6aac:2f9c and 31b9:6f8c you
+             * ```
+             *
+             */
+
+            HashSet<long> objectIDs = new HashSet<long>();
+            MatchCollection matches = Regex.Matches(text, @"(?<!\n[^\n]*\/\/((?!\/\/).)*)(?<!\/\*((?!\*\/)([^$]))*)([\da-f]{4}:[\da-f]{4})");
+            foreach (Match m in matches)
+            {
+                string hex = m.ToString().Substring(0, 4) + m.ToString().Substring(5);
+                objectIDs.Add(long.Parse(hex, System.Globalization.NumberStyles.HexNumber));
+            }
+
+            return objectIDs.ToImmutableArray();
         }
 
         #endregion

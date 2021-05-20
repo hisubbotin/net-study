@@ -1,14 +1,13 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("BoringVector.Tests")]
-namespace BoringVector
+[assembly: InternalsVisibleTo("WubbaLubbaDubDub.Tests")]
+namespace WubbaLubbaDubDub
 {
     internal class Program
     {
         private static void Main()
         {
-            Console.WriteLine("Hello World!");
         }
     }
 }
