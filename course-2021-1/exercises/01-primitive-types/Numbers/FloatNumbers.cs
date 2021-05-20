@@ -37,14 +37,14 @@ namespace Numbers
         /// Возвращает результат сравнения двух вещественнозначных чисел.
         /// </summary>
         /// <returns>-1 - первое меньше второго, 0 - значения равны, 1 - первое больше второго.</returns>
-        internal static int Compare(double a, double b)
+        internal static int Compare(double a, double b, double eps)
         {
             /*
                 Подумай, почему это задание дано в части про вещественнозначные числа. И почему не дана полная сигнатура метода.
                 Если сходу идей нет, перестань искать подвох и просто реализуй дословно. Теперь еще раз посмотри на код и подумай в чем может быть проблема, сколько должно быть аргументов.
             */
             //throw new NotImplementedException();
-            if (Math.Abs(a - b) < double.MinValue)
+            if (Math.Abs(a - b) < eps)
                 return 0;
             if (a > b)
                 return 1;
