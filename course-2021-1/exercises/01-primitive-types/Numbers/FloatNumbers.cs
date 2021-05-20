@@ -31,9 +31,9 @@ namespace Numbers
         {
             // Подсказка: по аналогии с константами типа int, у типа double тоже есть свой набор констант.
             //throw new NotImplementedException();
-            return !((d <= double.PositiveInfinity) && (d >= double.NegativeInfinity));
+            return double.IsNaN(d);
         }
-        
+
         /// <summary>
         /// Возвращает результат сравнения двух вещественнозначных чисел.
         /// </summary>
@@ -56,6 +56,7 @@ namespace Numbers
                     return 1;
                 }
             }
+
             return -1;
         }
 
