@@ -17,8 +17,8 @@ namespace BoringVector
             Vector задается парой вещественных координат X и Y.
         */
 
-        public double X;
-        public double Y;
+        public readonly double X;
+        public readonly double Y;
 
         /// <summary>
         /// Конструирует вектор из двух заданных вещественных координат.
@@ -66,9 +66,7 @@ namespace BoringVector
         /// <returns>Текущий объект (типа <see cref="Vector"/>) с модифицированными координатами.</returns>
         public Vector Add(Vector v)
         {
-            X += v.X;
-            Y += v.Y;
-            return this;
+            return new Vector(X + v.X, Y + v.Y);
         }
 
         /// <summary>
@@ -78,9 +76,7 @@ namespace BoringVector
         /// <returns>Текущий объект (типа <see cref="Vector"/>) с модифицированными координатами.</returns>
         public Vector Scale(double k)
         {
-            X *= k;
-            Y *= k;
-            return this;
+            return new Vector(X * k, Y * k);
         }
 
         /// <summary>
@@ -133,9 +129,7 @@ namespace BoringVector
         /// <returns>Объект типа <see cref="Vector"/>, равный сумме данных векторов.</returns>
         public static Vector operator +(Vector v, Vector w)
         {
-            Vector sum = new Vector(v);
-            sum.Add(w);
-            return sum;
+            return v.Add(w);
         }
 
         /// <summary>
@@ -157,9 +151,7 @@ namespace BoringVector
         /// <returns>Объект <see cref="Vector"/>, равный произведению данного вектора на число.</returns>
         public static Vector operator *(Vector v, double k)
         {
-            Vector mul = new Vector(v);
-            mul.Scale(k);
-            return mul;
+            return v.Scale(k);
         }
 
         /// <summary>
@@ -181,7 +173,15 @@ namespace BoringVector
         /// <returns>Объект <see cref="Vector"/>, равный частному от деления данного вектора на число.</returns>
         public static Vector operator /(Vector v, double k)
         {
-            return v * (1 / k);
+            try
+            {
+                return v * (1 / k);
+            }
+            catch (DivideByZeroException e)
+            {
+                Console.WriteLine(e.Message);
+                return v;
+            }
         }
 
         /// <summary>
