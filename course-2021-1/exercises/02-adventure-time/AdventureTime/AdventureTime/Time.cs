@@ -147,7 +147,7 @@ namespace AdventureTime
              * Сделал для 91 дня (т. е. примерно четверть года)
              *
              */
-            return (int)TimeSpan.FromDays(90).TotalMinutes;
+            return (int)TimeSpan.FromDays(91).TotalMinutes;
         }
 
         #region Adventure time saga
