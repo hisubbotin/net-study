@@ -14,7 +14,7 @@ namespace AdventureTime
         /// </summary>
         public static DateTime WhatTimeIsIt()
         {
-            throw new NotImplementedException();
+            return DateTime.Now;
         }
 
         /// <summary>
@@ -22,7 +22,8 @@ namespace AdventureTime
         /// </summary>
         public static DateTime WhatTimeIsItInUtc()
         {
-            throw new NotImplementedException();
+            return DateTime.UtcNow;
+            
         }
 
         /// <summary>
@@ -33,10 +34,11 @@ namespace AdventureTime
         /// <returns>Объект <see cref="DateTime"/> с заданными временем и значением <see cref="DateTime.Kind"/>.</returns>
         public static DateTime SpecifyKind(DateTime dt, DateTimeKind kind)
         {
+            return DateTime.SpecifyKind(dt, kind);
             /*
                 Подсказка: поищи в статических методах DateTime.
             */
-            throw new NotImplementedException();
+            
         }
 
         /// <summary>
@@ -46,12 +48,14 @@ namespace AdventureTime
         /// <returns>Строковое представление времени в формате ISO 8601.</returns>
         public static string ToRoundTripFormatString(DateTime dt)
         {
+
+            return dt.ToString("o");
             /*
                 Обязательно поиграйся и посмотри на изменение результата в зависимости от dt.Kind (для этого тебе поможет метод выше).
                 Ну и на будущее запомни этот прекрасный строковый формат представления времени - он твой бро!
                 Название запоминать не нужно, просто помни, что для передачи значения в виде строки, выбирать лучше инвариантные относительно сериализации/десериализации форматы.
             */
-            throw new NotImplementedException();
+           
         }
 
         /// <summary>
@@ -61,11 +65,11 @@ namespace AdventureTime
         /// <returns>Объект <see cref="DateTime"/>.</returns>
         public static DateTime ParseFromRoundTripFormat(string dtStr)
         {
+            return DateTime.Parse(dtStr);
             /*
                 Поиграйся и проверь, что round-trip действительно round-trip, т.е. туда-обратно равно оригиналу (для туда воспользуйся предыдущим методом).
                 Проверь для всех значений DateTime.Kind.
             */
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -73,11 +77,12 @@ namespace AdventureTime
         /// </summary>
         public static DateTime ToUtc(DateTime dt)
         {
+
+            return dt.ToUniversalTime();
             /*
                 Eсли воспользуешься нужным методом, то напоминаю, что результат его работы зависит от dt.Kind.
                 В случае dt.Kind == Unspecified предполагается, что время локальное, т.е. результат работы в случае Local и Unspecified совпадают. Такие дела
             */
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -87,8 +92,8 @@ namespace AdventureTime
         /// <returns>Время, передвинутое вперед на 10 секунд от заданного</returns>
         public static DateTime AddTenSeconds(DateTime dt)
         {
+            return dt.AddSeconds(10);
             // здесь воспользуйся методами самого объекта и заодно посмотри какие еще похожие есть
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -98,11 +103,12 @@ namespace AdventureTime
         /// <returns>Время, передвинутое вперед на 10 секунд от заданного</returns>
         public static DateTime AddTenSecondsV2(DateTime dt)
         {
+            return dt + TimeSpan.FromSeconds(10);
+
             /*
                 Ну а здесь воспользуйся сложением с TimeSpan. Обрати внимание, что помимо конструктора, у класса есть набор полезных статических методов-фабрик.
                 Обрати внимание, что у TimeSpan нет статических методов FromMonth, FromYear. Как думаешь, почему?
             */
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -113,12 +119,13 @@ namespace AdventureTime
         /// <returns>Полное количество часов заданного временного отрезка.</returns>
         public static int GetHoursBetween(DateTime dt1, DateTime dt2)
         {
+            return (int)(dt2 - dt1).TotalHours;
+
             /*
                 1) Подумай, в чем разница между Hours и TotalHours
                 2) Проверь, учитывается ли Kind объектов при арифметических операциях.
                 3) Подумай, почему возвращаемое значение может отличаться от действительности.
             */
-            throw new NotImplementedException();
         }
 
         /// <summary>
@@ -126,8 +133,10 @@ namespace AdventureTime
         /// </summary>
         public static int GetTotalMinutesInThreeMonths()
         {
-            // ну тут все просто и очевидно, если сделал остальные и подумал над вопросами в комментах.
-            throw new NotImplementedException();
+            DateTime now = WhatTimeIsIt();
+            DateTime next = now;
+            next.AddMonths(3);
+            return (int)Math.Floor((next - now).TotalMinutes);
         }
 
         #region Adventure time saga
@@ -277,7 +286,15 @@ namespace AdventureTime
         /// <returns>True - если родились в один день, иначе - false.</returns>
         internal static bool AreEqualBirthdays(DateTime person1Birthday, DateTime person2Birthday)
         {
-            throw new NotImplementedException();
+            if (person1Birthday.DayOfYear == person2Birthday.DayOfYear)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
         }
     }
 }
