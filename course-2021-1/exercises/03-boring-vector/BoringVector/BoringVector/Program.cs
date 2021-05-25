@@ -6,7 +6,9 @@ namespace BoringVector
     {
         private static void Main()
         {
-            Console.WriteLine("Hello World!");
+            double a = 1.2;
+            double b = 0.32;
+            Console.WriteLine("(" + a.ToString() + "; " + b.ToString() + ")");
         }
     }
 }

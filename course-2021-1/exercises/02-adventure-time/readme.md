@@ -1,4 +1,4 @@
-# 02. Primitive types
+ow to# 02. Primitive types
 
 ## Entry point
 
