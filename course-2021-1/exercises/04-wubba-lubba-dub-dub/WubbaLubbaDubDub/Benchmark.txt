@@ -1,0 +1,5 @@
+|        Method |      Mean |    Error |   StdDev |    Median |       Max |
+|-------------- |----------:|---------:|---------:|----------:|----------:|
+| String.Join() | 192.23 us | 3.584 us | 3.681 us | 192.60 us | 197.71 us |
+|   TestBuilder |  40.26 us | 0.771 us | 1.056 us |  39.94 us |  42.69 us |
+|        Concat |  69.61 us | 1.076 us | 0.898 us |  69.53 us |  71.65 us |
