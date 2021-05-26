@@ -13,27 +13,34 @@ namespace BoringVector.Tests
         public void SquareLength()
         {
             var v = new Vector(5, 5);
-            Assert.Equals(v.SquareLength(), 25);
+            Assert.AreEqual(v.SquareLength(), 50);
         }
         [Test]
         public void Add()
-        {
-            Assert.Pass();
+        { 
+            var v = new Vector(5, 5);
+            var u = new Vector(1, -1);
+            Assert.AreEqual(v.Add(u), new Vector(6, 4));
         }
         [Test]
         public void Scale()
         {
-            Assert.Pass();
+            var v = new Vector(5, 5);
+            Assert.AreEqual(v.Scale(10), new Vector(50, 50));
         }
         [Test]
         public void DotProduct()
         {
-            Assert.Pass();
+            var v = new Vector(5, 5);
+            var u = new Vector(1, -1);
+            Assert.AreEqual(v.DotProduct(u), 0);
         }
         [Test]
         public void CrossProduct()
         {
-            Assert.Pass();
+            var v = new Vector(5, 5);
+            var u = new Vector(1, -1);
+            Assert.AreEqual(v.CrossProduct(u), -10);
         }
     }
 }
