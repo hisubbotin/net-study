@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+
+[assembly: InternalsVisibleTo("BoringVector.Tests")]
 
 namespace BoringVector
 {
@@ -10,55 +13,138 @@ namespace BoringVector
 
     internal struct Vector
     {
-        /*
-            Vector задается парой вещественных координат X и Y.
-        */
+        /// <summary>
+        /// Координаты вектора
+        /// </summary>
+        public double X, Y;
 
 
-        /*
-            На месте заглушек добавь реализацию базовых методов вектора:
-                - квадрат длины
-                - сумма векторов
-                - умножение на коэффициент
-                - скалярное произведение
-                - векторное произведение (= площадь параллелограмма)
-        */
-
+        /// <summary>
+        /// Квадрат длины вектора
+        /// </summary>
+        /// <returns>квадрат длины вектора</returns>
         public double SquareLength()
         {
-            throw new NotImplementedException();
+            return X * X + Y * Y;
         }
+
+        /// <summary>
+        /// Прибавляет вектор v к данному
+        /// </summary>
+        /// <param name="v">Вектор, который нужно прибавать</param>
+        /// <returns>Сумму текущего вектора с v</returns>
         public Vector Add(Vector v)
         {
-            throw new NotImplementedException();
+            return new Vector { X = X + v.X, Y = Y + v.Y };
         }
+        /// <summary>
+        /// Умножает текущий вектор на число
+        /// </summary>
+        /// <param name="k">Множитель</param>
+        /// <returns>Произведение вектора на k</returns>
         public Vector Scale(double k)
         {
-            throw new NotImplementedException();
+            return new Vector { X = X * k, Y = Y * k };
         }
+        /// <summary>
+        /// Скалярное произведение вектора с v
+        /// </summary>
+        /// <param name="v">Второй вектор в скалярном произвдении</param>
+        /// <returns>Число, равное скалярному произведению</returns>
         public double DotProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.X + Y * v.Y;
         }
+        /// <summary>
+        /// Векторное произведение вектора с v
+        /// </summary>
+        /// <param name="v">Второй вектор в векторном произвдении</param>
+        /// <returns>Число, равное Z компоненте векторномго произведения</returns>
         public double CrossProduct(Vector v)
         {
-            throw new NotImplementedException();
+            return X * v.Y - Y * v.X;
         }
 
-        /*
-            Переопредели ниже метод ToString - пусть выводит (X; Y)
-        */
+        /// <summary>
+        /// Котиковое представление вектора
+        /// </summary>
+        /// <returns>Строковое представление вектора для котика</returns>
+        public override string ToString()
+        {
+            return string.Format("({0:f}; {1:f})", X, Y);
+        }
 
-        #region operators
+        /// <summary>
+        /// Сложение двух векторов
+        /// </summary>
+        /// <param name="a">Вектор a</param>
+        /// <param name="b">Вектор b</param>
+        /// <returns>Вектор равный a+b</returns>
+        public static Vector operator +(Vector a, Vector b)
+        {
+            return a.Add(b);
+        }
 
-        /*
-            Реализуй также следущие операторы (Vector v, u и double k):
-                - v + u, v - u
-                - k * v, v * k, v / k
-                - +v, -v
-        */
+        /// <summary>
+        /// Вычитание двух векторов
+        /// </summary>
+        /// <param name="a">Вектор a</param>
+        /// <param name="b">Вектор b</param>
+        /// <returns>Вектор равный a-b</returns>
+        public static Vector operator -(Vector a, Vector b)
+        {
+            return new Vector { X = a.X - b.X, Y = a.Y - b.Y };
+        }
 
-        #endregion
+        /// <summary>
+        /// Умножение вектора на число
+        /// </summary>
+        /// <param name="a">Вектор</param>
+        /// <param name="k">Число</param>
+        /// <returns>Вектор равный a*k</returns>
+        public static Vector operator *(Vector a, double k)
+        {
+            return a.Scale(k);
+        }
+
+        /// <summary>
+        /// Умножение вектора на число
+        /// </summary>
+        /// <param name="k">Число</param>
+        /// <param name="a">Вектор</param>
+        /// <returns>Вектор равный k*a</returns>
+        public static Vector operator *(double k, Vector a)
+        {
+            return a.Scale(k);
+        }
+
+        /// <summary>
+        /// Деление вектора на число
+        /// </summary>
+        /// <param name="a">Вектор</param>
+        /// <param name="k">Число, не должно быть нулем</param>
+        /// <returns>Вектор равный a/k</returns>
+        public static Vector operator /(Vector a, double k)
+        {
+            return a.Scale(checked(1 / k));
+        }
+
+
+        /// <summary>
+        /// Вектор, обратный данному
+        /// </summary>
+        /// <param name="a">Вектор</param>
+        /// <returns>Вектор равный -a</returns>
+        public static Vector operator -(Vector a)
+        {
+            return a.Scale(-1);
+        }
+
+        public static Vector operator +(Vector a)
+        {
+            return a;
+        }
+
     }
 
     #endregion
@@ -109,6 +195,7 @@ namespace BoringVector
         а потом, например, автоматически генерировать по ним красивую документацию.
         Правилом хорошего тона считается писать комментарии к методам, классам и другим сущностям, используя данный синтаксис - так ты и комментируешь их, и документируешь.
         Внутри методов он не поддерживается, поэтому там только обычные (// или /*).
+
 
         Ниже приведены примеры простейших комментариев. Если наведете мышкой на название метода DoNothing, увидишь,
         что студия отображает комментарий в подписи (в других IDE из коробки без плагинов это вряд ли будет работать).
@@ -174,6 +261,7 @@ namespace BoringVector
         Особо не заморачивайся с тем, чтобы оттестировать все возможные специальные случаи - в данном задании важно, чтобы
         ты просто разобрался(-ась), как писать автотесты и как их запускать. Это задание НЕ на то, как писать хорошие тесты.
 
+
         Примечание: структура Vector описана как internal структура, поэтому по умолчанию сборке BoringVector.Tests она не видна.
         Чтобы она была видна, существует специальная директива компилятору:
             [assembly: InternalsVisibleTo("XXX")]
@@ -185,7 +273,6 @@ namespace BoringVector
     */
 
     #endregion
-
 
     /*
         На этом все. Время делать пулл реквест и наслаждаться заслуженным отдыхом :)
