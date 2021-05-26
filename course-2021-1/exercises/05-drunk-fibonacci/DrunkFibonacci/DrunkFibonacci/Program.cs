@@ -9,6 +9,9 @@ namespace DrunkFibonacci
         {
             Console.WriteLine("Hello World!");
 
+            var arr = DrunkFibonacci.CreateIntArray(5);
+            DrunkFibonacci.FillIntArray(arr, 0, 5);
+            Console.WriteLine("FillIntArray: " + string.Join(',', arr));
             Console.WriteLine("GetDrunkFibonacci: " + string.Join(',', DrunkFibonacci.GetDrunkFibonacci().Take(100)));
             Console.WriteLine("GetMaxOnRange: " + DrunkFibonacci.GetMaxOnRange(1000, 400));
             Console.WriteLine("GetNextNegativeRange: " + string.Join(',', DrunkFibonacci.GetNextNegativeRange().Take(100)));
