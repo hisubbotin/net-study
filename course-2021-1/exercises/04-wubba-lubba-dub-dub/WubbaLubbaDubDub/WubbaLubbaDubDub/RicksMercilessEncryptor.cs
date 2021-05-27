@@ -1,6 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace WubbaLubbaDubDub
 {
@@ -11,8 +12,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string[] SplitToLines(this string text)
         {
-            // У строки есть специальный метод. Давай здесь без регулярок
-            throw new NotImplementedException();
+            return text.Split('\n');
         }
 
         /// <summary>
@@ -20,8 +20,8 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string[] SplitToWords(this string line)
         {
-            // А вот здесь поиграйся с регулярками.
-            throw new NotImplementedException();
+            var words = Regex.Split(line, "\\W+");
+            return Array.FindAll(words, word => word.Length > 0);
         }
 
         /// <summary>
@@ -30,8 +30,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetLeftHalf(this string s)
         {
-            // у строки есть метод получения подстроки
-            throw new NotImplementedException();
+            return s.Substring(0, s.Length / 2);
         }
 
         /// <summary>
@@ -40,7 +39,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetRightHalf(this string s)
         {
-            throw new NotImplementedException();
+            return s.Substring(s.Length / 2);
         }
 
         /// <summary>
@@ -48,8 +47,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string Replace(this string s, string old, string @new)
         {
-            // и такой метод у строки, очевидно, тоже есть
-            throw new NotImplementedException();
+            return s.Replace(old, @new);
         }
 
         /// <summary>
@@ -58,14 +56,12 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string CharsToCodes(this string s)
         {
-            /*
-                Может быть удобным здесь же сначала написать локальную функцию
-                которая содержит логику для преобразования одного символа,
-                а затем использовать её для посимвольного преобразования всей строки.
-                FYI: локальную функцию можно объявлять даже после строки с return.
-                То же самое можно сделать и для всех оставшихся методов.
-            */
-            throw new NotImplementedException();
+            return string.Concat(s.Select(CharToCode));
+            
+            string CharToCode(char c)
+            {
+                return string.Concat("\\u", Convert.ToInt32(c).ToString("X4"));
+            }
         }
 
         /// <summary>
@@ -73,11 +69,7 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string GetReversed(this string s)
         {
-            /*
-                Собрать строку из последовательности строк можно несколькими способами.
-                Один из низ - статический метод Concat. Но ты можешь выбрать любой.
-            */
-            throw new NotImplementedException();
+            return string.Concat(s.ToCharArray().Reverse());
         }
 
         /// <summary>
@@ -85,12 +77,12 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string InverseCase(this string s)
         {
-            /*
-                Здесь тебе помогут статические методы типа char.
-                На минуту задержись здесь и посмотри, какие еще есть статические методы у char.
-                Например, он содержит методы-предикаты для определения категории Юникода символа, что очень удобно.
-            */
-            throw new NotImplementedException();
+            return string.Concat(s.Select(InverseCase));
+            
+            char InverseCase(char c)
+            {
+                return char.IsLower(c) ? char.ToUpper(c) : char.ToLower(c);
+            }
         }
 
         /// <summary>
@@ -99,11 +91,12 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static string ShiftInc(this string s)
         {
-            throw new NotImplementedException();
+            return string.Concat(s.Select(ShiftInc));
+            char ShiftInc(char c)
+            {
+                return Convert.ToChar(Convert.ToInt32(c) + 1);
+            }
         }
-
-
-        #region Чуть посложнее
 
         /// <summary>
         /// Возвращает список уникальных идентификаторов объектов, используемых в тексте <see cref="text"/>.
@@ -113,13 +106,14 @@ namespace WubbaLubbaDubDub
         /// </summary>
         public static IImmutableList<long> GetUsedObjects(this string text)
         {
-            /*
-                Задача на поиграться с регулярками - вся сложность в том, чтобы аккуратно игнорировать комментарии.
-                Экспериментировать онлайн можно, например, здесь: http://regexstorm.net/tester и https://regexr.com/
-            */
-            throw new NotImplementedException();
-        }
+            var commentRegex = new Regex(@"((\/\*)((?!\*\/)(.|\n))*(\*\/))|(\/\/.*\n)", RegexOptions.Multiline);
+            var cleanText = commentRegex.Replace(text, "");
+            var idRegex = new Regex(@"[0-9A-F]{4}:[0-9A-F]{4}", RegexOptions.Multiline);
 
-        #endregion
+            return idRegex
+                    .Matches(cleanText)
+                    .Select(id => Convert.ToInt64(id.Value.Substring(5), 16) + (Convert.ToInt64(id.Value.Substring(0, 4), 16) << 16))
+                    .ToImmutableList();
+        }
     }
 }
