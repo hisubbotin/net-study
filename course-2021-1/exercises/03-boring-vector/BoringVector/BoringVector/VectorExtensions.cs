@@ -9,15 +9,22 @@ namespace BoringVector
             - GetAngleBetween: возвращает угол между двумя векторами в радианах. Примечание: нулевой вектор сонаправлен любому другому.
             - GetRelation: возвращает значение перечесления VectorRelation(General, Parallel, Orthogonal) - отношение между двумя векторами("общий случай", параллельны, перпендикулярны). Перечисление задавать тоже тебе)
     */
+    
     /// <summary>
     /// Расширяющий класс Vector.
     /// </summary>
-    internal class VectorExtensions
+    internal class ExtendedVector : BoringVector.Vector
     {
         /// <summary>
         /// Эпсилон.
         /// </summary>
         private const double eps = 1e-6;
+        /// <summary>
+        /// Конструктор вектора.
+        /// </summary>
+        /// <param name="X">Координата по Ox.</param>
+        /// <param name="Y">Координата по Oy.</param>
+        internal ExtendedVector(double x, double y) : base(x, y) { }
         /// <summary>
         /// Перечисления - отношение между двумя векторами("общий случай", параллельны, перпендикулярны).
         /// </summary>
@@ -35,12 +42,14 @@ namespace BoringVector
             return Math.Abs(v.X) < eps && Math.Abs(v.Y) < eps;
         }
         /// <summary>
-        /// Нормализует вектор.
+        /// Нормализует вектор (если он не нулевой).
         /// </summary>
-        /// <param name="v">Исходынй вектор.</param>
+        /// <param name="v">Исходный вектор.</param>
         /// <returns>Нормализованный вектор.</returns>
         public static Vector Normalize(Vector v)
         {
+            if (IsZero(v))
+                return v;
             return v / Math.Sqrt(v.SquareLength());
         }
         /// <summary>

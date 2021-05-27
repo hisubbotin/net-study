@@ -10,7 +10,7 @@ namespace BoringVector
     /// <summary>
     /// Структура вектора в двумерном пространстве.
     /// </summary>
-    internal struct Vector
+    internal class Vector
     {
         /// <summary>
         /// Координаты вектора X и Y.
@@ -61,7 +61,7 @@ namespace BoringVector
         /// <returns>Результирующий вектор.</returns>
         public Vector Scale(double k)
         {
-            return new Vector(k* X, k * Y);
+            return new Vector(k * X, k * Y);
         }
         /// <summary>
         /// Скалярное произведение векторов.
@@ -149,6 +149,8 @@ namespace BoringVector
         /// <returns>Результирующий вектор от деления.</returns>
         public static Vector operator /(Vector v, double k)
         {
+            if (k == 0)
+                throw new DivideByZeroException();
             return v.Scale(1 / k);
         }
         /// <summary>
