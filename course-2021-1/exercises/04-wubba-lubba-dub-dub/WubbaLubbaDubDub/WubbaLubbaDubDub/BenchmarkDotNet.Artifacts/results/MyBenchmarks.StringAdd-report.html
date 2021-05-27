@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+<meta charset='utf-8' />
+<title>MyBenchmarks.StringAdd-20210527-005536</title>
+
+<style type="text/css">
+	table { border-collapse: collapse; display: block; width: 100%; overflow: auto; }
+	td, th { padding: 6px 13px; border: 1px solid #ddd; text-align: right; }
+	tr { background-color: #fff; border-top: 1px solid #ccc; }
+	tr:nth-child(even) { background: #f8f8f8; }
+</style>
+</head>
+<body>
+<pre><code>
+BenchmarkDotNet=v0.13.0, OS=ubuntu 20.04
+Intel Core i5-8250U CPU 1.60GHz (Kaby Lake R), 1 CPU, 8 logical and 4 physical cores
+.NET SDK=5.0.203
+  [Host]     : .NET 5.0.6 (5.0.621.22011), X64 RyuJIT
+  DefaultJob : .NET 5.0.6 (5.0.621.22011), X64 RyuJIT
+</code></pre>
+<pre><code></code></pre>
+
+<table>
+<thead><tr><th>Method</th><th>      Mean</th><th>      Error</th><th>     StdDev</th>
+</tr>
+</thead><tbody><tr><td>Join</td><td>26.94 ns</td><td>0.526 ns</td><td>0.439 ns</td>
+</tr><tr><td>BuilderJoin</td><td>85,051,155.23 ns</td><td>11,071,144.320 ns</td><td>32,643,518.817 ns</td>
+</tr><tr><td>Concatenate</td><td>15.47 ns</td><td>2.106 ns</td><td>6.209 ns</td>
+</tr></tbody></table>
+</body>
+</html>
