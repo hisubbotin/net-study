@@ -10,7 +10,7 @@ namespace BoringVector
     /// <summary>
     /// Структура вектора в двумерном пространстве.
     /// </summary>
-    internal class Vector
+    internal struct Vector
     {
         /// <summary>
         /// Координаты вектора X и Y.
